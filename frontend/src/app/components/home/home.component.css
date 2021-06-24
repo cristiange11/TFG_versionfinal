@@ -1,0 +1,33 @@
+.picsum-img-wrapper{
+    height: 90vh;
+    min-height: 300px;
+    background: no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+.picsum-img-wrapper img{
+  width:  100%;
+    
+}
+*{
+    box-sizing: border-box;
+  }
+html{
+  background: #659999;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #f4791f, #659999);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #f4791f, #659999); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ 
+}
+  body {
+    font-family: 'Lato';
+  }
+
+  .fix-navbar{
+    margin-top: 50px;
+  }
+  
+  .card-template img{
+    width: 444px;
+  }
+ 

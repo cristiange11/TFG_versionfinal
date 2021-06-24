@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+
+import { MenuItem } from 'primeng/api';
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavigationComponent implements OnInit {
 
-  constructor() { }
-
+  
+  constructor() {
+    
+  }
   ngOnInit(): void {
+   
   }
 
 }

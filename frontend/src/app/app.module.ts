@@ -4,7 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
@@ -20,6 +21,17 @@ import { HomeComponent } from './components/home/home.component';
 import { AdminpageComponent } from './components/adminpage/adminpage.component';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { FlexLayoutModule } from "@angular/flex-layout";
+import { MatMenuModule } from '@angular/material/menu';
+
+import { MatDividerModule } from '@angular/material/divider';
+
+import { MenubarModule } from 'primeng/menubar';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { TabViewModule } from 'primeng/tabview';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -33,7 +45,18 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     MatListModule,
     MatToolbarModule,
     CommonModule,
-    NgbModule
+    NgbModule,
+    MenubarModule,
+    InputTextModule,
+    ButtonModule,
+    ReactiveFormsModule,
+    MatSidenavModule,
+    FlexLayoutModule,
+    MatMenuModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDividerModule,
+    TabViewModule
     
   ],
   declarations: [
