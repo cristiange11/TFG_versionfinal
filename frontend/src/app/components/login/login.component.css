@@ -1,0 +1,70 @@
+* {
+    box-sizing: border-box;
+  }
+ 
+  .custom-form {
+      min-width: 300px;
+      max-width: 80%;
+      margin: 0px auto;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 2rem 3rem;
+      margin: auto;
+      border-radius: 2.5rem;
+      background-color: #ecf0f3;
+      
+      color: black;
+      margin-top: 10rem;
+    }
+    .custom-form input {
+      border-radius: 0.5rem;
+      
+      border: none;
+      box-shadow: inset -5px -5px 15px rgba(255, 255, 255, 0.8), inset 5px 5px 10px
+          rgba(0, 0, 0, 0.1);
+      border: 0 none;
+      background: #ebf5fc;
+     
+    }
+    
+    .custom-form a{
+      text-decoration: none;
+    }
+    #rad{
+      margin-top:1%;
+    }
+    
+    .mat-radio-button ~ .mat-radio-button {
+      margin-left: 5px;
+    }
+   
+    .mat-form-field-has-label{
+      width:30%;
+      margin-left:10%;
+      margin-right:10%;
+    }
+    .gn{
+      margin-left: 42%;
+    }
+    .boton-envio{
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      border: none;
+      font-size: 0.875rem;
+      color: #ffffff;
+      font-weight: bold;
+      background-color: #bcd8c1;
+      width: 100%;
+      display: inline-flex;
+      padding: 0.875rem 1rem;
+      border-radius: 1.5rem;
+      box-shadow: 3px 3px 8px #b1b1b1, -3px -3px 8px #ffffff;
+      cursor: pointer;
+      margin: auto;
+      margin-left:2%;
+    }
+    .boton-envio span{
+      width:100%;
+    }
+    .container{
+      background:linear-gradient(to right, #f4791f, #659999);
+    }

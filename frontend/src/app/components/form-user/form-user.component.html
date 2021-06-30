@@ -1,26 +1,68 @@
-<app-navigation></app-navigation>
-<form [formGroup]="signupForm" (ngSubmit)="signup()" novalidate>
-    <div class="p-grid p-fluid">
-        <div class="p-col-12 p-md-4">
-            <div class="p-inputgroup">
-                <span class="p-inputgroup-addon"><i class="pi pi-user"></i></span>
-                <input type="text" pInputText placeholder="Username">         
-            </div>
-        </div>
-        
-        <div class="p-col-12 p-md-4">
-            <div class="p-inputgroup">
-                <span class="p-inputgroup-addon">$</span>
-                <input type="text" pInputText placeholder="Price">   
-                <span class="p-inputgroup-addon">.00</span>      
-            </div>
-        </div>
-                
-        <div class="p-col-12 p-md-4">
-            <div class="p-inputgroup">
-                <span class="p-inputgroup-addon">www</span>
-                <input type="text" pInputText placeholder="Website">      
-            </div>
-        </div>
-    </div>
+
+<form [formGroup]="signupForm" (ngSubmit)="signup()" novalidate class="custom-form" >
+  <h1 align="center">Registro de usuario</h1>
+  <mat-form-field>
+    <input matInput type="text" formControlName="dni" placeholder="DNI">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="text" formControlName="nombre" placeholder="Nombre">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="text" formControlName="apellidos" placeholder="Apellidos">
+  </mat-form-field>
+  
+  <mat-form-field>
+    <input matInput type="text" formControlName="direccion" placeholder="Direcci&oacute;n">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="text" formControlName="cp" placeholder="CP">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="text" formControlName="movil" placeholder="M&oacute;vil">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="text" formControlName="correo" placeholder="Correo">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="text" formControlName="fecha_nacimiento" placeholder="Fecha de nacimiento (dd/mm/yyyy)">
+  </mat-form-field>
+  <mat-form-field >
+    <input matInput  [type]="hide ? 'password' : 'text'" formControlName="password" placeholder="Contraseña">
+    <button class="fondo" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </button>
+  </mat-form-field>
+  
+  <mat-form-field appearance="fill">
+    <mat-label>Rol</mat-label>
+    <select matNativeControl required formControlName="rol">
+      <option value="admin">Admin APP</option>
+      <option value="admin_centro">Admin Centro</option>
+      <option value="profesor">Profesor</option>
+      <option value="alumno">Alumno</option>
+      <option value="alumno">Tutor empresa</option>
+    </select>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Centro educativo</mat-label>
+    <select matNativeControl required formControlName="codigo_centro">
+      <option value="C12">C12</option>
+    </select>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>FP</mat-label>
+    <select matNativeControl required formControlName="fp_dual">
+      <option value="TRANSPORTE Y LOGÍSTICA">TRANSPORTE Y LOGÍSTICA</option>
+    </select>
+  </mat-form-field>
+  <mat-label class="gn">G&eacute;nero</mat-label>
+  <mat-radio-group aria-label="genero" formControlName="genero">
+    
+    <mat-radio-button value="masculino" ><i class="fas fa-mars"></i></mat-radio-button>
+    <mat-radio-button value="femenino" ><i class="fas fa-venus"></i></mat-radio-button>
+  </mat-radio-group>
+  <button class="boton-envio" [disabled]="!signupForm.valid" type="submit">
+    <span>Registrar Usuario</span>
+  </button>
 </form>
+
