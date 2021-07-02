@@ -61,4 +61,43 @@ exports.signup = async (req, res , next) => {
     }
 };
 
+exports.login = async (req, res, next) => {
+  const dni = req.body.dni;
+  const password = req.body.password;
+  
+  try {
+    const user =  User.find(dni);
+    console.log(user.dni)
+    if (user[0].length !== 1) {
+      const error = new Error('No se ha encontrado ningún usuario con ese DNI.');
+      error.statusCode = 401;
+      throw error;
+    }
 
+    const storedUser = user[0][0];
+
+    const isEqual = await bcrypt.compare(password, storedUser.password);
+
+    if (!isEqual) {
+      const error = new Error('Contraseña incorrecta');
+      error.statusCode = 401;
+      throw error;
+    }
+
+    const token = jwt.sign(
+      {
+        dni: storedUser.dni,
+        correo: storedUser.correo,
+        rol: storedUser.rol
+      },
+      'secretfortoken',
+      { expiresIn: '1h' }
+    );
+    res.status(200).json({ token: token, userDni: storedUser.dni });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};

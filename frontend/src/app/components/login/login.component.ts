@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   hide = true;
-  constructor() { 
+  constructor(private authService: AuthService) { 
     document.body.style.background="linear-gradient(to right, #e66465, #9198e5)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    
   }
 
@@ -28,6 +28,6 @@ export class LoginComponent implements OnInit {
     return res;
   }
   login(){
-      console.log(this.loginForm.value);
+    this.authService.signup(this.loginForm.value).subscribe((msg) => console.log(msg));
   }
 }
