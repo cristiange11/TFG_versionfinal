@@ -39,7 +39,7 @@ export class FormUserComponent implements OnInit {
         error => {
           console.log(error.error.message);
         });
-        this.rolService.getRoles().pipe(first())
+    this.rolService.getRoles().pipe(first())
       .subscribe(
         data => {
           this.rolesList = new Map<string, string>();
@@ -52,9 +52,9 @@ export class FormUserComponent implements OnInit {
         error => {
           console.log(error.error.message);
         });
-        
+
     this.signupForm = this.createFormGroup();
-    
+
   }
 
   createFormGroup(): FormGroup {
@@ -78,18 +78,18 @@ export class FormUserComponent implements OnInit {
     );
     return res;
   }
-  obtenerFP(centro): void{
-    console.log(this.signupForm.value.codigo_centro)
-    this.fpdualesService.getFPdual(this.signupForm.value.codigo_centro).pipe(first())
+  obtenerFP(centro): void {
+
+    this.fpdualesService.getFPdual(centro).pipe(first())
       .subscribe(
         data => {
-          
           this.fpList = new Map<string, string>();
           let fps = data["fps"]
           fps.forEach(fpInfo => {
-            var fp = fps as Fpduales
-            this.rolesList.set(fp.codigo_centro, fp.nombre)
+            var fp = fpInfo as Fpduales
+            this.fpList.set(fp.codigo_centro, fp.nombre)
           });
+
         },
         error => {
           console.log(error.error.message);

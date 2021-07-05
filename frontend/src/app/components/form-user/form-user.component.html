@@ -46,9 +46,9 @@
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>FP</mat-label>
-    <select matNativeControl required formControlName="fp_dual">
-      <option *ngFor="let fp of fpList | keyvalue" [value]="fp.key">{{ fp.value }}</option>
-    </select>
+    <mat-select matNativeControl required formControlName="fp_dual">
+      <mat-option *ngFor="let fp of fpList | keyvalue" [value]="fp.key">{{ fp.value }}</mat-option>
+    </mat-select>
   </mat-form-field>
   <mat-label class="gn">G&eacute;nero</mat-label>
   <mat-radio-group aria-label="genero" formControlName="genero">

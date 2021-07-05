@@ -15,10 +15,9 @@ export class FpdualesService {
   }
   constructor(private http: HttpClient, private router: Router ) { 
   }
-  getFPdual(codigo: string): Observable<Fpduales [] >{
-    let params = new HttpParams().set("codigo_centro",codigo)
-    console.log(params)
-    return this.http.get<Fpduales []>(`${this.url}/ByCentro`,{ params: params})
+  getFPdual(codigo: string): Observable<Fpduales [] >{   
+    console.log(`${this.url}/${codigo}`)
+    return this.http.get<Fpduales []>(`${this.url}/${codigo}`)
    
   }
 }
