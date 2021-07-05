@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { first } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -10,7 +12,8 @@ import { AuthService } from 'src/app/services/auth.service';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   hide = true;
-  constructor(private authService: AuthService) { 
+  returnUrl: string;
+  constructor(private authService: AuthService, private router: Router) { 
     document.body.style.background="linear-gradient(to right, #e66465, #9198e5)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    
   }
 
@@ -28,6 +31,13 @@ export class LoginComponent implements OnInit {
     return res;
   }
   login(){
-    this.authService.signup(this.loginForm.value).subscribe((msg) => console.log(msg));
+    this.authService.login(this.loginForm.value.dni, this.loginForm.value.password).pipe(first())
+    .subscribe(
+        data => {
+            console.log(data);
+        },
+        error => {
+            console.log(error);           
+        });
   }
 }

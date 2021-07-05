@@ -10,7 +10,6 @@
   <mat-form-field>
     <input matInput type="text" formControlName="apellidos" placeholder="Apellidos">
   </mat-form-field>
-  
   <mat-form-field>
     <input matInput type="text" formControlName="direccion" placeholder="Direcci&oacute;n">
   </mat-form-field>
@@ -35,24 +34,20 @@
   
   <mat-form-field appearance="fill">
     <mat-label>Rol</mat-label>
-    <select matNativeControl required formControlName="rol">
-      <option value="admin">Admin APP</option>
-      <option value="admin_centro">Admin Centro</option>
-      <option value="profesor">Profesor</option>
-      <option value="alumno">Alumno</option>
-      <option value="alumno">Tutor empresa</option>
-    </select>
+    <mat-select matNativeControl required formControlName="rol">
+      <mat-option *ngFor="let rol of rolesList | keyvalue" [value]="rol.key"value="admin">{{ rol.value }}</mat-option>
+    </mat-select>
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>Centro educativo</mat-label>
-    <select matNativeControl required formControlName="codigo_centro">
-      <option value="C12">C12</option>
-    </select>
+    <mat-select matNativeControl required formControlName="codigo_centro" (selectionChange)="obtenerFP($event.value)" > 
+      <mat-option *ngFor="let centro of centroList | keyvalue" [value]="centro.key" >{{ centro.value }}</mat-option>
+    </mat-select>
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>FP</mat-label>
     <select matNativeControl required formControlName="fp_dual">
-      <option value="TRANSPORTE Y LOGÍSTICA">TRANSPORTE Y LOGÍSTICA</option>
+      <option *ngFor="let fp of fpList | keyvalue" [value]="fp.key">{{ fp.value }}</option>
     </select>
   </mat-form-field>
   <mat-label class="gn">G&eacute;nero</mat-label>
@@ -64,5 +59,6 @@
   <button class="boton-envio" [disabled]="!signupForm.valid" type="submit">
     <span>Registrar Usuario</span>
   </button>
+  <mat-label></mat-label>
 </form>
 

@@ -1,16 +1,27 @@
 const express = require('express');
-const bodyParser= require('body-parser');
+const bodyParser = require('body-parser');
 const app = express();
-const cors= require('cors');
+const cors = require('cors');
 const ports = process.env.PORT || 3000;
 const authRoutes = require('./routes/auth');
-const errorController= require('./controllers/error');
+const centroRoutes = require('./routes/centro');
+const fpRoutes = require('./routes/fp_dual');
+const rolesRoutes = require('./routes/roles');
+const errorController = require('./controllers/error');
 app.use(cors());
 
 app.use(bodyParser.json());
 
 app.use('/auth', authRoutes);
 
-app.use(errorController.get404);
-app.use(errorController.get500);
+app.use('/centro', centroRoutes);
+
+app.use('/fpduales', fpRoutes);
+
+app.use('/roles', rolesRoutes);
+//app.use(errorController.get404);
+//app.use(errorController.get500);
+//app.use(errorController.get401);
+//app.use(errorController.get409);
+
 app.listen(ports, () => console.log(`Listening on port ${ports}`));
