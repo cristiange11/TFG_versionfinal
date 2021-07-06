@@ -18,8 +18,9 @@ import { Fpduales } from 'src/app/models/Fpduales';
 export class FormUserComponent implements OnInit {
   signupForm: FormGroup;
   hide = true;
+  hide2 = true;
   centroList = new Map<string, string>();
-  rolesList = new Map<string, string>();
+  rolesList = new Map<number, string>();
   fpList = new Map<string, string>();
   constructor(private authService: AuthService, private centroService: CentroService, private rolService: RolService, private fpdualesService: FpdualesService) {
     document.body.style.background = "linear-gradient(to right, #1dcd9b, #00d4ff)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
@@ -42,11 +43,11 @@ export class FormUserComponent implements OnInit {
     this.rolService.getRoles().pipe(first())
       .subscribe(
         data => {
-          this.rolesList = new Map<string, string>();
+          this.rolesList = new Map<number, string>();
           let rol = data["roles"]
           rol.forEach(rolInfo => {
             var rol = rolInfo as Rol
-            this.rolesList.set(rol.codigo_rol, rol.nombre_rol)
+            this.rolesList.set(rol.id, rol.nombre_rol)
           });
         },
         error => {
@@ -71,7 +72,9 @@ export class FormUserComponent implements OnInit {
       rol: new FormControl("", [Validators.required]),
       codigo_centro: new FormControl("", [Validators.required]),
       fp_dual: new FormControl("", [Validators.required]),
-      password: new FormControl("", [Validators.required, Validators.minLength(6)])
+      password: new FormControl("", [Validators.required, Validators.minLength(6)]),
+      password2: new FormControl("", [Validators.required, Validators.minLength(6)])
+
 
     },
 
@@ -97,7 +100,7 @@ export class FormUserComponent implements OnInit {
   }
   signup(): void {
 
-
+    
     this.authService.signup(this.signupForm.value).pipe(first())
       .subscribe(
         data => {

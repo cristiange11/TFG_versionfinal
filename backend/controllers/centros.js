@@ -30,7 +30,7 @@ exports.getCentros = async (req, res, next) => {
 
 };
 exports.getCentro = async (req, res, next) => {
-  const codigo_centro = req.body.codigo_centro;
+  const codigo_centro = req.params.codigo_centro;
   try {
     const centro = await Centro.getCentro(codigo_centro);
     res.status(200).json({ message: centro });
@@ -44,7 +44,7 @@ exports.getCentro = async (req, res, next) => {
 
 };
 exports.deleteCentro = async (req, res, next) => {
-  const codigo_centro = req.body.codigo_centro;
+  const codigo_centro = req.params.codigo_centro;
   try {
     const centro = await Centro.deleteCentro(codigo_centro);
     res.status(200).json({ message: centro });
@@ -92,7 +92,7 @@ exports.updateCentro = async (req, res, next) => {
     const result = Centro.updateCentro(cent).then(function (result) {
       console.log("Promise Resolved");
 
-      res.status(201).json({ message: us });
+      res.status(201).json({ message: cent });
     }).catch(function () {
       console.log("Promise Rejected");
     });

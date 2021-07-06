@@ -31,6 +31,7 @@ module.exports = class User {
             `SELECT * FROM usuario where movil = '${movil}'`);
     }
     static async save(user) {
+        console.log(`INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fecha_nacimiento, fp_dual, codigo_centro) VALUES ('${user.dni}','${user.nombre}','${user.apellidos}','${user.correo}','${user.movil}','${user.direccion}','${user.password}','${user.genero}',${user.cp},'${user.rol}',STR_TO_DATE('${user.fecha_nacimiento}','%d/%m/%Y'),'${user.fp_dual}','${user.codigo_centro}')`)
         const [rows, fields] = await promisePool.query(
             `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fecha_nacimiento, fp_dual, codigo_centro) VALUES ('${user.dni}','${user.nombre}','${user.apellidos}','${user.correo}','${user.movil}','${user.direccion}','${user.password}','${user.genero}',${user.cp},'${user.rol}',STR_TO_DATE('${user.fecha_nacimiento}','%d/%m/%Y'),'${user.fp_dual}','${user.codigo_centro}')`
         );
@@ -39,5 +40,9 @@ module.exports = class User {
     static async findCorreo(correo) {
         return await promisePool.query(
             `SELECT * FROM usuario where correo = '${correo}'`);
+    }
+    static async getUsers() {
+        return await promisePool.query(
+            `SELECT * FROM usuario `);
     }
 };

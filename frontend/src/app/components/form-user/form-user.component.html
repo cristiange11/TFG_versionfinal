@@ -31,6 +31,12 @@
       <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
     </button>
   </mat-form-field>
+  <mat-form-field >
+    <input matInput  [type]="hide ? 'password' : 'text'" formControlName="password2" placeholder="Repita contraseña">
+    <button class="fondo" mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide2">
+      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </button>
+  </mat-form-field>
   
   <mat-form-field appearance="fill">
     <mat-label>Rol</mat-label>
@@ -50,12 +56,15 @@
       <mat-option *ngFor="let fp of fpList | keyvalue" [value]="fp.key">{{ fp.value }}</mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-label class="gn">G&eacute;nero</mat-label>
-  <mat-radio-group aria-label="genero" formControlName="genero">
-    
-    <mat-radio-button value="masculino" ><i class="fas fa-mars"></i></mat-radio-button>
-    <mat-radio-button value="femenino" ><i class="fas fa-venus"></i></mat-radio-button>
-  </mat-radio-group>
+  
+  <mat-form-field appearance="fill">
+    <mat-label>G&eacute;nero</mat-label>
+    <mat-select matNativeControl required formControlName="fp_dual">
+      <mat-option  value="masculino">Masculino</mat-option>
+      <mat-option  value="femenino" >Femenino</mat-option>
+    </mat-select>
+  </mat-form-field>
+
   <button class="boton-envio" [disabled]="!signupForm.valid" type="submit">
     <span>Registrar Usuario</span>
   </button>

@@ -2,7 +2,6 @@ const Roles = require('../models/roles');
 
 exports.getRoles = async (req, res, next) => {
   try {
-      console.log("entro")
     const roles = await Roles.getRoles();
 
     res.status(200).json({ roles: roles });

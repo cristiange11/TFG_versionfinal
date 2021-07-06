@@ -6,7 +6,11 @@ const ports = process.env.PORT || 3000;
 const authRoutes = require('./routes/auth');
 const centroRoutes = require('./routes/centro');
 const fpRoutes = require('./routes/fp_dual');
+const empresaRoutes = require('./routes/empresa');
 const rolesRoutes = require('./routes/roles');
+const tutorRoutes = require('./routes/tutorEmpresa');
+const alumnoRoutes = require('./routes/alumno');
+const profesorRoutes = require('./routes/profesor');
 const errorController = require('./controllers/error');
 app.use(cors());
 
@@ -19,6 +23,14 @@ app.use('/centro', centroRoutes);
 app.use('/fpduales', fpRoutes);
 
 app.use('/roles', rolesRoutes);
+
+app.use('/empresa', empresaRoutes);
+
+app.use('/tutor',tutorRoutes);
+
+app.use('/alumno',alumnoRoutes);
+
+app.use("/profesor", profesorRoutes);
 //app.use(errorController.get404);
 //app.use(errorController.get500);
 //app.use(errorController.get401);

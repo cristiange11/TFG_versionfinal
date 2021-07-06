@@ -2,7 +2,7 @@ const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 exports.signup = async (req, res, next) => {
-
+  
   const errors = validationResult(req);
   const resu = errors.array();
   var cadena = "";
@@ -112,12 +112,11 @@ exports.login = async (req, res, next) => {
 };
 exports.getUsuarios = async (req, res, next) => {
   try {
-    const [usuario] = await User.getUsers();
-    if (usuario[0].length === 0) {
-      res.status(404).json({ message: 'No se han encontrado ningún usuario' });
-    } else {
-      res.status(200).json({ message: usuario });
-    }
+    const usuario = await User.getUsers();
+    
+    
+    res.status(200).json({ message: usuario });
+    
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
