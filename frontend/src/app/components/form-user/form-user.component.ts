@@ -31,7 +31,7 @@ export class FormUserComponent implements OnInit {
   ]); 
   centroList = new Map<string, string>();
   rolesList = new Map<number, string>();
-  fpList = new Map<string, string>();
+  fpList = new Map<number, string>();
   constructor(private authService: AuthService, private centroService: CentroService, private rolService: RolService, private fpdualesService: FpdualesService) {
     document.body.style.background = "linear-gradient(to right, #1dcd9b, #00d4ff)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
@@ -83,7 +83,7 @@ export class FormUserComponent implements OnInit {
       rol: new FormControl("", [Validators.required]),
       codigo_centro: new FormControl("", [Validators.required]),
       fp_dual: new FormControl("", [Validators.required]),
-      
+     
       password: this.passwordFormControl,
       confirmPassword: this.confirmPasswordFormControl
         
@@ -107,12 +107,14 @@ export class FormUserComponent implements OnInit {
     this.fpdualesService.getFPdual(centro).pipe(first())
       .subscribe(
         data => {
-          this.fpList = new Map<string, string>();
+          this.fpList = new Map<number, string>();
           let fps = data["fps"]
           fps.forEach(fpInfo => {
             var fp = fpInfo as Fpduales
-            this.fpList.set(fp.codigo_centro, fp.nombre)
+            console.log(fp)
+            this.fpList.set(fp.id, fp.nombre)
           });
+          console.log(this.fpList)
 
         },
         error => {
@@ -126,6 +128,8 @@ export class FormUserComponent implements OnInit {
       .subscribe(
         data => {
           console.log(data);
+          var rol = this.signupForm.value.rol
+          console.log(rol)
         },
         error => {
 
@@ -135,10 +139,6 @@ export class FormUserComponent implements OnInit {
 
 
   }
- modificarValor(){
-   this.confirmPasswordFormControl.setValue("");
- }
-
   getErrorMessage(attribute: String) {
     if (attribute == "dni") {
       let dni = this.signupForm.get("dni")
@@ -168,7 +168,7 @@ export class FormUserComponent implements OnInit {
           '';
     } else if (attribute == "genero") {
       let genero = this.signupForm.get("genero");
-      return genero.hasError('required') ? 'Introduce género' :
+      return genero.hasError('required') ? 'Selecciona género' :
         '';
     } else if (attribute == "movil") {
       let movil = this.signupForm.get("movil");
@@ -207,6 +207,7 @@ export class FormUserComponent implements OnInit {
           '';
     }else if (attribute == "fp_dual") {
       let fp_dual = this.signupForm.get("fp_dual");
+      
       return fp_dual.hasError('required') ? 'Selecciona un FP dual' :
           '';
     }

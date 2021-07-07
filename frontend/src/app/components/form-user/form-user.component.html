@@ -46,7 +46,7 @@
 
   </mat-form-field>
   <mat-form-field >
-    <input matInput  [type]="hide ? 'password' : 'text'" [formControl]="passwordFormControl" placeholder="Contraseña" (change)="modificarValor()" >
+    <input matInput  [type]="hide ? 'password' : 'text'" [formControl]="passwordFormControl" placeholder="Contraseña" (change)="this.confirmPasswordFormControl.setValue('')" >
     <mat-error *ngIf=" passwordFormControl.errors?.required">{{ getErrorMessage("password") }}</mat-error>
     <mat-error *ngIf=" passwordFormControl.errors?.pattern">{{ getErrorMessage("password") }}</mat-error>
     <button class="fondo" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
@@ -89,7 +89,7 @@
   
   <mat-form-field appearance="fill">
     <mat-label>G&eacute;nero</mat-label>
-    <mat-select matNativeControl required formControlName="fp_dual">
+    <mat-select matNativeControl required formControlName="rol">
       <mat-option  value="masculino">Masculino</mat-option>
       <mat-option  value="femenino" >Femenino</mat-option>
     </mat-select>

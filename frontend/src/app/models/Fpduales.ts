@@ -5,5 +5,5 @@ export class Fpduales {
     anio: string;
     codigo_centro: string;
     plazas_disponibles: string;
- 
+    id: number;
 }

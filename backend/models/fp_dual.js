@@ -12,7 +12,7 @@ module.exports = class FP_dual {
     static async getNombreFPByCentro(codigo_centro) {
 
         const [rows, fields] = await promisePool.query(
-            `SELECT F.codigo_centro, F.nombre FROM fp_duales as F, centro_educativo as C WHERE C.codigo_centro=F.codigo_centro and C.codigo_centro='${codigo_centro}'  `);
+            `SELECT F.id, F.nombre FROM fp_duales as F, centro_educativo as C WHERE C.codigo_centro=F.codigo_centro and C.codigo_centro='${codigo_centro}'  `);
 
         return rows;
     }
