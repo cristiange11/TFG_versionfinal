@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidatorFn,  Validators } from "@angular/forms";
 import { MatSelect } from '@angular/material/select';
 import { first } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
@@ -19,6 +19,16 @@ export class FormUserComponent implements OnInit {
   signupForm: FormGroup;
   hide = true;
   hide2 = true;
+  passwordFormControl = new FormControl("", [
+    Validators.required,
+    Validators.pattern(
+      "^((?=\\S*?[A-Z])(?=\\S*?[a-z])(?=\\S*?[0-9]).{8,255})\\S$"
+    )
+  ]);
+  confirmPasswordFormControl = new FormControl("", [
+    Validators.required,
+    this.checkConfirmPassword() 
+  ]); 
   centroList = new Map<string, string>();
   rolesList = new Map<number, string>();
   fpList = new Map<string, string>();
@@ -59,6 +69,7 @@ export class FormUserComponent implements OnInit {
   }
 
   createFormGroup(): FormGroup {
+    
     const res = new FormGroup({
       dni: new FormControl("", [Validators.required, Validators.pattern(/^\d{8}[a-zA-Z]$/)]),
       nombre: new FormControl("", [Validators.required, Validators.minLength(4)]),
@@ -72,15 +83,25 @@ export class FormUserComponent implements OnInit {
       rol: new FormControl("", [Validators.required]),
       codigo_centro: new FormControl("", [Validators.required]),
       fp_dual: new FormControl("", [Validators.required]),
-      password: new FormControl("", [Validators.required, Validators.minLength(6)]),
-      password2: new FormControl("", [Validators.required, Validators.minLength(6)])
-
-
-    },
-
-    );
+      
+      password: this.passwordFormControl,
+      confirmPassword: this.confirmPasswordFormControl
+        
+    })
     return res;
   }
+
+  checkConfirmPassword(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null =>
+        (control.value?.toString() === this.passwordValue.toString()
+            ? null : {noMatch: true})
+  }
+
+  get passwordValue() {
+    
+    return this.passwordFormControl.value;
+  }
+
   obtenerFP(centro): void {
 
     this.fpdualesService.getFPdual(centro).pipe(first())
@@ -100,7 +121,7 @@ export class FormUserComponent implements OnInit {
   }
   signup(): void {
 
-    
+
     this.authService.signup(this.signupForm.value).pipe(first())
       .subscribe(
         data => {
@@ -114,5 +135,81 @@ export class FormUserComponent implements OnInit {
 
 
   }
-}
+ modificarValor(){
+   this.confirmPasswordFormControl.setValue("");
+ }
 
+  getErrorMessage(attribute: String) {
+    if (attribute == "dni") {
+      let dni = this.signupForm.get("dni")
+      return dni.hasError('required') ? 'Introduce un DNI' :
+        dni.hasError('pattern') ? 'Formato incorrecto' :
+          'error dni';
+    } else if (attribute == "nombre") {
+      let nombre = this.signupForm.get("nombre");
+      let res = nombre.hasError('required') ? 'Introduce un nombre' :
+      nombre.hasError('minlength') ? 'Longitud mínima de 4' :
+        '';
+        
+        return res;
+    } else if (attribute == "apellidos") {
+      let apellidos = this.signupForm.get("apellidos");
+      return apellidos.hasError('required') ? 'Introduce el apellido' :
+        apellidos.hasError('minlength') ? 'Longitud mínima de 4' :
+          '';
+    } else if (attribute == "direccion") {
+      let direccion = this.signupForm.get("direccion");
+      return direccion.hasError('required') ? 'Introduce la dirección' :
+        '';
+    } else if (attribute == "cp") {
+      let cp = this.signupForm.get("cp");
+      return cp.hasError('required') ? 'Introduce CP' :
+        cp.hasError('pattern') ? 'Formato CP incorrecto' :
+          '';
+    } else if (attribute == "genero") {
+      let genero = this.signupForm.get("genero");
+      return genero.hasError('required') ? 'Introduce género' :
+        '';
+    } else if (attribute == "movil") {
+      let movil = this.signupForm.get("movil");
+      return movil.hasError('required') ? 'Introduce el móvil' :
+        movil.hasError('pattern') ? 'Formato móvil incorrecto' :
+          '';
+    } else if (attribute == "correo") {
+      let correo = this.signupForm.get("correo");
+      return correo.hasError('required') ? 'Introduce el correo' :
+        correo.hasError('email') ? 'Formato correo incorrecto' :
+          '';
+    } else if (attribute == "fecha_nacimiento") {
+      let fecha_nacimiento = this.signupForm.get("fecha_nacimiento");
+      return fecha_nacimiento.hasError('required') ? 'Introduce la fecha' :
+      fecha_nacimiento.hasError('pattern') ? 'Formato fecha incorrecta' :
+          '';
+    }
+    else if (attribute == "password") {
+      console.log("entro a")
+      let password = this.passwordFormControl
+      return password.hasError('required') ? 'Introduce la contraseña' :
+      password.hasError('pattern') ? 'Formato contraseña incorrecta' :
+          '';
+    }else if (attribute == "confirmPassword") {
+      console.log("entro")
+      let password2 = this.confirmPasswordFormControl
+      return password2.hasError('noMatch') ? 'No coinciden las contraseñas' :
+          '';
+    }else if (attribute == "rol") {
+      let rol = this.signupForm.get("rol");
+      return rol.hasError('required') ? 'Selecciona un rol' :
+          '';
+    }else if (attribute == "codigo_centro") {
+      let codigo_centro = this.signupForm.get("codigo_centro");
+      return codigo_centro.hasError('required') ? 'Selecciona un centro' :
+          '';
+    }else if (attribute == "fp_dual") {
+      let fp_dual = this.signupForm.get("fp_dual");
+      return fp_dual.hasError('required') ? 'Selecciona un FP dual' :
+          '';
+    }
+    return false;
+  }
+}

@@ -2,39 +2,63 @@
 <form [formGroup]="signupForm" (ngSubmit)="signup()" novalidate class="custom-form" >
   <h1 align="center">Registro de usuario</h1>
   <mat-form-field>
-    <input matInput type="text" formControlName="dni" placeholder="DNI">
+    <input matInput type="text"  formControlName="dni" placeholder="DNI" >
+    <mat-error *ngIf="this.signupForm.get('dni').errors?.required">{{ getErrorMessage("dni") }}</mat-error>
+    <mat-error *ngIf="this.signupForm.get('dni').errors?.pattern">{{ getErrorMessage("dni") }}</mat-error>
   </mat-form-field>
   <mat-form-field>
     <input matInput type="text" formControlName="nombre" placeholder="Nombre">
+    <mat-error *ngIf="this.signupForm.get('nombre').errors?.required">{{ getErrorMessage("nombre") }}</mat-error>
+    <mat-error *ngIf="this.signupForm.get('nombre').errors?.minlength">{{ getErrorMessage("nombre") }}</mat-error>
   </mat-form-field>
   <mat-form-field>
     <input matInput type="text" formControlName="apellidos" placeholder="Apellidos">
+    <mat-error *ngIf="this.signupForm.get('apellidos').errors?.required">{{ getErrorMessage("apellidos") }}</mat-error>
+    <mat-error *ngIf="this.signupForm.get('apellidos').errors?.minlength">{{ getErrorMessage("apellidos") }}</mat-error>
   </mat-form-field>
   <mat-form-field>
     <input matInput type="text" formControlName="direccion" placeholder="Direcci&oacute;n">
+    <mat-error *ngIf="this.signupForm.get('direccion').errors?.required">{{ getErrorMessage("direccion") }}</mat-error>
+
   </mat-form-field>
   <mat-form-field>
     <input matInput type="text" formControlName="cp" placeholder="CP">
+    <mat-error *ngIf="this.signupForm.get('cp').errors?.required">{{ getErrorMessage("cp") }}</mat-error>
+    <mat-error *ngIf="this.signupForm.get('cp').errors?.pattern">{{ getErrorMessage("cp") }}</mat-error>
+
   </mat-form-field>
   <mat-form-field>
     <input matInput type="text" formControlName="movil" placeholder="M&oacute;vil">
+    <mat-error *ngIf="this.signupForm.get('movil').errors?.required">{{ getErrorMessage("movil") }}</mat-error>
+    <mat-error *ngIf="this.signupForm.get('movil').dirty && this.signupForm.get('movil').errors?.pattern">{{ getErrorMessage("movil") }}</mat-error>
+
   </mat-form-field>
   <mat-form-field>
     <input matInput type="text" formControlName="correo" placeholder="Correo">
+    <mat-error *ngIf=" this.signupForm.get('correo').errors?.required">{{ getErrorMessage("correo") }}</mat-error>
+    <mat-error *ngIf="this.signupForm.get('correo').dirty && this.signupForm.get('correo').errors?.email">{{ getErrorMessage("correo") }}</mat-error>
+
   </mat-form-field>
   <mat-form-field>
     <input matInput type="text" formControlName="fecha_nacimiento" placeholder="Fecha de nacimiento (dd/mm/yyyy)">
+    <mat-error *ngIf="this.signupForm.get('fecha_nacimiento').errors?.required">{{ getErrorMessage("fecha_nacimiento") }}</mat-error>
+    <mat-error *ngIf="this.signupForm.get('fecha_nacimiento').errors?.pattern">{{ getErrorMessage("fecha_nacimiento") }}</mat-error>
+
   </mat-form-field>
   <mat-form-field >
-    <input matInput  [type]="hide ? 'password' : 'text'" formControlName="password" placeholder="Contraseña">
+    <input matInput  [type]="hide ? 'password' : 'text'" [formControl]="passwordFormControl" placeholder="Contraseña" (change)="modificarValor()" >
+    <mat-error *ngIf=" passwordFormControl.errors?.required">{{ getErrorMessage("password") }}</mat-error>
+    <mat-error *ngIf=" passwordFormControl.errors?.pattern">{{ getErrorMessage("password") }}</mat-error>
     <button class="fondo" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
       <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
     </button>
+    
   </mat-form-field>
   <mat-form-field >
-    <input matInput  [type]="hide ? 'password' : 'text'" formControlName="password2" placeholder="Repita contraseña">
+    <input matInput  [type]="hide2 ? 'password' : 'text'" [formControl]="confirmPasswordFormControl" placeholder="Repita contraseña" >
+    <mat-error *ngIf="this.confirmPasswordFormControl.dirty && this.confirmPasswordFormControl.errors?.noMatch"> {{getErrorMessage("confirmPassword")}} </mat-error>   
     <button class="fondo" mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide2">
-      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
     </button>
   </mat-form-field>
   
@@ -43,18 +67,24 @@
     <mat-select matNativeControl required formControlName="rol">
       <mat-option *ngFor="let rol of rolesList | keyvalue" [value]="rol.key"value="admin">{{ rol.value }}</mat-option>
     </mat-select>
+    <mat-error *ngIf="this.signupForm.get('rol').errors?.required"> {{ getErrorMessage("rol") }}</mat-error>
+
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>Centro educativo</mat-label>
     <mat-select matNativeControl required formControlName="codigo_centro" (selectionChange)="obtenerFP($event.value)" > 
       <mat-option *ngFor="let centro of centroList | keyvalue" [value]="centro.key" >{{ centro.value }}</mat-option>
     </mat-select>
+    <mat-error *ngIf="this.signupForm.get('codigo_centro').errors?.required"> {{ getErrorMessage("codigo_centro") }}</mat-error>
+
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>FP</mat-label>
     <mat-select matNativeControl required formControlName="fp_dual">
       <mat-option *ngFor="let fp of fpList | keyvalue" [value]="fp.key">{{ fp.value }}</mat-option>
     </mat-select>
+    <mat-error *ngIf="this.signupForm.get('fp_dual').errors?.required"> {{ getErrorMessage("fp_dual") }}</mat-error>
+
   </mat-form-field>
   
   <mat-form-field appearance="fill">
@@ -63,6 +93,8 @@
       <mat-option  value="masculino">Masculino</mat-option>
       <mat-option  value="femenino" >Femenino</mat-option>
     </mat-select>
+    <mat-error *ngIf="this.signupForm.get('genero').errors?.required">{{ getErrorMessage("genero") }}</mat-error>
+
   </mat-form-field>
 
   <button class="boton-envio" [disabled]="!signupForm.valid" type="submit">
