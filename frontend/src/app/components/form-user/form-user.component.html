@@ -64,7 +64,7 @@
   
   <mat-form-field appearance="fill">
     <mat-label>Rol</mat-label>
-    <mat-select matNativeControl required formControlName="rol">
+    <mat-select matNativeControl required formControlName="rol" (selectionChange)="obtenerRol($event.value)">
       <mat-option *ngFor="let rol of rolesList | keyvalue" [value]="rol.key"value="admin">{{ rol.value }}</mat-option>
     </mat-select>
     <mat-error *ngIf="this.signupForm.get('rol').errors?.required"> {{ getErrorMessage("rol") }}</mat-error>
@@ -94,9 +94,12 @@
       <mat-option  value="femenino" >Femenino</mat-option>
     </mat-select>
     <mat-error *ngIf="this.signupForm.get('genero').errors?.required">{{ getErrorMessage("genero") }}</mat-error>
-
   </mat-form-field>
-
+  <mat-form-field *ngFor="let formControl of this.formGroupsRelatedToRol | keyvalue">
+    <input *ngIf="formControl.value==1" matInput type="text" [formControl]="formControl.key" placeholder="{{ this.numero==5 ? 'Número de expediente' : 'Departamento'}}" >
+    <mat-error *ngIf=" formControl.key.errors?.required">{{ getErrorMessage("varRelatedToRol") }}</mat-error>
+    <mat-error *ngIf=" formControl.key.errors?.minlength">{{ getErrorMessage("varRelatedToRol") }}</mat-error>
+  </mat-form-field>
   <button class="boton-envio" [disabled]="!signupForm.valid" type="submit">
     <span>Registrar Usuario</span>
   </button>

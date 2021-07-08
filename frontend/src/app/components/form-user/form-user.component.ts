@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidatorFn,  Validators } from "@angular/forms";
+import { AbstractControl, Form, FormControl, FormGroup, ValidatorFn,  Validators } from "@angular/forms";
 import { MatSelect } from '@angular/material/select';
 import { first } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
@@ -10,6 +10,7 @@ import { User } from '../../models/User';
 import { Centro } from '../../models/Centro';
 import { Rol } from 'src/app/models/Rol';
 import { Fpduales } from 'src/app/models/Fpduales';
+import { NumberFormatStyle } from '@angular/common';
 @Component({
   selector: 'app-form-user',
   templateUrl: './form-user.component.html',
@@ -19,19 +20,24 @@ export class FormUserComponent implements OnInit {
   signupForm: FormGroup;
   hide = true;
   hide2 = true;
+  numero ;
+  formGroupsRelatedToRol = new Map<FormControl,number>();
   passwordFormControl = new FormControl("", [
     Validators.required,
     Validators.pattern(
       "^((?=\\S*?[A-Z])(?=\\S*?[a-z])(?=\\S*?[0-9]).{8,255})\\S$"
     )
   ]);
+  
   confirmPasswordFormControl = new FormControl("", [
     Validators.required,
     this.checkConfirmPassword() 
   ]); 
+  
   centroList = new Map<string, string>();
   rolesList = new Map<number, string>();
   fpList = new Map<number, string>();
+
   constructor(private authService: AuthService, private centroService: CentroService, private rolService: RolService, private fpdualesService: FpdualesService) {
     document.body.style.background = "linear-gradient(to right, #1dcd9b, #00d4ff)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
@@ -83,9 +89,8 @@ export class FormUserComponent implements OnInit {
       rol: new FormControl("", [Validators.required]),
       codigo_centro: new FormControl("", [Validators.required]),
       fp_dual: new FormControl("", [Validators.required]),
-     
-      password: this.passwordFormControl,
-      confirmPassword: this.confirmPasswordFormControl
+      //password: this.passwordFormControl,
+      //confirmPassword: this.confirmPasswordFormControl
         
     })
     return res;
@@ -100,6 +105,18 @@ export class FormUserComponent implements OnInit {
   get passwordValue() {
     
     return this.passwordFormControl.value;
+  }
+  obtenerRol(rol): number {
+    this.numero=rol;
+    this.formGroupsRelatedToRol.clear();
+    if(rol==5 || rol==4){ 
+      let formGroup = new FormControl("", [
+        Validators.required,
+        Validators.minLength(6)
+      ]);
+      this.formGroupsRelatedToRol.set(formGroup,1);
+    }
+    return this.numero;
   }
 
   obtenerFP(centro): void {
@@ -136,9 +153,8 @@ export class FormUserComponent implements OnInit {
           console.log(error.error.message);
 
         });
-
-
   }
+
   getErrorMessage(attribute: String) {
     if (attribute == "dni") {
       let dni = this.signupForm.get("dni")
@@ -187,13 +203,13 @@ export class FormUserComponent implements OnInit {
           '';
     }
     else if (attribute == "password") {
-      console.log("entro a")
+     
       let password = this.passwordFormControl
       return password.hasError('required') ? 'Introduce la contraseña' :
       password.hasError('pattern') ? 'Formato contraseña incorrecta' :
           '';
     }else if (attribute == "confirmPassword") {
-      console.log("entro")
+      
       let password2 = this.confirmPasswordFormControl
       return password2.hasError('noMatch') ? 'No coinciden las contraseñas' :
           '';
@@ -209,6 +225,12 @@ export class FormUserComponent implements OnInit {
       let fp_dual = this.signupForm.get("fp_dual");
       
       return fp_dual.hasError('required') ? 'Selecciona un FP dual' :
+          '';
+    }else if((this.numero == 5 || this.numero == 4) && attribute=="varRelatedToRol") {
+      let mapIterator = this.formGroupsRelatedToRol.keys()
+      let relatedToRol = mapIterator.next().value
+      return relatedToRol.hasError('required') ? 'Añade el campo' :
+      relatedToRol.hasError('minlength') ? 'Cadena mínima de 6 caracteres' :
           '';
     }
     return false;
