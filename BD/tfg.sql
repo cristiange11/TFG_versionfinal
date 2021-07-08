@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-06-2021 a las 16:10:11
--- Versión del servidor: 10.4.17-MariaDB
--- Versión de PHP: 8.0.1
+-- Tiempo de generación: 08-07-2021 a las 16:25:42
+-- Versión del servidor: 10.4.19-MariaDB
+-- Versión de PHP: 7.3.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `alumno` (
-  `numero_expediente` int(11) NOT NULL,
+  `numero_expediente` varchar(100) NOT NULL,
   `dni` varchar(9) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -66,10 +66,10 @@ CREATE TABLE `calificacion` (
 CREATE TABLE `centro_educativo` (
   `codigo_centro` varchar(100) NOT NULL,
   `correo` varchar(100) NOT NULL,
-  `telefono` int(11) NOT NULL,
+  `telefono` varchar(100) NOT NULL,
   `provincia` varchar(100) NOT NULL,
   `nombre` varchar(100) NOT NULL,
-  `CP` int(11) NOT NULL,
+  `CP` varchar(100) NOT NULL,
   `direccion` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -78,8 +78,8 @@ CREATE TABLE `centro_educativo` (
 --
 
 INSERT INTO `centro_educativo` (`codigo_centro`, `correo`, `telefono`, `provincia`, `nombre`, `CP`, `direccion`) VALUES
-('C12', 'prueba@gmail.com', 955622723, 'Sevilla', 'Mateo Alemán', 41920, 'Calle Juan Ramón Jiménez, s/n, 41920 San Juan de Aznalfarache, Sevilla'),
-('C1234', '', 123, 'Sevilla', '', 12, '');
+('C12', 'mateoaleman@hotmail.com', '955622733', 'Sevilla', 'Mateo aleman', '41920', 'prueba'),
+('C123', 's@hotmail.com', '954170739', 'Sevilla', 'aa', '41920', 'aa');
 
 -- --------------------------------------------------------
 
@@ -111,11 +111,10 @@ INSERT INTO `empresa` (`CIF`, `direccion`, `nombre`, `tipo`, `correo`, `telefono
 --
 
 CREATE TABLE `empresa_fpdual` (
-  `nombre_fp` varchar(100) NOT NULL,
+  `id_fp` int(11) NOT NULL,
   `CIF_empresa` varchar(100) NOT NULL,
   `becas` tinyint(1) NOT NULL,
-  `plazas` int(11) NOT NULL,
-  `codigo_centro` varchar(100) NOT NULL
+  `plazas` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -142,11 +141,21 @@ CREATE TABLE `encuesta` (
 
 CREATE TABLE `fp_duales` (
   `nombre` varchar(100) NOT NULL,
-  `descripcion` varchar(100) NOT NULL,
+  `descripcion` varchar(1000) NOT NULL,
   `total_plazas` int(11) NOT NULL,
-  `anio` date NOT NULL,
-  `codigo_centro` varchar(100) NOT NULL
+  `anio` year(4) NOT NULL,
+  `codigo_centro` varchar(100) NOT NULL,
+  `plazas_disponibles` int(11) NOT NULL,
+  `id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `fp_duales`
+--
+
+INSERT INTO `fp_duales` (`nombre`, `descripcion`, `total_plazas`, `anio`, `codigo_centro`, `plazas_disponibles`, `id`) VALUES
+('TRANSPORTE Y LOGUÍSTICA', 'Hola', 20, 2021, 'C12', 20, 1),
+('ADMINISTRACIÓN Y FINANZAS', 'Hola', 20, 2021, 'C123', 20, 2);
 
 -- --------------------------------------------------------
 
@@ -213,7 +222,7 @@ CREATE TABLE `log_entidad` (
 --
 
 CREATE TABLE `log_fpduales` (
-  `nombre_fp` varchar(100) NOT NULL,
+  `id_fp` int(11) NOT NULL,
   `codigo_centro` varchar(100) NOT NULL,
   `id_log` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -304,6 +313,29 @@ CREATE TABLE `resultado_aprendizaje` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `rol`
+--
+
+CREATE TABLE `rol` (
+  `id` int(11) NOT NULL,
+  `codigo_rol` varchar(100) NOT NULL,
+  `nombre_rol` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `rol`
+--
+
+INSERT INTO `rol` (`id`, `codigo_rol`, `nombre_rol`) VALUES
+(1, 'AD', 'Administrador'),
+(2, 'AD_Centro', 'Administrador de Centro'),
+(3, 'Tu', 'Tutor_empresa'),
+(4, 'Pr', 'Profesor'),
+(5, 'Al', 'Alumno');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `tutor_empresa`
 --
 
@@ -335,14 +367,14 @@ CREATE TABLE `usuario` (
   `nombre` varchar(100) NOT NULL,
   `apellidos` varchar(100) NOT NULL,
   `correo` varchar(100) NOT NULL,
-  `movil` int(11) NOT NULL,
+  `movil` varchar(11) NOT NULL,
   `direccion` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
   `genero` varchar(100) NOT NULL,
-  `cp` int(11) NOT NULL,
-  `rol` varchar(100) NOT NULL,
+  `cp` varchar(11) NOT NULL,
+  `rol` int(11) NOT NULL,
   `fecha_nacimiento` date NOT NULL,
-  `nombre_usuario` varchar(100) NOT NULL,
+  `fp_dual` int(11) NOT NULL,
   `codigo_centro` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -350,9 +382,8 @@ CREATE TABLE `usuario` (
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`dni`, `nombre`, `apellidos`, `correo`, `movil`, `direccion`, `password`, `genero`, `cp`, `rol`, `fecha_nacimiento`, `nombre_usuario`, `codigo_centro`) VALUES
-('53350616T', 'Cristian', 'García Espino', 'cristiangarciaespino5@gmail.com', 650927664, 'c/Asturias nº140', 'hola12', 'Masculino', 41920, 'ADMIN', '1998-02-11', 'cgaresp', 'C1234'),
-('a', '', '', '', 1, '', '', '', 12, '', '0000-00-00', '', 'C12');
+INSERT INTO `usuario` (`dni`, `nombre`, `apellidos`, `correo`, `movil`, `direccion`, `password`, `genero`, `cp`, `rol`, `fecha_nacimiento`, `fp_dual`, `codigo_centro`) VALUES
+('12345621A', 'Cristian', 'García Espino', 'cristiangarciaespino@ail.com', '666666686', 'a', '$2a$12$ah3GQAN2hqJRbbEpxeyxgeOOq8YQeA4YSCg4Yf347/cDhuossZwGW', 'masculino', '41920', 1, '1998-02-11', 1, 'C12');
 
 --
 -- Índices para tablas volcadas
@@ -400,10 +431,10 @@ ALTER TABLE `empresa`
 -- Indices de la tabla `empresa_fpdual`
 --
 ALTER TABLE `empresa_fpdual`
-  ADD PRIMARY KEY (`nombre_fp`,`CIF_empresa`,`codigo_centro`),
-  ADD KEY `nombre_fp` (`nombre_fp`),
+  ADD PRIMARY KEY (`id_fp`,`CIF_empresa`),
+  ADD KEY `nombre_fp` (`id_fp`),
   ADD KEY `CIF_empresa` (`CIF_empresa`),
-  ADD KEY `codigo_centro` (`codigo_centro`);
+  ADD KEY `id_fp` (`id_fp`);
 
 --
 -- Indices de la tabla `encuesta`
@@ -418,7 +449,7 @@ ALTER TABLE `encuesta`
 -- Indices de la tabla `fp_duales`
 --
 ALTER TABLE `fp_duales`
-  ADD PRIMARY KEY (`nombre`,`codigo_centro`),
+  ADD PRIMARY KEY (`id`),
   ADD KEY `codigo_centro` (`codigo_centro`);
 
 --
@@ -464,10 +495,11 @@ ALTER TABLE `log_entidad`
 -- Indices de la tabla `log_fpduales`
 --
 ALTER TABLE `log_fpduales`
-  ADD PRIMARY KEY (`nombre_fp`,`codigo_centro`,`id_log`),
-  ADD KEY `nombre_fp` (`nombre_fp`),
+  ADD PRIMARY KEY (`id_fp`,`codigo_centro`,`id_log`),
+  ADD KEY `nombre_fp` (`id_fp`),
   ADD KEY `codigo_centro` (`codigo_centro`),
-  ADD KEY `id_log` (`id_log`);
+  ADD KEY `id_log` (`id_log`),
+  ADD KEY `id_fp` (`id_fp`);
 
 --
 -- Indices de la tabla `log_login`
@@ -521,6 +553,13 @@ ALTER TABLE `resultado_aprendizaje`
   ADD KEY `codigo_modulo` (`codigo_modulo`);
 
 --
+-- Indices de la tabla `rol`
+--
+ALTER TABLE `rol`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `codigo_rol` (`codigo_rol`);
+
+--
 -- Indices de la tabla `tutor_empresa`
 --
 ALTER TABLE `tutor_empresa`
@@ -541,8 +580,12 @@ ALTER TABLE `tutor_modulo`
 --
 ALTER TABLE `usuario`
   ADD PRIMARY KEY (`dni`),
-  ADD UNIQUE KEY `correo` (`correo`,`movil`,`nombre_usuario`),
-  ADD KEY `codigo_centro` (`codigo_centro`);
+  ADD UNIQUE KEY `correo` (`correo`),
+  ADD UNIQUE KEY `movil` (`movil`),
+  ADD KEY `nombre_fp` (`fp_dual`),
+  ADD KEY `codigo_centro` (`codigo_centro`),
+  ADD KEY `fp_dual` (`fp_dual`),
+  ADD KEY `rol` (`rol`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -559,6 +602,12 @@ ALTER TABLE `calificacion`
 --
 ALTER TABLE `encuesta`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `fp_duales`
+--
+ALTER TABLE `fp_duales`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `log_entidad`
@@ -583,6 +632,12 @@ ALTER TABLE `modulo`
 --
 ALTER TABLE `resultado_aprendizaje`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `rol`
+--
+ALTER TABLE `rol`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Restricciones para tablas volcadas
@@ -612,9 +667,8 @@ ALTER TABLE `calificacion`
 -- Filtros para la tabla `empresa_fpdual`
 --
 ALTER TABLE `empresa_fpdual`
-  ADD CONSTRAINT `empresa_fpdual_ibfk_1` FOREIGN KEY (`codigo_centro`) REFERENCES `fp_duales` (`codigo_centro`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `empresa_fpdual_ibfk_2` FOREIGN KEY (`nombre_fp`) REFERENCES `fp_duales` (`nombre`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `empresa_fpdual_ibfk_3` FOREIGN KEY (`CIF_empresa`) REFERENCES `empresa` (`CIF`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `empresa_fpdual_ibfk_3` FOREIGN KEY (`CIF_empresa`) REFERENCES `empresa` (`CIF`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `empresa_fpdual_ibfk_4` FOREIGN KEY (`id_fp`) REFERENCES `fp_duales` (`id`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `encuesta`
@@ -628,7 +682,7 @@ ALTER TABLE `encuesta`
 -- Filtros para la tabla `fp_duales`
 --
 ALTER TABLE `fp_duales`
-  ADD CONSTRAINT `fp_duales_ibfk_1` FOREIGN KEY (`codigo_centro`) REFERENCES `centro_educativo` (`codigo_centro`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fp_duales_ibfk_1` FOREIGN KEY (`codigo_centro`) REFERENCES `centro_educativo` (`codigo_centro`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `log_calificacion`
@@ -668,9 +722,9 @@ ALTER TABLE `log_entidad`
 -- Filtros para la tabla `log_fpduales`
 --
 ALTER TABLE `log_fpduales`
-  ADD CONSTRAINT `log_fpduales_ibfk_1` FOREIGN KEY (`nombre_fp`) REFERENCES `fp_duales` (`nombre`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `log_fpduales_ibfk_2` FOREIGN KEY (`codigo_centro`) REFERENCES `fp_duales` (`codigo_centro`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `log_fpduales_ibfk_3` FOREIGN KEY (`id_log`) REFERENCES `log_entidad` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `log_fpduales_ibfk_3` FOREIGN KEY (`id_log`) REFERENCES `log_entidad` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `log_fpduales_ibfk_4` FOREIGN KEY (`codigo_centro`) REFERENCES `fp_duales` (`codigo_centro`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `log_fpduales_ibfk_5` FOREIGN KEY (`id_fp`) REFERENCES `fp_duales` (`id`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `log_login`
@@ -729,7 +783,9 @@ ALTER TABLE `tutor_modulo`
 -- Filtros para la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`codigo_centro`) REFERENCES `centro_educativo` (`codigo_centro`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `usuario_ibfk_3` FOREIGN KEY (`rol`) REFERENCES `rol` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `usuario_ibfk_4` FOREIGN KEY (`fp_dual`) REFERENCES `fp_duales` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `usuario_ibfk_5` FOREIGN KEY (`codigo_centro`) REFERENCES `centro_educativo` (`codigo_centro`) ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
