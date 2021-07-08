@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, Form, FormControl, FormGroup, ValidatorFn,  Validators } from "@angular/forms";
+import { AbstractControl, Form, FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms";
 import { MatSelect } from '@angular/material/select';
 import { first } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { CentroService } from 'src/app/services/centro.service';
 import { RolService } from 'src/app/services/rol.service';
+import { EmpresaService } from 'src/app/services/empresa.service';
 import { FpdualesService } from 'src/app/services/fpduales.service';
 import { User } from '../../models/User';
 import { Centro } from '../../models/Centro';
 import { Rol } from 'src/app/models/Rol';
 import { Fpduales } from 'src/app/models/Fpduales';
 import { NumberFormatStyle } from '@angular/common';
+import { Empresa } from 'src/app/models/Empresa';
 @Component({
   selector: 'app-form-user',
   templateUrl: './form-user.component.html',
@@ -20,25 +22,25 @@ export class FormUserComponent implements OnInit {
   signupForm: FormGroup;
   hide = true;
   hide2 = true;
-  numero ;
-  formGroupsRelatedToRol = new Map<FormControl,number>();
+  numero;
+  compruebaControl;
   passwordFormControl = new FormControl("", [
     Validators.required,
     Validators.pattern(
       "^((?=\\S*?[A-Z])(?=\\S*?[a-z])(?=\\S*?[0-9]).{8,255})\\S$"
     )
   ]);
-  
+
   confirmPasswordFormControl = new FormControl("", [
     Validators.required,
-    this.checkConfirmPassword() 
-  ]); 
-  
+    this.checkConfirmPassword()
+  ]);
+
   centroList = new Map<string, string>();
   rolesList = new Map<number, string>();
   fpList = new Map<number, string>();
-
-  constructor(private authService: AuthService, private centroService: CentroService, private rolService: RolService, private fpdualesService: FpdualesService) {
+  empresaList = new Map<string, string>();
+  constructor(private authService: AuthService, private empresaService: EmpresaService, private centroService: CentroService, private rolService: RolService, private fpdualesService: FpdualesService) {
     document.body.style.background = "linear-gradient(to right, #1dcd9b, #00d4ff)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
 
@@ -75,7 +77,6 @@ export class FormUserComponent implements OnInit {
   }
 
   createFormGroup(): FormGroup {
-    
     const res = new FormGroup({
       dni: new FormControl("", [Validators.required, Validators.pattern(/^\d{8}[a-zA-Z]$/)]),
       nombre: new FormControl("", [Validators.required, Validators.minLength(4)]),
@@ -89,36 +90,50 @@ export class FormUserComponent implements OnInit {
       rol: new FormControl("", [Validators.required]),
       codigo_centro: new FormControl("", [Validators.required]),
       fp_dual: new FormControl("", [Validators.required]),
-      //password: this.passwordFormControl,
-      //confirmPassword: this.confirmPasswordFormControl
-        
+      password: this.passwordFormControl,
+      confirmPassword: this.confirmPasswordFormControl
     })
     return res;
   }
 
   checkConfirmPassword(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null =>
-        (control.value?.toString() === this.passwordValue.toString()
-            ? null : {noMatch: true})
+    (control.value?.toString() === this.passwordValue.toString()
+      ? null : { noMatch: true })
   }
 
   get passwordValue() {
-    
     return this.passwordFormControl.value;
   }
+
   obtenerRol(rol): number {
-    this.numero=rol;
-    this.formGroupsRelatedToRol.clear();
-    if(rol==5 || rol==4){ 
-      let formGroup = new FormControl("", [
+    this.numero = rol;
+    if (rol == 5 || rol == 4) {
+      this.compruebaControl = new FormControl("", [
         Validators.required,
         Validators.minLength(6)
       ]);
-      this.formGroupsRelatedToRol.set(formGroup,1);
+    } else if (rol == 3) {
+      this.compruebaControl = new FormGroup({
+        modulo_empresa: new FormControl("", [Validators.required, Validators.minLength(6)]),
+        cif_empresa: new FormControl("", [Validators.required]),
+      })
+      this.empresaService.getEmpresas().pipe(first())
+        .subscribe(
+          data => {
+            this.empresaList = new Map<string, string>();
+            let empresas = data["empresas"]
+            empresas.forEach(empresaInfo => {
+              var empresa = empresaInfo as Empresa
+              this.empresaList.set(empresa.CIF, empresa.nombre)
+            });
+          },
+          error => {
+            console.log(error.error.message);
+          });
     }
     return this.numero;
   }
-
   obtenerFP(centro): void {
 
     this.fpdualesService.getFPdual(centro).pipe(first())
@@ -139,8 +154,6 @@ export class FormUserComponent implements OnInit {
         });
   }
   signup(): void {
-
-
     this.authService.signup(this.signupForm.value).pipe(first())
       .subscribe(
         data => {
@@ -154,8 +167,8 @@ export class FormUserComponent implements OnInit {
 
         });
   }
-
   getErrorMessage(attribute: String) {
+
     if (attribute == "dni") {
       let dni = this.signupForm.get("dni")
       return dni.hasError('required') ? 'Introduce un DNI' :
@@ -164,10 +177,10 @@ export class FormUserComponent implements OnInit {
     } else if (attribute == "nombre") {
       let nombre = this.signupForm.get("nombre");
       let res = nombre.hasError('required') ? 'Introduce un nombre' :
-      nombre.hasError('minlength') ? 'Longitud mínima de 4' :
-        '';
-        
-        return res;
+        nombre.hasError('minlength') ? 'Longitud mínima de 4' :
+          '';
+
+      return res;
     } else if (attribute == "apellidos") {
       let apellidos = this.signupForm.get("apellidos");
       return apellidos.hasError('required') ? 'Introduce el apellido' :
@@ -199,38 +212,50 @@ export class FormUserComponent implements OnInit {
     } else if (attribute == "fecha_nacimiento") {
       let fecha_nacimiento = this.signupForm.get("fecha_nacimiento");
       return fecha_nacimiento.hasError('required') ? 'Introduce la fecha' :
-      fecha_nacimiento.hasError('pattern') ? 'Formato fecha incorrecta' :
+        fecha_nacimiento.hasError('pattern') ? 'Formato fecha incorrecta' :
           '';
     }
     else if (attribute == "password") {
-     
+
       let password = this.passwordFormControl
       return password.hasError('required') ? 'Introduce la contraseña' :
-      password.hasError('pattern') ? 'Formato contraseña incorrecta' :
+        password.hasError('pattern') ? 'Formato contraseña incorrecta' :
           '';
-    }else if (attribute == "confirmPassword") {
-      
+    } else if (attribute == "confirmPassword") {
+
       let password2 = this.confirmPasswordFormControl
       return password2.hasError('noMatch') ? 'No coinciden las contraseñas' :
-          '';
-    }else if (attribute == "rol") {
+        '';
+    } else if (attribute == "rol") {
       let rol = this.signupForm.get("rol");
       return rol.hasError('required') ? 'Selecciona un rol' :
-          '';
-    }else if (attribute == "codigo_centro") {
+        '';
+    } else if (attribute == "codigo_centro") {
       let codigo_centro = this.signupForm.get("codigo_centro");
       return codigo_centro.hasError('required') ? 'Selecciona un centro' :
-          '';
-    }else if (attribute == "fp_dual") {
+        '';
+    } else if (attribute == "fp_dual") {
       let fp_dual = this.signupForm.get("fp_dual");
-      
+
       return fp_dual.hasError('required') ? 'Selecciona un FP dual' :
+        '';
+    } else if ((this.numero == 5 || this.numero == 4) && attribute == "compruebaControl") {
+      let err = this.compruebaControl
+      /*let mapIterator = this.formGroupsRelatedToRol.keys()
+      let relatedToRol = mapIterator.next().value*/
+      return err.hasError('required') ? 'Añade el campo' :
+        err.hasError('minlength') ? 'Cadena mínima de 6 caracteres' :
           '';
-    }else if((this.numero == 5 || this.numero == 4) && attribute=="varRelatedToRol") {
-      let mapIterator = this.formGroupsRelatedToRol.keys()
-      let relatedToRol = mapIterator.next().value
-      return relatedToRol.hasError('required') ? 'Añade el campo' :
-      relatedToRol.hasError('minlength') ? 'Cadena mínima de 6 caracteres' :
+    } else if (this.numero == 3 && attribute == "modulo_empresa") {
+      let err = this.compruebaControl.get("modulo_empresa")
+
+      return err.hasError('required') ? 'Añade el campo' :
+        err.hasError('minlength') ? 'Cadena mínima de 6 caracteres' :
+          '';
+    }else if (this.numero == 3 && attribute == "cif_empresa") {
+      let err = this.compruebaControl.get("cif_empresa")
+
+      return err.hasError('required') ? 'Añade el campo' :
           '';
     }
     return false;

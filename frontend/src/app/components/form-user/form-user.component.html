@@ -95,11 +95,34 @@
     </mat-select>
     <mat-error *ngIf="this.signupForm.get('genero').errors?.required">{{ getErrorMessage("genero") }}</mat-error>
   </mat-form-field>
+  <!--
   <mat-form-field *ngFor="let formControl of this.formGroupsRelatedToRol | keyvalue">
-    <input *ngIf="formControl.value==1" matInput type="text" [formControl]="formControl.key" placeholder="{{ this.numero==5 ? 'Número de expediente' : 'Departamento'}}" >
+    <input *ngIf="formControl.value==1" matInput type="text" [formControl]="formControl.key" placeholder="{{ this.numero==5 ? 'Número de expediente' : this.numero==4 ? 'Departamento' : 'Módulo de empresa'}}" >
     <mat-error *ngIf=" formControl.key.errors?.required">{{ getErrorMessage("varRelatedToRol") }}</mat-error>
     <mat-error *ngIf=" formControl.key.errors?.minlength">{{ getErrorMessage("varRelatedToRol") }}</mat-error>
   </mat-form-field>
+  -->
+  <mat-form-field *ngIf="this.numero==4 || this.numero==5; else anotherRol">
+    <input  matInput type="text" [formControl]="compruebaControl" placeholder="{{ this.numero==5 ? 'Número de expediente' : 'Departamento'}}" >
+    <mat-error *ngIf=" compruebaControl.errors?.required">{{ getErrorMessage("compruebaControl") }}</mat-error>
+    <mat-error *ngIf=" compruebaControl.errors?.minlength">{{ getErrorMessage("compruebaControl") }}</mat-error>
+  </mat-form-field>
+  <ng-template  #anotherRol>
+    <mat-form-field [formGroup]="compruebaControl" *ngIf="this.numero==3; else elseBlock">
+        <input  matInput type="text"  formControlName="modulo_empresa"  placeholder="Modulo de la empresa" >
+        <mat-error *ngIf=" this.compruebaControl.get('modulo_empresa').errors?.required">{{ getErrorMessage("modulo_empresa") }}</mat-error>
+        <mat-error *ngIf=" this.compruebaControl.get('modulo_empresa').errors?.minlength">{{ getErrorMessage("modulo_empresa") }}</mat-error>
+
+      </mat-form-field >
+      <mat-form-field [formGroup]="compruebaControl" *ngIf="this.numero==3; else elseBlock" appearance="fill">
+        <mat-label>Empresas</mat-label>
+        <mat-select matNativeControl required formControlName="cif_empresa">
+          <mat-option *ngFor="let empresa of empresaList | keyvalue" [value]="empresa.key">{{ empresa.value }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="this.compruebaControl.get('cif_empresa').errors?.required"> {{ getErrorMessage("cif_empresa") }}</mat-error>
+      </mat-form-field>
+    <ng-template #elseBlock></ng-template>
+  </ng-template>
   <button class="boton-envio" [disabled]="!signupForm.valid" type="submit">
     <span>Registrar Usuario</span>
   </button>
