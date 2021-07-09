@@ -16,7 +16,9 @@ export class ProfesorService {
     headers: new HttpHeaders({ "Content-Type" : "application/json"}),
   }
   constructor(private http: HttpClient, private router: Router) { }
-  createProfesor(profesor: Profesor): Observable<Profesor>{    
+  createProfesor(formulario1 , formulario2): Observable<Profesor>{    
+    var profesor = new Profesor(formulario1, formulario2);
+    
     return this.http.post<Profesor>(`${this.url}/create`, profesor , this.httpOptions)   
   }
 }

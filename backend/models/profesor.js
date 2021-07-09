@@ -1,8 +1,8 @@
 const promisePool = require('../util/database');
-
-module.exports = class Profesor {
-    constructor(dni, departamento) {
-        this.dni = dni;
+const User = require('./user');
+module.exports = class Profesor extends User {
+    constructor(json) {
+        super(json);
         this.departamento = departamento;
     }
     static async find(dni) {
@@ -27,12 +27,26 @@ module.exports = class Profesor {
         return rows;
     }
     static async createProfesor(profesor) {
-        console.log(`INSERT INTO profesor(dni, departamento) VALUES 
-        ('${profesor.dni}','${profesor.departamento}') `)
-        const [rows, fields] = await promisePool.query(
-            `INSERT INTO profesor(dni, departamento) VALUES 
-            ('${profesor.dni}','${profesor.departamento}') `);
-        return rows;
+        const connection = await promisePool.getConnection();
+
+        try {
+            await connection.beginTransaction();
+            let query = `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, 
+                fecha_nacimiento, fp_dual, codigo_centro) VALUES ('${profesor.dni}','${profesor.nombre}',
+                '${profesor.apellidos}','${profesor.correo}','${profesor.movil}','${profesor.direccion}','${profesor.password}',
+                '${profesor.genero}',${profesor.cp},'${profesor.rol}',STR_TO_DATE('${profesor.fecha_nacimiento}','%d/%m/%Y'),
+                '${profesor.fp_dual}','${profesor.codigo_centro}')`
+            await connection.query(query)
+            await connection.query(`INSERT INTO profesor(dni, departamento) VALUES 
+            ('${profesor.dni}','${profesor.departamento}')`);
+            await connection.commit();
+        } catch (err) {
+            await connection.query("ROLLBACK");
+            console.log('ROLLBACK at querySignUp', err);
+            throw err;
+        } finally {
+            await connection.release();
+        }
     }
     static async updateProfesor(profesor) {
         const [rows, fields] = await promisePool.query(

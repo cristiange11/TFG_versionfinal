@@ -89,7 +89,7 @@
   
   <mat-form-field appearance="fill">
     <mat-label>G&eacute;nero</mat-label>
-    <mat-select matNativeControl required formControlName="rol">
+    <mat-select matNativeControl required formControlName="genero">
       <mat-option  value="masculino">Masculino</mat-option>
       <mat-option  value="femenino" >Femenino</mat-option>
     </mat-select>
@@ -123,7 +123,7 @@
       </mat-form-field>
     <ng-template #elseBlock></ng-template>
   </ng-template>
-  <button class="boton-envio" [disabled]="!signupForm.valid" type="submit">
+  <button class="boton-envio"  type="submit">
     <span>Registrar Usuario</span>
   </button>
   <mat-label></mat-label>

@@ -20,6 +20,7 @@ exports.getCentros = async (req, res, next) => {
   
   try {
     const centros = await Centro.getCentros();
+    console.log("Centros de la BBDD: "+centros);
     res.status(200).json({ centros: centros });
   } catch (err) {
     if (!err.statusCode) {

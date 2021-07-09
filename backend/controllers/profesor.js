@@ -100,18 +100,10 @@ exports.createProfesor = async (req, res, next) => {
         res.status(409).json({ message: cadena });
     }
     else {
-        const dni = req.body.dni;
-        const departamento = req.body.departamento;
 
-        try {
-            const profesor = {
-                dni: dni,
-                departamento: departamento
-            };
-            
-            const result = Profesor.createProfesor(profesor).then(function (result) {
+        try {       
+            const result = Profesor.createProfesor(req.body).then(function (result) {
                 console.log("Promise Resolved");
-
                 res.status(201).json({ profesor: profesor });
             }).catch(function () {
                 console.log("Promise Rejected");

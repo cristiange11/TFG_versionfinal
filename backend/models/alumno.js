@@ -1,8 +1,9 @@
 const promisePool = require('../util/database');
+const User = require('./user');
 
-module.exports = class Alumno {
-    constructor(dni, numero_expediente) {
-        this.dni = dni;
+module.exports = class Alumno extends User {
+    constructor(json) {
+        super(json);
         this.numero_expediente = numero_expediente;
     }
     static async find(dni) {
@@ -30,16 +31,27 @@ module.exports = class Alumno {
             `DELETE FROM alumno WHERE dni = '${dni}' `);
         return rows;
     }
-    static async createAlumno(alumno) {
-        const [rows, fields] = await promisePool.query(
-            `INSERT INTO alumno(dni, numero_expediente) VALUES 
-            ('${alumno.dni}','${alumno.numero_expediente}') `);
-        return rows;
-    }/*
-    static async updateAlumno(alumno) {
-        const [rows, fields] = await promisePool.query(
-            `UPDATE alumno SET numero_expediente='${alumno.numero_expediente}'WHERE dni = '${alumno.dni}'
-             `);
-        return rows;
-    }*/
+    static async  createAlumno(alumno) {
+        console.log("addUserDetails, creating connection...");
+        const connection = await promisePool.getConnection();
+
+        try {
+            await connection.beginTransaction();
+            let query = `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, 
+                fecha_nacimiento, fp_dual, codigo_centro) VALUES ('${alumno.dni}','${alumno.nombre}',
+                '${alumno.apellidos}','${alumno.correo}','${alumno.movil}','${alumno.direccion}','${alumno.password}',
+                '${alumno.genero}',${alumno.cp},'${alumno.rol}',STR_TO_DATE('${alumno.fecha_nacimiento}','%d/%m/%Y'),
+                '${alumno.fp_dual}','${alumno.codigo_centro}')`
+            await connection.query(query)
+            await connection.query(`INSERT INTO alumno(dni, numero_expediente) VALUES 
+            ('${alumno.dni}','${alumno.numero_expediente}')`);
+            await connection.commit();
+        } catch (err) {
+            await connection.query("ROLLBACK");
+            console.log('ROLLBACK at querySignUp', err);
+            throw err;
+        } finally {
+            await connection.release();
+        }
+    }
 };

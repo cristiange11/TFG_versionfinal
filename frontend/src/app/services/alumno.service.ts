@@ -1,12 +1,11 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Router } from "@angular/router";
 
 import { Observable, BehaviorSubject } from "rxjs";
 import { first, catchError, tap, map } from "rxjs/operators";
 
 import { Alumno } from "../models/Alumno";
-
 @Injectable({
   providedIn: 'root'
 })
@@ -16,7 +15,9 @@ export class AlumnoService {
     headers: new HttpHeaders({ "Content-Type" : "application/json"}),
   }
   constructor(private http: HttpClient, private router: Router) { }
-  createAlumno(alumno: Alumno): Observable<Alumno>{    
+  createAlumno(formulario1 , formulario2): Observable<Alumno>{   
+    var alumno = new Alumno(formulario1, formulario2);
+    
     return this.http.post<Alumno>(`${this.url}/create`, alumno , this.httpOptions)   
   }
 }

@@ -7,11 +7,12 @@ import { CentroService } from 'src/app/services/centro.service';
 import { RolService } from 'src/app/services/rol.service';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import { FpdualesService } from 'src/app/services/fpduales.service';
+import {AlumnoService } from 'src/app/services/alumno.service';
+import { ProfesorService } from 'src/app/services/profesor.service';
 import { User } from '../../models/User';
 import { Centro } from '../../models/Centro';
 import { Rol } from 'src/app/models/Rol';
 import { Fpduales } from 'src/app/models/Fpduales';
-import { NumberFormatStyle } from '@angular/common';
 import { Empresa } from 'src/app/models/Empresa';
 @Component({
   selector: 'app-form-user',
@@ -40,7 +41,7 @@ export class FormUserComponent implements OnInit {
   rolesList = new Map<number, string>();
   fpList = new Map<number, string>();
   empresaList = new Map<string, string>();
-  constructor(private authService: AuthService, private empresaService: EmpresaService, private centroService: CentroService, private rolService: RolService, private fpdualesService: FpdualesService) {
+  constructor(private authService: AuthService,private profesorService: ProfesorService, private alumnoService: AlumnoService, private empresaService: EmpresaService, private centroService: CentroService, private rolService: RolService, private fpdualesService: FpdualesService) {
     document.body.style.background = "linear-gradient(to right, #1dcd9b, #00d4ff)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
 
@@ -143,29 +144,56 @@ export class FormUserComponent implements OnInit {
           let fps = data["fps"]
           fps.forEach(fpInfo => {
             var fp = fpInfo as Fpduales
-            console.log(fp)
+           
             this.fpList.set(fp.id, fp.nombre)
           });
-          console.log(this.fpList)
-
         },
         error => {
           console.log(error.error.message);
         });
   }
   signup(): void {
+    if(this.numero==1 || this.numero==2){
+      
     this.authService.signup(this.signupForm.value).pipe(first())
       .subscribe(
         data => {
           console.log(data);
-          var rol = this.signupForm.value.rol
-          console.log(rol)
+          
+         
         },
         error => {
-
           console.log(error.error.message);
 
         });
+      }
+
+    else if(this.numero==5){
+      
+      this.alumnoService.createAlumno(this.signupForm.value, this.compruebaControl.value).pipe(first())
+      .subscribe(
+        data => {
+          console.log(data);
+          
+        },
+        error => {
+          console.log(error.error.message);
+
+        });
+    }else if(this.numero==4){
+      console.log(this.compruebaControl.value)
+      this.profesorService.createProfesor(this.signupForm.value, this.compruebaControl.value).pipe(first())
+      .subscribe(
+        data => {
+          console.log(data);
+
+        },
+        error => {
+          console.log(error.error.message);
+
+        });
+    }
+    
   }
   getErrorMessage(attribute: String) {
 
