@@ -16,7 +16,8 @@ export class TutorEmpresaService {
     headers: new HttpHeaders({ "Content-Type" : "application/json"}),
   }
   constructor(private http: HttpClient, private router: Router) { }
-  createTutor(tutor: TutorEmpresa): Observable<TutorEmpresa>{    
+  createTutor(formulario1 , formulario2): Observable<TutorEmpresa>{    
+    var tutor = new TutorEmpresa(formulario1, formulario2);
     return this.http.post<TutorEmpresa>(`${this.url}/create`, tutor , this.httpOptions)   
   }
 }

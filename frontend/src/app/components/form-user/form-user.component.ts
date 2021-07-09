@@ -9,6 +9,7 @@ import { EmpresaService } from 'src/app/services/empresa.service';
 import { FpdualesService } from 'src/app/services/fpduales.service';
 import {AlumnoService } from 'src/app/services/alumno.service';
 import { ProfesorService } from 'src/app/services/profesor.service';
+import { TutorEmpresaService } from 'src/app/services/tutor-empresa.service';
 import { User } from '../../models/User';
 import { Centro } from '../../models/Centro';
 import { Rol } from 'src/app/models/Rol';
@@ -41,7 +42,7 @@ export class FormUserComponent implements OnInit {
   rolesList = new Map<number, string>();
   fpList = new Map<number, string>();
   empresaList = new Map<string, string>();
-  constructor(private authService: AuthService,private profesorService: ProfesorService, private alumnoService: AlumnoService, private empresaService: EmpresaService, private centroService: CentroService, private rolService: RolService, private fpdualesService: FpdualesService) {
+  constructor(private authService: AuthService,private tutorService: TutorEmpresaService, private profesorService: ProfesorService, private alumnoService: AlumnoService, private empresaService: EmpresaService, private centroService: CentroService, private rolService: RolService, private fpdualesService: FpdualesService) {
     document.body.style.background = "linear-gradient(to right, #1dcd9b, #00d4ff)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
 
@@ -181,8 +182,20 @@ export class FormUserComponent implements OnInit {
 
         });
     }else if(this.numero==4){
-      console.log(this.compruebaControl.value)
+      
       this.profesorService.createProfesor(this.signupForm.value, this.compruebaControl.value).pipe(first())
+      .subscribe(
+        data => {
+          console.log(data);
+
+        },
+        error => {
+          console.log(error.error.message);
+
+        });
+    }else if(this.numero==3){
+      
+      this.tutorService.createTutor(this.signupForm.value, this.compruebaControl.value).pipe(first())
       .subscribe(
         data => {
           console.log(data);

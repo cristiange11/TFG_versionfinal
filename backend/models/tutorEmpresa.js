@@ -28,9 +28,30 @@ module.exports = class TutorEmpresa {
         return rows;
     }
     static async createTutor(tutor_empresa) {
+        const connection = await promisePool.getConnection();
+
+        try {
+            await connection.beginTransaction();
+            let query = `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, 
+                fecha_nacimiento, fp_dual, codigo_centro) VALUES ('${tutor_empresa.dni}','${tutor_empresa.nombre}',
+                '${tutor_empresa.apellidos}','${tutor_empresa.correo}','${tutor_empresa.movil}','${tutor_empresa.direccion}','${tutor_empresa.password}',
+                '${tutor_empresa.genero}',${tutor_empresa.cp},'${tutor_empresa.rol}',STR_TO_DATE('${tutor_empresa.fecha_nacimiento}','%d/%m/%Y'),
+                '${tutor_empresa.fp_dual}','${tutor_empresa.codigo_centro}')`
+            await connection.query(query)
+            await connection.query(`INSERT INTO tutor_empresa(dni, modulo_empresa, cif_empresa) VALUES 
+            ('${tutor_empresa.dni}','${tutor_empresa.modulo_empresa}', '${tutor_empresa.cif_empresa}')`);
+            await connection.commit();
+        } catch (err) {
+            await connection.query("ROLLBACK");
+            throw err;
+        } finally {
+            await connection.release();
+        }
+    }
+    static async updateProfesor(profesor) {
         const [rows, fields] = await promisePool.query(
-            `INSERT INTO tutor_empresa(dni, modulo_empresa, cif_empresa) VALUES 
-            ('${tutor_empresa.dni}','${tutor_empresa.modulo_empresa}','${tutor_empresa.cif_empresa}') `);
+            `UPDATE profesor SET departamento='${profesor.departamento}'WHERE dni = '${profesor.dni}'
+             `);
         return rows;
     }
     static async updateTutor(tutor_empresa) {

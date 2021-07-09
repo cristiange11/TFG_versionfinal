@@ -100,22 +100,13 @@ exports.createTutor = async (req, res, next) => {
         res.status(409).json({ message: cadena });
     }
     else {
-        const dni = req.body.dni;
-        const modulo_empresa = req.body.modulo_empresa;
-        const cif_empresa = req.body.cif_empresa;
-
 
         try {
-            const tutor = {
-                dni: dni,
-                modulo_empresa: modulo_empresa,
-                cif_empresa: cif_empresa
-            };
-
-            const result = TutorEmpresa.createTutor(tutor).then(function (result) {
+            
+            const result = TutorEmpresa.createTutor(req.body).then(function (result) {
                 console.log("Promise Resolved");
 
-                res.status(201).json({ message: tutor });
+                res.status(201).json({ message: req.body });
             }).catch(function () {
                 console.log("Promise Rejected");
             });

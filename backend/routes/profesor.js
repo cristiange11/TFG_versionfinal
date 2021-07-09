@@ -1,9 +1,6 @@
 const express = require('express');
 const { body } = require('express-validator');
 const router = express.Router();
-
-const Profesor = require('../models/profesor');
-
 const User= require ('../models/user');
 const profesorController = require('../controllers/profesor');
 
@@ -16,6 +13,14 @@ router.delete('/:dni', profesorController.deleteProfesor);
 router.post(
     '/create',
     [
+      body('dni').trim().not().isEmpty().withMessage("Dni vacío")
+      .matches(/^\d{8}[a-zA-Z]$/).withMessage("Formato DNI incorrecto")
+      .custom(async (dni) => {
+        const user = await User.find(dni);
+        if (user[0].length > 0) {
+          return Promise.reject('DNI ya existe!');
+        }
+      }),
       body('nombre').trim().not().isEmpty().withMessage("Nombre vacío"),
     body('direccion').trim().not().isEmpty().withMessage("Dirección vacía"),
     body('genero').trim().not().isEmpty().withMessage("Género vacío"),
