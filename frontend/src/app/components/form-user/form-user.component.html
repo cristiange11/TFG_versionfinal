@@ -2,51 +2,53 @@
 <form [formGroup]="signupForm" (ngSubmit)="signup()" novalidate class="custom-form" >
   <h1 align="center">Registro de usuario</h1>
   <mat-form-field>
-    <input matInput type="text"  formControlName="dni" placeholder="DNI" >
+    <input matInput type="text"  formControlName="dni" placeholder="DNI" required  >
     <mat-error *ngIf="this.signupForm.get('dni').errors?.required">{{ getErrorMessage("dni") }}</mat-error>
     <mat-error *ngIf="this.signupForm.get('dni').errors?.pattern">{{ getErrorMessage("dni") }}</mat-error>
+    <mat-error *ngIf="this.signupForm.get('dni').errors?.serverError">{{ this.signupForm.get('dni').errors?.serverError }}</mat-error>
   </mat-form-field>
   <mat-form-field>
-    <input matInput type="text" formControlName="nombre" placeholder="Nombre">
+    <input matInput type="text" formControlName="nombre" placeholder="Nombre" required>
     <mat-error *ngIf="this.signupForm.get('nombre').errors?.required">{{ getErrorMessage("nombre") }}</mat-error>
     <mat-error *ngIf="this.signupForm.get('nombre').errors?.minlength">{{ getErrorMessage("nombre") }}</mat-error>
   </mat-form-field>
   <mat-form-field>
-    <input matInput type="text" formControlName="apellidos" placeholder="Apellidos">
+    <input matInput type="text" formControlName="apellidos" placeholder="Apellidos" required>
     <mat-error *ngIf="this.signupForm.get('apellidos').errors?.required">{{ getErrorMessage("apellidos") }}</mat-error>
     <mat-error *ngIf="this.signupForm.get('apellidos').errors?.minlength">{{ getErrorMessage("apellidos") }}</mat-error>
   </mat-form-field>
   <mat-form-field>
-    <input matInput type="text" formControlName="direccion" placeholder="Direcci&oacute;n">
+    <input matInput type="text" formControlName="direccion" placeholder="Direcci&oacute;n" required>
     <mat-error *ngIf="this.signupForm.get('direccion').errors?.required">{{ getErrorMessage("direccion") }}</mat-error>
 
   </mat-form-field>
   <mat-form-field>
-    <input matInput type="text" formControlName="cp" placeholder="CP">
+    <input matInput type="text" formControlName="cp" placeholder="CP" required>
     <mat-error *ngIf="this.signupForm.get('cp').errors?.required">{{ getErrorMessage("cp") }}</mat-error>
     <mat-error *ngIf="this.signupForm.get('cp').errors?.pattern">{{ getErrorMessage("cp") }}</mat-error>
 
   </mat-form-field>
   <mat-form-field>
-    <input matInput type="text" formControlName="movil" placeholder="M&oacute;vil">
+    <input matInput type="text" formControlName="movil" placeholder="M&oacute;vil" required>
     <mat-error *ngIf="this.signupForm.get('movil').errors?.required">{{ getErrorMessage("movil") }}</mat-error>
     <mat-error *ngIf="this.signupForm.get('movil').dirty && this.signupForm.get('movil').errors?.pattern">{{ getErrorMessage("movil") }}</mat-error>
-
+    <mat-error *ngIf="this.signupForm.get('movil').errors?.serverError">{{ this.signupForm.get('movil').errors?.serverError }}</mat-error>
   </mat-form-field>
   <mat-form-field>
-    <input matInput type="text" formControlName="correo" placeholder="Correo">
+    <input matInput type="text" formControlName="correo" placeholder="Correo" required>
     <mat-error *ngIf=" this.signupForm.get('correo').errors?.required">{{ getErrorMessage("correo") }}</mat-error>
     <mat-error *ngIf="this.signupForm.get('correo').dirty && this.signupForm.get('correo').errors?.email">{{ getErrorMessage("correo") }}</mat-error>
+    <mat-error *ngIf="this.signupForm.get('correo').errors?.serverError ">{{ this.signupForm.get('correo').errors?.serverError }}</mat-error>
 
   </mat-form-field>
   <mat-form-field>
-    <input matInput type="text" formControlName="fecha_nacimiento" placeholder="Fecha de nacimiento (dd/mm/yyyy)">
+    <input matInput type="text" formControlName="fecha_nacimiento" placeholder="Fecha de nacimiento (dd/mm/yyyy)" required>
     <mat-error *ngIf="this.signupForm.get('fecha_nacimiento').errors?.required">{{ getErrorMessage("fecha_nacimiento") }}</mat-error>
     <mat-error *ngIf="this.signupForm.get('fecha_nacimiento').errors?.pattern">{{ getErrorMessage("fecha_nacimiento") }}</mat-error>
 
   </mat-form-field>
   <mat-form-field >
-    <input matInput  [type]="hide ? 'password' : 'text'" [formControl]="passwordFormControl" placeholder="Contraseña" (change)="this.confirmPasswordFormControl.setValue('')" >
+    <input matInput  [type]="hide ? 'password' : 'text'" [formControl]="passwordFormControl" placeholder="Contraseña" required (change)="this.confirmPasswordFormControl.setValue('')" >
     <mat-error *ngIf=" passwordFormControl.errors?.required">{{ getErrorMessage("password") }}</mat-error>
     <mat-error *ngIf=" passwordFormControl.errors?.pattern">{{ getErrorMessage("password") }}</mat-error>
     <button class="fondo" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
@@ -55,7 +57,7 @@
     
   </mat-form-field>
   <mat-form-field >
-    <input matInput  [type]="hide2 ? 'password' : 'text'" [formControl]="confirmPasswordFormControl" placeholder="Repita contraseña" >
+    <input matInput  [type]="hide2 ? 'password' : 'text'" [formControl]="confirmPasswordFormControl" required placeholder="Repita contraseña" >
     <mat-error *ngIf="this.confirmPasswordFormControl.dirty && this.confirmPasswordFormControl.errors?.noMatch"> {{getErrorMessage("confirmPassword")}} </mat-error>   
     <button class="fondo" mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide2">
       <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
@@ -95,33 +97,32 @@
     </mat-select>
     <mat-error *ngIf="this.signupForm.get('genero').errors?.required">{{ getErrorMessage("genero") }}</mat-error>
   </mat-form-field>
-  <!--
-  <mat-form-field *ngFor="let formControl of this.formGroupsRelatedToRol | keyvalue">
-    <input *ngIf="formControl.value==1" matInput type="text" [formControl]="formControl.key" placeholder="{{ this.numero==5 ? 'Número de expediente' : this.numero==4 ? 'Departamento' : 'Módulo de empresa'}}" >
-    <mat-error *ngIf=" formControl.key.errors?.required">{{ getErrorMessage("varRelatedToRol") }}</mat-error>
-    <mat-error *ngIf=" formControl.key.errors?.minlength">{{ getErrorMessage("varRelatedToRol") }}</mat-error>
-  </mat-form-field>
-  -->
-  <mat-form-field *ngIf="this.numero==4 || this.numero==5; else anotherRol">
-    <input  matInput type="text" [formControl]="compruebaControl" placeholder="{{ this.numero==5 ? 'Número de expediente' : 'Departamento'}}" >
-    <mat-error *ngIf=" compruebaControl.errors?.required">{{ getErrorMessage("compruebaControl") }}</mat-error>
-    <mat-error *ngIf=" compruebaControl.errors?.minlength">{{ getErrorMessage("compruebaControl") }}</mat-error>
+  <mat-form-field *ngIf="this.numero==4; else anotherRol" required>
+    <input matInput type="text" [formControl]="formGroupProfesor" placeholder="Departamento" >
+    <mat-error *ngIf="formGroupProfesor.errors?.required ">{{ getErrorMessage("formGroupProfesor") }}</mat-error>
+    <mat-error *ngIf="formGroupProfesor.errors?.minlength">{{ getErrorMessage("formGroupProfesor") }}</mat-error>
   </mat-form-field>
   <ng-template  #anotherRol>
-    <mat-form-field [formGroup]="compruebaControl" *ngIf="this.numero==3; else elseBlock">
-        <input  matInput type="text"  formControlName="modulo_empresa"  placeholder="Modulo de la empresa" >
-        <mat-error *ngIf=" this.compruebaControl.get('modulo_empresa').errors?.required">{{ getErrorMessage("modulo_empresa") }}</mat-error>
-        <mat-error *ngIf=" this.compruebaControl.get('modulo_empresa').errors?.minlength">{{ getErrorMessage("modulo_empresa") }}</mat-error>
-
+    <mat-form-field *ngIf="this.numero==5; else rolTutorEmpresa" required>
+      <input matInput type="text" [formControl]="numeroExpediente" placeholder="Número de expediente" >
+      <mat-error *ngIf=" numeroExpediente.errors?.required">{{ getErrorMessage("numeroExpediente") }}</mat-error>
+      <mat-error *ngIf=" numeroExpediente.errors?.minlength">{{ getErrorMessage("numeroExpediente") }}</mat-error>
+      <mat-error *ngIf=" numeroExpediente.errors?.serverError">{{ getErrorMessage("numeroExpediente") }}</mat-error>
+    </mat-form-field>
+  </ng-template>
+  <ng-template  #rolTutorEmpresa>
+    <mat-form-field [formGroup]="formGroupTutor" *ngIf="this.numero==3">
+        <input  matInput type="text" required formControlName="modulo_empresa"  placeholder="Modulo de la empresa" >
+        <mat-error *ngIf=" this.formGroupTutor.get('modulo_empresa').errors?.required">{{ getErrorMessage("modulo_empresa") }}</mat-error>
+        <mat-error *ngIf=" this.formGroupTutor.get('modulo_empresa').errors?.minlength">{{ getErrorMessage("modulo_empresa") }}</mat-error>
       </mat-form-field >
-      <mat-form-field [formGroup]="compruebaControl" *ngIf="this.numero==3; else elseBlock" appearance="fill">
+      <mat-form-field [formGroup]="formGroupTutor" *ngIf="this.numero==3" appearance="fill">
         <mat-label>Empresas</mat-label>
         <mat-select matNativeControl required formControlName="cif_empresa">
           <mat-option *ngFor="let empresa of empresaList | keyvalue" [value]="empresa.key">{{ empresa.value }}</mat-option>
         </mat-select>
-        <mat-error *ngIf="this.compruebaControl.get('cif_empresa').errors?.required"> {{ getErrorMessage("cif_empresa") }}</mat-error>
+        <mat-error *ngIf="this.formGroupTutor.get('cif_empresa').errors?.required"> {{ getErrorMessage("cif_empresa") }}</mat-error>
       </mat-form-field>
-    <ng-template #elseBlock></ng-template>
   </ng-template>
   <button class="boton-envio"  type="submit">
     <span>Registrar Usuario</span>

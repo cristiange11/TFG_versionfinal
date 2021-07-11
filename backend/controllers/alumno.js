@@ -88,28 +88,26 @@ exports.createAlumno = async (req, res, next) => {
     
     const errors = validationResult(req);
     const resu = errors.array();
-    var cadena = "";
-    resu.forEach(element => {
-        cadena += element.msg + "\n";
-
-    });
-
-    if (!errors.isEmpty()) {
-        res.status(409).json({ message: cadena });
-    }
+  
+    const resJSON=[{
+        param: String,
+        message: String,
+      }]
+      resu.forEach(element => {
+        resJSON.push({
+          param: element.param,
+          message: element.msg
+        })
+      });
+      
+      if (!errors.isEmpty()) {
+        res.status(409).json({ "errors": resJSON });
+      }
     else {
         try {
-            
-            /*const result = Alumno.createAlumno(req.body).then(function (result) {
-                console.log("Promise Resolved");
-        
-                res.status(201).json({ message: req.body });
-              }).catch(function () {
-                console.log("Promise Rejected");
-              });*/
-            
+
             Alumno.createAlumno(req.body).then(function (result) {
-                res.status(201).json({ alumno: req.body });
+                res.status(201).json({ alumno: "success" });
             }).catch(function (err) {
                 res.status(409).json({ message: "no se ha podido crear el alumno:"+err });
             });

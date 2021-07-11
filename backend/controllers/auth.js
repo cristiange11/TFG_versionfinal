@@ -5,15 +5,19 @@ exports.signup = async (req, res, next) => {
   
   const errors = validationResult(req);
   const resu = errors.array();
-  var cadena = "";
+  const resJSON=[{
+    param: String,
+    message: String,
+  }]
   resu.forEach(element => {
-    cadena += element.msg + "\n";
-
+    resJSON.push({
+      param: element.param,
+      message: element.msg
+    })
   });
-  console.log(cadena)
+  
   if (!errors.isEmpty()) {
-
-    res.status(409).json({ message: cadena });
+    res.status(409).json({ "errors": resJSON });
   }
   else {
     const dni = req.body.dni;
@@ -54,7 +58,7 @@ exports.signup = async (req, res, next) => {
       const result = User.save(us).then(function (result) {
         console.log("Promise Resolved");
 
-        res.status(201).json({ message: us });
+        res.status(201).json({ message: "success" });
       }).catch(function () {
         console.log("Promise Rejected");
       });

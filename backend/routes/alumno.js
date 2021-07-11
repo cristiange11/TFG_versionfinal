@@ -21,7 +21,7 @@ router.post(
       .custom(async (dni) => {
         const user = await User.find(dni);
         if (user[0].length > 0) {
-          return Promise.reject('DNI ya existe!');
+          return Promise.reject('DNI ya existe');
         }
       }),
       body('nombre').trim().not().isEmpty().withMessage("Nombre vacío"),
@@ -40,14 +40,14 @@ router.post(
       .custom(async (movil) => {
         const user = await User.findMovil(movil);
         if (user[0].length > 0) {
-          return Promise.reject('Movil introducido ya existe!');
+          return Promise.reject('Movil introducido ya existe');
         }
       }),
-      body('numero_expediente').trim().not().isEmpty().withMessage("Numero expediente vacío")
+      body('numeroExpediente').trim().not().isEmpty().withMessage("Numero expediente vacío")
       .custom(async (expediente) => {
         const user = await Alumno.findExpediente(expediente);
         if (user[0].length > 0) {
-          return Promise.reject('Número de expediente ya existe!');
+          return Promise.reject('Número de expediente ya existe');
         }
       }),
     body('correo')

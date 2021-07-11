@@ -90,21 +90,26 @@ exports.createProfesor = async (req, res, next) => {
 
     const errors = validationResult(req);
     const resu = errors.array();
-    var cadena = "";
+    const resJSON=[{
+        param: String,
+        message: String,
+      }]
     resu.forEach(element => {
-        cadena += element.msg + "\n";
-
+        resJSON.push({
+            param: element.param,
+            message: element.msg
+          })
     });
 
     if (!errors.isEmpty()) {
-        res.status(409).json({ message: cadena });
+        res.status(409).json({ "errors": resJSON });
     }
     else {
 
         try {       
             const result = Profesor.createProfesor(req.body).then(function (result) {
                 console.log("Promise Resolved");
-                res.status(201).json({ profesor: profesor });
+                res.status(201).json({ profesor: "success" });
             }).catch(function () {
                 console.log("Promise Rejected");
             });

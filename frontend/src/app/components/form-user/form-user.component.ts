@@ -26,7 +26,9 @@ export class FormUserComponent implements OnInit {
   hide = true;
   hide2 = true;
   numero;
-  compruebaControl;
+  formGroupTutor;
+  numeroExpediente;
+  formGroupProfesor;
   passwordFormControl = new FormControl("", [
     Validators.required,
     Validators.pattern(
@@ -111,13 +113,19 @@ export class FormUserComponent implements OnInit {
 
   obtenerRol(rol): number {
     this.numero = rol;
-    if (rol == 5 || rol == 4) {
-      this.compruebaControl = new FormControl("", [
+    if (rol == 5) {
+      this.numeroExpediente = new FormControl("", [
         Validators.required,
         Validators.minLength(6)
       ]);
-    } else if (rol == 3) {
-      this.compruebaControl = new FormGroup({
+    } 
+    else if(rol == 4){
+      this.formGroupProfesor = new FormControl("", [
+        Validators.required,
+        Validators.minLength(6)
+      ]);
+    }else if (rol == 3) {
+      this.formGroupTutor = new FormGroup({
         modulo_empresa: new FormControl("", [Validators.required, Validators.minLength(6)]),
         cif_empresa: new FormControl("", [Validators.required]),
       })
@@ -161,50 +169,84 @@ export class FormUserComponent implements OnInit {
     this.authService.signup(this.signupForm.value).pipe(first())
       .subscribe(
         data => {
-          console.log(data);
-          AppComponent.myapp.openDialog("Usuario registrado correctamente");
+          var arrayRes= new Array();
+          arrayRes.push("Usuario registrado correctamente");
+          AppComponent.myapp.openDialog(arrayRes);
         },
         error => {
-          console.log(error.error.message);
-
+          error.error.errors.forEach(errorInfo => {
+           const formControl = this.signupForm.get(errorInfo.param);
+            if (formControl) {
+              formControl.setErrors({
+                serverError: errorInfo.message
+              });  
+            }          
+          });
         });
       }
 
     else if(this.numero==5){
       
-      this.alumnoService.createAlumno(this.signupForm.value, this.compruebaControl.value).pipe(first())
+      this.alumnoService.createAlumno(this.signupForm.value, this.numeroExpediente.value).pipe(first())
       .subscribe(
         data => {
-          console.log(data);
-          
+          var arrayRes= new Array();
+          arrayRes.push("Usuario registrado correctamente");
+          AppComponent.myapp.openDialog(arrayRes);
         },
         error => {
-          console.log(error.error.message);
-
+          error.error.errors.forEach(errorInfo => {
+            const formControl = this.signupForm.get(errorInfo.param);
+             if (formControl) {
+               formControl.setErrors({
+                 serverError: errorInfo.message
+               });  
+             }
+            if (this.numeroExpediente) {
+              console.log("entraaaa");
+              this.numeroExpediente.setErrors({
+                serverError: errorInfo.message
+              });  
+            }        
+           });
         });
     }else if(this.numero==4){
       
-      this.profesorService.createProfesor(this.signupForm.value, this.compruebaControl.value).pipe(first())
+      this.profesorService.createProfesor(this.signupForm.value, this.formGroupProfesor.value).pipe(first())
       .subscribe(
         data => {
-          console.log(data);
-
+          var arrayRes= new Array();
+          arrayRes.push("Usuario registrado correctamente");
+          AppComponent.myapp.openDialog(arrayRes);
         },
         error => {
-          console.log(error.error.message);
-
+          error.error.errors.forEach(errorInfo => {
+            const formControl = this.signupForm.get(errorInfo.param);
+             if (formControl) {
+               formControl.setErrors({
+                 serverError: errorInfo.message
+               });  
+             }          
+           });
         });
     }else if(this.numero==3){
       
-      this.tutorService.createTutor(this.signupForm.value, this.compruebaControl.value).pipe(first())
+      this.tutorService.createTutor(this.signupForm.value, this.formGroupTutor.value).pipe(first())
       .subscribe(
         data => {
-          console.log(data);
-
+          var arrayRes= new Array();
+          arrayRes.push("Usuario registrado correctamente");
+          AppComponent.myapp.openDialog(arrayRes);
         },
         error => {
-          console.log(error.error.message);
-
+          error.error.errors.forEach(errorInfo => {
+            const formControl = this.signupForm.get(errorInfo.param);
+             if (formControl) {
+               formControl.setErrors({
+                 serverError: errorInfo.message
+               });  
+             }          
+           });
         });
     }
     
@@ -215,7 +257,7 @@ export class FormUserComponent implements OnInit {
       let dni = this.signupForm.get("dni")
       return dni.hasError('required') ? 'Introduce un DNI' :
         dni.hasError('pattern') ? 'Formato incorrecto' :
-          'error dni';
+          '';
     } else if (attribute == "nombre") {
       let nombre = this.signupForm.get("nombre");
       let res = nombre.hasError('required') ? 'Introduce un nombre' :
@@ -249,8 +291,7 @@ export class FormUserComponent implements OnInit {
     } else if (attribute == "correo") {
       let correo = this.signupForm.get("correo");
       return correo.hasError('required') ? 'Introduce el correo' :
-        correo.hasError('email') ? 'Formato correo incorrecto' :
-          '';
+        correo.hasError('email') ? 'Formato correo incorrecto' : '';
     } else if (attribute == "fecha_nacimiento") {
       let fecha_nacimiento = this.signupForm.get("fecha_nacimiento");
       return fecha_nacimiento.hasError('required') ? 'Introduce la fecha' :
@@ -281,20 +322,24 @@ export class FormUserComponent implements OnInit {
 
       return fp_dual.hasError('required') ? 'Selecciona un FP dual' :
         '';
-    } else if ((this.numero == 5 || this.numero == 4) && attribute == "compruebaControl") {
-      let err = this.compruebaControl;
+    } else if (this.numero == 5) {
+      let err = this.numeroExpediente;
       return err.hasError('required') ? 'Añade el campo' :
         err.hasError('minlength') ? 'Cadena mínima de 6 caracteres' :
           '';
-    } else if (this.numero == 3 && attribute == "modulo_empresa") {
-      let err = this.compruebaControl.get("modulo_empresa")
-
+    } else if (this.numero == 4) {
+      let err = this.formGroupProfesor;
+      return err.hasError('required') ? 'Añade el campo' :
+        err.hasError('minlength') ? 'Cadena mínima de 6 caracteres' :
+          '';
+    } 
+    else if (this.numero == 3 && attribute == "modulo_empresa") {
+      let err = this.formGroupTutor.get("modulo_empresa")
       return err.hasError('required') ? 'Añade el campo' :
         err.hasError('minlength') ? 'Cadena mínima de 6 caracteres' :
           '';
     }else if (this.numero == 3 && attribute == "cif_empresa") {
-      let err = this.compruebaControl.get("cif_empresa")
-
+      let err = this.formGroupTutor.get("cif_empresa")
       return err.hasError('required') ? 'Añade el campo' :
           '';
     }

@@ -24,9 +24,9 @@ export class AuthService {
     this.user = this.isUserLoggedIn$.asObservable();
   }
 
-  signup(user: User): Observable<User>{
-    console.log(user)
-    return this.http.post<User>(`${this.url}/signup`, user , this.httpOptions)
+  signup(user: User): Observable<JSON>{
+    
+    return this.http.post<JSON>(`${this.url}/signup`, user , this.httpOptions)
     
   }
   login(

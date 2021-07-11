@@ -1,6 +1,6 @@
 
 <div mat-dialog-content>
-    <p><strong>{{ data.texto }}</strong></p>
+    <p *ngFor="let cadena of data.texto"><strong>{{ cadena }}</strong></p>
 </div>
 
 <div mat-dialog-actions>
