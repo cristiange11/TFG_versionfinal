@@ -30,6 +30,8 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
+import { ModalComponent } from './components/modal/modal.component';
+import { MatDialogModule } from '@angular/material/dialog';
 @NgModule({
   imports: [
     BrowserModule,
@@ -59,7 +61,8 @@ import {MatSelectModule} from '@angular/material/select';
     FontAwesomeModule,
     HttpClientModule,
     MatRadioModule,
-    MatSelectModule
+    MatSelectModule,
+    MatDialogModule
     
   ],
   declarations: [
@@ -69,10 +72,11 @@ import {MatSelectModule} from '@angular/material/select';
     LoginComponent,
     HomeComponent,
     AdminpageComponent,
-    
+    ModalComponent
   ],
   
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ModalComponent]
 })
 export class AppModule { }

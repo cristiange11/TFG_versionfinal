@@ -15,6 +15,7 @@ import { Centro } from '../../models/Centro';
 import { Rol } from 'src/app/models/Rol';
 import { Fpduales } from 'src/app/models/Fpduales';
 import { Empresa } from 'src/app/models/Empresa';
+import { AppComponent } from '../../app.component';
 @Component({
   selector: 'app-form-user',
   templateUrl: './form-user.component.html',
@@ -42,7 +43,7 @@ export class FormUserComponent implements OnInit {
   rolesList = new Map<number, string>();
   fpList = new Map<number, string>();
   empresaList = new Map<string, string>();
-  constructor(private authService: AuthService,private tutorService: TutorEmpresaService, private profesorService: ProfesorService, private alumnoService: AlumnoService, private empresaService: EmpresaService, private centroService: CentroService, private rolService: RolService, private fpdualesService: FpdualesService) {
+  constructor(private authService: AuthService, private tutorService: TutorEmpresaService, private profesorService: ProfesorService, private alumnoService: AlumnoService, private empresaService: EmpresaService, private centroService: CentroService, private rolService: RolService, private fpdualesService: FpdualesService) {
     document.body.style.background = "linear-gradient(to right, #1dcd9b, #00d4ff)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
 
@@ -154,14 +155,14 @@ export class FormUserComponent implements OnInit {
         });
   }
   signup(): void {
+    
     if(this.numero==1 || this.numero==2){
       
     this.authService.signup(this.signupForm.value).pipe(first())
       .subscribe(
         data => {
           console.log(data);
-          
-         
+          AppComponent.myapp.openDialog("Usuario registrado correctamente");
         },
         error => {
           console.log(error.error.message);
@@ -281,9 +282,7 @@ export class FormUserComponent implements OnInit {
       return fp_dual.hasError('required') ? 'Selecciona un FP dual' :
         '';
     } else if ((this.numero == 5 || this.numero == 4) && attribute == "compruebaControl") {
-      let err = this.compruebaControl
-      /*let mapIterator = this.formGroupsRelatedToRol.keys()
-      let relatedToRol = mapIterator.next().value*/
+      let err = this.compruebaControl;
       return err.hasError('required') ? 'Añade el campo' :
         err.hasError('minlength') ? 'Cadena mínima de 6 caracteres' :
           '';
