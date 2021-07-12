@@ -1,18 +1,25 @@
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
-//const cookieParser = require('cookie-parser');
+
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const jwt_decode = require('jwt-decode');
+const comprobarToken = require('../util/comprobarToken')
 const RSA_PRIVATE_KEY = fs.readFileSync(__dirname + '/OPENSSL/private.pem');
 exports.signup = async (req, res, next) => {
-  jwtDecoded = jwt_decode(req.headers['authorization']);
+  /*jwtDecoded = jwt_decode(req.headers['authorization']);
   let expiresIn = jwtDecoded["exp"];
   let currentTime = Math.trunc(new Date().getTime()/1000)
   if (currentTime >= expiresIn) {
     res.status(401).json({ "errors": "Sesión expirada" });
-  } else {
+  } */
+  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
+  if(expirado){
+    res.status(401).json({ "errors": "Sesión expirada" });
+  }
+  else {
+  
   const errors = validationResult(req);
   const resu = errors.array();
   const resJSON = [{
