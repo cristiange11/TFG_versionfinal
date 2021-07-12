@@ -30,15 +30,7 @@ export class LoginComponent implements OnInit {
     );
     return res;
   }
-  /*getErrorMessage(attribute: String) {
-    if (attribute == "dni") {
-      let dni = this.loginForm.get("dni")
-      return dni.hasError('required') ? 'Introduce un DNI' :
-        dni.hasError('pattern') ? 'Formato incorrecto' :
-          '';
-    } 
-
-  }*/
+  
   login(){
     this.authService.login(this.loginForm.value.dni, this.loginForm.value.password).pipe(first())
     .subscribe(
@@ -48,5 +40,21 @@ export class LoginComponent implements OnInit {
         error => {
             console.log(error);           
         });
+  }
+  getErrorMessage(attribute: String) {
+    if (attribute == "dni") {
+      let dni = this.loginForm.get("dni")
+      return dni.hasError('required') ? 'Introduce un DNI' :
+        dni.hasError('pattern') ? 'Formato incorrecto' :
+          '';
+    } 
+    else if (attribute == "password"){
+      let password = this.loginForm.get("password")
+      return password.hasError('required') ? 'Introduce una clave' :
+        password.hasError('minlength') ? 'Longitud mínima de 6' :
+          '';
+    }
+    return false;
+
   }
 }
