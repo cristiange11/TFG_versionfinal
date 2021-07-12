@@ -87,7 +87,7 @@ exports.updateProfesor = async (req, res, next) => {
     }
 };
 exports.createProfesor = async (req, res, next) => {
-
+    
     const errors = validationResult(req);
     const resu = errors.array();
     const resJSON=[{
@@ -100,13 +100,13 @@ exports.createProfesor = async (req, res, next) => {
             message: element.msg
           })
     });
-
+    console.log(resu)
     if (!errors.isEmpty()) {
+        
         res.status(409).json({ "errors": resJSON });
     }
     else {
-
-        try {       
+        try {    
             const hashedPassword = await bcrypt.hash(req.body.password, 12);
             const result = Profesor.createProfesor(req.body, hashedPassword).then(function (result) {
                 console.log("Promise Resolved");

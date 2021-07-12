@@ -41,9 +41,9 @@
 
   </mat-form-field>
   <mat-form-field>
-    <input matInput type="text" formControlName="fecha_nacimiento" placeholder="Fecha de nacimiento (dd/mm/yyyy)" required>
-    <mat-error *ngIf="this.signupForm.get('fecha_nacimiento').errors?.required">{{ getErrorMessage("fecha_nacimiento") }}</mat-error>
-    <mat-error *ngIf="this.signupForm.get('fecha_nacimiento').errors?.pattern">{{ getErrorMessage("fecha_nacimiento") }}</mat-error>
+    <input matInput type="text" formControlName="fechaNacimiento" placeholder="Fecha de nacimiento (dd/mm/yyyy)" required>
+    <mat-error *ngIf="this.signupForm.get('fechaNacimiento').errors?.required">{{ getErrorMessage("fechaNacimiento") }}</mat-error>
+    <mat-error *ngIf="this.signupForm.get('fechaNacimiento').errors?.pattern">{{ getErrorMessage("fechaNacimiento") }}</mat-error>
 
   </mat-form-field>
   <mat-form-field >

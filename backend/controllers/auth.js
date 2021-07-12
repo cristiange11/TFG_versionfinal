@@ -27,6 +27,7 @@ exports.signup = async (req, res, next) => {
     res.status(409).json({ "errors": resJSON });
   }
   else {
+    
     const dni = req.body.dni;
     const nombre = req.body.nombre;
     const apellidos = req.body.apellidos;
@@ -37,10 +38,10 @@ exports.signup = async (req, res, next) => {
     const genero = req.body.genero;
     const cp = req.body.cp;
     const rol = req.body.rol;
-    const fecha_nacimiento = req.body.fecha_nacimiento;
+    const fechaNacimiento = req.body.fechaNacimiento;
     const codigo_centro = req.body.codigo_centro;
     const fp_dual = req.body.fp_dual;
-
+    
     try {
 
       const hashedPassword = await bcrypt.hash(password, 12);
@@ -56,7 +57,7 @@ exports.signup = async (req, res, next) => {
         password: hashedPassword,
         cp: cp,
         rol: rol,
-        fecha_nacimiento: fecha_nacimiento,
+        fechaNacimiento: fechaNacimiento,
         fp_dual: fp_dual,
         codigo_centro: codigo_centro
       };

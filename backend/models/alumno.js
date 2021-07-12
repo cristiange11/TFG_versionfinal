@@ -40,7 +40,7 @@ module.exports = class Alumno extends User {
             let query = `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, 
                 fecha_nacimiento, fp_dual, codigo_centro) VALUES ('${alumno.dni}','${alumno.nombre}',
                 '${alumno.apellidos}','${alumno.correo}','${alumno.movil}','${alumno.direccion}','${password}',
-                '${alumno.genero}',${alumno.cp},'${alumno.rol}',STR_TO_DATE('${alumno.fecha_nacimiento}','%d/%m/%Y'),
+                '${alumno.genero}',${alumno.cp},'${alumno.rol}',STR_TO_DATE('${alumno.fechaNacimiento}','%d/%m/%Y'),
                 '${alumno.fp_dual}','${alumno.codigo_centro}')`
             await connection.query(query)
             await connection.query(`INSERT INTO alumno(dni, numero_expediente) VALUES 

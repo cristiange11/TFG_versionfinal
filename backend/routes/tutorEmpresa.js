@@ -30,7 +30,7 @@ router.post(
       .matches(/^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/),
     body('apellidos').trim().not().isEmpty().withMessage("Apellidos vacío"),
     body('rol').trim().not().isEmpty().withMessage("Rol vacío"),
-    body('fecha_nacimiento').trim().not().isEmpty().withMessage("Fecha de nacimiento vacía")
+    body('fechaNacimiento').trim().not().isEmpty().withMessage("Fecha de nacimiento vacía")
     .matches(/^([0][1-9]|[12][0-9]|3[01])(\/)([0][1-9]|[1][0-2])\2(\d{4})$/).withMessage("Formato fecha incorrecto: dd/mm/yyyy"),
     body('fp_dual').trim().not().isEmpty().withMessage("FP vacío"),
     body('codigo_centro').trim().not().isEmpty().withMessage("Código del centro vacío"),

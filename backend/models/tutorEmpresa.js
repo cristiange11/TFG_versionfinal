@@ -35,7 +35,7 @@ module.exports = class TutorEmpresa {
             let query = `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, 
                 fecha_nacimiento, fp_dual, codigo_centro) VALUES ('${tutorEmpresa.dni}','${tutorEmpresa.nombre}',
                 '${tutorEmpresa.apellidos}','${tutorEmpresa.correo}','${tutorEmpresa.movil}','${tutorEmpresa.direccion}','${password}',
-                '${tutorEmpresa.genero}',${tutorEmpresa.cp},'${tutorEmpresa.rol}',STR_TO_DATE('${tutorEmpresa.fecha_nacimiento}','%d/%m/%Y'),
+                '${tutorEmpresa.genero}',${tutorEmpresa.cp},'${tutorEmpresa.rol}',STR_TO_DATE('${tutorEmpresa.fechaNacimiento}','%d/%m/%Y'),
                 '${tutorEmpresa.fp_dual}','${tutorEmpresa.codigo_centro}')`
             await connection.query(query)
             await connection.query(`INSERT INTO tutor_empresa(dni, modulo_empresa, cif_empresa) VALUES 

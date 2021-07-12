@@ -91,7 +91,7 @@ export class FormUserComponent implements OnInit {
       genero: new FormControl("", [Validators.required]),
       movil: new FormControl("", [Validators.required, Validators.pattern(/^(\+34|0034|34)?[ -]*(6|7)[ -]*([0-9][ -]*){8}$/)]),
       correo: new FormControl("", [Validators.required, Validators.email]),
-      fecha_nacimiento: new FormControl("", [Validators.required, Validators.pattern(/^([0][1-9]|[12][0-9]|3[01])(\/)([0][1-9]|[1][0-2])\2(\d{4})$/)]),
+      fechaNacimiento: new FormControl("", [Validators.required, Validators.pattern(/^([0][1-9]|[12][0-9]|3[01])(\/)([0][1-9]|[1][0-2])\2(\d{4})$/)]),
       rol: new FormControl("", [Validators.required]),
       codigo_centro: new FormControl("", [Validators.required]),
       fp_dual: new FormControl("", [Validators.required]),
@@ -202,7 +202,7 @@ export class FormUserComponent implements OnInit {
                  serverError: errorInfo.message
                });  
              }
-             console.log(errorInfo)
+             
             if (this.numeroExpediente) {
               this.numeroExpediente.setErrors({
                 serverError: errorInfo.message
@@ -292,10 +292,10 @@ export class FormUserComponent implements OnInit {
       let correo = this.signupForm.get("correo");
       return correo.hasError('required') ? 'Introduce el correo' :
         correo.hasError('email') ? 'Formato correo incorrecto' : '';
-    } else if (attribute == "fecha_nacimiento") {
-      let fecha_nacimiento = this.signupForm.get("fecha_nacimiento");
-      return fecha_nacimiento.hasError('required') ? 'Introduce la fecha' :
-        fecha_nacimiento.hasError('pattern') ? 'Formato fecha incorrecta' :
+    } else if (attribute == "fechaNacimiento") {
+      let fechaNacimiento = this.signupForm.get("fechaNacimiento");
+      return fechaNacimiento.hasError('required') ? 'Introduce la fecha' :
+        fechaNacimiento.hasError('pattern') ? 'Formato fecha incorrecta' :
           '';
     }
     else if (attribute == "password") {

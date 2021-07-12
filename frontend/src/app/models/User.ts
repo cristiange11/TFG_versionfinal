@@ -9,7 +9,7 @@ export class User {
     genero: string;
     cp: string;
     rol: string;
-    fecha_nacimiento: string;
+    fechaNacimiento: string;
     fp_dual: string;
     codigo_centro: string;
     constructor(form){
@@ -23,7 +23,7 @@ export class User {
         this.genero = form.genero;
         this.cp= form.cp;
         this.rol = form.rol;
-        this.fecha_nacimiento = form.fecha_nacimiento;
+        this.fechaNacimiento = form.fechaNacimiento;
         this.fp_dual = form.fp_dual;
         this.codigo_centro = form.codigo_centro;
     }
