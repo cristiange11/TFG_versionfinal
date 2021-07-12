@@ -16,6 +16,9 @@ import { Rol } from 'src/app/models/Rol';
 import { Fpduales } from 'src/app/models/Fpduales';
 import { Empresa } from 'src/app/models/Empresa';
 import { AppComponent } from '../../app.component';
+import {AppRoutingModule} from '../../app-routing.module';
+import { RouterModule, Router } from '@angular/router';
+
 @Component({
   selector: 'app-form-user',
   templateUrl: './form-user.component.html',
@@ -45,7 +48,7 @@ export class FormUserComponent implements OnInit {
   rolesList = new Map<number, string>();
   fpList = new Map<number, string>();
   empresaList = new Map<string, string>();
-  constructor(private authService: AuthService, private tutorService: TutorEmpresaService, private profesorService: ProfesorService, private alumnoService: AlumnoService, private empresaService: EmpresaService, private centroService: CentroService, private rolService: RolService, private fpdualesService: FpdualesService) {
+  constructor(private router:Router, private appRouting: AppRoutingModule, private authService: AuthService, private tutorService: TutorEmpresaService, private profesorService: ProfesorService, private alumnoService: AlumnoService, private empresaService: EmpresaService, private centroService: CentroService, private rolService: RolService, private fpdualesService: FpdualesService) {
     document.body.style.background = "linear-gradient(to right, #1dcd9b, #00d4ff)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
 
@@ -169,11 +172,15 @@ export class FormUserComponent implements OnInit {
     this.authService.signup(this.signupForm.value).pipe(first())
       .subscribe(
         data => {
+          
           var arrayRes= new Array();
           arrayRes.push("Usuario registrado correctamente");
           AppComponent.myapp.openDialog(arrayRes);
         },
         error => {
+          
+          if(error.status==409){
+            
           error.error.errors.forEach(errorInfo => {
            const formControl = this.signupForm.get(errorInfo.param);
             if (formControl) {
@@ -182,6 +189,10 @@ export class FormUserComponent implements OnInit {
               });  
             }          
           });
+        }
+        else if(error.status == 401){
+          this.router.navigate(['login']);
+        }
         });
       }
 
@@ -190,6 +201,7 @@ export class FormUserComponent implements OnInit {
       this.alumnoService.createAlumno(this.signupForm.value, this.numeroExpediente.value).pipe(first())
       .subscribe(
         data => {
+          
           var arrayRes= new Array();
           arrayRes.push("Usuario registrado correctamente");
           AppComponent.myapp.openDialog(arrayRes);
@@ -220,6 +232,9 @@ export class FormUserComponent implements OnInit {
           AppComponent.myapp.openDialog(arrayRes);
         },
         error => {
+          
+        if(error.status==409){
+          
           error.error.errors.forEach(errorInfo => {
             const formControl = this.signupForm.get(errorInfo.param);
              if (formControl) {
@@ -228,6 +243,7 @@ export class FormUserComponent implements OnInit {
                });  
              }          
            });
+          }
         });
     }else if(this.numero==3){
       

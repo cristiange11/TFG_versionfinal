@@ -9,10 +9,7 @@ exports.getAlumnos = async (req, res, next) => {
         res.status(200).json({ alumnos: alumnos });
 
     } catch (err) {
-        if (!err.statusCode) {
-            err.statusCode = 500;
-        }
-        next(err);
+        res.status(500).json({ error : err });
     }
 
 };
@@ -23,10 +20,7 @@ exports.getAlumno = async (req, res, next) => {
         res.status(200).json({ alumno: alumno });
 
     } catch (err) {
-        if (!err.statusCode) {
-            err.statusCode = 500;
-        }
-        next(err);
+        res.status(500).json({ error : err });
     }
 
 };
@@ -37,10 +31,7 @@ exports.deleteAlumno = async (req, res, next) => {
         res.status(200).json({ alumno: alumno });
 
     } catch (err) {
-        if (!err.statusCode) {
-            err.statusCode = 500;
-        }
-        next(err);
+        res.status(500).json({ error : err });
     }
 
 };/*
@@ -112,10 +103,7 @@ exports.createAlumno = async (req, res, next) => {
                 res.status(409).json({ message: "no se ha podido crear el alumno:"+err });
             });
         } catch (err) {
-            if (!err.statusCode) {
-                err.statusCode = 500;
-            }
-            next(err);
+            res.status(500).json({ error : err });
         }
     }
 };

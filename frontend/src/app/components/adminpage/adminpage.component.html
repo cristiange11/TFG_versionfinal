@@ -1,1 +1,117 @@
-<p>adminpage works!</p>
+<p-toast></p-toast>
+
+<div class="card">
+    <p-toolbar styleClass="p-mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()"></button>
+            <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedcentroList()" [disabled]="!selectedcentroList|| !selectedcentroList.length"></button>
+        </ng-template>
+    </p-toolbar>
+
+    <p-table #dt [value]="centroList" [rows]="10" [paginator]="true" [globalFilterFields]="['nombre','provincia']"
+        [(selection)]="selectedcentroList" [rowHover]="true" dataKey="codigoCentro"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+        
+        <ng-template pTemplate="caption">
+        <div class="p-d-flex p-ai-center p-jc-between">
+            <h2 class="p-m-0">Centros Educativos</h2>
+            
+            <div class="p-m-flex">
+                <span class="p-input-icon-left p-ml-auto">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')" placeholder="Search keyword" />
+                </span>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width: 3rem">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th pSortableColumn="codigoCentro">C&oacute;digo centro<p-sortIcon field="codigoCentro"></p-sortIcon></th>
+            <th pSortableColumn="nombre">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+            <th pSortableColumn="direccion">Direcci&oacute;n <p-sortIcon field="direccion"></p-sortIcon></th>
+            <th pSortableColumn="cp">CP <p-sortIcon field="cp"></p-sortIcon></th>
+            <th pSortableColumn="provincia">Provincia <p-sortIcon field="provincia"></p-sortIcon></th>
+            <th pSortableColumn="telefono">Tel&eacute;fono <p-sortIcon field="telefono"></p-sortIcon></th>
+            <th pSortableColumn="correo">Correo <p-sortIcon field="correo"></p-sortIcon></th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-centro >
+        <tr>
+            <td>
+                <p-tableCheckbox [value]="centro"></p-tableCheckbox>
+            </td>
+            <td>{{centro.codigo_centro}}</td>
+            <td>{{centro.nombre}}</td>
+            <td>{{centro.direccion}}</td>
+            <td>{{centro.CP}}</td>
+            <td>{{centro.provincia}}</td>
+            <td>{{centro.telefono}}</td>
+            <td>{{centro.correo}}</td>
+            <td>
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="editCentro(centro)"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteCentro(centro)"></button>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+        <div class="p-d-flex p-ai-center p-jc-between">
+            En total hay {{centroList ? centroList.length : 0 }} centros.
+        </div>
+    </ng-template>
+</p-table>
+</div>
+<p-dialog [(visible)]="centroDialog" [style]="{width: '450px'}" header="Detalles del centro" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-formgrid p-grid">
+            <div class="p-field p-col">
+                <label for="codigoCentro">Código Centro</label>
+                <input type="text" pInputText id="codigoCentro" [(ngModel)]="centro.codigoCentro" required autofocus />
+                <small class="p-invalid" *ngIf="submitted && !centro.codigoCentro">C&oacute;digo requerido.</small>
+            </div>
+            <div class="p-field p-col">
+                <label for="nombre">Nombre</label>
+                <input type="text" pInputText id="nombre" [(ngModel)]="centro.nombre" required autofocus />
+                <small class="p-invalid" *ngIf="submitted && !centro.nombre">Nombre requerido.</small>
+            </div>
+        </div>
+        <div class="p-formgrid p-grid">
+            <div class="p-field p-col">
+            <label for="direccion">Direcci&oacute;n</label>
+            <input type="text" pInputText id="direccion" [(ngModel)]="centro.direccion" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !centro.direccion">Direcci&oacute;n requerida.</small>
+            </div>
+            <div class="p-field p-col">
+            <label for="cp">CP</label>
+            <input type="text" pInputText id="cp" [(ngModel)]="centro.cp" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !centro.cp">CP requerido.</small>
+            </div>
+            <div class="p-field p-col">
+                <label for="provincia">Provincia</label>
+                <input type="text" pInputText id="provincia" [(ngModel)]="centro.provincia" required autofocus />
+                <small class="p-invalid" *ngIf="submitted && !centro.provincia">Provincia requerida.</small>
+                </div>
+        </div>
+        <div class="p-formgrid p-grid">
+            <div class="p-field p-col">
+                <label for="correo">Correo</label>
+                <input type="text" pInputText id="correo" [(ngModel)]="centro.correo" required autofocus />
+                <small class="p-invalid" *ngIf="submitted && !centro.correo">Correo requerido.</small>
+            </div>
+            <div class="p-field p-col">
+                <label for="telefono">Tel&eacute;fono</label>
+                <input type="text" pInputText id="telefono" [(ngModel)]="centro.telefono" required autofocus />
+                <small class="p-invalid" *ngIf="submitted && !centro.telefono">Tel&eacute;fono requerido.</small>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveCentro()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

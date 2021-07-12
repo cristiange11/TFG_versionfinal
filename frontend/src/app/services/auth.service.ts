@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Router } from "@angular/router";
-
+import { CookieService } from 'ngx-cookie-service';
 import { Observable, BehaviorSubject } from "rxjs";
 import { first, catchError, tap, map } from "rxjs/operators";
 
@@ -17,9 +17,9 @@ export class AuthService {
   public user: Observable<User>;
   userDni: Pick<User, "dni">;
   httpOptions: { headers: HttpHeaders } = {
-    headers: new HttpHeaders({ "Content-Type" : "application/json"}),
+    headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),
   }
-  constructor(private http: HttpClient, private errorHandlerService: ErrorHandlerService, private router: Router ) { 
+  constructor(private cookieService: CookieService, private http: HttpClient, private errorHandlerService: ErrorHandlerService, private router: Router ) { 
     this.isUserLoggedIn$ = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
     this.user = this.isUserLoggedIn$.asObservable();
   }

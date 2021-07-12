@@ -4,15 +4,18 @@ const User = require('../models/user');
 //const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
-//import * as jwt from 'jsonwebtoken';
-//import * as fs from "fs";
-
-const RSA_PRIVATE_KEY = fs.readFileSync(__dirname+'/OPENSSL/private.pem');
+const jwt_decode = require('jwt-decode');
+const RSA_PRIVATE_KEY = fs.readFileSync(__dirname + '/OPENSSL/private.pem');
 exports.signup = async (req, res, next) => {
-  
+  jwtDecoded = jwt_decode(req.headers['authorization']);
+  let expiresIn = jwtDecoded["exp"];
+  let currentTime = Math.trunc(new Date().getTime()/1000)
+  if (currentTime >= expiresIn) {
+    res.status(401).json({ "errors": "Sesión expirada" });
+  } else {
   const errors = validationResult(req);
   const resu = errors.array();
-  const resJSON=[{
+  const resJSON = [{
     param: String,
     message: String,
   }]
@@ -22,12 +25,12 @@ exports.signup = async (req, res, next) => {
       message: element.msg
     })
   });
-  
+
   if (!errors.isEmpty()) {
     res.status(409).json({ "errors": resJSON });
   }
   else {
-    
+
     const dni = req.body.dni;
     const nombre = req.body.nombre;
     const apellidos = req.body.apellidos;
@@ -41,7 +44,7 @@ exports.signup = async (req, res, next) => {
     const fechaNacimiento = req.body.fechaNacimiento;
     const codigoCentro = req.body.codigoCentro;
     const fpDual = req.body.fpDual;
-    
+
     try {
 
       const hashedPassword = await bcrypt.hash(password, 12);
@@ -80,47 +83,35 @@ exports.signup = async (req, res, next) => {
       next(err);
     }
   }
+  }
 };
 
 exports.login = async (req, res, next) => {
-  
+
   const dni = req.body.dni;
   const password = req.body.password;
   try {
-    const userJson = await User.find(dni);
-    let user = new User(userJson[0][0])
-    const isEqual =  bcrypt.compare(password, user.password);
+    const queryResult = await User.find(dni);
+    if (queryResult[0].length > 0) {
+      const userJson = queryResult[0][0]
+      let user = new User(userJson)
+      const isEqual = bcrypt.compare(password, user.password);
 
-    if (!isEqual) {
-      console.log("entro y no son iwales")
+      if (!isEqual) {
+        console.log("entro y no son iwales")
+        res.status(401).json({ message: 'Credenciales incorrectas.' });
+      }
+      else {
+        const jwtBearerToken = jwt.sign({ sub: user.dni }, 'proyecto final carrera', { expiresIn: '7d' });
+        console.log(jwtBearerToken);
+        const resJSON = { "result": { "user": userJson, "token": jwtBearerToken } }
+        res.status(200).json(resJSON);
+      }
+    } else {
       res.status(401).json({ message: 'Credenciales incorrectas.' });
     }
-    else{
-      /*
-    const jwtBearerToken = await jwt.sign({dni, password}, {passphrase: 'proyecto final carrera'}, RSA_PRIVATE_KEY, {
-      algorithm: 'RS256',
-      expiresIn: 120,
-      subject: user.dni
-    });
-    */
-    const jwtBearerToken = jwt.sign({ sub: user.dni }, 'proyecto final carrera', { expiresIn: '7d' });
-    console.log(jwtBearerToken);
-  }
-    /*
-    const user = await User.find(dni).then(function (result) {
-      console.log("Promise Resolved:"+user);  
-      console.log("Password: " + password + " Userpassword " + user.password)
-      
-      //res.status(200).json({ token: "a", Dni: storedUser.dni });
-     } 
-      
-    }).catch(function () {
-      res.status(401).json({ error: 'No se ha encontrado ningún usuario con ese DNI.' });
-
-    });
-    */
   } catch (err) {
-    console.log("error => "+err)
+    console.log("error => " + err)
     if (!err.statusCode) {
       err.statusCode = 500;
     }
@@ -130,10 +121,10 @@ exports.login = async (req, res, next) => {
 exports.getUsuarios = async (req, res, next) => {
   try {
     const usuario = await User.getUsers();
-    
-    
+
+
     res.status(200).json({ message: usuario });
-    
+
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;

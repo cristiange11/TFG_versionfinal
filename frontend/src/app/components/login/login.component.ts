@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
+import { User } from 'src/app/models/User';
 import { AuthService } from 'src/app/services/auth.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +15,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   hide = true;
   returnUrl: string;
-  constructor(private authService: AuthService, private router: Router) { 
+  constructor(private cookieService: CookieService, private authService: AuthService, private router: Router) { 
     document.body.style.background="linear-gradient(to right, #e66465, #9198e5)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    
   }
 
@@ -35,7 +37,12 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.loginForm.value.dni, this.loginForm.value.password).pipe(first())
     .subscribe(
         data => {
-            console.log(data);
+          let result = data["result"]
+          let userJson = result["user"]
+          let user = new User(userJson);
+          let token = result["token"]
+          this.cookieService.set( 'token', token );
+         
         },
         error => {
             console.log(error);           
