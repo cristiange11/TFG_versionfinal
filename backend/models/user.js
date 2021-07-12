@@ -13,24 +13,9 @@ module.exports = class User {
         this.cp = json.cp;
         this.rol = json.rol;
         this.fecha_nacimiento = json.fechaNacimiento;
-        this.fp_dual = json.fp_dual;
+        this.fp_dual = json.fpDual;
         this.codigo_centro = json.codigo_centro;
-    }/*
-    constructor(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fecha_nacimiento, fp_dual, codigo_centro) {
-        this.dni = dni;
-        this.nombre = nombre;
-        this.apellidos = apellidos;
-        this.correo = correo;
-        this.movil = movil;
-        this.direccion = direccion;
-        this.password = password;
-        this.genero = genero;
-        this.cp = cp;
-        this.rol = rol;
-        this.fecha_nacimiento = fecha_nacimiento;
-        this.fp_dual = fp_dual;
-        this.codigo_centro = codigo_centro;
-    }*/
+    }
     static async find(dni) {
         return await promisePool.query(
             `SELECT * FROM usuario where dni = '${dni}'`);
@@ -47,7 +32,7 @@ module.exports = class User {
     static async save(user) {
         
         const [rows, fields] = await promisePool.query(
-            `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fecha_nacimiento, fp_dual, codigo_centro) VALUES ('${user.dni}','${user.nombre}','${user.apellidos}','${user.correo}','${user.movil}','${user.direccion}','${user.password}','${user.genero}',${user.cp},'${user.rol}',STR_TO_DATE('${user.fechaNacimiento}','%d/%m/%Y'),'${user.fp_dual}','${user.codigo_centro}')`
+            `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fecha_nacimiento, fp_dual, codigo_centro) VALUES ('${user.dni}','${user.nombre}','${user.apellidos}','${user.correo}','${user.movil}','${user.direccion}','${user.password}','${user.genero}',${user.cp},'${user.rol}',STR_TO_DATE('${user.fechaNacimiento}','%d/%m/%Y'),'${user.fpDual}','${user.codigoCentro}')`
         );
         return rows;
     }

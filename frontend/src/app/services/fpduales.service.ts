@@ -16,7 +16,7 @@ export class FpdualesService {
   constructor(private http: HttpClient, private router: Router ) { 
   }
   getFPdual(id: number): Observable<Fpduales [] >{   
-    console.log(`${this.url}/${id}`)
+   
     return this.http.get<Fpduales []>(`${this.url}/${id}`)
    
   }

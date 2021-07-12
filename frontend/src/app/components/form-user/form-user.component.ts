@@ -56,8 +56,8 @@ export class FormUserComponent implements OnInit {
           this.centroList = new Map<string, string>();
           let centros = data["centros"]
           centros.forEach(centroInfo => {
-            var centro = centroInfo as Centro
-            this.centroList.set(centro.codigo_centro, centro.nombre)
+            
+            this.centroList.set(centroInfo.codigo_centro, centroInfo.nombre)
           });
         },
         error => {
@@ -69,8 +69,7 @@ export class FormUserComponent implements OnInit {
           this.rolesList = new Map<number, string>();
           let rol = data["roles"]
           rol.forEach(rolInfo => {
-            var rol = rolInfo as Rol
-            this.rolesList.set(rol.id, rol.nombre_rol)
+            this.rolesList.set(rolInfo.id, rolInfo.nombre_rol)
           });
         },
         error => {
@@ -93,8 +92,8 @@ export class FormUserComponent implements OnInit {
       correo: new FormControl("", [Validators.required, Validators.email]),
       fechaNacimiento: new FormControl("", [Validators.required, Validators.pattern(/^([0][1-9]|[12][0-9]|3[01])(\/)([0][1-9]|[1][0-2])\2(\d{4})$/)]),
       rol: new FormControl("", [Validators.required]),
-      codigo_centro: new FormControl("", [Validators.required]),
-      fp_dual: new FormControl("", [Validators.required]),
+      codigoCentro: new FormControl("", [Validators.required]),
+      fpDual: new FormControl("", [Validators.required]),
       password: this.passwordFormControl,
       confirmPassword: this.confirmPasswordFormControl
     })
@@ -126,8 +125,8 @@ export class FormUserComponent implements OnInit {
       ]);
     }else if (rol == 3) {
       this.formGroupTutor = new FormGroup({
-        modulo_empresa: new FormControl("", [Validators.required, Validators.minLength(6)]),
-        cif_empresa: new FormControl("", [Validators.required]),
+        moduloEmpresa: new FormControl("", [Validators.required, Validators.minLength(6)]),
+        cifEmpresa: new FormControl("", [Validators.required]),
       })
       this.empresaService.getEmpresas().pipe(first())
         .subscribe(
@@ -153,6 +152,7 @@ export class FormUserComponent implements OnInit {
           this.fpList = new Map<number, string>();
           let fps = data["fps"]
           fps.forEach(fpInfo => {
+            console.log(fpInfo)
             var fp = fpInfo as Fpduales
            
             this.fpList.set(fp.id, fp.nombre)
@@ -313,14 +313,14 @@ export class FormUserComponent implements OnInit {
       let rol = this.signupForm.get("rol");
       return rol.hasError('required') ? 'Selecciona un rol' :
         '';
-    } else if (attribute == "codigo_centro") {
-      let codigo_centro = this.signupForm.get("codigo_centro");
-      return codigo_centro.hasError('required') ? 'Selecciona un centro' :
+    } else if (attribute == "codigoCentro") {
+      let codigoCentro = this.signupForm.get("codigoCentro");
+      return codigoCentro.hasError('required') ? 'Selecciona un centro' :
         '';
-    } else if (attribute == "fp_dual") {
-      let fp_dual = this.signupForm.get("fp_dual");
+    } else if (attribute == "fpDual") {
+      let fpDual = this.signupForm.get("fpDual");
 
-      return fp_dual.hasError('required') ? 'Selecciona un FP dual' :
+      return fpDual.hasError('required') ? 'Selecciona un FP dual' :
         '';
     } else if (this.numero == 5) {
       let err = this.numeroExpediente;
@@ -333,13 +333,13 @@ export class FormUserComponent implements OnInit {
         err.hasError('minlength') ? 'Cadena mínima de 6 caracteres' :
           '';
     } 
-    else if (this.numero == 3 && attribute == "modulo_empresa") {
-      let err = this.formGroupTutor.get("modulo_empresa")
+    else if (this.numero == 3 && attribute == "moduloEmpresa") {
+      let err = this.formGroupTutor.get("moduloEmpresa")
       return err.hasError('required') ? 'Añade el campo' :
         err.hasError('minlength') ? 'Cadena mínima de 6 caracteres' :
           '';
-    }else if (this.numero == 3 && attribute == "cif_empresa") {
-      let err = this.formGroupTutor.get("cif_empresa")
+    }else if (this.numero == 3 && attribute == "cifEmpresa") {
+      let err = this.formGroupTutor.get("cifEmpresa")
       return err.hasError('required') ? 'Añade el campo' :
           '';
     }

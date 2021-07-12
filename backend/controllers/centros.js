@@ -17,7 +17,7 @@ exports.getNombreCentros = async (req, res, next) => {
 
 };
 exports.getCentros = async (req, res, next) => {
-  
+  console.log("entro")
   try {
     const centros = await Centro.getCentros();
     console.log("Centros de la BBDD: "+centros);
@@ -31,9 +31,9 @@ exports.getCentros = async (req, res, next) => {
 
 };
 exports.getCentro = async (req, res, next) => {
-  const codigo_centro = req.params.codigo_centro;
+  const codigoCentro = req.params.codigoCentro;
   try {
-    const centro = await Centro.getCentro(codigo_centro);
+    const centro = await Centro.getCentro(codigoCentro);
     res.status(200).json({ message: centro });
 
   } catch (err) {
@@ -45,9 +45,9 @@ exports.getCentro = async (req, res, next) => {
 
 };
 exports.deleteCentro = async (req, res, next) => {
-  const codigo_centro = req.params.codigo_centro;
+  const codigoCentro = req.params.codigoCentro;
   try {
-    const centro = await Centro.deleteCentro(codigo_centro);
+    const centro = await Centro.deleteCentro(codigoCentro);
     res.status(200).json({ message: centro });
 
   } catch (err) {
@@ -71,7 +71,7 @@ exports.updateCentro = async (req, res, next) => {
     res.status(409).json({ message: cadena });
   }
   else{
-  const codigo_centro=req.body.codigo_centro;
+  const codigoCentro=req.body.codigoCentro;
   const correo = req.body.correo;
   const telefono = req.body.telefono;
   const provincia = req.body.provincia;
@@ -87,7 +87,7 @@ exports.updateCentro = async (req, res, next) => {
       nombre: nombre,
       cp: cp,
       direccion: direccion,
-      codigo_centro: codigo_centro
+      codigoCentro: codigoCentro
     };
     
     const result = Centro.updateCentro(cent).then(function (result) {

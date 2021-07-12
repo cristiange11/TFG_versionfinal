@@ -1,5 +1,5 @@
 export class Centro {
-    codigo_centro: string;
+    codigoCentro: string;
     correo: string;
     telefono: string;
     provincia: string;

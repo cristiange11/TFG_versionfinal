@@ -25,7 +25,7 @@ export class AuthService {
   }
 
   signup(user: User): Observable<JSON>{
-    console.log(user)
+    
     return this.http.post<JSON>(`${this.url}/signup`, user , this.httpOptions)
     
   }

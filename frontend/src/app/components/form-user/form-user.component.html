@@ -73,18 +73,18 @@
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>Centro educativo</mat-label>
-    <mat-select matNativeControl required formControlName="codigo_centro" (selectionChange)="obtenerFP($event.value)" > 
+    <mat-select matNativeControl required formControlName="codigoCentro" (selectionChange)="obtenerFP($event.value)" > 
       <mat-option *ngFor="let centro of centroList | keyvalue" [value]="centro.key" >{{ centro.value }}</mat-option>
     </mat-select>
-    <mat-error *ngIf="this.signupForm.get('codigo_centro').errors?.required"> {{ getErrorMessage("codigo_centro") }}</mat-error>
+    <mat-error *ngIf="this.signupForm.get('codigoCentro').errors?.required"> {{ getErrorMessage("codigoCentro") }}</mat-error>
 
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>FP</mat-label>
-    <mat-select matNativeControl required formControlName="fp_dual">
+    <mat-select matNativeControl required formControlName="fpDual">
       <mat-option *ngFor="let fp of fpList | keyvalue" [value]="fp.key">{{ fp.value }}</mat-option>
     </mat-select>
-    <mat-error *ngIf="this.signupForm.get('fp_dual').errors?.required"> {{ getErrorMessage("fp_dual") }}</mat-error>
+    <mat-error *ngIf="this.signupForm.get('fpDual').errors?.required"> {{ getErrorMessage("fpDual") }}</mat-error>
 
   </mat-form-field>
   
@@ -111,16 +111,16 @@
   </ng-template>
   <ng-template  #rolTutorEmpresa>
     <mat-form-field [formGroup]="formGroupTutor" *ngIf="this.numero==3">
-        <input  matInput type="text" required formControlName="modulo_empresa"  placeholder="Modulo de la empresa" >
-        <mat-error *ngIf=" this.formGroupTutor.get('modulo_empresa').errors?.required">{{ getErrorMessage("modulo_empresa") }}</mat-error>
-        <mat-error *ngIf=" this.formGroupTutor.get('modulo_empresa').errors?.minlength">{{ getErrorMessage("modulo_empresa") }}</mat-error>
+        <input  matInput type="text" required formControlName="moduloEmpresa"  placeholder="Modulo de la empresa" >
+        <mat-error *ngIf=" this.formGroupTutor.get('moduloEmpresa').errors?.required">{{ getErrorMessage("moduloEmpresa") }}</mat-error>
+        <mat-error *ngIf=" this.formGroupTutor.get('moduloEmpresa').errors?.minlength">{{ getErrorMessage("moduloEmpresa") }}</mat-error>
       </mat-form-field >
       <mat-form-field [formGroup]="formGroupTutor" *ngIf="this.numero==3" appearance="fill">
         <mat-label>Empresas</mat-label>
-        <mat-select matNativeControl required formControlName="cif_empresa">
+        <mat-select matNativeControl required formControlName="cifEmpresa">
           <mat-option *ngFor="let empresa of empresaList | keyvalue" [value]="empresa.key">{{ empresa.value }}</mat-option>
         </mat-select>
-        <mat-error *ngIf="this.formGroupTutor.get('cif_empresa').errors?.required"> {{ getErrorMessage("cif_empresa") }}</mat-error>
+        <mat-error *ngIf="this.formGroupTutor.get('cifEmpresa').errors?.required"> {{ getErrorMessage("cifEmpresa") }}</mat-error>
       </mat-form-field>
   </ng-template>
   <button class="boton-envio"  type="submit">

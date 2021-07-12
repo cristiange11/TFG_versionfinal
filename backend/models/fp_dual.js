@@ -9,10 +9,10 @@ module.exports = class FP_dual {
         this.codigo_centro = codigo_centro;
         this.plazas_disponibles = plazas_disponibles;
     }
-    static async getNombreFPByCentro(codigo_centro) {
+    static async getNombreFPByCentro(codigoCentro) {
 
         const [rows, fields] = await promisePool.query(
-            `SELECT F.id, F.nombre FROM fp_duales as F, centro_educativo as C WHERE C.codigo_centro=F.codigo_centro and C.codigo_centro='${codigo_centro}'  `);
+            `SELECT F.id, F.nombre FROM fp_duales as F, centro_educativo as C WHERE C.codigo_centro=F.codigo_centro and C.codigo_centro='${codigoCentro}'  `);
 
         return rows;
     }

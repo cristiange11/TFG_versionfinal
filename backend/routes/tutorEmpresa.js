@@ -32,8 +32,8 @@ router.post(
     body('rol').trim().not().isEmpty().withMessage("Rol vacío"),
     body('fechaNacimiento').trim().not().isEmpty().withMessage("Fecha de nacimiento vacía")
     .matches(/^([0][1-9]|[12][0-9]|3[01])(\/)([0][1-9]|[1][0-2])\2(\d{4})$/).withMessage("Formato fecha incorrecto: dd/mm/yyyy"),
-    body('fp_dual').trim().not().isEmpty().withMessage("FP vacío"),
-    body('codigo_centro').trim().not().isEmpty().withMessage("Código del centro vacío"),
+    body('fpDual').trim().not().isEmpty().withMessage("FP vacío"),
+    body('codigoCentro').trim().not().isEmpty().withMessage("Código del centro vacío"),
     body('movil').trim().not().isEmpty().withMessage("Móvil vacío")
       .matches(/^(\+34|0034|34)?[ -]*(6|7)[ -]*([0-9][ -]*){8}$/).withMessage("Formato del móvil incorrecto")
       .custom(async (movil) => {
@@ -52,8 +52,8 @@ router.post(
       })
       .normalizeEmail(),
     body('password').trim().isLength({ min: 6 }).withMessage("Contraseña con una longitud menor a 6"),
-      body('cif_empresa').trim().not().isEmpty().withMessage("CIF vacío"),
-      body('modulo_empresa').trim().not().isEmpty().withMessage("Módulo de la empresa vacía")
+      body('cifEmpresa').trim().not().isEmpty().withMessage("CIF vacío"),
+      body('moduloEmpresa').trim().not().isEmpty().withMessage("Módulo de la empresa vacía")
       
     ],
       tutorController.createTutor
@@ -62,7 +62,7 @@ router.post(
 router.put(
     '/update',
     [
-      body('modulo_empresa').trim().not().isEmpty().withMessage("Módulo de la empresa vacío"),    
+      body('moduloEmpresa').trim().not().isEmpty().withMessage("Módulo de la empresa vacío"),    
     ],
       tutorController.updateTutor
   );

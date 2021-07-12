@@ -39,8 +39,8 @@ exports.signup = async (req, res, next) => {
     const cp = req.body.cp;
     const rol = req.body.rol;
     const fechaNacimiento = req.body.fechaNacimiento;
-    const codigo_centro = req.body.codigo_centro;
-    const fp_dual = req.body.fp_dual;
+    const codigoCentro = req.body.codigoCentro;
+    const fpDual = req.body.fpDual;
     
     try {
 
@@ -58,8 +58,8 @@ exports.signup = async (req, res, next) => {
         cp: cp,
         rol: rol,
         fechaNacimiento: fechaNacimiento,
-        fp_dual: fp_dual,
-        codigo_centro: codigo_centro
+        fpDual: fpDual,
+        codigoCentro: codigoCentro
       };
 
 

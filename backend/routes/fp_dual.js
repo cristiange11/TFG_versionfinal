@@ -6,6 +6,6 @@ const Fp = require('../models/fp_dual');
 
 const fpController = require('../controllers/fp_dual');
 
-router.get('/:codigo_centro', fpController.getFpByCentro);
+router.get('/:codigoCentro', fpController.getFpByCentro);
 
 module.exports = router;

@@ -35,7 +35,7 @@ exports.getEmpresa = async (req, res, next) => {
 exports.deleteEmpresa = async (req, res, next) => {
   const CIF = req.params.CIF;
   try {
-    const centro = await Centro.deleteCentro(codigo_centro);
+    const centro = await Centro.deleteCentro(codigoCentro);
     res.status(200).json({ message: centro });
 
   } catch (err) {

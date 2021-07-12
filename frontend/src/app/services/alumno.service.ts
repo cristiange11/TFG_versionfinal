@@ -17,7 +17,7 @@ export class AlumnoService {
   constructor(private http: HttpClient, private router: Router) { }
   createAlumno(formulario1 , formulario2): Observable<JSON>{   
     var alumno = new Alumno(formulario1, formulario2);
-    console.log(alumno)
+    
     return this.http.post<JSON>(`${this.url}/create`, alumno , this.httpOptions)   
   }
 }

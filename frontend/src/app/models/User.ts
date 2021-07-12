@@ -10,8 +10,8 @@ export class User {
     cp: string;
     rol: string;
     fechaNacimiento: string;
-    fp_dual: string;
-    codigo_centro: string;
+    fpDual: string;
+    codigoCentro: string;
     constructor(form){
         this.dni= form.dni;
         this.nombre = form.nombre;
@@ -24,7 +24,7 @@ export class User {
         this.cp= form.cp;
         this.rol = form.rol;
         this.fechaNacimiento = form.fechaNacimiento;
-        this.fp_dual = form.fp_dual;
-        this.codigo_centro = form.codigo_centro;
+        this.fpDual = form.fpDual;
+        this.codigoCentro = form.codigoCentro;
     }
 }

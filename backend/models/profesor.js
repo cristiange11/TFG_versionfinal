@@ -35,7 +35,7 @@ module.exports = class Profesor extends User {
                 fecha_nacimiento, fp_dual, codigo_centro) VALUES ('${profesor.dni}','${profesor.nombre}',
                 '${profesor.apellidos}','${profesor.correo}','${profesor.movil}','${profesor.direccion}','${password}',
                 '${profesor.genero}',${profesor.cp},'${profesor.rol}',STR_TO_DATE('${profesor.fechaNacimiento}','%d/%m/%Y'),
-                '${profesor.fp_dual}','${profesor.codigo_centro}')`
+                '${profesor.fpDual}','${profesor.codigoCentro}')`
             await connection.query(query)
             await connection.query(`INSERT INTO profesor(dni, departamento) VALUES 
             ('${profesor.dni}','${profesor.departamento}')`);

@@ -3,7 +3,7 @@ export class Fpduales {
     descripcion: string;
     total_plazas: number;
     anio: string;
-    codigo_centro: string;
+    codigoCentro: string;
     plazas_disponibles: string;
     id: number;
 }
