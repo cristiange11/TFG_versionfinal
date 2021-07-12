@@ -12,6 +12,7 @@ const tutorRoutes = require('./routes/tutorEmpresa');
 const alumnoRoutes = require('./routes/alumno');
 const profesorRoutes = require('./routes/profesor');
 const errorController = require('./controllers/error');
+
 app.use(cors());
 
 app.use(bodyParser.json());
@@ -31,9 +32,5 @@ app.use('/tutor',tutorRoutes);
 app.use('/alumno',alumnoRoutes);
 
 app.use("/profesor", profesorRoutes);
-//app.use(errorController.get404);
-//app.use(errorController.get500);
-//app.use(errorController.get401);
-//app.use(errorController.get409);
 
 app.listen(ports, () => console.log(`Listening on port ${ports}`));

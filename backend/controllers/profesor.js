@@ -1,7 +1,7 @@
 const { validationResult } = require('express-validator');
 
 const Profesor = require('../models/profesor');
-
+const bcrypt = require('bcryptjs');
 exports.getProfesores = async (req, res, next) => {
     try {
         const profesores = await Profesor.getProfesores();
@@ -107,7 +107,8 @@ exports.createProfesor = async (req, res, next) => {
     else {
 
         try {       
-            const result = Profesor.createProfesor(req.body).then(function (result) {
+            const hashedPassword = await bcrypt.hash(req.body.password, 12);
+            const result = Profesor.createProfesor(req.body, hashedPassword).then(function (result) {
                 console.log("Promise Resolved");
                 res.status(201).json({ profesor: "success" });
             }).catch(function () {

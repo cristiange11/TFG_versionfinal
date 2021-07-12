@@ -10,9 +10,9 @@ module.exports = class Alumno extends User {
         return await promisePool.query(
             `SELECT * FROM alumno where dni = '${dni}'`);
     }
-    static async findExpediente(numero_expediente) {
+    static async findExpediente(numeroExpediente) {
         return await promisePool.query(
-            `SELECT * FROM alumno where numero_expediente = '${numero_expediente}'`);
+            `SELECT * FROM alumno where numero_expediente = '${numeroExpediente}'`);
     }
     static async getAlumnos() {
         const [rows, fields] = await promisePool.query(
@@ -31,7 +31,7 @@ module.exports = class Alumno extends User {
             `DELETE FROM alumno WHERE dni = '${dni}' `);
         return rows;
     }
-    static async  createAlumno(alumno) {
+    static async  createAlumno(alumno, password) {
         console.log("addUserDetails, creating connection...");
         const connection = await promisePool.getConnection();
 
@@ -39,7 +39,7 @@ module.exports = class Alumno extends User {
             await connection.beginTransaction();
             let query = `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, 
                 fecha_nacimiento, fp_dual, codigo_centro) VALUES ('${alumno.dni}','${alumno.nombre}',
-                '${alumno.apellidos}','${alumno.correo}','${alumno.movil}','${alumno.direccion}','${alumno.password}',
+                '${alumno.apellidos}','${alumno.correo}','${alumno.movil}','${alumno.direccion}','${password}',
                 '${alumno.genero}',${alumno.cp},'${alumno.rol}',STR_TO_DATE('${alumno.fecha_nacimiento}','%d/%m/%Y'),
                 '${alumno.fp_dual}','${alumno.codigo_centro}')`
             await connection.query(query)

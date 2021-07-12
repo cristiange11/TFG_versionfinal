@@ -202,8 +202,8 @@ export class FormUserComponent implements OnInit {
                  serverError: errorInfo.message
                });  
              }
+             console.log(errorInfo)
             if (this.numeroExpediente) {
-              console.log("entraaaa");
               this.numeroExpediente.setErrors({
                 serverError: errorInfo.message
               });  

@@ -1,9 +1,9 @@
 import { User } from "./User";
 
 export class Alumno extends User {
-    numeroExpediente: string;
+    numero_expediente: string;
     constructor(form, numeroExpediente){
         super(form);
-        this.numeroExpediente=numeroExpediente;
+        this.numero_expediente=numeroExpediente;
     }
 }

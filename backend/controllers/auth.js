@@ -1,6 +1,13 @@
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
+//const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
+const fs = require('fs');
+//import * as jwt from 'jsonwebtoken';
+//import * as fs from "fs";
+
+const RSA_PRIVATE_KEY = fs.readFileSync(__dirname+'/OPENSSL/private.pem');
 exports.signup = async (req, res, next) => {
   
   const errors = validationResult(req);
@@ -75,39 +82,44 @@ exports.signup = async (req, res, next) => {
 };
 
 exports.login = async (req, res, next) => {
-
+  
   const dni = req.body.dni;
   const password = req.body.password;
-
   try {
+    const userJson = await User.find(dni);
+    let user = new User(userJson[0][0])
+    const isEqual =  bcrypt.compare(password, user.password);
 
-    const user = await User.find(dni);
-
-    if (user[0].length !== 1) {
-      res.status(401).json({ message: 'No se ha encontrado ningún usuario con ese DNI.' });
-
+    if (!isEqual) {
+      console.log("entro y no son iwales")
+      res.status(401).json({ message: 'Credenciales incorrectas.' });
     }
-    else {
-      const storedUser = user[0][0];
+    else{
+      /*
+    const jwtBearerToken = await jwt.sign({dni, password}, {passphrase: 'proyecto final carrera'}, RSA_PRIVATE_KEY, {
+      algorithm: 'RS256',
+      expiresIn: 120,
+      subject: user.dni
+    });
+    */
+    const jwtBearerToken = jwt.sign({ sub: user.dni }, 'proyecto final carrera', { expiresIn: '7d' });
+    console.log(jwtBearerToken);
+  }
+    /*
+    const user = await User.find(dni).then(function (result) {
+      console.log("Promise Resolved:"+user);  
+      console.log("Password: " + password + " Userpassword " + user.password)
+      
+      //res.status(200).json({ token: "a", Dni: storedUser.dni });
+     } 
+      
+    }).catch(function () {
+      res.status(401).json({ error: 'No se ha encontrado ningún usuario con ese DNI.' });
 
-      const isEqual = await bcrypt.compare(password, storedUser.password);
-
-      if (!isEqual) {
-        res.status(401).json({ message: 'Credenciales incorrectas.' });
-      }
-
-      /*const token = jwt.sign(
-        {
-          dni: storedUser.dni,
-          correo: storedUser.correo,
-          rol: storedUser.rol
-        },
-        'secretfortoken',
-        { expiresIn: '1h' }
-      );*/
-      res.status(200).json({ token: "a", userDni: storedUser.dni });
-    }
+    });
+    */
   } catch (err) {
+    console.log("error => "+err)
     if (!err.statusCode) {
       err.statusCode = 500;
     }

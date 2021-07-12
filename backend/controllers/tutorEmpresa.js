@@ -1,7 +1,7 @@
 const { validationResult } = require('express-validator');
 
 const TutorEmpresa = require('../models/tutorEmpresa');
-
+const bcrypt = require('bcryptjs');
 exports.getTutores = async (req, res, next) => {
     try {
         const tutores = await TutorEmpresa.getTutores();
@@ -108,8 +108,8 @@ exports.createTutor = async (req, res, next) => {
     else {
 
         try {
-            
-            const result = TutorEmpresa.createTutor(req.body).then(function (result) {
+            const hashedPassword = await bcrypt.hash(req.body.password, 12);
+            const result = TutorEmpresa.createTutor(req.body, hashedPassword).then(function (result) {
                 console.log("Promise Resolved");
 
                 res.status(201).json({ message: "success" });

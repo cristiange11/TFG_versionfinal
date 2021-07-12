@@ -43,22 +43,22 @@ router.post(
           return Promise.reject('Movil introducido ya existe');
         }
       }),
-      body('numeroExpediente').trim().not().isEmpty().withMessage("Numero expediente vacío")
+    body('correo')
+      .isEmail().withMessage("Formato correo incorrecto")
+      .custom(async (correo) => {
+        const user = await User.findCorreo(correo);
+        if (user[0].length > 0) {
+          return Promise.reject('Correo ya existe');
+        }
+      })
+      .normalizeEmail(),
+      body('numero_expediente').trim().not().isEmpty().withMessage("Numero expediente vacío")
       .custom(async (expediente) => {
         const user = await Alumno.findExpediente(expediente);
         if (user[0].length > 0) {
           return Promise.reject('Número de expediente ya existe');
         }
       }),
-    body('correo')
-      .isEmail().withMessage("Formato correo incorrecto")
-      .custom(async (correo) => {
-        const user = await User.findCorreo(correo);
-        if (user[0].length > 0) {
-          return Promise.reject('Correo ya existe!');
-        }
-      })
-      .normalizeEmail(),
     body('password').trim().isLength({ min: 6 }).withMessage("Contraseña con una longitud menor a 6"),
   ],
       

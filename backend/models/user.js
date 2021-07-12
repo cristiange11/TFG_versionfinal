@@ -32,7 +32,6 @@ module.exports = class User {
         this.codigo_centro = codigo_centro;
     }*/
     static async find(dni) {
-
         return await promisePool.query(
             `SELECT * FROM usuario where dni = '${dni}'`);
     }

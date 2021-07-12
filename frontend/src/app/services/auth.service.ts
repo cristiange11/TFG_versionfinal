@@ -25,21 +25,12 @@ export class AuthService {
   }
 
   signup(user: User): Observable<JSON>{
-    
     return this.http.post<JSON>(`${this.url}/signup`, user , this.httpOptions)
     
   }
-  login(
-    dni: Pick<User, "dni">,
-    password: Pick<User, "password">
-  ) {
-    return this.http
-      .post<User>(`${this.url}/login`, { dni, password }, this.httpOptions)
-      .pipe(map(user => {
-        // store user details and jwt token in local storage to keep user logged in between page refreshes
-        localStorage.setItem('user', JSON.stringify(user));
-        this.isUserLoggedIn$.next(user);
-        return user;
-    }));
+  login( dni: Pick<User, "dni">, password: Pick<User, "password">): Observable<JSON> {
+    
+    return this.http.post<JSON>(`${this.url}/login`, { dni, password }, this.httpOptions)
+      
   }
 }

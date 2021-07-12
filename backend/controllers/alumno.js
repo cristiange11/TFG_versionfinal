@@ -1,7 +1,7 @@
 const { validationResult } = require('express-validator');
 
 const Alumno = require('../models/alumno');
-
+const bcrypt = require('bcryptjs');
 exports.getAlumnos = async (req, res, next) => {
     try {
         const alumnos = await Alumno.getAlumnos();
@@ -105,8 +105,8 @@ exports.createAlumno = async (req, res, next) => {
       }
     else {
         try {
-
-            Alumno.createAlumno(req.body).then(function (result) {
+            const hashedPassword = await bcrypt.hash(req.body.password, 12);
+            Alumno.createAlumno(req.body, hashedPassword).then(function (result) {
                 res.status(201).json({ alumno: "success" });
             }).catch(function (err) {
                 res.status(409).json({ message: "no se ha podido crear el alumno:"+err });

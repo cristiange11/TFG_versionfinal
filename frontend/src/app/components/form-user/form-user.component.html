@@ -1,4 +1,3 @@
-
 <form [formGroup]="signupForm" (ngSubmit)="signup()" novalidate class="custom-form" >
   <h1 align="center">Registro de usuario</h1>
   <mat-form-field>
@@ -107,7 +106,7 @@
       <input matInput type="text" [formControl]="numeroExpediente" placeholder="Número de expediente" >
       <mat-error *ngIf=" numeroExpediente.errors?.required">{{ getErrorMessage("numeroExpediente") }}</mat-error>
       <mat-error *ngIf=" numeroExpediente.errors?.minlength">{{ getErrorMessage("numeroExpediente") }}</mat-error>
-      <mat-error *ngIf=" numeroExpediente.errors?.serverError">{{ getErrorMessage("numeroExpediente") }}</mat-error>
+      <mat-error *ngIf=" numeroExpediente.errors?.serverError">{{ numeroExpediente.errors?.serverError }}</mat-error>
     </mat-form-field>
   </ng-template>
   <ng-template  #rolTutorEmpresa>

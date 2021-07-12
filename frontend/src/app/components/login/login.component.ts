@@ -30,6 +30,15 @@ export class LoginComponent implements OnInit {
     );
     return res;
   }
+  /*getErrorMessage(attribute: String) {
+    if (attribute == "dni") {
+      let dni = this.loginForm.get("dni")
+      return dni.hasError('required') ? 'Introduce un DNI' :
+        dni.hasError('pattern') ? 'Formato incorrecto' :
+          '';
+    } 
+
+  }*/
   login(){
     this.authService.login(this.loginForm.value.dni, this.loginForm.value.password).pipe(first())
     .subscribe(
