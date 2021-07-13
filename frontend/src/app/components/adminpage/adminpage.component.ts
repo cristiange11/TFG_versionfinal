@@ -34,7 +34,8 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
   public dataSource: MatTableDataSource<Centro>;
   private serviceSubscribe: Subscription;
   constructor(private fpService: FpdualesService, private centroService: CentroService, public dialog: MatDialog) {
-   // this.centroList$ = new BehaviorSubject([]);
+  document.body.style.background = "linear-gradient(to right, #2d66c9, #1dcd65)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
    this.dataSource = new MatTableDataSource<Centro>();
    }
 
@@ -58,6 +59,96 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
         error => {
           console.log(error.error.message);
         });
+  }
+  private filter() {
+
+    this.dataSource.filterPredicate = (data: Centro, filter: string) => {
+      let find = true;
+
+      for (var columnName in this.columnsFilters) {
+
+        let currentData = "" + data[columnName];
+
+        //if there is no filter, jump to next loop, otherwise do the filter.
+        if (!this.columnsFilters[columnName]) {
+          return find;
+        }
+
+
+        let searchValue = this.columnsFilters[columnName]["contains"];
+
+        if (!!searchValue && currentData.indexOf("" + searchValue) < 0) {
+          find = false;
+          //exit loop
+          return find;
+        }
+
+        searchValue = this.columnsFilters[columnName]["equals"];
+        if (!!searchValue && currentData != searchValue) {
+          find = false;
+          //exit loop
+          return find;
+        }
+
+        searchValue = this.columnsFilters[columnName]["greaterThan"];
+        if (!!searchValue && currentData <= searchValue) {
+          find = false;
+          //exit loop
+          return find;
+        }
+
+        searchValue = this.columnsFilters[columnName]["lessThan"];
+        if (!!searchValue && currentData >= searchValue) {
+          find = false;
+          //exit loop
+          return find;
+        }
+
+        searchValue = this.columnsFilters[columnName]["startWith"];
+
+        if (!!searchValue && !currentData.startsWith("" + searchValue)) {
+          find = false;
+          //exit loop
+          return find;
+        }
+
+        searchValue = this.columnsFilters[columnName]["endWith"];
+        if (!!searchValue && !currentData.endsWith("" + searchValue)) {
+          find = false;
+          //exit loop
+          return find;
+        }
+
+      }
+
+      return find;
+    };
+
+    this.dataSource.filter = null;
+    this.dataSource.filter = 'activate';
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  /**
+   * Create a filter for the column name and operate the filter action.
+   */
+  applyFilter(columnName: string, operationType: string, searchValue: string) {
+    this.columnsFilters[columnName] = {};
+    this.columnsFilters[columnName][operationType] = searchValue;
+    this.filter();
+  }
+
+  /**
+   * clear all associated filters for column name.
+   */
+  clearFilter(columnName: string) {
+    if (this.columnsFilters[columnName]) {
+      delete this.columnsFilters[columnName];
+      this.filter();
+    }
   }
 
   add() {
