@@ -26,18 +26,22 @@ router.post(
     body('telefono').trim().not().isEmpty().withMessage("Teléfono vacío")
       .matches(/^(\+34|0034|34)?[ -]*(8|9)[ -]*([0-9][ -]*){8}$/).withMessage("Formato teléfono incorrecto")
       .custom(async (telefono) => {
-        const user = await Centro.findTelefono(telefono, body('codigo_centro'));
-        if (user[0].length > 0) {
-          return Promise.reject('Teléfono introducido ya existe!');
-        }
+        body('codigo_centro').custom(async (codigo_centro) => {
+          const user = await Centro.findTelefono(telefono, codigo_centro);
+          if (user[0].length > 0) {
+            return Promise.reject('Teléfono introducido ya existe!');
+          }
+        })
       }),
     body('correo')
       .isEmail().withMessage("Formato email incorrecto")
       .custom(async (correo) => {
-        const user = await Centro.findCorreo(correo, req.param('correo'));
-        if (user[0].length > 0) {
-          return Promise.reject('Correo ya existe!');
-        }
+        body('codigo_centro').custom(async (codigo_centro) => {
+          const user = await Centro.findCorreo(correo, codigo_centro);
+          if (user[0].length > 0) {
+            return Promise.reject('Correo ya existe!');
+          }
+        })
       })
       .normalizeEmail()
     

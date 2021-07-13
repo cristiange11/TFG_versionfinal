@@ -49,10 +49,11 @@ module.exports = class Centro {
     static async createCentro(centro) {
         const [rows, fields] = await promisePool.query(
             `INSERT INTO centro_educativo(codigo_centro, correo, telefono, provincia, nombre, CP, direccion) VALUES 
-            ('${centro.codigoCentro}','${centro.correo}','${centro.telefono}','${centro.provincia}','${centro.nombre}','${centro.cp}','${centro.direccion}') `);
+            ('${centro.codigo_centro}','${centro.correo}','${centro.telefono}','${centro.provincia}','${centro.nombre}','${centro.CP}','${centro.direccion}') `);
         return rows;
     }
     static async updateCentro(centro) {
+        
         const [rows, fields] = await promisePool.query(
             `UPDATE centro_educativo SET correo='${centro.correo}',telefono='${centro.telefono}',provincia='${centro.provincia}',
             nombre='${centro.nombre}',CP='${centro.CP}',direccion='${centro.direccion}' WHERE codigo_centro = '${centro.codigo_centro}'
