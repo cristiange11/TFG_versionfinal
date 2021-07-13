@@ -9,10 +9,7 @@ exports.getNombreCentros = async (req, res, next) => {
     res.status(200).json({ message: centros });
 
   } catch (err) {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
+    res.status(500).json({ error: err });
   }
 
 };
@@ -20,13 +17,10 @@ exports.getCentros = async (req, res, next) => {
 
   try {
     const centros = await Centro.getCentros();
-    
+
     res.status(200).json({ centros: centros });
   } catch (err) {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
+    res.status(500).json({ error: err });
   }
 
 };
@@ -37,10 +31,7 @@ exports.getCentro = async (req, res, next) => {
     res.status(200).json({ message: centro });
 
   } catch (err) {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
+    res.status(500).json({ error: err });
   }
 
 };
@@ -51,59 +42,77 @@ exports.deleteCentro = async (req, res, next) => {
     res.status(200).json({ message: centro });
 
   } catch (err) {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
+    res.status(500).json({ error: err });
   }
 
 };
 exports.updateCentro = async (req, res, next) => {
   const errors = validationResult(req);
   const resu = errors.array();
-  var cadena = "";
+  const resJSON=[{
+    param: String,
+    message: String,
+  }]
   resu.forEach(element => {
-    cadena += element.msg + "\n";
-
+    resJSON.push({
+      param: element.param,
+      message: element.msg
+    })
   });
-
+  
   if (!errors.isEmpty()) {
-    res.status(409).json({ message: cadena });
+    res.status(409).json({ "errors": resJSON });
   }
-  else{
-  const codigoCentro=req.body.codigoCentro;
-  const correo = req.body.correo;
-  const telefono = req.body.telefono;
-  const provincia = req.body.provincia;
-  const nombre = req.body.nombre;
-  const cp = req.body.cp;
-  const direccion = req.body.direccion;
+  else {
+    try {
+      const result = Centro.updateCentro(req.body).then(function (result) {
+        console.log("Promise Resolved");
 
-  try {
-    const cent = {
-      correo: correo,
-      telefono: telefono,
-      provincia: provincia,
-      nombre: nombre,
-      cp: cp,
-      direccion: direccion,
-      codigoCentro: codigoCentro
-    };
-    
-    const result = Centro.updateCentro(cent).then(function (result) {
-      console.log("Promise Resolved");
+        res.status(201).json({ message: "sucess" });
+      }).catch(function () {
+        res.status(401).json({ message: "no se ha podido actualizar el centro:" + err });
 
-      res.status(201).json({ message: cent });
-    }).catch(function () {
-      console.log("Promise Rejected");
+      });
+
+
+    } catch (err) {
+
+      res.status(500).json({ error: err });
+    }
+  }
+  exports.createCentro = async (req, res, next) => {
+    const errors = validationResult(req);
+    const resu = errors.array();
+    const resJSON = [{
+      param: String,
+      message: String,
+    }]
+    resu.forEach(element => {
+      resJSON.push({
+        param: element.param,
+        message: element.msg
+      })
     });
 
-
-  } catch (err) {
-
-    if (!err.statusCode) {
-      err.statusCode = 500;
+    if (!errors.isEmpty()) {
+      res.status(409).json({ "errors": resJSON });
     }
-    next(err);
-  }}
-};
+    else {
+      try {
+        const result = Centro.createCentro(req.body).then(function (result) {
+          console.log("Promise Resolved");
+
+          res.status(201).json({ message: "success" });
+        }).catch(function () {
+          res.status(401).json({ message: "no se ha podido crear el centro:" + err });
+
+        });
+
+
+      } catch (err) {
+
+        res.status(500).json({ error: err });
+      }
+    }
+  };
+}

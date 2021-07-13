@@ -28,29 +28,36 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatRadioModule} from '@angular/material/radio';
-import {MatSelectModule} from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
 import { ModalComponent } from './components/modal/modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import {TableModule} from 'primeng/table';
-import {ToastModule} from 'primeng/toast';
-import {CalendarModule} from 'primeng/calendar';
-import {SliderModule} from 'primeng/slider';
-import {MultiSelectModule} from 'primeng/multiselect';
-import {ContextMenuModule} from 'primeng/contextmenu';
-import {DialogModule} from 'primeng/dialog';
-import {DropdownModule} from 'primeng/dropdown';
-import {ProgressBarModule} from 'primeng/progressbar';
-import {FileUploadModule} from 'primeng/fileupload';
-import {ToolbarModule} from 'primeng/toolbar';
-import {RatingModule} from 'primeng/rating';
-import {RadioButtonModule} from 'primeng/radiobutton';
-import {InputNumberModule} from 'primeng/inputnumber';
+import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
+import { CalendarModule } from 'primeng/calendar';
+import { SliderModule } from 'primeng/slider';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ContextMenuModule } from 'primeng/contextmenu';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { FileUploadModule } from 'primeng/fileupload';
+import { ToolbarModule } from 'primeng/toolbar';
+import { RatingModule } from 'primeng/rating';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CookieService } from 'ngx-cookie-service';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+import { CdkTableModule } from '@angular/cdk/table';
+import { MatSortModule } from '@angular/material/sort';
+import { DeleteComponent } from './components/modals/delete/delete.component';
+import { CentroUpdateComponent } from './components/modals/centro-update/centro-update.component';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -73,8 +80,6 @@ import { CookieService } from 'ngx-cookie-service';
     MatSidenavModule,
     FlexLayoutModule,
     MatMenuModule,
-    MatButtonModule,
-    MatIconModule,
     MatDividerModule,
     TabViewModule,
     FontAwesomeModule,
@@ -84,13 +89,13 @@ import { CookieService } from 'ngx-cookie-service';
     MatDialogModule,
     TableModule,
     CalendarModule,
-		SliderModule,
-		DialogModule,
-		MultiSelectModule,
-		ContextMenuModule,
-		DropdownModule,
-		ButtonModule,
-		ToastModule,
+    SliderModule,
+    DialogModule,
+    MultiSelectModule,
+    ContextMenuModule,
+    DropdownModule,
+    ButtonModule,
+    ToastModule,
     InputTextModule,
     ProgressBarModule,
     HttpClientModule,
@@ -102,7 +107,15 @@ import { CookieService } from 'ngx-cookie-service';
     InputNumberModule,
     ConfirmDialogModule,
     InputTextareaModule,
-    
+    MatPaginatorModule,
+    MatTableModule,
+    CdkTableModule,
+    MatTableModule,
+    MatSortModule,
+    MatDialogModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatSelectModule
   ],
   declarations: [
     AppComponent,
@@ -111,10 +124,12 @@ import { CookieService } from 'ngx-cookie-service';
     LoginComponent,
     HomeComponent,
     AdminpageComponent,
-    ModalComponent
+    ModalComponent,
+    DeleteComponent,
+    CentroUpdateComponent
   ],
-  
-  providers: [ConfirmationService, MessageService, CookieService ],
+
+  providers: [ConfirmationService, MessageService, CookieService],
   bootstrap: [AppComponent],
   entryComponents: [ModalComponent]
 })

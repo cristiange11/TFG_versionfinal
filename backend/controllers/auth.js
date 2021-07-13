@@ -13,11 +13,14 @@ exports.signup = async (req, res, next) => {
   let currentTime = Math.trunc(new Date().getTime()/1000)
   if (currentTime >= expiresIn) {
     res.status(401).json({ "errors": "Sesión expirada" });
-  } */
+  } 
+  */
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if(expirado){
     res.status(401).json({ "errors": "Sesión expirada" });
   }
+  
+  
   else {
   
   const errors = validationResult(req);
@@ -79,15 +82,13 @@ exports.signup = async (req, res, next) => {
         res.status(201).json({ message: "success" });
       }).catch(function () {
         console.log("Promise Rejected");
+        res.status(401).json({ message: "no se ha podido crear el usuario:" + err });
       });
 
 
     } catch (err) {
 
-      if (!err.statusCode) {
-        err.statusCode = 500;
-      }
-      next(err);
+      res.status(500).json({ error : err });
     }
   }
   }
@@ -133,10 +134,7 @@ exports.getUsuarios = async (req, res, next) => {
     res.status(200).json({ message: usuario });
 
   } catch (err) {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
+    res.status(500).json({ error : err });
   }
 
 };

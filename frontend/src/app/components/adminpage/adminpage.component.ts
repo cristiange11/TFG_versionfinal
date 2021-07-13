@@ -1,71 +1,78 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
-import { ConfirmationService } from 'primeng/api';
-import { MessageService } from 'primeng/api';
-import { Table } from 'primeng/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
 import { first } from 'rxjs/operators';
-import { Centro } from 'src/app/models/Centro';
+import { Centro } from '../../models/Centro';
 import {CentroService} from '../../services/centro.service';
+import { AppComponent } from '../../app.component';
+
 @Component({
   selector: 'app-adminpage',
   templateUrl: './adminpage.component.html',
   styleUrls: ['./adminpage.component.css']
 })
 
-export class AdminpageComponent implements OnInit {
-  @ViewChild('dt') dt: Table | undefined;
-  selectedcentroList: Centro [];
-  centroList = new Array();
-  centro: Centro;
-  centroDialog: boolean;
-  submitted: boolean;
+export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
+  myApp = AppComponent.myapp;
+  centroList: Array<Centro> = [];
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private centroService: CentroService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
+  public displayedColumns: string[] = ['codigo_centro', 'nombre', 'provincia', 'direccion', 'CP', 'telefono', 'correo'];
+  public columnsToDisplay: string[] = [...this.displayedColumns, 'actions'];
+
+  public columnsFilters = {};
+
+  public dataSource: MatTableDataSource<Centro>;
+  private serviceSubscribe: Subscription;
+  constructor(private centroService: CentroService) {
+   // this.centroList$ = new BehaviorSubject([]);
+   this.dataSource = new MatTableDataSource<Centro>();
+   }
 
   ngOnInit(): void {
-    this.centroService.getCentros().pipe(first())
+    this.getAll();
+    
+
+    }
+  getAll() {
+    this.serviceSubscribe = this.centroService.getCentros().pipe(first())
       .subscribe(
         data => {
-          let cent = data["centros"]
-          
-         cent.forEach(centroInfo => {  
-            this.centroList.push(centroInfo);
+          let centros = data["centros"]
+          centros.forEach(centroInfo => {          
+            this.centroList.push(centroInfo)
+            
           });
-          console.log(this.centroList)
+          
+            this.dataSource.data = this.centroList
         },
         error => {
           console.log(error.error.message);
         });
   }
-  openNew() {
-    this.centro = {codigoCentro: "",
-                    correo: "",
-                    telefono: "",
-                    provincia: "",
-                    nombre: "",
-                    cp: "",
-                    direccion:""
-  };
-    this.submitted = false;
-    this.centroDialog = true;
-}
-deleteSelectedcentroList(){
 
+  add(centro: Centro) {
+    this.centroService.addCentro(centro);
+    this.centroList.push(centro);
   }
-  applyFilterGlobal($event: any, stringVal: any) {
-    this.dt.filterGlobal(($event.target as HTMLInputElement).value, 'contains');
+  edit(centro: Centro) {
+    this.centroService.updateCentro(centro);
   }
-  hideDialog() {
-    this.centroDialog = false;
-    this.submitted = false;
-}
-editCentro(centro){
 
-}
-saveCentro(){
-
-}
-deleteCentro(centro){
-
-}
+  delete(codigoCentro: string) {
+    this.centroService.deleteCentro(codigoCentro);
+  }
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+  ngOnDestroy(): void {
+    this.serviceSubscribe.unsubscribe();
+  }
+  
 }

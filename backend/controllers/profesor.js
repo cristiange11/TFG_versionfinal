@@ -9,10 +9,7 @@ exports.getProfesores = async (req, res, next) => {
         res.status(200).json({ profesores: profesores });
 
     } catch (err) {
-        if (!err.statusCode) {
-            err.statusCode = 500;
-        }
-        next(err);
+        res.status(500).json({ error: err });
     }
 
 };
@@ -23,66 +20,56 @@ exports.getProfesor = async (req, res, next) => {
         res.status(200).json({ profesor: profesor });
 
     } catch (err) {
-        if (!err.statusCode) {
-            err.statusCode = 500;
-        }
-        next(err);
+        res.status(500).json({ error: err });
     }
 
 };
 exports.deleteProfesor = async (req, res, next) => {
    
     const dni = req.params.dni;
-    console.log(dni)
+ 
     try {
         const profesor = await Profesor.deleteProfesor(dni);
-        res.status(200).json({ profesor: profesor });
+        res.status(200).json({ profesor: "sucess" });
 
     } catch (err) {
-        if (!err.statusCode) {
-            err.statusCode = 500;
-        }
-        next(err);
+        res.status(500).json({ error: err });
     }
 
 };
 exports.updateProfesor = async (req, res, next) => {
     const errors = validationResult(req);
     const resu = errors.array();
-    var cadena = "";
-    resu.forEach(element => {
-        cadena += element.msg + "\n";
-
-    });
-
-    if (!errors.isEmpty()) {
-        res.status(409).json({ message: cadena });
-    }
+    const resJSON = [{
+        param: String,
+        message: String,
+      }]
+      resu.forEach(element => {
+        resJSON.push({
+          param: element.param,
+          message: element.msg
+        })
+      });
+    
+      if (!errors.isEmpty()) {
+        res.status(409).json({ "errors": resJSON });
+      }
     else {
-        const dni = req.body.dni;
-        const departamento = req.body.departamento;
-
+       
         try {
-            const profesor = {
-                dni: dni,
-                departamento: departamento
-            };
-            console.log(profesor)
-            const result = Profesor.updateProfesor(profesor).then(function (result) {
+            
+            const result = Profesor.updateProfesor(req.body).then(function (result) {
                 console.log("Promise Resolved");
 
-                res.status(201).json({ profesor: profesor });
+                res.status(201).json({ profesor: "sucess" });
             }).catch(function () {
                 console.log("Promise Rejected");
+                res.status(401).json({ message: "no se ha podido actualizar el profesor:" + err });
             });
 
 
         } catch (err) {
-
-            if (!err.statusCode) {
-                err.statusCode = 500;
-            }
-            next(err);
+            res.status(500).json({ error: err });
         }
     }
 };
@@ -100,9 +87,8 @@ exports.createProfesor = async (req, res, next) => {
             message: element.msg
           })
     });
-    console.log(resu)
+    
     if (!errors.isEmpty()) {
-        
         res.status(409).json({ "errors": resJSON });
     }
     else {
@@ -113,15 +99,13 @@ exports.createProfesor = async (req, res, next) => {
                 res.status(201).json({ profesor: "success" });
             }).catch(function () {
                 console.log("Promise Rejected");
+                res.status(401).json({ message: "no se ha podido crear el profesor:" + err });
             });
 
 
         } catch (err) {
 
-            if (!err.statusCode) {
-                err.statusCode = 500;
-            }
-            next(err);
+            res.status(500).json({ error: err });
         }
     }
 };

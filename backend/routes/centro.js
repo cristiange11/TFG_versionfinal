@@ -12,7 +12,7 @@ router.get('/', centroController.getCentros);
 
 router.get('/centro', centroController.getCentro);
 
-router.delete('/codigo_centro', centroController.deleteCentro);
+router.delete('/codigoCentro', centroController.deleteCentro);
 
 router.put(
     '/update',

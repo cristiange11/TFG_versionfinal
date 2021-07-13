@@ -7,10 +7,7 @@ exports.getRoles = async (req, res, next) => {
     res.status(200).json({ roles: roles });
 
   } catch (err) {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
+    res.status(500).json({ error: err });
   }
 
 };
@@ -23,10 +20,7 @@ exports.getRol = async (req, res, next) => {
       res.status(200).json({ rol: rol });
   
     } catch (err) {
-      if (!err.statusCode) {
-        err.statusCode = 500;
-      }
-      next(err);
+      res.status(500).json({ error: err });
     }
   
   };

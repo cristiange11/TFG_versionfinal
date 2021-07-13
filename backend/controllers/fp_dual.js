@@ -12,10 +12,7 @@ exports.getFpByCentro = async (req, res, next) => {
     res.status(200).json({ fps: fp });
 
   } catch (err) {
-    if (!err.statusCode) {
-      err.statusCode = 500;
-    }
-    next(err);
+    res.status(500).json({ error: err });
   }
 
 };

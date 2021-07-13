@@ -2,7 +2,7 @@ const promisePool = require('../util/database');
 
 module.exports = class Centro {
     constructor(codigo_centro, correo, telefono, provincia, nombre, cp, direccion) {
-        this.codigo_centro = codigo_centro;
+        this.codigoCentro = codigo_centro;
         this.correo = correo;
         this.telefono = telefono;
         this.provincia = provincia;
