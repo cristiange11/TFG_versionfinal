@@ -58,6 +58,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { DeleteComponent } from './components/modals/delete/delete.component';
 import { CentroUpdateComponent } from './components/modals/centro-update/centro-update.component';
 import { CentroDeleteConfirmationComponent } from './components/modals/centro-delete-confirmation/centro-delete-confirmation.component';
+import { CentroCreateComponent } from './components/modals/centro-create/centro-create.component';
 
 @NgModule({
   imports: [
@@ -128,7 +129,8 @@ import { CentroDeleteConfirmationComponent } from './components/modals/centro-de
     ModalComponent,
     DeleteComponent,
     CentroUpdateComponent,
-    CentroDeleteConfirmationComponent
+    CentroDeleteConfirmationComponent,
+    CentroCreateComponent
   ],
 
   providers: [ConfirmationService, MessageService, CookieService],

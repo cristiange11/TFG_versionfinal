@@ -13,6 +13,7 @@ import { AppComponent } from '../../app.component';
 import  {DeleteComponent } from '../modals/delete/delete.component';
 import {CentroUpdateComponent} from '../modals/centro-update/centro-update.component';
 import {CentroDeleteConfirmationComponent} from '../modals/centro-delete-confirmation/centro-delete-confirmation.component';
+import { CentroCreateComponent } from '../modals/centro-create/centro-create.component';
 @Component({
   selector: 'app-adminpage',
   templateUrl: './adminpage.component.html',
@@ -59,12 +60,14 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
         });
   }
 
-  add(centro: Centro) {
-    this.centroService.addCentro(centro);
-    this.centroList.push(centro);
+  add() {
+    const dialogRef = this.dialog.open(CentroCreateComponent, {
+      width: '400px',
+      data: "aoal"
+    });
   }
   edit(data: Centro) {
-    console.log('data'+data);
+    
     const dialogRef = this.dialog.open(CentroUpdateComponent, {
       width: '400px',
       data: data

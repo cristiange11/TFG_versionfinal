@@ -32,7 +32,6 @@ module.exports = class Alumno extends User {
         return rows;
     }
     static async  createAlumno(alumno, password) {
-        console.log("addUserDetails, creating connection...");
         const connection = await promisePool.getConnection();
 
         try {

@@ -1,6 +1,8 @@
-<div class="example-container mat-elevation-z8" id="tableWrapper">
-  
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" cdkDropList>
+<div id="tableWrapper">
+<button mat-raised-button id="dch" color="primary" (click)="add()">Crear Centro</button>
+<div class="example-container mat-elevation-z8" >
+
+    <table mat-table align="center" [dataSource]="dataSource" matSort class="mat-elevation-z8" cdkDropList>
       <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
         <th mat-header-cell *matHeaderCellDef>
           <div style="display: flex; align-items: center;">
@@ -29,4 +31,5 @@
     [pageSizeOptions]="[5, 10, 50]" showFirstLastButtons></mat-paginator>
   
   </div>
+</div>
   

@@ -90,39 +90,39 @@ exports.updateCentro = async (req, res, next) => {
       res.status(500).json({ error: err });
     }
   }
-  exports.createCentro = async (req, res, next) => {
-    const errors = validationResult(req);
-    const resu = errors.array();
-    const resJSON = [{
-      param: String,
-      message: String,
-    }]
-    resu.forEach(element => {
-      resJSON.push({
-        param: element.param,
-        message: element.msg
-      })
-    });
-
-    if (!errors.isEmpty()) {
-      res.status(409).json({ "errors": resJSON });
-    }
-    else {
-      try {
-        const result = Centro.createCentro(req.body).then(function (result) {
-          console.log("Promise Resolved");
-
-          res.status(201).json({ message: "success" });
-        }).catch(function () {
-          res.status(401).json({ message: "no se ha podido crear el centro:" + err });
-
-        });
-
-
-      } catch (err) {
-
-        res.status(500).json({ error: err });
-      }
-    }
-  };
 }
+exports.createCentro = async (req, res, next) => {
+  const errors = validationResult(req);
+  const resu = errors.array();
+  const resJSON = [{
+    param: String,
+    message: String,
+  }]
+  resu.forEach(element => {
+    resJSON.push({
+      param: element.param,
+      message: element.msg
+    })
+  });
+  
+  if (!errors.isEmpty()) {
+    res.status(409).json({ "errors": resJSON });
+  }
+  else {
+    try {
+      const result = Centro.createCentro(req.body).then(function (result) {
+        console.log("Promise Resolved");
+
+        res.status(201).json({ message: "success" });
+      }).catch(function () {
+        res.status(401).json({ message: "no se ha podido crear el centro:" + err });
+
+      });
+
+
+    } catch (err) {
+
+      res.status(500).json({ error: err });
+    }
+  }
+};
