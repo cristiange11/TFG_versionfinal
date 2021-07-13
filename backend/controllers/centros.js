@@ -2,6 +2,10 @@ const { validationResult } = require('express-validator');
 
 const Centro = require('../models/centro');
 
+const jwt = require('jsonwebtoken');
+const fs = require('fs');
+const jwt_decode = require('jwt-decode');
+const comprobarToken = require('../util/comprobarToken')
 exports.getNombreCentros = async (req, res, next) => {
   try {
     const centros = await Centro.getNombreCentros();
@@ -36,13 +40,19 @@ exports.getCentro = async (req, res, next) => {
 
 };
 exports.deleteCentro = async (req, res, next) => {
-  const codigoCentro = req.params.codigoCentro;
+  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
+  if(expirado){
+    res.status(401).json({ "errors": "Sesión expirada" });
+  }
   try {
-    const centro = await Centro.deleteCentro(codigoCentro);
-    res.status(200).json({ message: centro });
+    const centro = await Centro.deleteCentro(req.params.codigoCentro)
+      
+      res.status(201).json({ message: "success" });
+    
+   
 
   } catch (err) {
-    res.status(500).json({ error: err });
+    res.status(409).json({ error: err });
   }
 
 };

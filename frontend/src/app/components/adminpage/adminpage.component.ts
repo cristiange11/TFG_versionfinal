@@ -8,8 +8,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { first } from 'rxjs/operators';
 import { Centro } from '../../models/Centro';
 import {CentroService} from '../../services/centro.service';
+import {FpdualesService} from '../../services/fpduales.service';
 import { AppComponent } from '../../app.component';
-
+import  {DeleteComponent } from '../modals/delete/delete.component';
+import {CentroUpdateComponent} from '../modals/centro-update/centro-update.component';
+import {CentroDeleteConfirmationComponent} from '../modals/centro-delete-confirmation/centro-delete-confirmation.component';
 @Component({
   selector: 'app-adminpage',
   templateUrl: './adminpage.component.html',
@@ -29,7 +32,7 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public dataSource: MatTableDataSource<Centro>;
   private serviceSubscribe: Subscription;
-  constructor(private centroService: CentroService) {
+  constructor(private fpService: FpdualesService, private centroService: CentroService, public dialog: MatDialog) {
    // this.centroList$ = new BehaviorSubject([]);
    this.dataSource = new MatTableDataSource<Centro>();
    }
@@ -60,12 +63,48 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.centroService.addCentro(centro);
     this.centroList.push(centro);
   }
-  edit(centro: Centro) {
-    this.centroService.updateCentro(centro);
+  edit(data: Centro) {
+    console.log('data'+data);
+    const dialogRef = this.dialog.open(CentroUpdateComponent, {
+      width: '400px',
+      data: data
+    });
+    
   }
 
-  delete(codigoCentro: string) {
-    this.centroService.deleteCentro(codigoCentro);
+  delete(codigoCentro: any) {
+    const dialogRef = this.dialog.open(DeleteComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.centroService.deleteCentro(codigoCentro).pipe(first())
+        .subscribe(
+          data => {
+            window.location.reload();
+          },
+          error => {
+            if(error.status == 409){
+              const dialogRef2 = this.dialog.open(CentroDeleteConfirmationComponent);
+              dialogRef2.afterClosed().subscribe( result => {
+                  if(result){
+                    this.fpService.deleteFPByCentro(codigoCentro).pipe(first())
+                    .subscribe(
+                      data => {
+                          window.location.reload();
+                      },
+                      error => {
+                        const res = new Array();
+                        res.push("No se ha podido borrar.");
+                        AppComponent.myapp.openDialog(res);
+                      }
+                    )
+                  }
+              });
+            }
+          });
+      }
+    });
+
   }
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;

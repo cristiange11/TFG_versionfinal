@@ -15,9 +15,11 @@ export class FpdualesService {
   }
   constructor(private http: HttpClient, private router: Router ) { 
   }
-  getFPdual(id: number): Observable<Fpduales [] >{   
-   
-    return this.http.get<Fpduales []>(`${this.url}/${id}`)
-   
+  getFPdual(id: number): Observable<Fpduales [] >{     
+    return this.http.get<Fpduales []>(`${this.url}/${id}`) 
+  }
+  deleteFPByCentro(codigoCentro : string): Observable<JSON>{
+    console.log(`${this.url}/${codigoCentro}`);
+    return this.http.delete<JSON>(`${this.url}/${codigoCentro}`,  this.httpOptions);
   }
 }

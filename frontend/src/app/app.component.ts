@@ -1,6 +1,6 @@
 import { Component,Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ModalComponent } from './components/modal/modal.component';
+import { ModalComponent } from './components/modals/modal/modal.component';
 import titles from './files/titles.json';
 @Component({
   selector: 'app-root',

@@ -110,7 +110,7 @@ exports.login = async (req, res, next) => {
         res.status(401).json({ message: 'Credenciales incorrectas.' });
       }
       else {
-        const jwtBearerToken = jwt.sign({ sub: user.dni }, 'proyecto final carrera', { expiresIn: '7d' });
+        const jwtBearerToken = jwt.sign({ sub: user.dni }, 'proyecto final carrera', { expiresIn: '1d' });
         console.log(jwtBearerToken);
         const resJSON = { "result": { "user": userJson, "token": jwtBearerToken } }
         res.status(200).json(resJSON);

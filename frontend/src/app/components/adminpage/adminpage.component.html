@@ -1,4 +1,5 @@
 <div class="example-container mat-elevation-z8" id="tableWrapper">
+  
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" cdkDropList>
       <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
         <th mat-header-cell *matHeaderCellDef>
@@ -15,7 +16,7 @@
           <button mat-icon-button (click)="edit(element)">
             <mat-icon mat-icon-button color='primary'>edit</mat-icon>
           </button>
-          <button mat-icon-button (click)="delete(element['codigoCentro'])">
+          <button mat-icon-button (click)="delete(element['codigo_centro'])">
             <mat-icon mat-icon-button color="warn">delete</mat-icon>
           </button>
         </td>

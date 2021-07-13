@@ -30,7 +30,7 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
-import { ModalComponent } from './components/modal/modal.component';
+import { ModalComponent } from './components/modals/modal/modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
@@ -57,6 +57,7 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { MatSortModule } from '@angular/material/sort';
 import { DeleteComponent } from './components/modals/delete/delete.component';
 import { CentroUpdateComponent } from './components/modals/centro-update/centro-update.component';
+import { CentroDeleteConfirmationComponent } from './components/modals/centro-delete-confirmation/centro-delete-confirmation.component';
 
 @NgModule({
   imports: [
@@ -126,7 +127,8 @@ import { CentroUpdateComponent } from './components/modals/centro-update/centro-
     AdminpageComponent,
     ModalComponent,
     DeleteComponent,
-    CentroUpdateComponent
+    CentroUpdateComponent,
+    CentroDeleteConfirmationComponent
   ],
 
   providers: [ConfirmationService, MessageService, CookieService],

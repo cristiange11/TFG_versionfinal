@@ -29,6 +29,7 @@ export class CentroService {
     return this.http.post<JSON>(`${this.url}/create`, centro , this.httpOptions);
   }
   deleteCentro(codigoCentro : string): Observable<JSON>{
+    console.log(`${this.url}/${codigoCentro}`);
     return this.http.delete<JSON>(`${this.url}/${codigoCentro}`,  this.httpOptions);
   }
   updateCentro(centro : Centro): Observable<JSON>{

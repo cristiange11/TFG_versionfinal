@@ -16,6 +16,22 @@ module.exports = class FP_dual {
 
         return rows;
     }
+    static async DeleteCentroAndFPsByCentro(codigoCentro) {
+        const connection = await promisePool.getConnection();
 
+        try {
+            await connection.beginTransaction();
+            let query = `DELETE FROM fp_duales WHERE codigo_centro = '${codigoCentro}'`;
+            await connection.query(query)
+            await connection.query(`DELETE FROM centro_educativo WHERE codigo_centro =  '${codigoCentro}'`);
+            await connection.commit();
+        } catch (err) {
+            await connection.query("ROLLBACK");
+            console.log('ROLLBACK', err);
+            throw err;
+        } finally {
+            await connection.release();
+        }
+    }
 
 };

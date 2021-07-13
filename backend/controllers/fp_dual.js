@@ -16,3 +16,17 @@ exports.getFpByCentro = async (req, res, next) => {
   }
 
 };
+exports.DeleteCentroAndFPsByCentro= async (req, res, next) => {
+  console.log(req.params)
+  const codigoCentro = req.params.codigoCentro;
+ 
+  try {
+    const fp = await Fpdual.DeleteCentroAndFPsByCentro(req.params.codigoCentro);
+    
+    res.status(200).json({ fps: fp });
+
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+
+};
