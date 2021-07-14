@@ -48,6 +48,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MessageService } from 'primeng/api';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CookieService } from 'ngx-cookie-service';
@@ -60,7 +61,7 @@ import { CentroUpdateComponent } from './components/modals/centro-update/centro-
 import { CentroDeleteConfirmationComponent } from './components/modals/centro-delete-confirmation/centro-delete-confirmation.component';
 import { CentroCreateComponent } from './components/modals/centro-create/centro-create.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
-
+import { MatTableFilterModule } from 'mat-table-filter';
 @NgModule({
   imports: [
     BrowserModule,
@@ -87,6 +88,7 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
     TabViewModule,
     FontAwesomeModule,
     HttpClientModule,
+    MatFormFieldModule,
     MatRadioModule,
     MatSelectModule,
     MatDialogModule,
@@ -105,7 +107,6 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
     FileUploadModule,
     ToolbarModule,
     RatingModule,
-    FormsModule,
     RadioButtonModule,
     InputNumberModule,
     ConfirmDialogModule,
@@ -119,6 +120,8 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
     ReactiveFormsModule,
     MatInputModule,
     MatSelectModule,
+    MatTableFilterModule,
+    MatInputModule ,
     MDBBootstrapModule.forRoot() 
   ],
   declarations: [

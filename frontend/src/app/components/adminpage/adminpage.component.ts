@@ -16,6 +16,7 @@ import {CentroDeleteConfirmationComponent} from '../modals/centro-delete-confirm
 import { CentroCreateComponent } from '../modals/centro-create/centro-create.component';
 import { CookieService } from 'ngx-cookie-service';
 import {NavigationComponent} from '../navigation/navigation.component';
+
 @Component({
   selector: 'app-adminpage',
   templateUrl: './adminpage.component.html',
@@ -27,7 +28,7 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
   centroList: Array<Centro> = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-
+  
   public displayedColumns: string[] = ['codigo_centro', 'nombre', 'provincia', 'direccion', 'CP', 'telefono', 'correo'];
   public columnsToDisplay: string[] = [...this.displayedColumns, 'actions'];
 
@@ -155,7 +156,9 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
       this.filter();
     }
   }
-
+  public doFilter = (value: { target: HTMLInputElement }) => {
+    this.dataSource.filter = value.target.value.trim().toLocaleLowerCase();
+  }
   add() {
     const dialogRef = this.dialog.open(CentroCreateComponent, {
       width: '400px',

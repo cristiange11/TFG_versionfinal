@@ -1,14 +1,18 @@
 <div id="tableWrapper">
-    
-      <input class="form-control form-control-sm mr-3 w-75" class="fondo" type="text" placeholder="Search" aria-label="Search"
-      mdbInput>
-    <button type="submit" (click)="buscar()" class="btn-formato"> <i class="fas fa-search"></i></button>
+  <div class="row">
+    <div fxLayout class="col-md-11" fxLayoutAlign="center">
+      <mat-form-field fxFlex="40%">
+        <input matInput type="text" (keyup)="doFilter($any($event))" placeholder="Buscar">
+      </mat-form-field>
+    </div>
+    <div class="col-md-1"><button mat-raised-button id="dch" align="right" color="primary" (click)="add()">Crear Centro</button></div>
+  </div>
 
   
-<button mat-raised-button id="dch" color="primary" (click)="add()">Crear Centro</button>
+
 <div class="example-container mat-elevation-z8" >
 
-    <table mat-table align="center" [dataSource]="dataSource" matSort class="mat-elevation-z8" cdkDropList>
+    <table mat-table  align="center" [dataSource]="dataSource" matSort class="mat-elevation-z8" cdkDropList>
       <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
         <th mat-header-cell *matHeaderCellDef>
           <div style="display: flex; align-items: center;">
