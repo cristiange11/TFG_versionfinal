@@ -8,6 +8,7 @@ const jwt_decode = require('jwt-decode');
 const comprobarToken = require('../util/comprobarToken')
 const RSA_PRIVATE_KEY = fs.readFileSync(__dirname + '/OPENSSL/private.pem');
 exports.signup = async (req, res, next) => {
+  console.log("entro para el signup")
   /*jwtDecoded = jwt_decode(req.headers['authorization']);
   let expiresIn = jwtDecoded["exp"];
   let currentTime = Math.trunc(new Date().getTime()/1000)
@@ -15,7 +16,10 @@ exports.signup = async (req, res, next) => {
     res.status(401).json({ "errors": "Sesión expirada" });
   } 
   */
-  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
+  
+ console.log(req.headers);
+  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'],  { header: true }));
+  console.log(expirado)
   if(expirado){
     res.status(401).json({ "errors": "Sesión expirada" });
   }
@@ -103,14 +107,13 @@ exports.login = async (req, res, next) => {
     if (queryResult[0].length > 0) {
       const userJson = queryResult[0][0]
       let user = new User(userJson)
-      const isEqual = bcrypt.compare(password, user.password);
-
+      const isEqual = await bcrypt.compare(password, user.password);
+      console.log(isEqual)
       if (!isEqual) {
-        console.log("entro y no son iwales")
         res.status(401).json({ message: 'Credenciales incorrectas.' });
       }
       else {
-        const jwtBearerToken = jwt.sign({ sub: user.dni }, 'proyecto final carrera', { expiresIn: '1d' });
+        const jwtBearerToken = jwt.sign({ sub: user.dni }, 'proyecto final carrera', { expiresIn: '24h' });
         console.log(jwtBearerToken);
         const resJSON = { "result": { "user": userJson, "token": jwtBearerToken } }
         res.status(200).json(resJSON);

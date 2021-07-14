@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
-
+import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
@@ -14,6 +14,8 @@ import  {DeleteComponent } from '../modals/delete/delete.component';
 import {CentroUpdateComponent} from '../modals/centro-update/centro-update.component';
 import {CentroDeleteConfirmationComponent} from '../modals/centro-delete-confirmation/centro-delete-confirmation.component';
 import { CentroCreateComponent } from '../modals/centro-create/centro-create.component';
+import { CookieService } from 'ngx-cookie-service';
+import {NavigationComponent} from '../navigation/navigation.component';
 @Component({
   selector: 'app-adminpage',
   templateUrl: './adminpage.component.html',
@@ -33,16 +35,19 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public dataSource: MatTableDataSource<Centro>;
   private serviceSubscribe: Subscription;
-  constructor(private fpService: FpdualesService, private centroService: CentroService, public dialog: MatDialog) {
+  constructor(private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private fpService: FpdualesService, private centroService: CentroService, public dialog: MatDialog) {
   document.body.style.background = "linear-gradient(to right, #2d66c9, #1dcd65)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
    this.dataSource = new MatTableDataSource<Centro>();
    }
 
   ngOnInit(): void {
+    this.nagivationComponent.obtenerItems();
     this.getAll();
-    
-
+    if(Number(this.cookieService.get('rol'))!= 1){
+      this.router.navigate(['home']);
+    }
+   
     }
   getAll() {
     this.serviceSubscribe = this.centroService.getCentros().pipe(first())
@@ -156,6 +161,9 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
       width: '400px',
       data: "aoal"
     });
+  }
+  buscar(){
+
   }
   edit(data: Centro) {
     

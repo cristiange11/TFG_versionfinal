@@ -18,7 +18,7 @@ import { Empresa } from 'src/app/models/Empresa';
 import { AppComponent } from '../../app.component';
 import {AppRoutingModule} from '../../app-routing.module';
 import { RouterModule, Router } from '@angular/router';
-
+import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-form-user',
   templateUrl: './form-user.component.html',
@@ -48,11 +48,14 @@ export class FormUserComponent implements OnInit {
   rolesList = new Map<number, string>();
   fpList = new Map<number, string>();
   empresaList = new Map<string, string>();
-  constructor(private router:Router, private appRouting: AppRoutingModule, private authService: AuthService, private tutorService: TutorEmpresaService, private profesorService: ProfesorService, private alumnoService: AlumnoService, private empresaService: EmpresaService, private centroService: CentroService, private rolService: RolService, private fpdualesService: FpdualesService) {
+  constructor(private cookieService: CookieService, private router:Router, private appRouting: AppRoutingModule, private authService: AuthService, private tutorService: TutorEmpresaService, private profesorService: ProfesorService, private alumnoService: AlumnoService, private empresaService: EmpresaService, private centroService: CentroService, private rolService: RolService, private fpdualesService: FpdualesService) {
     document.body.style.background = "linear-gradient(to right, #1dcd9b, #00d4ff)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
 
   ngOnInit(): void {
+    if(Number(this.cookieService.get('rol'))!=1){
+      this.router.navigate(['home']);
+    }
     this.centroService.getCentros().pipe(first())
       .subscribe(
         data => {

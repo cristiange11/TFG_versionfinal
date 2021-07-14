@@ -5,9 +5,11 @@ import { FormUserComponent } from './components/form-user/form-user.component';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { AdminpageComponent } from './components/adminpage/adminpage.component';
+import { NavigationComponent } from './components/navigation/navigation.component';
 
 const routes: Routes = [
   {path: "", component: HomeComponent},
+  {path: "navigation", component: NavigationComponent},
   {path: "adminpage", component: AdminpageComponent},
   {path: "login", component: LoginComponent},
   {path: "formuser", component: FormUserComponent},

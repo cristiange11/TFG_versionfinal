@@ -59,6 +59,7 @@ import { DeleteComponent } from './components/modals/delete/delete.component';
 import { CentroUpdateComponent } from './components/modals/centro-update/centro-update.component';
 import { CentroDeleteConfirmationComponent } from './components/modals/centro-delete-confirmation/centro-delete-confirmation.component';
 import { CentroCreateComponent } from './components/modals/centro-create/centro-create.component';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 @NgModule({
   imports: [
@@ -117,7 +118,8 @@ import { CentroCreateComponent } from './components/modals/centro-create/centro-
     MatDialogModule,
     ReactiveFormsModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    MDBBootstrapModule.forRoot() 
   ],
   declarations: [
     AppComponent,
@@ -130,7 +132,8 @@ import { CentroCreateComponent } from './components/modals/centro-create/centro-
     DeleteComponent,
     CentroUpdateComponent,
     CentroDeleteConfirmationComponent,
-    CentroCreateComponent
+    CentroCreateComponent,
+    
   ],
 
   providers: [ConfirmationService, MessageService, CookieService],

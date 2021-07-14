@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-
+import { CookieService } from 'ngx-cookie-service';
 import { MenuItem } from 'primeng/api';
 @Component({
   selector: 'app-navigation',
@@ -11,21 +11,39 @@ export class NavigationComponent implements OnInit {
   items: MenuItem[];
 
   
-  constructor() {
+  constructor(private cookieService: CookieService) {
     
   }
   ngOnInit(): void {
-    this.items = [
-      {
-          label:'Iniciar Sesión',
-          routerLink:'/login'
-      },
-      {
-        label:'Registrar Usuario',
-        routerLink:'/formuser'
-        
-      }
-  ];
+    this.obtenerItems();
+    
+    
   }
-
+  closeSession() {
+    this.cookieService.deleteAll();
+  }
+  obtenerItems(){
+    if(this.cookieService.get('rol')==""){
+      this.items = [
+        {
+            label:'Iniciar Sesión',
+            routerLink:'/login'
+        },
+        
+    ];
+    }
+    if(Number(this.cookieService.get('rol'))==1){
+      this.items = [
+        {
+          label:'Registrar Usuario',
+          routerLink:'/formuser'
+        },
+        {
+            label:'Cerrar Sesión',
+            routerLink:'/home',
+            command: () => this.closeSession(),
+        },
+      ]
+    }
+  }
 }

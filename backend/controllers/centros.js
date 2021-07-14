@@ -2,10 +2,7 @@ const { validationResult } = require('express-validator');
 
 const Centro = require('../models/centro');
 
-const jwt = require('jsonwebtoken');
-const fs = require('fs');
-const jwt_decode = require('jwt-decode');
-const comprobarToken = require('../util/comprobarToken')
+
 exports.getNombreCentros = async (req, res, next) => {
   try {
     const centros = await Centro.getNombreCentros();

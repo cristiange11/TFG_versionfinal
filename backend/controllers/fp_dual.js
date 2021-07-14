@@ -3,7 +3,7 @@ const { validationResult } = require('express-validator');
 const Fpdual = require('../models/fp_dual');
 
 exports.getFpByCentro = async (req, res, next) => {
-  console.log(req.params)
+  
   const codigoCentro = req.params.codigoCentro;
  
   try {

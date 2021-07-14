@@ -42,6 +42,8 @@ export class LoginComponent implements OnInit {
           let user = new User(userJson);
           let token = result["token"]
           this.cookieService.set( 'token', token );
+          this.cookieService.set( 'rol', user.rol );
+          this.router.navigate(['navigation','home']);
         },
         error => {
             console.log(error);           

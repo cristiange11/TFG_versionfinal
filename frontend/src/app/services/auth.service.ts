@@ -28,8 +28,8 @@ export class AuthService {
   }
 
   signup(user: User): Observable<JSON>{
-    
-    return this.http.post<JSON>(`${this.url}/signup`, user , this.httpOptions1)
+    console.log(this.cookieService.get('token'));
+    return this.http.post<JSON>(  `${this.url}/signup`, user , this.httpOptions1)
     
   }
   login( dni: Pick<User, "dni">, password: Pick<User, "password">): Observable<JSON> {

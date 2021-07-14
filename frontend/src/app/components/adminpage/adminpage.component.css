@@ -20,3 +20,15 @@
     float:right;
     margin-bottom: 0.5%;
   }
+  #tableWrapper .fondo{
+    background-color: white;
+    width: 10%;   
+    margin-top: 0.5%;
+  }
+  input .fondo{
+    float:right;
+  }
+  .btn-formato{
+    background-color: transparent;
+        border: none;
+  }
