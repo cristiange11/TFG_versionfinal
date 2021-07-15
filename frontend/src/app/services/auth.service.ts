@@ -28,12 +28,14 @@ export class AuthService {
   signup(user: User): Observable<JSON>{
     console.log("HTTP OPTIONS + ",this.httpOptions.headers);
     console.log('SIGNUPPPP:'+this.cookieService.get('token'));
-    return this.http.post<JSON>(  `${this.url}/signup`, user , this.httpOptions)
+    return this.http.post<JSON>(  `${this.url}/signup`, user , this.httpOptions);
     
   }
   login( dni: Pick<User, "dni">, password: Pick<User, "password">): Observable<JSON> {
     console.log('LOGIIIIIIN');
-    return this.http.post<JSON>(`${this.url}/login`, { dni, password }, this.httpOptions)
-      
+    return this.http.post<JSON>(`${this.url}/login`, { dni, password }, this.httpOptions);   
+  }
+  updateUsuario(user : User): Observable<JSON>{
+    return this.http.put<JSON>(`${this.url}/update`, user, this.httpOptions);
   }
 }

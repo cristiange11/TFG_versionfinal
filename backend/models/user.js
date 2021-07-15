@@ -21,13 +21,13 @@ module.exports = class User {
             `SELECT * FROM usuario where dni = '${dni}'`);
     }
 
-    static async findCorreo(correo) {
+    static async findCorreo(correo,dni) {
         return await promisePool.query(
-            `SELECT * FROM usuario where correo = '${correo}'`);
+            `SELECT * FROM usuario where correo = '${correo}' AND dni!= '${dni}'`);
     }
-    static async findMovil(movil) {
+    static async findMovil(movil,dni) {
         return await promisePool.query(
-            `SELECT * FROM usuario where movil = '${movil}'`);
+            `SELECT * FROM usuario where movil = '${movil}' AND dni!= '${dni}'`);
     }
     static async save(user) {
 
@@ -39,6 +39,13 @@ module.exports = class User {
     static async findCorreo(correo) {
         return await promisePool.query(
             `SELECT * FROM usuario where correo = '${correo}'`);
+    }
+    static async updateUser(user) {
+        return await promisePool.query(
+            `UPDATE usuario SET nombre='${user.nombre}',apellidos='${user.apellidos}',correo='${user.correo}',
+            movil='${user.movil}',direccion='${user.direccion}',password='${user.password}',genero='${user.genero}',
+            cp='${user.cp}',rol='[value-10]',fecha_nacimiento=STR_TO_DATE('${user.fechaNacimiento}',fp_dual='${user.fpDual}'
+            ,codigo_centro='${user.codigoCentro}' WHERE dni= ${user.dni}`);
     }
     static async getUsers() {
         return await promisePool.query(

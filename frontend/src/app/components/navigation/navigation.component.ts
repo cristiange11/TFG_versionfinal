@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewChecked, ChangeDetectorRef } from '@angular
 
 import { CookieService } from 'ngx-cookie-service';
 import { MenuItem } from 'primeng/api';
+
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
@@ -41,6 +42,11 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
           label:'Editar Perfil',
           routerLink:'/editprofile',
           icon: "far fa-user"
+        },
+        {
+          label:'Empresas',
+          routerLink:'/empresa',
+          icon: "fas fa-building"
         },
         {
           label:'Registrar Usuario',
