@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {  AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
@@ -36,9 +36,9 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public dataSource: MatTableDataSource<Centro>;
   private serviceSubscribe: Subscription;
-  constructor(private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private fpService: FpdualesService, private centroService: CentroService, public dialog: MatDialog) {
+  constructor( private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private fpService: FpdualesService, private centroService: CentroService, public dialog: MatDialog) {
   document.body.style.background = "linear-gradient(to right, #2d66c9, #1dcd65)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+   
    this.dataSource = new MatTableDataSource<Centro>();
    }
 
@@ -165,9 +165,6 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
       data: "aoal"
     });
   }
-  buscar(){
-
-  }
   edit(data: Centro) {
     
     const dialogRef = this.dialog.open(CentroUpdateComponent, {
@@ -212,8 +209,10 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
   ngAfterViewInit(): void {
+    
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    
   }
   ngOnDestroy(): void {
     this.serviceSubscribe.unsubscribe();

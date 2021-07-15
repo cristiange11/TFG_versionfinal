@@ -62,6 +62,7 @@ import { CentroDeleteConfirmationComponent } from './components/modals/centro-de
 import { CentroCreateComponent } from './components/modals/centro-create/centro-create.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { MatTableFilterModule } from 'mat-table-filter';
+
 @NgModule({
   imports: [
     BrowserModule,
