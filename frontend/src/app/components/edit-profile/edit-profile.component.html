@@ -1,7 +1,7 @@
 <form [formGroup]="editForm" (ngSubmit)="editProfile()" novalidate class="custom-form" >
     <h1 align="center">Editar Perfil</h1>
 <mat-form-field>
-      <input matInput type="text" formControlName="nombre" placeholder="Nombre" required>
+      <input matInput type="text" formControlName="nombre"   required>
       <mat-error *ngIf="this.editForm.get('nombre').errors?.required">{{ getErrorMessage("nombre") }}</mat-error>
       <mat-error *ngIf="this.editForm.get('nombre').errors?.minlength">{{ getErrorMessage("nombre") }}</mat-error>
     </mat-form-field>
@@ -66,33 +66,8 @@
       </mat-select>
       <mat-error *ngIf="this.editForm.get('genero').errors?.required">{{ getErrorMessage("genero") }}</mat-error>
     </mat-form-field>
-    <mat-form-field *ngIf="this.numero==4; else anotherRol" required>
-      <input matInput type="text" [formControl]="formGroupProfesor" placeholder="Departamento" >
-      <mat-error *ngIf="formGroupProfesor.errors?.required ">{{ getErrorMessage("formGroupProfesor") }}</mat-error>
-      <mat-error *ngIf="formGroupProfesor.errors?.minlength">{{ getErrorMessage("formGroupProfesor") }}</mat-error>
-    </mat-form-field>
-    <ng-template  #anotherRol>
-      <mat-form-field *ngIf="this.numero==5; else rolTutorEmpresa" required>
-        <input matInput type="text" [formControl]="numeroExpediente" placeholder="Número de expediente" >
-        <mat-error *ngIf=" numeroExpediente.errors?.required">{{ getErrorMessage("numeroExpediente") }}</mat-error>
-        <mat-error *ngIf=" numeroExpediente.errors?.minlength">{{ getErrorMessage("numeroExpediente") }}</mat-error>
-        <mat-error *ngIf=" numeroExpediente.errors?.serverError">{{ numeroExpediente.errors?.serverError }}</mat-error>
-      </mat-form-field>
-    </ng-template>
-    <ng-template  #rolTutorEmpresa>
-      <mat-form-field [formGroup]="formGroupTutor" *ngIf="this.numero==3">
-          <input  matInput type="text" required formControlName="moduloEmpresa"  placeholder="Modulo de la empresa" >
-          <mat-error *ngIf=" this.formGroupTutor.get('moduloEmpresa').errors?.required">{{ getErrorMessage("moduloEmpresa") }}</mat-error>
-          <mat-error *ngIf=" this.formGroupTutor.get('moduloEmpresa').errors?.minlength">{{ getErrorMessage("moduloEmpresa") }}</mat-error>
-        </mat-form-field >
-        <mat-form-field [formGroup]="formGroupTutor" *ngIf="this.numero==3" appearance="fill">
-          <mat-label>Empresas</mat-label>
-          <mat-select matNativeControl required formControlName="cifEmpresa">
-            <mat-option *ngFor="let empresa of empresaList | keyvalue" [value]="empresa.key">{{ empresa.value }}</mat-option>
-          </mat-select>
-          <mat-error *ngIf="this.formGroupTutor.get('cifEmpresa').errors?.required"> {{ getErrorMessage("cifEmpresa") }}</mat-error>
-        </mat-form-field>
-    </ng-template>
+   
+    
     <button class="boton-envio"  type="submit">
       <span>Editar Perfil</span>
     </button>

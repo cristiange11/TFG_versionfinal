@@ -1,5 +1,6 @@
 const Roles = require('../models/roles');
-
+const jwt_decode = require('jwt-decode');
+const comprobarToken = require('../util/comprobarToken');
 exports.getRoles = async (req, res, next) => {
   console.log(req.headers);
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], { header: true }));

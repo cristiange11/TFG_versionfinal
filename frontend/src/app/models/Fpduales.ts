@@ -1,9 +1,9 @@
 export class Fpduales {
     nombre: string;
     descripcion: string;
-    total_plazas: number;
+    totalPlazas: number;
     anio: string;
     codigoCentro: string;
-    plazas_disponibles: string;
+    plazasDisponibles: string;
     id: number;
 }

@@ -20,6 +20,7 @@ export class TutorEmpresaService {
   constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { }
   createTutor(formulario1 , formulario2): Observable<JSON>{    
     var tutor = new TutorEmpresa(formulario1, formulario2);
+    console.log(tutor)
     return this.http.post<JSON>(`${this.url}/create`, tutor , this.httpOptions);   
   }
 }

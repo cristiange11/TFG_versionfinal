@@ -106,9 +106,11 @@ exports.login = async (req, res, next) => {
     const queryResult = await User.find(dni);
     if (queryResult[0].length > 0) {
       const userJson = queryResult[0][0]
+      userJson["fechaNacimiento"] = "12/12/2012";
       let user = new User(userJson)
       const isEqual = await bcrypt.compare(password, user.password);
-      console.log(isEqual)
+      console.log("Usuario => " + userJson.fecha_nacimiento)
+      console.log("FP => " + userJson.fp_dual)
       if (!isEqual) {
         res.status(401).json({ message: 'Credenciales incorrectas.' });
       }
@@ -169,7 +171,7 @@ exports.updateUsuario = async (req, res, next) => {
 
           res.status(201).json({ message: "sucess" });
         }).catch(function () {
-          res.status(401).json({ message: "no se ha podido actualizar el centro:" + err });
+          res.status(401).json({ message: "no se ha podido actualizar el usuario:" + err });
 
         });
 

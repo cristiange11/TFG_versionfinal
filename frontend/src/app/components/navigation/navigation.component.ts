@@ -27,7 +27,8 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
     this.cookieService.deleteAll();
   }
   obtenerItems(){
-    if(this.cookieService.get('rol')==""){
+    
+    if(!this.cookieService.get('user')){
       this.items = [
         {
             label:'Iniciar Sesión',
@@ -36,7 +37,9 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
         
     ];
     }
-    if(Number(this.cookieService.get('rol'))==1){
+    else{
+    var user  = JSON.parse(this.cookieService.get('user'));
+    if(Number(user.rol)==1){
       this.items = [
         {
           label:'Editar Perfil',
@@ -61,5 +64,6 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
         },
       ]
     }
+  }
   }
 }

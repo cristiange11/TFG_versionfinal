@@ -26,7 +26,7 @@ module.exports = class Profesor extends User {
         try {
             await connection.beginTransaction();
             let query = `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, 
-                fecha_nacimiento, fp_dual, codigo_centro) VALUES ('${profesor.dni}','${profesor.nombre}',
+                fechaNacimiento, fpDual, codigoCentro) VALUES ('${profesor.dni}','${profesor.nombre}',
                 '${profesor.apellidos}','${profesor.correo}','${profesor.movil}','${profesor.direccion}','${password}',
                 '${profesor.genero}',${profesor.cp},'${profesor.rol}',STR_TO_DATE('${profesor.fechaNacimiento}','%d/%m/%Y'),
                 '${profesor.fpDual}','${profesor.codigoCentro}')`

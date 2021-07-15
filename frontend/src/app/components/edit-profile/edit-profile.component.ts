@@ -14,6 +14,7 @@ export class EditProfileComponent implements OnInit {
   hide = true;
   hide2 = true;
   numero;
+  user;
   formGroupTutor;
   numeroExpediente;
   formGroupProfesor;
@@ -33,13 +34,26 @@ export class EditProfileComponent implements OnInit {
   rolesList = new Map<number, string>();
   fpList = new Map<number, string>();
   empresaList = new Map<string, string>();
-  constructor(private router: Router, private cookieService: CookieService) { }
+  constructor(private router: Router, private cookieService: CookieService) { 
+    
+  }
 
   ngOnInit(): void {
-    if(Number(this.cookieService.get('rol'))!=1){
+    
+    if(!this.cookieService.get('user')){
       this.router.navigate(['home']);
     }
+    else{
+      console.log("SIN JSON =>" +this.cookieService.get('user'));
+      this.user =(JSON.parse(this.cookieService.get('user')));
+      console.log(this.user)
+    if(Number(this.user.rol)!=1){
+      this.router.navigate(['home']);
+    }
+    
+    }
     this.editForm = this.createFormGroup();
+    this.editForm.setValue(this.user);
 
 }
 checkConfirmPassword(): ValidatorFn {
@@ -61,10 +75,7 @@ createFormGroup(): FormGroup {
     genero: new FormControl("", [Validators.required]),
     movil: new FormControl("", [Validators.required, Validators.pattern(/^(\+34|0034|34)?[ -]*(6|7)[ -]*([0-9][ -]*){8}$/)]),
     correo: new FormControl("", [Validators.required, Validators.email]),
-    fechaNacimiento: new FormControl("", [Validators.required, Validators.pattern(/^([0][1-9]|[12][0-9]|3[01])(\/)([0][1-9]|[1][0-2])\2(\d{4})$/)]),
-    rol: new FormControl("", [Validators.required]),
-    codigoCentro: new FormControl("", [Validators.required]),
-    fpDual: new FormControl("", [Validators.required]),
+    fecha_nacimiento: new FormControl("", [Validators.required, Validators.pattern(/^([0][1-9]|[12][0-9]|3[01])(\/)([0][1-9]|[1][0-2])\2(\d{4})$/)]),
     password: this.passwordFormControl,
     confirmPassword: this.confirmPasswordFormControl
   })

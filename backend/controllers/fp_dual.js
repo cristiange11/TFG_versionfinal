@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator');
-
+const jwt_decode = require('jwt-decode');
+const comprobarToken = require('../util/comprobarToken');
 const Fpdual = require('../models/fp_dual');
 
 exports.getFpByCentro = async (req, res, next) => {

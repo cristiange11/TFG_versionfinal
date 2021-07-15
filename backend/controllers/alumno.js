@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator');
-
+const jwt_decode = require('jwt-decode');
+const comprobarToken = require('../util/comprobarToken');
 const Alumno = require('../models/alumno');
 const bcrypt = require('bcryptjs');
 exports.getAlumnos = async (req, res, next) => {
@@ -76,7 +77,7 @@ exports.updateAlumno = async (req, res, next) => {
     }
 };*/
 exports.createAlumno = async (req, res, next) => {
-
+    
     const errors = validationResult(req);
     const resu = errors.array();
 

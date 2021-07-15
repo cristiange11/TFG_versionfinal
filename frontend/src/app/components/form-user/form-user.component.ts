@@ -53,8 +53,15 @@ export class FormUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(Number(this.cookieService.get('rol'))!=1){
+    if(!this.cookieService.get('user')){
       this.router.navigate(['home']);
+    }
+    else{
+      var user =(JSON.parse(this.cookieService.get('user')));
+    if(Number(user.rol)!=1){
+      this.router.navigate(['home']);
+    }
+    
     }
     this.centroService.getCentros().pipe(first())
       .subscribe(
@@ -63,7 +70,7 @@ export class FormUserComponent implements OnInit {
           let centros = data["centros"]
           centros.forEach(centroInfo => {
             
-            this.centroList.set(centroInfo.codigo_centro, centroInfo.nombre)
+            this.centroList.set(centroInfo.codigoCentro, centroInfo.nombre)
           });
         },
         error => {
@@ -75,7 +82,7 @@ export class FormUserComponent implements OnInit {
           this.rolesList = new Map<number, string>();
           let rol = data["roles"]
           rol.forEach(rolInfo => {
-            this.rolesList.set(rolInfo.id, rolInfo.nombre_rol)
+            this.rolesList.set(rolInfo.id, rolInfo.nombreRol)
           });
         },
         error => {
@@ -170,7 +177,7 @@ export class FormUserComponent implements OnInit {
   signup(): void {
     
     if(this.numero==1 || this.numero==2){
-      
+    
     this.authService.signup(this.signupForm.value).pipe(first())
       .subscribe(
         data => {
@@ -199,7 +206,7 @@ export class FormUserComponent implements OnInit {
       }
 
     else if(this.numero==5){
-      
+    
       this.alumnoService.createAlumno(this.signupForm.value, this.numeroExpediente.value).pipe(first())
       .subscribe(
         data => {
@@ -248,7 +255,7 @@ export class FormUserComponent implements OnInit {
           }
         });
     }else if(this.numero==3){
-      
+     
       this.tutorService.createTutor(this.signupForm.value, this.formGroupTutor.value).pipe(first())
       .subscribe(
         data => {

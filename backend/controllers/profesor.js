@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator');
-
+const jwt_decode = require('jwt-decode');
+const comprobarToken = require('../util/comprobarToken');
 const Profesor = require('../models/profesor');
 const bcrypt = require('bcryptjs');
 exports.getProfesores = async (req, res, next) => {

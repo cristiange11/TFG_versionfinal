@@ -12,7 +12,7 @@ module.exports = class Alumno extends User {
     }
     static async findExpediente(numeroExpediente) {
         return await promisePool.query(
-            `SELECT * FROM alumno where numero_expediente = '${numeroExpediente}'`);
+            `SELECT * FROM alumno where numeroExpediente = '${numeroExpediente}'`);
     }
     static async getAlumnos() {
         const [rows, fields] = await promisePool.query(
@@ -37,12 +37,12 @@ module.exports = class Alumno extends User {
         try {
             await connection.beginTransaction();
             let query = `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, 
-                fecha_nacimiento, fp_dual, codigo_centro) VALUES ('${alumno.dni}','${alumno.nombre}',
+                fechaNacimiento, fpDual, codigoCentro) VALUES ('${alumno.dni}','${alumno.nombre}',
                 '${alumno.apellidos}','${alumno.correo}','${alumno.movil}','${alumno.direccion}','${password}',
                 '${alumno.genero}',${alumno.cp},'${alumno.rol}',STR_TO_DATE('${alumno.fechaNacimiento}','%d/%m/%Y'),
                 '${alumno.fpDual}','${alumno.codigoCentro}')`
             await connection.query(query)
-            await connection.query(`INSERT INTO alumno(dni, numero_expediente) VALUES 
+            await connection.query(`INSERT INTO alumno(dni, numeroExpediente) VALUES 
             ('${alumno.dni}','${alumno.numeroExpediente}')`);
             await connection.commit();
         } catch (err) {

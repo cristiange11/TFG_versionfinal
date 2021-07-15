@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator');
-
+const jwt_decode = require('jwt-decode');
+const comprobarToken = require('../util/comprobarToken');
 const TutorEmpresa = require('../models/tutorEmpresa');
 const bcrypt = require('bcryptjs');
 exports.getTutores = async (req, res, next) => {
@@ -106,7 +107,7 @@ exports.createTutor = async (req, res, next) => {
             res.status(409).json({ "errors": resJSON });
         }
         else {
-
+            console.log("entro a crear tutor " + req.body)
             try {
                 const hashedPassword = await bcrypt.hash(req.body.password, 12);
                 const result = TutorEmpresa.createTutor(req.body, hashedPassword).then(function (result) {

@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator');
-
+const jwt_decode = require('jwt-decode');
+const comprobarToken = require('../util/comprobarToken');
 const Empresa = require('../models/empresa');
 
 exports.getEmpresas = async (req, res, next) => {

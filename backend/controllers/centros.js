@@ -4,6 +4,7 @@ const comprobarToken = require('../util/comprobarToken');
 const Centro = require('../models/centro');
 
 exports.getCentros = async (req, res, next) => {
+  
   console.log(req.headers);
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], { header: true }));
   console.log(expirado)
@@ -11,6 +12,7 @@ exports.getCentros = async (req, res, next) => {
     res.status(401).json({ "errors": "Sesión expirada" });
   } else {
     try {
+      console.log("Entro a conseguir los centros")
       const centros = await Centro.getCentros();
 
       res.status(200).json({ centros: centros });
@@ -26,6 +28,7 @@ exports.deleteCentro = async (req, res, next) => {
     res.status(401).json({ "errors": "Sesión expirada" });
   } else {
     try {
+      console.log("codigo centro => " + req.params.codigoCentro)
       const centro = await Centro.deleteCentro(req.params.codigoCentro)
 
       res.status(201).json({ message: "success" });
@@ -42,13 +45,16 @@ exports.updateCentro = async (req, res, next) => {
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
   } else {
+   
     const errors = validationResult(req);
+    console.log(errors)
     const resu = errors.array();
     const resJSON = [{
       param: String,
       message: String,
     }]
     resu.forEach(element => {
+     
       resJSON.push({
         param: element.param,
         message: element.msg
@@ -60,6 +66,7 @@ exports.updateCentro = async (req, res, next) => {
     }
     else {
       try {
+        console.log("entro a updatear")
         const result = Centro.updateCentro(req.body).then(function (result) {
           console.log("Promise Resolved");
 

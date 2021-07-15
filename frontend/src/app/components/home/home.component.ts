@@ -24,10 +24,15 @@ export class HomeComponent implements OnInit {
    }
   ngOnInit(): void {
     this.navigationComponent.obtenerItems();
-    if(this.cookieService.get('rol')!=""){
-      if(Number(this.cookieService.get('rol'))==1){
-       this.router.navigate(['adminpage']);
-      }
+    if(!this.cookieService.get('user')){
+      this.router.navigate(['home']);
+    }
+    else{
+      var user =(JSON.parse(this.cookieService.get('user')));
+    if(Number(user.rol)==1){
+      this.router.navigate(['adminpage']);
+    }
+    
     }
   }
 

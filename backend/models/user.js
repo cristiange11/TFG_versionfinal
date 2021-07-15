@@ -12,9 +12,9 @@ module.exports = class User {
         this.genero = json.genero;
         this.cp = json.cp;
         this.rol = json.rol;
-        this.fecha_nacimiento = json.fechaNacimiento;
-        this.fp_dual = json.fpDual;
-        this.codigo_centro = json.codigo_centro;
+        this.fechaNacimiento = json.fechaNacimiento;
+        this.fpDual = json.fpDual;
+        this.codigoCentro = json.codigoCentro;
     }
     static async find(dni) {
         return await promisePool.query(
@@ -32,7 +32,7 @@ module.exports = class User {
     static async save(user) {
 
         const [rows, fields] = await promisePool.query(
-            `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fecha_nacimiento, fp_dual, codigo_centro) VALUES ('${user.dni}','${user.nombre}','${user.apellidos}','${user.correo}','${user.movil}','${user.direccion}','${user.password}','${user.genero}',${user.cp},'${user.rol}',STR_TO_DATE('${user.fechaNacimiento}','%d/%m/%Y'),'${user.fpDual}','${user.codigoCentro}')`
+            `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fechaNacimiento, fpDual, codigoCentro) VALUES ('${user.dni}','${user.nombre}','${user.apellidos}','${user.correo}','${user.movil}','${user.direccion}','${user.password}','${user.genero}',${user.cp},'${user.rol}',STR_TO_DATE('${user.fechaNacimiento}','%d/%m/%Y'),'${user.fpDual}','${user.codigoCentro}')`
         );
         return rows;
     }
@@ -44,8 +44,8 @@ module.exports = class User {
         return await promisePool.query(
             `UPDATE usuario SET nombre='${user.nombre}',apellidos='${user.apellidos}',correo='${user.correo}',
             movil='${user.movil}',direccion='${user.direccion}',password='${user.password}',genero='${user.genero}',
-            cp='${user.cp}',rol='[value-10]',fecha_nacimiento=STR_TO_DATE('${user.fechaNacimiento}',fp_dual='${user.fpDual}'
-            ,codigo_centro='${user.codigoCentro}' WHERE dni= ${user.dni}`);
+            cp='${user.cp}',rol='[value-10]',fechaNacimiento=STR_TO_DATE('${user.fechaNacimiento}',fpDual='${user.fpDual}'
+            ,codigoCentro='${user.codigoCentro}' WHERE dni= ${user.dni}`);
     }
     static async getUsers() {
         return await promisePool.query(

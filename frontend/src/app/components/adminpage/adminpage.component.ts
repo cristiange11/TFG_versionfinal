@@ -11,9 +11,9 @@ import {CentroService} from '../../services/centro.service';
 import {FpdualesService} from '../../services/fpduales.service';
 import { AppComponent } from '../../app.component';
 import  {DeleteComponent } from '../modals/delete/delete.component';
-import {CentroUpdateComponent} from '../modals/centro-update/centro-update.component';
-import {CentroDeleteConfirmationComponent} from '../modals/centro-delete-confirmation/centro-delete-confirmation.component';
-import { CentroCreateComponent } from '../modals/centro-create/centro-create.component';
+import {CentroUpdateComponent} from '../modals/centro/centro-update/centro-update.component';
+import {CentroDeleteConfirmationComponent} from '../modals/centro/centro-delete-confirmation/centro-delete-confirmation.component';
+import { CentroCreateComponent } from '../modals/centro/centro-create/centro-create.component';
 import { CookieService } from 'ngx-cookie-service';
 import {NavigationComponent} from '../navigation/navigation.component';
 
@@ -29,7 +29,7 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   
-  public displayedColumns: string[] = ['codigo_centro', 'nombre', 'provincia', 'direccion', 'CP', 'telefono', 'correo'];
+  public displayedColumns: string[] = ['codigoCentro', 'nombre', 'provincia', 'direccion', 'CP', 'telefono', 'correo'];
   public columnsToDisplay: string[] = [...this.displayedColumns, 'actions'];
 
   public columnsFilters = {};
@@ -45,8 +45,15 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     this.nagivationComponent.obtenerItems();
     this.getAll();
-    if(Number(this.cookieService.get('rol'))!= 1){
+    if(!this.cookieService.get('user')){
       this.router.navigate(['home']);
+    }
+    else{
+      var user =(JSON.parse(this.cookieService.get('user')));
+    if(Number(user.rol)!=1){
+      this.router.navigate(['home']);
+    }
+    
     }
    
     }
@@ -176,7 +183,7 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   delete(codigoCentro: any) {
     const dialogRef = this.dialog.open(DeleteComponent);
-
+    
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.centroService.deleteCentro(codigoCentro).pipe(first())
