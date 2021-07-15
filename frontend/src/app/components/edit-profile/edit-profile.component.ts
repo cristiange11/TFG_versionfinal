@@ -3,7 +3,9 @@ import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from
 import { RouterModule, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { first } from 'rxjs/operators';
+import { AppComponent } from 'src/app/app.component';
 import { User } from 'src/app/models/User';
+import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-edit-profile',
   templateUrl: './edit-profile.component.html',
@@ -18,6 +20,7 @@ export class EditProfileComponent implements OnInit {
   formGroupTutor;
   numeroExpediente;
   formGroupProfesor;
+  
   passwordFormControl = new FormControl("", [
     Validators.required,
     Validators.pattern(
@@ -34,7 +37,7 @@ export class EditProfileComponent implements OnInit {
   rolesList = new Map<number, string>();
   fpList = new Map<number, string>();
   empresaList = new Map<string, string>();
-  constructor(private router: Router, private cookieService: CookieService) { 
+  constructor(private authService: AuthService, private router: Router, private cookieService: CookieService) { 
     
   }
 
@@ -53,7 +56,15 @@ export class EditProfileComponent implements OnInit {
     
     }
     this.editForm = this.createFormGroup();
-    this.editForm.setValue(this.user);
+    this.editForm.get('nombre').setValue(this.user.nombre);
+    this.editForm.get('apellidos').setValue(this.user.apellidos);
+    this.editForm.get('direccion').setValue(this.user.direccion);
+    this.editForm.get('cp').setValue(this.user.cp);
+    this.editForm.get('movil').setValue(this.user.movil);
+    this.editForm.get('correo').setValue(this.user.correo);
+    this.editForm.get('fechaNacimiento').setValue(this.user.fechaNacimiento);
+    this.editForm.get('genero').setValue(this.user.genero);
+    
 
 }
 checkConfirmPassword(): ValidatorFn {
@@ -67,7 +78,7 @@ get passwordValue() {
 }
 createFormGroup(): FormGroup {
   const res = new FormGroup({
-    dni: new FormControl("", [Validators.required, Validators.pattern(/^\d{8}[a-zA-Z]$/)]),
+    
     nombre: new FormControl("", [Validators.required, Validators.minLength(4)]),
     apellidos: new FormControl("", [Validators.required, Validators.minLength(4)]),
     direccion: new FormControl("", [Validators.required]),
@@ -75,7 +86,7 @@ createFormGroup(): FormGroup {
     genero: new FormControl("", [Validators.required]),
     movil: new FormControl("", [Validators.required, Validators.pattern(/^(\+34|0034|34)?[ -]*(6|7)[ -]*([0-9][ -]*){8}$/)]),
     correo: new FormControl("", [Validators.required, Validators.email]),
-    fecha_nacimiento: new FormControl("", [Validators.required, Validators.pattern(/^([0][1-9]|[12][0-9]|3[01])(\/)([0][1-9]|[1][0-2])\2(\d{4})$/)]),
+    fechaNacimiento: new FormControl("", [Validators.required, Validators.pattern(/^([0][1-9]|[12][0-9]|3[01])(\/)([0][1-9]|[1][0-2])\2(\d{4})$/)]),
     password: this.passwordFormControl,
     confirmPassword: this.confirmPasswordFormControl
   })
@@ -137,6 +148,33 @@ getErrorMessage(attribute: string){
   return false;
 }
 editProfile(){
-  console.log("entro")
+  
+ 
+  this.authService.updateUsuario(this.editForm.value, this.user).pipe(first())
+  .subscribe(
+    data => {
+      var arrayRes= new Array();
+      arrayRes.push("Usuario actualizado correctamente");
+      AppComponent.myapp.openDialog(arrayRes);
+    },
+    error => {
+      console.log(error.error.errors)
+      if(error.status == 401){
+        var arrayRes= new Array();
+      arrayRes.push(error.error.errors);
+      AppComponent.myapp.openDialog(arrayRes);
+      }
+      else if(error.status == 409){
+        error.error.errors.forEach(errorInfo => {
+          const formControl = this.editForm.get(errorInfo.param);
+           if (formControl) {
+             formControl.setErrors({
+               serverError: errorInfo.message
+             });  
+           }          
+         });
+      }
+   
+    });
 }
 }

@@ -22,12 +22,15 @@ module.exports = class User {
     }
 
     static async findCorreo(correo,dni) {
+        
         return await promisePool.query(
-            `SELECT * FROM usuario where correo = '${correo}' AND dni!= '${dni}'`);
+            `SELECT * FROM usuario where correo ='${correo}' AND dni !='${dni}'`);
     }
     static async findMovil(movil,dni) {
+        console.log("ENTRAAAA")
+        console.log(`SELECT * FROM usuario where movil ='${movil}' AND dni !='${dni}'`);
         return await promisePool.query(
-            `SELECT * FROM usuario where movil = '${movil}' AND dni!= '${dni}'`);
+            `SELECT * FROM usuario where movil ='${movil}' AND dni !='${dni}'`);
     }
     static async save(user) {
 
@@ -40,12 +43,17 @@ module.exports = class User {
         return await promisePool.query(
             `SELECT * FROM usuario where correo = '${correo}'`);
     }
-    static async updateUser(user) {
+    static async updateUser(user, password) {
+        console.log(user.fechaNacimiento)
+        console.log(`UPDATE usuario SET nombre='${user.nombre}',apellidos='${user.apellidos}',correo='${user.correo}',
+        movil='${user.movil}',direccion='${user.direccion}',password='${user.password}',genero='${user.genero}',
+        cp='${user.cp}',rol='${user.rol}',fechaNacimiento=STR_TO_DATE('${user.fechaNacimiento},'%d/%m/%Y')',fpDual='${user.fpDual}'
+        ,codigoCentro='${user.codigoCentro}' WHERE dni= '${user.dni}'`)
         return await promisePool.query(
             `UPDATE usuario SET nombre='${user.nombre}',apellidos='${user.apellidos}',correo='${user.correo}',
             movil='${user.movil}',direccion='${user.direccion}',password='${user.password}',genero='${user.genero}',
-            cp='${user.cp}',rol='[value-10]',fechaNacimiento=STR_TO_DATE('${user.fechaNacimiento}',fpDual='${user.fpDual}'
-            ,codigoCentro='${user.codigoCentro}' WHERE dni= ${user.dni}`);
+            cp='${user.cp}',rol='${user.rol}',fechaNacimiento=STR_TO_DATE('${user.fechaNacimiento}','%d/%m/%Y'),fpDual='${user.fpDual}'
+            ,codigoCentro='${user.codigoCentro}' WHERE dni='${user.dni}`);
     }
     static async getUsers() {
         return await promisePool.query(

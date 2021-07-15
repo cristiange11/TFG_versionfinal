@@ -13,15 +13,16 @@ module.exports = class Centro {
     static async find(codigoCentro) {
 
         return await promisePool.query(
-            `SELECT * FROM centroEducativo where codigoCentro = '${codigoCentro}'`);
+            `SELECT * FROM centro_educativo where codigoCentro = '${codigoCentro}'`);
     }
     static async findCorreo(correo, codigoCentro) {
         return await promisePool.query(
-            `SELECT * FROM centroEducativo where correo = '${correo}' AND codigoCentro != '${codigoCentro}'`);
+            `SELECT * FROM centro_educativo where correo = '${correo}' AND codigoCentro != '${codigoCentro}'`);
     }
     static async findTelefono(telefono, codigoCentro) {
+        console.log(`SELECT * FROM centro_educativo where telefono = '${telefono}'  AND codigoCentro != '${codigoCentro}'`)
         return await promisePool.query(
-            `SELECT * FROM centro_educativo where telefono = '${telefono}' codigoCentro AND codigoCentro != '${codigoCentro}'`);
+            `SELECT * FROM centro_educativo where telefono = '${telefono}'  AND codigoCentro != '${codigoCentro}'`);
     }
 
     static async getCentros() {

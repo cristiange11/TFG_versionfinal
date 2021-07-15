@@ -26,12 +26,16 @@
         <input matInput type="text" name="telefono" formControlName="telefono" required />
         <mat-error *ngIf="formInstance.controls['telefono']?.errors?.required">Tel&eacute;fono requerido</mat-error>
         <mat-error *ngIf="formInstance.controls['telefono']?.errors?.pattern">Formato tel&eacute;fono incorrecto</mat-error>
-    </mat-form-field>
+        <mat-error *ngIf="formInstance.controls['telefono']?.errors?.serverError">{{formInstance.controls['telefono']?.errors?.serverError}}</mat-error>
+
+      </mat-form-field>
     <mat-form-field class="fullWidth" appearance="outline">
         <input matInput type="text" name="correo" formControlName="correo" required />
         <mat-error *ngIf="formInstance.controls['correo']?.errors?.required">Correo requerido</mat-error>
         <mat-error *ngIf="formInstance.controls['correo']?.errors?.email">Formato correo incorrecto</mat-error>
-    </mat-form-field>
+        <mat-error *ngIf="formInstance.controls['correo']?.errors?.serverError">{{formInstance.controls['correo']?.errors?.serverError}}</mat-error>
+
+      </mat-form-field>
   </form>
 </div>
 <div class="mt-5" mat-dialog-actions>

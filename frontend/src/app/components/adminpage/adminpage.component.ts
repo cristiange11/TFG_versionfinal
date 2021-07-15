@@ -70,7 +70,10 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
             this.dataSource.data = this.centroList
         },
         error => {
-          console.log(error.error.message);
+          console.log(error);
+         /* var arrayRes= new Array();
+      arrayRes.push(error.error.errors);
+      AppComponent.myapp.openDialog(arrayRes);*/
         });
   }
   private filter() {

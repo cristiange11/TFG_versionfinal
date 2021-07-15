@@ -86,7 +86,7 @@ exports.signup = async (req, res, next) => {
           res.status(201).json({ message: "success" });
         }).catch(function () {
           console.log("Promise Rejected");
-          res.status(401).json({ message: "no se ha podido crear el usuario:" + err });
+          res.status(401).json({ errors: "no se ha podido crear el usuario:" });
         });
 
 
@@ -109,8 +109,7 @@ exports.login = async (req, res, next) => {
       userJson["fechaNacimiento"] = "12/12/2012";
       let user = new User(userJson)
       const isEqual = await bcrypt.compare(password, user.password);
-      console.log("Usuario => " + userJson.fecha_nacimiento)
-      console.log("FP => " + userJson.fp_dual)
+      
       if (!isEqual) {
         res.status(401).json({ message: 'Credenciales incorrectas.' });
       }
@@ -121,7 +120,7 @@ exports.login = async (req, res, next) => {
         res.status(200).json(resJSON);
       }
     } else {
-      res.status(401).json({ message: 'Credenciales incorrectas.' });
+      res.status(401).json({ errors: 'Credenciales incorrectas.' });
     }
   } catch (err) {
     console.log("error => " + err)
@@ -144,12 +143,15 @@ exports.getUsuarios = async (req, res, next) => {
 
 };
 exports.updateUsuario = async (req, res, next) => {
+
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
   } else {
     const errors = validationResult(req);
     const resu = errors.array();
+    console.log("Variable errror " + errors);
+    console.log("ERRRRRORRRR" + resu.length);
     const resJSON = [{
       param: String,
       message: String,
@@ -162,16 +164,19 @@ exports.updateUsuario = async (req, res, next) => {
     });
 
     if (!errors.isEmpty()) {
+      
       res.status(409).json({ "errors": resJSON });
     }
     else {
       try {
-        const result = User.updateUser(req.body).then(function (result) {
+        console.log("No entro en errores")
+        const hashedPassword = await bcrypt.hash(req.body.password, 12);
+        const result = User.updateUser(req.body, hashedPassword).then(function (result) {
           console.log("Promise Resolved");
 
           res.status(201).json({ message: "sucess" });
         }).catch(function () {
-          res.status(401).json({ message: "no se ha podido actualizar el usuario:" + err });
+          res.status(401).json({ errors: "No se ha podido actualizar el usuario"  });
 
         });
 

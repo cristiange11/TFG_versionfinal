@@ -74,18 +74,23 @@ router.put(
     body('movil').trim().not().isEmpty().withMessage("Móvil vacío")
       .matches(/^(\+34|0034|34)?[ -]*(6|7)[ -]*([0-9][ -]*){8}$/).withMessage("Formato del móvil incorrecto")
       .custom(async (movil) => {
+        console.log(movil)
         body('dni').custom(async (dni) => {
-          const user = await Centro.findTelefono(telefono, dni);
+          console.log(dni)
+          const user = await User.findMovil(movil, dni);
+          console.log("Usuario comprobacion movil " + user[0][0])
           if (user[0].length > 0) {
-            return Promise.reject('Teléfono introducido ya existe!');
+            return Promise.reject('Móvil introducido ya existe!');
           }
         })
+        
       }),
     body('correo')
       .isEmail().withMessage("Formato correo incorrecto")
       .custom(async (correo) => {
         body('dni').custom(async (dni) => {
-          const user = await Centro.findCorreo(telefono, dni);
+          const user = await User.findCorreo(correo, dni);
+          console.log("Usuario comprobacion correo " + user[0][0])
           if (user[0].length > 0) {
             return Promise.reject('Correo introducido ya existe!');
           }

@@ -40,12 +40,19 @@ export class CentroUpdateComponent implements OnInit {
          window.location.reload();
         },
         error => {
-          const res = new Array();
-          res.push("No se ha podido actualizar.");
-          AppComponent.myapp.openDialog(res);
+          error.error.errors.forEach(errorInfo => {
+            const formControl = this.formInstance.get(errorInfo.param);
+             if (formControl) {
+               formControl.setErrors({
+                 serverError: errorInfo.message
+               });  
+             }          
+           });
         });
+          
+        
     
-    this.dialogRef.close(Object.assign(new Centro(), this.formInstance.value));
+   // this.dialogRef.close(Object.assign(new Centro(), this.formInstance.value));
   }
 
 }

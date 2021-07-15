@@ -5,6 +5,7 @@ import { first } from 'rxjs/operators';
 import { User } from 'src/app/models/User';
 import { AuthService } from 'src/app/services/auth.service';
 import { CookieService } from 'ngx-cookie-service';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-login',
@@ -53,7 +54,10 @@ export class LoginComponent implements OnInit {
         
         },
         error => {
-            console.log(error);           
+          console.log(error.error.errors.message)
+            var arrayRes= new Array();
+          arrayRes.push(error.error.message);
+          AppComponent.myapp.openDialog(arrayRes);          
         });
   }
   getErrorMessage(attribute: String) {

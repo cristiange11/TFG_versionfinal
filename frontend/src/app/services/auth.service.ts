@@ -35,7 +35,23 @@ export class AuthService {
     console.log('LOGIIIIIIN');
     return this.http.post<JSON>(`${this.url}/login`, { dni, password }, this.httpOptions);   
   }
-  updateUsuario(user : User): Observable<JSON>{
+  updateUsuario(editForm , userJson): Observable<JSON>{
+    var user = {
+      dni : userJson.dni,
+      nombre: editForm.nombre,
+      apellidos: editForm.apellidos,
+      correo: editForm.correo,
+      movil: editForm.movil,
+      direccion: editForm.direccion,
+      password: editForm.password,
+      genero: editForm.genero,
+      cp: editForm.cp,
+      rol: userJson.rol,
+      fechaNacimiento: editForm.fechaNacimiento,
+      fpDual: userJson.fpDual,
+      codigoCentro: userJson.codigoCentro
+    };
+    
     return this.http.put<JSON>(`${this.url}/update`, user, this.httpOptions);
   }
 }

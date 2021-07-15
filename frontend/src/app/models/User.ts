@@ -27,4 +27,5 @@ export class User {
         this.fpDual = form.fpDual;
         this.codigoCentro = form.codigoCentro;
     }
+    
 }

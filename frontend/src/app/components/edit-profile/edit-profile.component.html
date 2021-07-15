@@ -1,41 +1,41 @@
-<form [formGroup]="editForm" (ngSubmit)="editProfile()" novalidate class="custom-form" >
+<form [formGroup]="editForm" novalidate class="custom-form" >
     <h1 align="center">Editar Perfil</h1>
 <mat-form-field>
-      <input matInput type="text" formControlName="nombre"   required>
+      <input matInput type="text" formControlName="nombre"  placeholder="Nombre" required>
       <mat-error *ngIf="this.editForm.get('nombre').errors?.required">{{ getErrorMessage("nombre") }}</mat-error>
       <mat-error *ngIf="this.editForm.get('nombre').errors?.minlength">{{ getErrorMessage("nombre") }}</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input matInput type="text" formControlName="apellidos" placeholder="Apellidos" required>
+      <input matInput type="text" formControlName="apellidos" placeholder="Apellidos"  required>
       <mat-error *ngIf="this.editForm.get('apellidos').errors?.required">{{ getErrorMessage("apellidos") }}</mat-error>
       <mat-error *ngIf="this.editForm.get('apellidos').errors?.minlength">{{ getErrorMessage("apellidos") }}</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input matInput type="text" formControlName="direccion" placeholder="Direcci&oacute;n" required>
+      <input matInput type="text" formControlName="direccion"  placeholder="Direcci&oacute;n" required>
       <mat-error *ngIf="this.editForm.get('direccion').errors?.required">{{ getErrorMessage("direccion") }}</mat-error>
   
     </mat-form-field>
     <mat-form-field>
-      <input matInput type="text" formControlName="cp" placeholder="CP" required>
+      <input matInput type="text" formControlName="cp" placeholder="CP"  required>
       <mat-error *ngIf="this.editForm.get('cp').errors?.required">{{ getErrorMessage("cp") }}</mat-error>
       <mat-error *ngIf="this.editForm.get('cp').errors?.pattern">{{ getErrorMessage("cp") }}</mat-error>
   
     </mat-form-field>
     <mat-form-field>
-      <input matInput type="text" formControlName="movil" placeholder="M&oacute;vil" required>
+      <input matInput type="text" formControlName="movil" placeholder="M&oacute;vil"  required>
       <mat-error *ngIf="this.editForm.get('movil').errors?.required">{{ getErrorMessage("movil") }}</mat-error>
       <mat-error *ngIf="this.editForm.get('movil').dirty && this.editForm.get('movil').errors?.pattern">{{ getErrorMessage("movil") }}</mat-error>
       <mat-error *ngIf="this.editForm.get('movil').errors?.serverError">{{ this.editForm.get('movil').errors?.serverError }}</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input matInput type="text" formControlName="correo" placeholder="Correo" required>
+      <input matInput type="text" formControlName="correo" placeholder="Correo"  required>
       <mat-error *ngIf=" this.editForm.get('correo').errors?.required">{{ getErrorMessage("correo") }}</mat-error>
       <mat-error *ngIf="this.editForm.get('correo').dirty && this.editForm.get('correo').errors?.email">{{ getErrorMessage("correo") }}</mat-error>
       <mat-error *ngIf="this.editForm.get('correo').errors?.serverError ">{{ this.editForm.get('correo').errors?.serverError }}</mat-error>
   
     </mat-form-field>
     <mat-form-field>
-      <input matInput type="text" formControlName="fechaNacimiento" placeholder="Fecha de nacimiento (dd/mm/yyyy)" required>
+      <input matInput type="text" formControlName="fechaNacimiento"  placeholder="Fecha de nacimiento (dd/mm/yyyy)" required>
       <mat-error *ngIf="this.editForm.get('fechaNacimiento').errors?.required">{{ getErrorMessage("fechaNacimiento") }}</mat-error>
       <mat-error *ngIf="this.editForm.get('fechaNacimiento').errors?.pattern">{{ getErrorMessage("fechaNacimiento") }}</mat-error>
   
@@ -60,7 +60,7 @@
     
     <mat-form-field appearance="fill">
       <mat-label>G&eacute;nero</mat-label>
-      <mat-select matNativeControl required formControlName="genero">
+      <mat-select matNativeControl required  formControlName="genero">
         <mat-option  value="masculino">Masculino</mat-option>
         <mat-option  value="femenino" >Femenino</mat-option>
       </mat-select>
@@ -68,7 +68,7 @@
     </mat-form-field>
    
     
-    <button class="boton-envio"  type="submit">
+    <button class="boton-envio" (click)="editProfile()" [disabled]="!editForm.valid"  >
       <span>Editar Perfil</span>
     </button>
     <mat-label></mat-label>

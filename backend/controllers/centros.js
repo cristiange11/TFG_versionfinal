@@ -45,16 +45,13 @@ exports.updateCentro = async (req, res, next) => {
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
   } else {
-   
     const errors = validationResult(req);
-    console.log(errors)
     const resu = errors.array();
     const resJSON = [{
       param: String,
       message: String,
     }]
     resu.forEach(element => {
-     
       resJSON.push({
         param: element.param,
         message: element.msg
@@ -72,7 +69,7 @@ exports.updateCentro = async (req, res, next) => {
 
           res.status(201).json({ message: "sucess" });
         }).catch(function () {
-          res.status(401).json({ message: "no se ha podido actualizar el centro:" + err });
+          res.status(401).json({  "errors": "no se ha podido actualizar el centro:" + err });
 
         });
 
