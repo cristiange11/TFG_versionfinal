@@ -9,7 +9,7 @@ exports.getAlumnos = async (req, res, next) => {
         res.status(200).json({ alumnos: alumnos });
 
     } catch (err) {
-        res.status(500).json({ error : err });
+        res.status(500).json({ error: err });
     }
 
 };
@@ -20,7 +20,7 @@ exports.getAlumno = async (req, res, next) => {
         res.status(200).json({ alumno: alumno });
 
     } catch (err) {
-        res.status(500).json({ error : err });
+        res.status(500).json({ error: err });
     }
 
 };
@@ -31,7 +31,7 @@ exports.deleteAlumno = async (req, res, next) => {
         res.status(200).json({ alumno: alumno });
 
     } catch (err) {
-        res.status(500).json({ error : err });
+        res.status(500).json({ error: err });
     }
 
 };/*
@@ -76,34 +76,34 @@ exports.updateAlumno = async (req, res, next) => {
     }
 };*/
 exports.createAlumno = async (req, res, next) => {
-    
+
     const errors = validationResult(req);
     const resu = errors.array();
-  
-    const resJSON=[{
+
+    const resJSON = [{
         param: String,
         message: String,
-      }]
-      resu.forEach(element => {
+    }]
+    resu.forEach(element => {
         resJSON.push({
-          param: element.param,
-          message: element.msg
+            param: element.param,
+            message: element.msg
         })
-      });
-      
-      if (!errors.isEmpty()) {
+    });
+
+    if (!errors.isEmpty()) {
         res.status(409).json({ "errors": resJSON });
-      }
+    }
     else {
         try {
             const hashedPassword = await bcrypt.hash(req.body.password, 12);
             Alumno.createAlumno(req.body, hashedPassword).then(function (result) {
                 res.status(201).json({ alumno: "success" });
             }).catch(function (err) {
-                res.status(409).json({ message: "no se ha podido crear el alumno:"+err });
+                res.status(409).json({ message: "no se ha podido crear el alumno:" + err });
             });
         } catch (err) {
-            res.status(500).json({ error : err });
+            res.status(500).json({ error: err });
         }
     }
 };

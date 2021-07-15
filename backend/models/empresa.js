@@ -23,13 +23,6 @@ module.exports = class Empresa {
             `SELECT * FROM empresa `);
         return rows;
     }
-    static async getEmpresa(CIF) {
-        const [rows, fields] = await promisePool.query(
-            `SELECT * FROM empresa WHERE CIF='${CIF}'`
-        );
-        return rows;
-    }
-    
     static async deleteEmpresa(CIF) {
         const [rows, fields] = await promisePool.query(
             `DELETE FROM empresa WHERE CIF = '${CIF}' `);

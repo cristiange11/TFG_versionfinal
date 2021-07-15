@@ -16,85 +16,85 @@ exports.signup = async (req, res, next) => {
     res.status(401).json({ "errors": "Sesión expirada" });
   } 
   */
-  
- console.log(req.headers);
-  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'],  { header: true }));
+
+  console.log(req.headers);
+  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], { header: true }));
   console.log(expirado)
-  if(expirado){
+  if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
   }
-  
-  
-  else {
-  
-  const errors = validationResult(req);
-  const resu = errors.array();
-  const resJSON = [{
-    param: String,
-    message: String,
-  }]
-  resu.forEach(element => {
-    resJSON.push({
-      param: element.param,
-      message: element.msg
-    })
-  });
 
-  if (!errors.isEmpty()) {
-    res.status(409).json({ "errors": resJSON });
-  }
+
   else {
 
-    const dni = req.body.dni;
-    const nombre = req.body.nombre;
-    const apellidos = req.body.apellidos;
-    const correo = req.body.correo;
-    const movil = req.body.movil;
-    const direccion = req.body.direccion;
-    const password = req.body.password;
-    const genero = req.body.genero;
-    const cp = req.body.cp;
-    const rol = req.body.rol;
-    const fechaNacimiento = req.body.fechaNacimiento;
-    const codigoCentro = req.body.codigoCentro;
-    const fpDual = req.body.fpDual;
+    const errors = validationResult(req);
+    const resu = errors.array();
+    const resJSON = [{
+      param: String,
+      message: String,
+    }]
+    resu.forEach(element => {
+      resJSON.push({
+        param: element.param,
+        message: element.msg
+      })
+    });
 
-    try {
-
-      const hashedPassword = await bcrypt.hash(password, 12);
-
-      const us = {
-        dni: dni,
-        nombre: nombre,
-        genero: genero,
-        apellidos: apellidos,
-        correo: correo,
-        movil: movil,
-        direccion: direccion,
-        password: hashedPassword,
-        cp: cp,
-        rol: rol,
-        fechaNacimiento: fechaNacimiento,
-        fpDual: fpDual,
-        codigoCentro: codigoCentro
-      };
-
-
-      const result = User.save(us).then(function (result) {
-        console.log("Promise Resolved");
-
-        res.status(201).json({ message: "success" });
-      }).catch(function () {
-        console.log("Promise Rejected");
-        res.status(401).json({ message: "no se ha podido crear el usuario:" + err });
-      });
-
-
-    } catch (err) {
-
-      res.status(500).json({ error : err });
+    if (!errors.isEmpty()) {
+      res.status(409).json({ "errors": resJSON });
     }
-  }
+    else {
+
+      const dni = req.body.dni;
+      const nombre = req.body.nombre;
+      const apellidos = req.body.apellidos;
+      const correo = req.body.correo;
+      const movil = req.body.movil;
+      const direccion = req.body.direccion;
+      const password = req.body.password;
+      const genero = req.body.genero;
+      const cp = req.body.cp;
+      const rol = req.body.rol;
+      const fechaNacimiento = req.body.fechaNacimiento;
+      const codigoCentro = req.body.codigoCentro;
+      const fpDual = req.body.fpDual;
+
+      try {
+
+        const hashedPassword = await bcrypt.hash(password, 12);
+
+        const us = {
+          dni: dni,
+          nombre: nombre,
+          genero: genero,
+          apellidos: apellidos,
+          correo: correo,
+          movil: movil,
+          direccion: direccion,
+          password: hashedPassword,
+          cp: cp,
+          rol: rol,
+          fechaNacimiento: fechaNacimiento,
+          fpDual: fpDual,
+          codigoCentro: codigoCentro
+        };
+
+
+        const result = User.save(us).then(function (result) {
+          console.log("Promise Resolved");
+
+          res.status(201).json({ message: "success" });
+        }).catch(function () {
+          console.log("Promise Rejected");
+          res.status(401).json({ message: "no se ha podido crear el usuario:" + err });
+        });
+
+
+      } catch (err) {
+
+        res.status(500).json({ error: err });
+      }
+    }
   }
 };
 
@@ -137,7 +137,7 @@ exports.getUsuarios = async (req, res, next) => {
     res.status(200).json({ message: usuario });
 
   } catch (err) {
-    res.status(500).json({ error : err });
+    res.status(500).json({ error: err });
   }
 
 };

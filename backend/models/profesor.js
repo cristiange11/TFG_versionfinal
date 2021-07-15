@@ -14,13 +14,7 @@ module.exports = class Profesor extends User {
             `SELECT * FROM profesor `);
         return rows;
     }
-    static async getProfesor(dni) {
-        const [rows, fields] = await promisePool.query(
-            `SELECT * FROM profesor WHERE dni='${dni}'`
-        );
-        return rows;
-    }
-    
+
     static async deleteProfesor(dni) {
         const [rows, fields] = await promisePool.query(
             `DELETE FROM profesor WHERE dni = '${dni}' `);

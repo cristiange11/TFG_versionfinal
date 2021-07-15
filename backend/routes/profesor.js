@@ -1,19 +1,19 @@
 const express = require('express');
 const { body } = require('express-validator');
 const router = express.Router();
-const User= require ('../models/user');
+const User = require('../models/user');
 const profesorController = require('../controllers/profesor');
 
 router.get('/', profesorController.getProfesores);
 
-router.get('/:dni', profesorController.getProfesor);
+
 
 router.delete('/:dni', profesorController.deleteProfesor);
 
 router.post(
-    '/create',
-    [
-      body('dni').trim().not().isEmpty().withMessage("Dni vacío")
+  '/create',
+  [
+    body('dni').trim().not().isEmpty().withMessage("Dni vacío")
       .matches(/^\d{8}[a-zA-Z]$/).withMessage("Formato DNI incorrecto")
       .custom(async (dni) => {
         const user = await User.find(dni);
@@ -21,7 +21,7 @@ router.post(
           return Promise.reject('DNI ya existe!');
         }
       }),
-      body('nombre').trim().not().isEmpty().withMessage("Nombre vacío"),
+    body('nombre').trim().not().isEmpty().withMessage("Nombre vacío"),
     body('direccion').trim().not().isEmpty().withMessage("Dirección vacía"),
     body('genero').trim().not().isEmpty().withMessage("Género vacío"),
     body('cp').trim().not().isEmpty()
@@ -29,7 +29,7 @@ router.post(
     body('apellidos').trim().not().isEmpty().withMessage("Apellidos vacío"),
     body('rol').trim().not().isEmpty().withMessage("Rol vacío"),
     body('fechaNacimiento').trim().not().isEmpty().withMessage("Fecha de nacimiento vacía")
-    .matches(/^([0][1-9]|[12][0-9]|3[01])(\/)([0][1-9]|[1][0-2])\2(\d{4})$/).withMessage("Formato fecha incorrecto: dd/mm/yyyy"),
+      .matches(/^([0][1-9]|[12][0-9]|3[01])(\/)([0][1-9]|[1][0-2])\2(\d{4})$/).withMessage("Formato fecha incorrecto: dd/mm/yyyy"),
     body('fpDual').trim().not().isEmpty().withMessage("FP vacío"),
     body('codigoCentro').trim().not().isEmpty().withMessage("Código del centro vacío"),
     body('movil').trim().not().isEmpty().withMessage("Móvil vacío")
@@ -50,18 +50,18 @@ router.post(
       })
       .normalizeEmail(),
     body('password').trim().isLength({ min: 6 }).withMessage("Contraseña con una longitud menor a 6"),
-      body('departamento').trim().not().isEmpty().withMessage("Departamento vacío"),
-      
-    ],
-      profesorController.createProfesor
-  );
+    body('departamento').trim().not().isEmpty().withMessage("Departamento vacío"),
+
+  ],
+  profesorController.createProfesor
+);
 
 router.put(
-    '/update',
-    [
-      body('departamento').trim().not().isEmpty().withMessage("Departamento vacío"), 
-    ],
-      profesorController.updateProfesor
-  );
-  
+  '/update',
+  [
+    body('departamento').trim().not().isEmpty().withMessage("Departamento vacío"),
+  ],
+  profesorController.updateProfesor
+);
+
 module.exports = router;

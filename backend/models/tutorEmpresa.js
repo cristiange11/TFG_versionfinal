@@ -15,13 +15,6 @@ module.exports = class TutorEmpresa {
             `SELECT * FROM tutorEmpresa `);
         return rows;
     }
-    static async getTutor(dni) {
-        const [rows, fields] = await promisePool.query(
-            `SELECT * FROM tutorEmpresa WHERE dni='${dni}'`
-        );
-        return rows;
-    }
-    
     static async deleteTutor(dni) {
         const [rows, fields] = await promisePool.query(
             `DELETE FROM tutorEmpresa WHERE dni = '${dni}' `);
@@ -55,7 +48,7 @@ module.exports = class TutorEmpresa {
         return rows;
     }
     static async updateTutor(tutorEmpresa) {
-        
+
         const [rows, fields] = await promisePool.query(
             `UPDATE tutor_empresa SET modulo_empresa='${tsutorEmpresa.moduloEmpresa}'
              WHERE dni = '${tutorEmpresa.dni}'

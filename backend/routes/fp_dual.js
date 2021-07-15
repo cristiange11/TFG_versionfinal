@@ -8,6 +8,6 @@ const fpController = require('../controllers/fp_dual');
 
 router.get('/:codigoCentro', fpController.getFpByCentro);
 
-router.delete('/:codigoCentro',fpController.DeleteCentroAndFPsByCentro);
+router.delete('/:codigoCentro', fpController.DeleteCentroAndFPsByCentro);
 
 module.exports = router;

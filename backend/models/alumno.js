@@ -25,13 +25,13 @@ module.exports = class Alumno extends User {
         );
         return rows;
     }
-    
+
     static async deleteAlumno(dni) {
         const [rows, fields] = await promisePool.query(
             `DELETE FROM alumno WHERE dni = '${dni}' `);
         return rows;
     }
-    static async  createAlumno(alumno, password) {
+    static async createAlumno(alumno, password) {
         const connection = await promisePool.getConnection();
 
         try {

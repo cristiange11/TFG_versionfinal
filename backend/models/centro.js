@@ -11,7 +11,7 @@ module.exports = class Centro {
         this.direccion = direccion;
     }
     static async find(codigoCentro) {
-        
+
         return await promisePool.query(
             `SELECT * FROM centro_educativo where codigo_centro = '${codigoCentro}'`);
     }
@@ -24,14 +24,14 @@ module.exports = class Centro {
         return await promisePool.query(
             `SELECT * FROM centro_educativo where telefono = '${telefono}' codigo_centro AND codigo_centro != '${codigo_centro}'`);
     }
-    
+
     static async getCentros() {
         const [rows, fields] = await promisePool.query(
             "SELECT * FROM centro_educativo"
         );
         return rows;
     }
-    
+
     static async deleteCentro(codigoCentro) {
         const [rows, fields] = await promisePool.query(
             `DELETE FROM centro_educativo WHERE codigo_centro = '${codigoCentro}' `);
@@ -44,7 +44,7 @@ module.exports = class Centro {
         return rows;
     }
     static async updateCentro(centro) {
-        
+
         const [rows, fields] = await promisePool.query(
             `UPDATE centro_educativo SET correo='${centro.correo}',telefono='${centro.telefono}',provincia='${centro.provincia}',
             nombre='${centro.nombre}',CP='${centro.CP}',direccion='${centro.direccion}' WHERE codigo_centro = '${centro.codigo_centro}'
