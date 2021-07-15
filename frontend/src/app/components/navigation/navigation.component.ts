@@ -38,12 +38,19 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
     if(Number(this.cookieService.get('rol'))==1){
       this.items = [
         {
+          label:'Editar Perfil',
+          routerLink:'/editprofile',
+          icon: "far fa-user"
+        },
+        {
           label:'Registrar Usuario',
-          routerLink:'/formuser'
+          routerLink:'/formuser',
+          icon: "fas fa-user-plus"
         },
         {
             label:'Cerrar Sesión',
             routerLink:'/home',
+            icon : "fas fa-sign-out-alt",
             command: () => this.closeSession(),
         },
       ]

@@ -24,23 +24,14 @@ module.exports = class Centro {
         return await promisePool.query(
             `SELECT * FROM centro_educativo where telefono = '${telefono}' codigo_centro AND codigo_centro != '${codigo_centro}'`);
     }
-    static async getNombreCentros() {
-        const [rows, fields] = await promisePool.query(
-            `SELECT nombre FROM centro_educativo `);
-        return rows;
-    }
+    
     static async getCentros() {
         const [rows, fields] = await promisePool.query(
             "SELECT * FROM centro_educativo"
         );
         return rows;
     }
-    static async getCentro(codigoCentro) {
-
-        const [rows, fields] = await promisePool.query(
-            `SELECT * FROM centro_educativo where codigo_centro='${codigoCentro}' `);
-        return rows;
-    }
+    
     static async deleteCentro(codigoCentro) {
         const [rows, fields] = await promisePool.query(
             `DELETE FROM centro_educativo WHERE codigo_centro = '${codigoCentro}' `);

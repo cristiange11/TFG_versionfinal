@@ -62,6 +62,7 @@ import { CentroDeleteConfirmationComponent } from './components/modals/centro-de
 import { CentroCreateComponent } from './components/modals/centro-create/centro-create.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { MatTableFilterModule } from 'mat-table-filter';
+import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
 
 @NgModule({
   imports: [
@@ -137,6 +138,7 @@ import { MatTableFilterModule } from 'mat-table-filter';
     CentroUpdateComponent,
     CentroDeleteConfirmationComponent,
     CentroCreateComponent,
+    EditProfileComponent,
     
   ],
 

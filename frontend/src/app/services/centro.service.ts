@@ -20,10 +20,7 @@ export class CentroService {
   constructor(private http: HttpClient,  private router: Router, private cookieService: CookieService ) { 
   }
   getCentros(): Observable<Centro[] >{    
-    return this.http.get<Centro[]>(this.url); 
-  }
-  getCentro(codigo: string): Observable<Centro >{    
-    return this.http.get<Centro>(`${this.url}/codigo`);
+    return this.http.get<Centro[]>(this.url, this.httpOptions); 
   }
   addCentro(centro : Centro): Observable<JSON>{
     return this.http.post<JSON>(`${this.url}/create`, centro , this.httpOptions);

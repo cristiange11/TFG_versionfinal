@@ -6,11 +6,9 @@ const Centro = require('../models/centro');
 
 const centroController = require('../controllers/centros');
 
-router.get('/codigo', centroController.getNombreCentros);
+
 
 router.get('/', centroController.getCentros);
-
-router.get('/centro', centroController.getCentro);
 
 router.delete('/:codigoCentro', centroController.deleteCentro);
 

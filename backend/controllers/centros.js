@@ -1,36 +1,19 @@
 const { validationResult } = require('express-validator');
-
+const jwt_decode = require('jwt-decode');
+const comprobarToken = require('../util/comprobarToken');
 const Centro = require('../models/centro');
 
-
-exports.getNombreCentros = async (req, res, next) => {
-  try {
-    const centros = await Centro.getNombreCentros();
-
-    res.status(200).json({ message: centros });
-
-  } catch (err) {
-    res.status(500).json({ error: err });
-  }
-
-};
 exports.getCentros = async (req, res, next) => {
-
+  console.log(req.headers);
+  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'],  { header: true }));
+  console.log(expirado)
+  if(expirado){
+    res.status(401).json({ "errors": "Sesión expirada" });
+  }
   try {
     const centros = await Centro.getCentros();
 
     res.status(200).json({ centros: centros });
-  } catch (err) {
-    res.status(500).json({ error: err });
-  }
-
-};
-exports.getCentro = async (req, res, next) => {
-  const codigoCentro = req.params.codigoCentro;
-  try {
-    const centro = await Centro.getCentro(codigoCentro);
-    res.status(200).json({ message: centro });
-
   } catch (err) {
     res.status(500).json({ error: err });
   }

@@ -11,16 +11,14 @@ import { Alumno } from "../models/Alumno";
 })
 export class AlumnoService {
   private url = "http://localhost:3000/alumno";
+  
   httpOptions: { headers: HttpHeaders } = {
-    headers: new HttpHeaders({ "Content-Type" : "application/json"}),
-  }
-  httpOptions1: { headers: HttpHeaders } = {
     headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),
   }
   constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { }
   createAlumno(formulario1 , formulario2): Observable<JSON>{   
     var alumno = new Alumno(formulario1, formulario2);
     
-    return this.http.post<JSON>(`${this.url}/create`, alumno , this.httpOptions1)   
+    return this.http.post<JSON>(`${this.url}/create`, alumno , this.httpOptions);   
   }
 }

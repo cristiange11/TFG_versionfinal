@@ -13,15 +13,12 @@ import { Profesor } from "../models/Profesor";
 export class ProfesorService {
   private url = "http://localhost:3000/profesor";
   httpOptions: { headers: HttpHeaders } = {
-    headers: new HttpHeaders({ "Content-Type" : "application/json"}),
-  }
-  httpOptions1: { headers: HttpHeaders } = {
     headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),
   }
+  
   constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { }
   createProfesor(formulario1 , formulario2): Observable<JSON>{    
-    var profesor = new Profesor(formulario1, formulario2);
-    
-    return this.http.post<JSON>(`${this.url}/create`, profesor , this.httpOptions1)   
+    var profesor = new Profesor(formulario1, formulario2);   
+    return this.http.post<JSON>(`${this.url}/create`, profesor , this.httpOptions);   
   }
 }

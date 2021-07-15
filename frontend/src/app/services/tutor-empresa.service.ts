@@ -13,15 +13,13 @@ import { TutorEmpresa } from "../models/TutorEmpresa";
 })
 export class TutorEmpresaService {
   private url = "http://localhost:3000/tutor";
+  
   httpOptions: { headers: HttpHeaders } = {
-    headers: new HttpHeaders({ "Content-Type" : "application/json"}),
-  }
-  httpOptions1: { headers: HttpHeaders } = {
     headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),
   }
   constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { }
   createTutor(formulario1 , formulario2): Observable<JSON>{    
     var tutor = new TutorEmpresa(formulario1, formulario2);
-    return this.http.post<JSON>(`${this.url}/create`, tutor , this.httpOptions1)   
+    return this.http.post<JSON>(`${this.url}/create`, tutor , this.httpOptions);   
   }
 }
