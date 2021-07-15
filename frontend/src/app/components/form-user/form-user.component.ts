@@ -158,7 +158,6 @@ export class FormUserComponent implements OnInit {
           this.fpList = new Map<number, string>();
           let fps = data["fps"]
           fps.forEach(fpInfo => {
-            console.log(fpInfo)
             var fp = fpInfo as Fpduales
            
             this.fpList.set(fp.id, fp.nombre)

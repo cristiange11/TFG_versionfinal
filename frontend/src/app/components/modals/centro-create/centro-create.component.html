@@ -40,6 +40,6 @@
   </form>
 </div>
 <div class="mt-5" mat-dialog-actions>
-  <button mat-raised-button color="primary" cdkFocusInitial (click)="save()">Yes</button>
+  <button mat-raised-button color="primary" cdkFocusInitial (click)="save()" [disabled]="!formInstance.valid">Yes</button>
   <button mat-raised-button mat-dialog-close>No</button>
 </div>

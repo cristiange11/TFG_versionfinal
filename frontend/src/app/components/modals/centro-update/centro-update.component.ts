@@ -33,6 +33,7 @@ export class CentroUpdateComponent implements OnInit {
 
   }
   save(){
+    console.log(this.formInstance.hasError);
     this.centroService.updateCentro(this.formInstance.value).pipe(first())
       .subscribe(
         data => {
