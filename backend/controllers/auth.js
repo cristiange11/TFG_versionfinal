@@ -8,7 +8,6 @@ const jwt_decode = require('jwt-decode');
 const comprobarToken = require('../util/comprobarToken');
 const RSA_PRIVATE_KEY = fs.readFileSync(__dirname + '/OPENSSL/private.pem');
 exports.signup = async (req, res, next) => {
-  console.log("entro para el signup")
   /*jwtDecoded = jwt_decode(req.headers['authorization']);
   let expiresIn = jwtDecoded["exp"];
   let currentTime = Math.trunc(new Date().getTime()/1000)
@@ -17,9 +16,8 @@ exports.signup = async (req, res, next) => {
   } 
   */
 
-  console.log(req.headers);
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], { header: true }));
-  console.log(expirado)
+  
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
   }
@@ -115,7 +113,7 @@ exports.login = async (req, res, next) => {
       }
       else {
         const jwtBearerToken = jwt.sign({ sub: user.dni }, 'proyecto final carrera', { expiresIn: '24h' });
-        console.log(jwtBearerToken);
+        
         const resJSON = { "result": { "user": userJson, "token": jwtBearerToken } }
         res.status(200).json(resJSON);
       }
@@ -123,7 +121,6 @@ exports.login = async (req, res, next) => {
       res.status(401).json({ errors: 'Credenciales incorrectas.' });
     }
   } catch (err) {
-    console.log("error => " + err)
     if (!err.statusCode) {
       err.statusCode = 500;
     }
@@ -148,33 +145,29 @@ exports.updateUsuario = async (req, res, next) => {
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
   } else {
-    const errors = validationResult(req);
-    const resu = errors.array();
-    console.log("Variable errror " + errors);
-    console.log("ERRRRRORRRR" + resu.length);
-    const resJSON = [{
-      param: String,
-      message: String,
-    }]
-    resu.forEach(element => {
-      resJSON.push({
-        param: element.param,
-        message: element.msg
-      })
-    });
-
-    if (!errors.isEmpty()) {
-      
-      res.status(409).json({ "errors": resJSON });
-    }
+   
+      const errors = validationResult(req);
+      const resu = errors.array();
+      const resJSON = [{
+        param: String,
+        message: String,
+      }]
+      resu.forEach(element => {
+        resJSON.push({
+          param: element.param,
+          message: element.msg
+        })
+      });
+      if (!errors.isEmpty()) {
+        res.status(409).json({ "errors": resJSON });
+      }
     else {
       try {
-        console.log("No entro en errores")
         const hashedPassword = await bcrypt.hash(req.body.password, 12);
         const result = User.updateUser(req.body, hashedPassword).then(function (result) {
           console.log("Promise Resolved");
 
-          res.status(201).json({ message: "sucess" });
+          res.status(201).json({ user: req.body });
         }).catch(function () {
           res.status(401).json({ errors: "No se ha podido actualizar el usuario"  });
 

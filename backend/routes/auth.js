@@ -31,16 +31,16 @@ router.post(
     body('codigoCentro').trim().not().isEmpty().withMessage("Código del centro vacío"),
     body('movil').trim().not().isEmpty().withMessage("Móvil vacío")
       .matches(/^(\+34|0034|34)?[ -]*(6|7)[ -]*([0-9][ -]*){8}$/).withMessage("Formato del móvil incorrecto")
-      .custom(async (movil) => {
-        const user = await User.findMovil(movil);
+      .custom(async (movil,  {req} ) => {
+        const user = await User.findMovil(movil,req.body.dni);
         if (user[0].length > 0) {
           return Promise.reject('Movil introducido ya existe!');
         }
       }),
     body('correo')
       .isEmail().withMessage("Formato correo incorrecto")
-      .custom(async (correo) => {
-        const user = await User.findCorreo(correo);
+      .custom(async (correo, {req}) => {
+        const user = await User.findCorreo(correo, req.body.dni);
         if (user[0].length > 0) {
           return Promise.reject('Correo ya existe!');
         }
@@ -73,28 +73,21 @@ router.put(
     body('codigoCentro').trim().not().isEmpty().withMessage("Código del centro vacío"),
     body('movil').trim().not().isEmpty().withMessage("Móvil vacío")
       .matches(/^(\+34|0034|34)?[ -]*(6|7)[ -]*([0-9][ -]*){8}$/).withMessage("Formato del móvil incorrecto")
-      .custom(async (movil) => {
-        console.log(movil)
-        body('dni').custom(async (dni) => {
-          console.log(dni)
-          const user = await User.findMovil(movil, dni);
-          console.log("Usuario comprobacion movil " + user[0][0])
+      .custom(async (movil, {req}) => {
+       
+          const user = await User.findMovil(movil, req,body.dni);
           if (user[0].length > 0) {
             return Promise.reject('Móvil introducido ya existe!');
           }
-        })
-        
       }),
     body('correo')
       .isEmail().withMessage("Formato correo incorrecto")
-      .custom(async (correo) => {
-        body('dni').custom(async (dni) => {
-          const user = await User.findCorreo(correo, dni);
-          console.log("Usuario comprobacion correo " + user[0][0])
+      .custom(async (correo,{req}) => {
+          const user = await User.findCorreo(correo, req.body.dni);
+         
           if (user[0].length > 0) {
             return Promise.reject('Correo introducido ya existe!');
           }
-        })
       })
       .normalizeEmail(),
     body('password').trim().isLength({ min: 6 }).withMessage("Contraseña con una longitud menor a 6"),

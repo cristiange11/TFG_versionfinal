@@ -13,7 +13,7 @@ import { AppComponent } from '../../../../app.component';
 })
 export class CentroUpdateComponent implements OnInit {
   formInstance: FormGroup;
-
+  salirModal : true;
   constructor(public dialogRef: MatDialogRef< CentroUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Centro, public centroService: CentroService) { 
       this.formInstance = new FormGroup({
@@ -33,7 +33,7 @@ export class CentroUpdateComponent implements OnInit {
 
   }
   save(){
-    console.log(this.formInstance.value);
+   
     this.centroService.updateCentro(this.formInstance.value).pipe(first())
       .subscribe(
         data => {
@@ -41,18 +41,27 @@ export class CentroUpdateComponent implements OnInit {
         },
         error => {
           error.error.errors.forEach(errorInfo => {
+            if(error.status == 409){
+              
             const formControl = this.formInstance.get(errorInfo.param);
              if (formControl) {
                formControl.setErrors({
                  serverError: errorInfo.message
                });  
-             }          
+             }   
+
+            }   else if(error.status == 401){
+              
+              var arrayRes= new Array();
+          arrayRes.push(error.error.message);
+          AppComponent.myapp.openDialog(arrayRes); 
+          this.dialogRef.close();
+            }   
            });
         });
-          
-        
     
-   // this.dialogRef.close(Object.assign(new Centro(), this.formInstance.value));
+      
+
   }
 
 }

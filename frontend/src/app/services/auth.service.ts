@@ -36,6 +36,7 @@ export class AuthService {
     return this.http.post<JSON>(`${this.url}/login`, { dni, password }, this.httpOptions);   
   }
   updateUsuario(editForm , userJson): Observable<JSON>{
+    
     var user = {
       dni : userJson.dni,
       nombre: editForm.nombre,
