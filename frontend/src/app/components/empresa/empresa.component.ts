@@ -12,6 +12,7 @@ import { Empresa } from 'src/app/models/Empresa';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import { NavigationComponent } from '../navigation/navigation.component';
 import {EmpresaCreateComponent} from 'src/app/components/modals/empresa/empresa-create/empresa-create.component';
+import { EmpresaUpdateComponent } from '../modals/empresa/empresa-update/empresa-update.component';
 @Component({
   selector: 'app-empresa',
   templateUrl: './empresa.component.html',
@@ -22,7 +23,7 @@ export class EmpresaComponent implements OnInit /* OnDestroy, AfterViewInit*/{
   empresaList: Array<Empresa> = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  public displayedColumns: string[] = ['CIF', 'nombre', 'direccion', 'telefono', 'correo','url'];
+  public displayedColumns: string[] = ['cifEmpresa', 'nombre', 'direccion', 'telefono', 'correo','url'];
   public columnsToDisplay: string[] = [...this.displayedColumns, 'actions'];
 
   public columnsFilters = {};
@@ -58,6 +59,7 @@ export class EmpresaComponent implements OnInit /* OnDestroy, AfterViewInit*/{
             this.empresaList.push(empresaInfo);
             
           });
+          console.log(this.empresaList)
             this.dataSource.data = this.empresaList
         },
         error => {
@@ -163,12 +165,12 @@ export class EmpresaComponent implements OnInit /* OnDestroy, AfterViewInit*/{
     });
   }
   edit(data: Empresa) {
-    /*
-    const dialogRef = this.dialog.open(CentroUpdateComponent, {
+    
+    const dialogRef = this.dialog.open(EmpresaUpdateComponent, {
       width: '400px',
       data: data
     });
-    */
+    
   }
 
   delete(CIF: any) {/*

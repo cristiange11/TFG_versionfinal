@@ -1,5 +1,5 @@
 export class Empresa {
-    CIF: string;
+    cifEmpresa: string;
     direccion: string;
     nombre: string;
     tipo: string;

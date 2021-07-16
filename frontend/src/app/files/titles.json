@@ -1,5 +1,7 @@
 {
     "codigoCentro" : "Código Centro",
     "direccion" : "Dirección",
-    "telefono" : "Teléfono"
+    "telefono" : "Teléfono",
+    "cifEmpresa" : "CIF",
+    "url" : "URL"
 }

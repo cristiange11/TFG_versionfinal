@@ -60,13 +60,13 @@ exports.updateEmpresa = async (req, res, next) => {
     else {
 
       try {
-        const result = Empresa.updateEmpresa(req, body).then(function (result) {
+        const result = Empresa.updateEmpresa(req.body).then(function (result) {
           console.log("Promise Resolved");
 
-          res.status(201).json({ message: empresa });
+          res.status(201).json({ message: "success" });
         }).catch(function () {
           console.log("Promise Rejected");
-          res.status(401).json({ message: "no se ha podido actualizar la empresa:" + err });
+          res.status(401).json({   "errors" : "no se ha podido actualizar la empresa"  });
         });
 
 

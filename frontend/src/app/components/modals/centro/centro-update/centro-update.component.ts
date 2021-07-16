@@ -13,7 +13,6 @@ import { AppComponent } from '../../../../app.component';
 })
 export class CentroUpdateComponent implements OnInit {
   formInstance: FormGroup;
-  salirModal : true;
   constructor(public dialogRef: MatDialogRef< CentroUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Centro, public centroService: CentroService) { 
       this.formInstance = new FormGroup({

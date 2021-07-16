@@ -10,9 +10,13 @@ module.exports = class Empresa {
         this.telefono = telefono;
         this.url = url;
     }
-    static async findTelefono(telefono) {
+    static async findTelefono(telefono, cifEmpresa) {
         return await promisePool.query(
-            `SELECT * FROM empresa where telefono = '${telefono}'`);
+            `SELECT * FROM empresa where telefono = '${telefono}' AND cifEmpresa != '${cifEmpresa}'`);
+    }
+    static async findCorreo(correo, cifEmpresa) {
+        return await promisePool.query(
+            `SELECT * FROM empresa where correo = '${correo}' AND cifEmpresa != '${cifEmpresa}'`);
     }
     static async find(cifEmpresa) {
         return await promisePool.query(
@@ -36,8 +40,11 @@ module.exports = class Empresa {
         return rows;
     }
     static async updateEmpresa(empresa) {
+        console.log( `UPDATE empresa SET direccion='${empresa.direccion}',nombre='${empresa.nombre}',
+        correo='${empresa.correo}',telefono='${empresa.telefono}',url='${empresa.url}' WHERE cifEmpresa = '${empresa.cifEmpresa}'
+         `)
         const [rows, fields] = await promisePool.query(
-            `UPDATE empresa SET direccion='${empresa.direccion}',nombre='${empresa.nombre}',tipo='${empresa.tipo}',
+            `UPDATE empresa SET direccion='${empresa.direccion}',nombre='${empresa.nombre}',
             correo='${empresa.correo}',telefono='${empresa.telefono}',url='${empresa.url}' WHERE cifEmpresa = '${empresa.cifEmpresa}'
              `);
         return rows;

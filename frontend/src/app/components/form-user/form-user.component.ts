@@ -148,7 +148,7 @@ export class FormUserComponent implements OnInit {
             let empresas = data["empresas"]
             empresas.forEach(empresaInfo => {
               var empresa = empresaInfo as Empresa
-              this.empresaList.set(empresa.CIF, empresa.nombre)
+              this.empresaList.set(empresa.cifEmpresa, empresa.nombre)
             });
           },
           error => {
