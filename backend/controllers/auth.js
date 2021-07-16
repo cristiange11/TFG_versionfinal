@@ -123,6 +123,7 @@ exports.login = async (req, res, next) => {
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
+      
     }
     next(err);
   }
@@ -163,6 +164,7 @@ exports.updateUsuario = async (req, res, next) => {
       }
     else {
       try {
+        console.log("entro a updatear")
         const hashedPassword = await bcrypt.hash(req.body.password, 12);
         const result = User.updateUser(req.body, hashedPassword).then(function (result) {
           console.log("Promise Resolved");

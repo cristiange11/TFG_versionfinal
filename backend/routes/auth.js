@@ -68,20 +68,20 @@ router.put(
     body('rol').trim().not().isEmpty().withMessage("Rol vacío"),
     body('fechaNacimiento').trim().not().isEmpty().withMessage("Fecha de nacimiento vacía")
       .matches(/^([0][1-9]|[12][0-9]|3[01])(\/)([0][1-9]|[1][0-2])\2(\d{4})$/).withMessage("Formato fecha incorrecto: dd/mm/yyyy"),
-    body('fpDual').trim().not().isEmpty().withMessage("FP vacío"),
-    body('codigoCentro').trim().not().isEmpty().withMessage("Código del centro vacío"),
+    
     body('movil').trim().not().isEmpty().withMessage("Móvil vacío")
       .matches(/^(\+34|0034|34)?[ -]*(6|7)[ -]*([0-9][ -]*){8}$/).withMessage("Formato del móvil incorrecto")
       .custom(async (movil, {req}) => {
        
-          const user = await User.findMovil(movil, req,body.dni);
+          const user = await User.findMovil(movil, req.body.dni);
           if (user[0].length > 0) {
             return Promise.reject('Móvil introducido ya existe!');
           }
       }),
     body('correo')
       .isEmail().withMessage("Formato correo incorrecto")
-      .custom(async (correo,{req}) => {
+      .custom(async (correo, {req}) => {
+        
           const user = await User.findCorreo(correo, req.body.dni);
          
           if (user[0].length > 0) {

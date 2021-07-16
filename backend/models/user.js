@@ -21,14 +21,16 @@ module.exports = class User {
             `SELECT * FROM usuario where dni = '${dni}'`);
     }
 
-    static async findCorreo(correo,dni) {
+  
+    static async findMovil(movil,dni) {
+       
+        return await promisePool.query(
+            `SELECT * FROM usuario where movil ='${movil}' AND dni !='${dni}'`);
+    }
+    static async findCorreo(correo, dni) {
         
         return await promisePool.query(
             `SELECT * FROM usuario where correo ='${correo}' AND dni !='${dni}'`);
-    }
-    static async findMovil(movil,dni) {
-        return await promisePool.query(
-            `SELECT * FROM usuario where movil ='${movil}' AND dni !='${dni}'`);
     }
     static async save(user) {
         console.log("entro a signup")
@@ -42,15 +44,12 @@ module.exports = class User {
         );
         return rows;
     }
-    static async findCorreo(correo) {
-        return await promisePool.query(
-            `SELECT * FROM usuario where correo = '${correo}'`);
-    }
+    
     static async updateUser(user, password) {
         
         return await promisePool.query(
             `UPDATE usuario SET nombre='${user.nombre}',apellidos='${user.apellidos}',correo='${user.correo}',
-            movil='${user.movil}',direccion='${user.direccion}',password='${user.password}',genero='${user.genero}',
+            movil='${user.movil}',direccion='${user.direccion}',password='${password}',genero='${user.genero}',
             cp='${user.cp}',rol='${user.rol}',fechaNacimiento=STR_TO_DATE('${user.fechaNacimiento}','%d/%m/%Y'),fpDual='${user.fpDual}'
             ,codigoCentro='${user.codigoCentro}' WHERE dni='${user.dni}'`);
     }
