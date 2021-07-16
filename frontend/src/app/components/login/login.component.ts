@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
          
           this.cookieService.set( 'user', JSON.stringify(user) );
           var userCookie =(JSON.parse(this.cookieService.get('user')));
-          console.log(Number(userCookie.rol))
+          
           if(Number(userCookie.rol) == 1){
             console.log("entro")
             this.router.navigate(['navigation','adminpage']);
@@ -56,8 +56,8 @@ export class LoginComponent implements OnInit {
         
         },
         error => {
-          console.log(error.error.errors.message)
-            var arrayRes= new Array();
+          
+          var arrayRes= new Array();
           arrayRes.push(error.error.message);
           AppComponent.myapp.openDialog(arrayRes);          
         });
