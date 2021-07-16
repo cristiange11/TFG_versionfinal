@@ -1,0 +1,37 @@
+<h1 mat-dialog-title>Editar FP duales</h1>
+<div mat-dialog-content>
+  <form [formGroup]="formInstance" novalidate >
+      <mat-form-field class="fullWidth" appearance="outline">
+        <input matInput type="text" name="nombre" formControlName="nombre" required>
+        <mat-error *ngIf="formInstance.controls['nombre']?.errors?.required">Nombre requerido</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="fullWidth" appearance="outline">
+        <input matInput type="text" name="totalPlazas" formControlName="totalPlazas" required />
+        <mat-error *ngIf="formInstance.controls['totalPlazas']?.errors?.required">Total de plazas requeridas</mat-error>
+        
+    </mat-form-field>
+    <mat-form-field class="fullWidth" appearance="outline">
+        <input matInput type="text" name="plazasDisponibles" formControlName="plazasDisponibles" required />
+        <mat-error *ngIf="formInstance.controls['plazasDisponibles']?.errors?.required">Plazas disponibles requeridas</mat-error>
+       
+    </mat-form-field>
+    <mat-form-field class="fullWidth" appearance="outline">
+        <input matInput type="text" name="anio" formControlName="anio" required />
+        <mat-error *ngIf="formInstance.controls['anio']?.errors?.required">Año requerido</mat-error>
+    </mat-form-field>
+    
+      <mat-form-field appearance="fill">
+        <mat-label>Centros</mat-label>
+        <mat-select matNativeControl required formControlName="codigoCentro" >
+          <mat-option *ngFor="let cent of centroList | keyvalue" [value]="cent.key" >{{ cent.value }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="formInstance.controls['codigoCentro']?.errors?.required">Requrie</mat-error>
+    
+      </mat-form-field>
+  </form>
+</div>
+<div class="mt-5" mat-dialog-actions>
+  <button mat-raised-button color="primary" cdkFocusInitial (click)="save()" [disabled]="!formInstance.valid">Yes</button>
+  <button mat-raised-button mat-dialog-close>No</button>
+</div>

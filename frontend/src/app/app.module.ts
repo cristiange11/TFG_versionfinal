@@ -67,6 +67,9 @@ import { EmpresaComponent } from './components/empresa/empresa.component';
 import { EmpresaCreateComponent } from './components/modals/empresa/empresa-create/empresa-create.component';
 import { EmpresaUpdateComponent } from './components/modals/empresa/empresa-update/empresa-update.component';
 import { EmpresaDeleteConfirmationComponent } from './components/modals/empresa/empresa-delete-confirmation/empresa-delete-confirmation.component';
+import { FpdualComponent } from './components/fpdual/fpdual.component';
+import { FpdualUpdateComponent } from './components/modals/fpdual/fpdual-update/fpdual-update.component';
+import { FpdualCreateComponent } from './components/modals/fpdual/fpdual-create/fpdual-create.component';
 
 @NgModule({
   imports: [
@@ -147,6 +150,9 @@ import { EmpresaDeleteConfirmationComponent } from './components/modals/empresa/
     EmpresaCreateComponent,
     EmpresaUpdateComponent,
     EmpresaDeleteConfirmationComponent,
+    FpdualComponent,
+    FpdualUpdateComponent,
+    FpdualCreateComponent,
     
   ],
 

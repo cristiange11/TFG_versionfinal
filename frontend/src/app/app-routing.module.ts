@@ -8,6 +8,7 @@ import { AdminpageComponent } from './components/adminpage/adminpage.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
 import {EmpresaComponent} from './components/empresa/empresa.component';
+import {FpdualComponent} from './components/fpdual/fpdual.component';
 const routes: Routes = [
   {path: "", component: HomeComponent},
   {path: "navigation", component: NavigationComponent},
@@ -15,6 +16,7 @@ const routes: Routes = [
   {path: "login", component: LoginComponent},
   {path: "formuser", component: FormUserComponent},
   {path: "editprofile", component: EditProfileComponent},
+  {path: "fpdual", component: FpdualComponent},
   {path: "empresa", component: EmpresaComponent},
   {path: "**", redirectTo: ""}
 ];

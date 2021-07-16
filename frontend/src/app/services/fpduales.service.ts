@@ -23,4 +23,17 @@ export class FpdualesService {
     console.log(`${this.url}/${codigoCentro}`);
     return this.http.delete<JSON>(`${this.url}/${codigoCentro}`,  this.httpOptions);
   }
+  getFps(): Observable<Fpduales[] >{    
+    return this.http.get<Fpduales[]>(this.url, this.httpOptions); 
+  }
+  addCentro(fpDual : Fpduales): Observable<JSON>{
+    return this.http.post<JSON>(`${this.url}/create`, fpDual , this.httpOptions);
+  }
+  deleteCentro(id): Observable<JSON>{
+    return this.http.delete<JSON>(`${this.url}/${id}`,  this.httpOptions);
+  }
+  updateCentro(fpDual : Fpduales): Observable<JSON>{
+    return this.http.put<JSON>(`${this.url}/update`, fpDual, this.httpOptions);
+  }
+  
 }

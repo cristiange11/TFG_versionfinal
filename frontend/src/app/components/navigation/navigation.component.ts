@@ -42,6 +42,11 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
     if(Number(user.rol)==1){
       this.items = [
         {
+          label:'FP duales',
+          routerLink:'/fpdual',
+          icon: "fas fa-graduation-cap"
+        },
+        {
           label:'Editar Perfil',
           routerLink:'/editprofile',
           icon: "far fa-user"

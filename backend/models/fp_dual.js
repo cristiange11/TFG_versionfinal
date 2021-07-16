@@ -33,5 +33,29 @@ module.exports = class FP_dual {
             await connection.release();
         }
     }
+    static async getFps() {
+        const [rows, fields] = await promisePool.query(
+            `SELECT * FROM fp_duales `);
+        return rows;
+    }
+    static async deleteFp(id) {
+        const [rows, fields] = await promisePool.query(
+            `DELETE FROM fp_duales WHERE id = '${id}' `);
+        return rows;
+    }
+    static async createFp(fp) {
+        const [rows, fields] = await promisePool.query(
+            `INSERT INTO fp_duales (nombre, descripcion, totalPlazas, anio, codigoCentro, plazasDisponibles) VALUES 
+            ('${fp.nombre}','${fp.descripcion}','${fp.totalPlazas}','${fp.anio}','${fp.codigoCentro}',
+            '${fp.plazasDisponibles}') `);
+        return rows;
+    }
+    static async updateFp(fp) {
+        const [rows, fields] = await promisePool.query(
+            `UPDATE fp_duales SET nombre='${fp.nombre}',descripcion='${fp.descripcion}',totalPlazas='${fp.totalPlazas}'
+            ,anio='${fp.anio}',codigoCentro='${fp.codigoCentro}',plazasDisponibles='${fp.plazasDisponibles}' 
+            WHERE id = '${fp.id}' `);
+        return rows;
+    }
 
 };
