@@ -5,6 +5,9 @@ import { first } from 'rxjs/operators';
 import { Centro } from 'src/app/models/Centro';
 import {CentroService} from '../../../../services/centro.service';
 import { AppComponent } from '../../../../app.component';
+import { NavigationComponent } from 'src/app/components/navigation/navigation.component';
+import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-centro-update',
@@ -13,7 +16,7 @@ import { AppComponent } from '../../../../app.component';
 })
 export class CentroUpdateComponent implements OnInit {
   formInstance: FormGroup;
-  constructor(public dialogRef: MatDialogRef< CentroUpdateComponent>,
+  constructor(private router: Router, private cookieService: CookieService, public dialogRef: MatDialogRef< CentroUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Centro, public centroService: CentroService) { 
       this.formInstance = new FormGroup({
         nombre: new FormControl("", [Validators.required, Validators.minLength(4)]),
@@ -28,7 +31,17 @@ export class CentroUpdateComponent implements OnInit {
     }
 
   ngOnInit(): void {
+   
+    if(!this.cookieService.get('user')){
+      this.router.navigate(['home']);
+    }
+    else{
+      var user =(JSON.parse(this.cookieService.get('user')));
+    if(Number(user.rol)!=1){
+      this.router.navigate(['home']);
+    }
     
+    }
 
   }
   save(){

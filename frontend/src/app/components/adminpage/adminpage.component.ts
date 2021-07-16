@@ -29,7 +29,7 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   
-  public displayedColumns: string[] = ['codigoCentro', 'nombre', 'provincia', 'direccion', 'CP', 'telefono', 'correo'];
+  public displayedColumns: string[] = [ 'nombre', 'provincia', 'direccion', 'CP', 'telefono', 'correo'];
   public columnsToDisplay: string[] = [...this.displayedColumns, 'actions'];
 
   public columnsFilters = {};

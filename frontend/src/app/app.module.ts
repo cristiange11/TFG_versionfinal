@@ -70,6 +70,7 @@ import { EmpresaDeleteConfirmationComponent } from './components/modals/empresa/
 import { FpdualComponent } from './components/fpdual/fpdual.component';
 import { FpdualUpdateComponent } from './components/modals/fpdual/fpdual-update/fpdual-update.component';
 import { FpdualCreateComponent } from './components/modals/fpdual/fpdual-create/fpdual-create.component';
+import { UsuarioComponent } from './components/usuario/usuario.component';
 
 @NgModule({
   imports: [
@@ -153,6 +154,7 @@ import { FpdualCreateComponent } from './components/modals/fpdual/fpdual-create/
     FpdualComponent,
     FpdualUpdateComponent,
     FpdualCreateComponent,
+    UsuarioComponent,
     
   ],
 

@@ -2,37 +2,44 @@
 <div mat-dialog-content>
   <form [formGroup]="formInstance" novalidate >
     <mat-form-field class="fullWidth" appearance="outline">
+      <mat-label>C&oacute;digo centro</mat-label>
         <input matInput type="text" name="codigoCentro" placeholder="codigo centro" formControlName="codigoCentro" required>
         <mat-error *ngIf="formInstance.controls['codigoCentro']?.errors?.required">C&oacute;digo requerido</mat-error>
         <mat-error *ngIf="formInstance.controls['codigoCentro']?.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
       </mat-form-field>
       <mat-form-field class="fullWidth" appearance="outline">
+        <mat-label>Nombre</mat-label>
         <input matInput type="text" name="nombre" formControlName="nombre" placeholder="nombre" required>
         <mat-error *ngIf="formInstance.controls['nombre']?.errors?.required">Nombre requerido</mat-error>
         <mat-error *ngIf="formInstance.controls['nombre']?.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
       </mat-form-field>
 
       <mat-form-field class="fullWidth" appearance="outline">
+        <mat-label>Provincia</mat-label>
         <input matInput type="text" name="provincia" formControlName="provincia" placeholder="provincia" required />
         <mat-error *ngIf="formInstance.controls['provincia']?.errors?.required">Provincia requerida</mat-error>
         <mat-error *ngIf="formInstance.controls['provincia']?.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
     </mat-form-field>
     <mat-form-field class="fullWidth" appearance="outline">
+      <mat-label>Direcci&oacute;n</mat-label>
         <input matInput type="text" name="direccion" formControlName="direccion" placeholder="direccion" required />
         <mat-error *ngIf="formInstance.controls['direccion']?.errors?.required">Direcci&oacute;n requerida</mat-error>
         <mat-error *ngIf="formInstance.controls['direccion']?.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
     </mat-form-field>
     <mat-form-field class="fullWidth" appearance="outline">
+      <mat-label>CP</mat-label>
         <input matInput type="text" name="CP" formControlName="CP" placeholder="cp" required />
         <mat-error *ngIf="formInstance.controls['CP']?.errors?.required">CP requerido</mat-error>
         <mat-error *ngIf="formInstance.controls['CP']?.errors?.pattern">Formato CP incorrecto</mat-error>
     </mat-form-field>
     <mat-form-field class="fullWidth" appearance="outline">
+      <mat-label>Tel&eacute;fono</mat-label>
         <input matInput type="text" name="telefono" formControlName="telefono" placeholder="telefono" required />
         <mat-error *ngIf="formInstance.controls['telefono']?.errors?.required">Tel&eacute;fono requerido</mat-error>
         <mat-error *ngIf="formInstance.controls['telefono']?.errors?.pattern">Formato tel&eacute;fono incorrecto</mat-error>
     </mat-form-field>
     <mat-form-field class="fullWidth" appearance="outline">
+      <mat-label>Correo</mat-label>
         <input matInput type="text" name="correo" formControlName="correo" placeholder="correo" required />
         <mat-error *ngIf="formInstance.controls['correo']?.errors?.required">Correo requerido</mat-error>
         <mat-error *ngIf="formInstance.controls['correo']?.errors?.email">Formato correo incorrecto</mat-error>

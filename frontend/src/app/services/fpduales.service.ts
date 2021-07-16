@@ -26,13 +26,13 @@ export class FpdualesService {
   getFps(): Observable<Fpduales[] >{    
     return this.http.get<Fpduales[]>(this.url, this.httpOptions); 
   }
-  addCentro(fpDual : Fpduales): Observable<JSON>{
+  addFp(fpDual : Fpduales): Observable<JSON>{
     return this.http.post<JSON>(`${this.url}/create`, fpDual , this.httpOptions);
   }
-  deleteCentro(id): Observable<JSON>{
+  deleteFp(id): Observable<JSON>{
     return this.http.delete<JSON>(`${this.url}/${id}`,  this.httpOptions);
   }
-  updateCentro(fpDual : Fpduales): Observable<JSON>{
+  updateFp(fpDual : Fpduales): Observable<JSON>{
     return this.http.put<JSON>(`${this.url}/update`, fpDual, this.httpOptions);
   }
   

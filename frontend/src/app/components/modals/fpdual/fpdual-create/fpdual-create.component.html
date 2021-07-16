@@ -1,1 +1,54 @@
-<p>fpdual-create works!</p>
+<h1 mat-dialog-title >Crear FP duales</h1>
+<div mat-dialog-content>
+  <form [formGroup]="formInstance" novalidate >
+      <mat-form-field class="fullWidth" appearance="outline">
+          <mat-label>Nombre</mat-label>
+        <input matInput type="text" name="nombre" formControlName="nombre" required>
+        <mat-error *ngIf="formInstance.controls['nombre']?.errors?.required">Nombre requerido</mat-error>
+        <mat-error *ngIf="formInstance.controls['nombre']?.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
+
+    </mat-form-field>
+    <mat-form-field class="fullWidth" appearance="outline">
+        <mat-label>Descripci&oacute;n</mat-label>
+      <input matInput type="text" name="descripcion" formControlName="descripcion" required>
+      <mat-error *ngIf="formInstance.controls['descripcion']?.errors?.required">Descripci&oacute;n requerida</mat-error>
+      <mat-error *ngIf="formInstance.controls['descripcion']?.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
+
+  </mat-form-field>
+      <mat-form-field class="fullWidth" appearance="outline">
+        <mat-label>Total de plazas</mat-label>
+        <input matInput type="text" name="totalPlazas" formControlName="totalPlazas" required />
+        <mat-error *ngIf="formInstance.controls['totalPlazas']?.errors?.required">Total de plazas requeridas</mat-error>
+        <mat-error *ngIf="formInstance.controls['totalPlazas']?.errors?.min">Valor m&iacute;nimo de 1</mat-error>
+
+    </mat-form-field>
+    <mat-form-field class="fullWidth" appearance="outline">
+        <mat-label>Plazas disponibles</mat-label>
+        <input matInput type="text" name="plazasDisponibles" formControlName="plazasDisponibles" required />
+        <mat-error *ngIf="formInstance.controls['plazasDisponibles']?.errors?.required">Plazas disponibles requeridas</mat-error>
+        <mat-error *ngIf="formInstance.controls['plazasDisponibles']?.errors?.min">Valor m&iacute;nimo de 1</mat-error>
+        <mat-error *ngIf="formInstance.hasError('scoreError')">Plazas disponibles menor a totales</mat-error>
+    </mat-form-field>
+    <mat-form-field class="fullWidth" appearance="outline">
+        <mat-label>A&ntilde;o</mat-label>
+        <input matInput type="text" name="anio" formControlName="anio" required />
+        <mat-error *ngIf="formInstance.controls['anio']?.errors?.required">Año requerido</mat-error>
+        <mat-error *ngIf="formInstance.controls['anio']?.errors?.min">Este año o años futuros.</mat-error>
+
+    </mat-form-field>
+    
+      <mat-form-field appearance="fill">
+        <mat-label>Centros</mat-label>
+        <mat-select matNativeControl required formControlName="codigoCentro" >
+          <mat-option *ngFor="let cent of centroList | keyvalue" [value]="cent.key" >{{ cent.value }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="formInstance.controls['codigoCentro']?.errors?.required">Requrie</mat-error>
+    
+      </mat-form-field>
+  </form>
+</div>
+<div class="mt-5" mat-dialog-actions>
+  <button mat-raised-button color="primary"  (click)="save()" [disabled]="!formInstance.valid">Yes</button>
+  <button mat-raised-button mat-dialog-close>No</button>
+</div>
+

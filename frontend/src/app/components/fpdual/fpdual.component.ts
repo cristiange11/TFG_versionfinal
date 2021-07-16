@@ -10,6 +10,7 @@ import { first } from 'rxjs/operators';
 import { AppComponent } from 'src/app/app.component';
 import { Fpduales } from 'src/app/models/Fpduales';
 import { FpdualesService } from 'src/app/services/fpduales.service';
+import { FpdualCreateComponent } from '../modals/fpdual/fpdual-create/fpdual-create.component';
 import { FpdualUpdateComponent } from '../modals/fpdual/fpdual-update/fpdual-update.component';
 import { NavigationComponent } from '../navigation/navigation.component';
 
@@ -162,9 +163,9 @@ export class FpdualComponent implements OnInit {
     this.dataSource.filter = value.target.value.trim().toLocaleLowerCase();
   }
   add() {
-   /* const dialogRef = this.dialog.open(CentroCreateComponent, {
+    const dialogRef = this.dialog.open(FpdualCreateComponent, {
       width: '400px'
-    });*/
+    });
   }
   edit(data: Fpduales) {
     
