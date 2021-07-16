@@ -28,7 +28,7 @@ export class FormUserComponent implements OnInit {
   signupForm: FormGroup;
   hide = true;
   hide2 = true;
-  numero;
+  numero = -1;
   formGroupTutor;
   numeroExpediente;
   formGroupProfesor;
@@ -38,6 +38,8 @@ export class FormUserComponent implements OnInit {
       "^((?=\\S*?[A-Z])(?=\\S*?[a-z])(?=\\S*?[0-9]).{8,255})\\S$"
     )
   ]);
+  codigoCentro = new FormControl("", [Validators.required]);
+fpDual = new FormControl("", [Validators.required]);  
 
   confirmPasswordFormControl = new FormControl("", [
     Validators.required,
@@ -61,21 +63,8 @@ export class FormUserComponent implements OnInit {
     if(Number(user.rol)!=1){
       this.router.navigate(['home']);
     }
-    
     }
-    this.centroService.getCentros().pipe(first())
-      .subscribe(
-        data => {
-          this.centroList = new Map<string, string>();
-          let centros = data["centros"]
-          centros.forEach(centroInfo => {
-            
-            this.centroList.set(centroInfo.codigoCentro, centroInfo.nombre)
-          });
-        },
-        error => {
-          console.log(error.error.message);
-        });
+  
     this.rolService.getRoles().pipe(first())
       .subscribe(
         data => {
@@ -105,8 +94,7 @@ export class FormUserComponent implements OnInit {
       correo: new FormControl("", [Validators.required, Validators.email]),
       fechaNacimiento: new FormControl("", [Validators.required, Validators.pattern(/^([0][1-9]|[12][0-9]|3[01])(\/)([0][1-9]|[1][0-2])\2(\d{4})$/)]),
       rol: new FormControl("", [Validators.required]),
-      codigoCentro: new FormControl("", [Validators.required]),
-      fpDual: new FormControl("", [Validators.required]),
+      
       password: this.passwordFormControl,
       confirmPassword: this.confirmPasswordFormControl
     })
@@ -125,6 +113,34 @@ export class FormUserComponent implements OnInit {
 
   obtenerRol(rol): number {
     this.numero = rol;
+    //if(rol!=1 && rol!=2) {
+
+this.centroService.getCentros().pipe(first())
+      .subscribe(
+        data => {
+          this.centroList = new Map<string, string>();
+          let centros = data["centros"]
+          centros.forEach(centroInfo => {
+            
+            this.centroList.set(centroInfo.codigoCentro, centroInfo.nombre)
+          });
+        },
+        error => {
+          console.log(error.error.message);
+        });
+    this.rolService.getRoles().pipe(first())
+      .subscribe(
+        data => {
+          this.rolesList = new Map<number, string>();
+          let rol = data["roles"]
+          rol.forEach(rolInfo => {
+            this.rolesList.set(rolInfo.id, rolInfo.nombreRol)
+          });
+        },
+        error => {
+          console.log(error.error.message);
+        });
+
     if (rol == 5) {
       this.numeroExpediente = new FormControl("", [
         Validators.required,
@@ -175,10 +191,14 @@ export class FormUserComponent implements OnInit {
         });
   }
   signup(): void {
+    var userJson = {
+      codigoCentro : this.codigoCentro.value,
+      fpDual : this.fpDual.value,
+    };
     
     if(this.numero==1 || this.numero==2){
     
-    this.authService.signup(this.signupForm.value).pipe(first())
+    this.authService.signup(this.signupForm.value, userJson).pipe(first())
       .subscribe(
         data => {
           
@@ -187,7 +207,7 @@ export class FormUserComponent implements OnInit {
           AppComponent.myapp.openDialog(arrayRes);
         },
         error => {
-          
+          console.log(error)
           if(error.status==409){
             
           error.error.errors.forEach(errorInfo => {
@@ -200,14 +220,14 @@ export class FormUserComponent implements OnInit {
           });
         }
         else if(error.status == 401){
-          this.router.navigate(['login']);
+         console.log(error)
         }
         });
       }
 
     else if(this.numero==5){
     
-      this.alumnoService.createAlumno(this.signupForm.value, this.numeroExpediente.value).pipe(first())
+      this.alumnoService.createAlumno(this.signupForm.value,  userJson, this.numeroExpediente.value).pipe(first())
       .subscribe(
         data => {
           
@@ -231,7 +251,7 @@ export class FormUserComponent implements OnInit {
             }        
            });
         });
-    }else if(this.numero==4){
+    }/*else if(this.numero==4){
       
       this.profesorService.createProfesor(this.signupForm.value, this.formGroupProfesor.value).pipe(first())
       .subscribe(
@@ -273,7 +293,7 @@ export class FormUserComponent implements OnInit {
              }          
            });
         });
-    }
+    }*/
     
   }
   getErrorMessage(attribute: String) {
@@ -339,13 +359,10 @@ export class FormUserComponent implements OnInit {
       return rol.hasError('required') ? 'Selecciona un rol' :
         '';
     } else if (attribute == "codigoCentro") {
-      let codigoCentro = this.signupForm.get("codigoCentro");
-      return codigoCentro.hasError('required') ? 'Selecciona un centro' :
+      return this.codigoCentro.hasError('required') ? 'Selecciona un centro' :
         '';
     } else if (attribute == "fpDual") {
-      let fpDual = this.signupForm.get("fpDual");
-
-      return fpDual.hasError('required') ? 'Selecciona un FP dual' :
+      return this.fpDual.hasError('required') ? 'Selecciona un FP dual' :
         '';
     } else if (this.numero == 5) {
       let err = this.numeroExpediente;

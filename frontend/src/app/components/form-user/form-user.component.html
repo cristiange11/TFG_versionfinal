@@ -71,22 +71,7 @@
     <mat-error *ngIf="this.signupForm.get('rol').errors?.required"> {{ getErrorMessage("rol") }}</mat-error>
 
   </mat-form-field>
-  <mat-form-field appearance="fill">
-    <mat-label>Centro educativo</mat-label>
-    <mat-select matNativeControl required formControlName="codigoCentro" (selectionChange)="obtenerFP($event.value)" > 
-      <mat-option *ngFor="let centro of centroList | keyvalue" [value]="centro.key" >{{ centro.value }}</mat-option>
-    </mat-select>
-    <mat-error *ngIf="this.signupForm.get('codigoCentro').errors?.required"> {{ getErrorMessage("codigoCentro") }}</mat-error>
-
-  </mat-form-field>
-  <mat-form-field appearance="fill">
-    <mat-label>FP</mat-label>
-    <mat-select matNativeControl required formControlName="fpDual">
-      <mat-option *ngFor="let fp of fpList | keyvalue" [value]="fp.key">{{ fp.value }}</mat-option>
-    </mat-select>
-    <mat-error *ngIf="this.signupForm.get('fpDual').errors?.required"> {{ getErrorMessage("fpDual") }}</mat-error>
-
-  </mat-form-field>
+  
   
   <mat-form-field appearance="fill">
     <mat-label>G&eacute;nero</mat-label>
@@ -95,6 +80,22 @@
       <mat-option  value="femenino" >Femenino</mat-option>
     </mat-select>
     <mat-error *ngIf="this.signupForm.get('genero').errors?.required">{{ getErrorMessage("genero") }}</mat-error>
+  </mat-form-field>
+  <mat-form-field *ngIf="this.numero!=1" appearance="fill">
+    <mat-label>Centro educativo</mat-label>
+    <mat-select matNativeControl required [formControl]="codigoCentro" (selectionChange)="obtenerFP($event.value)" > 
+      <mat-option *ngFor="let centro of centroList | keyvalue" [value]="centro.key" >{{ centro.value }}</mat-option>
+    </mat-select>
+    <mat-error *ngIf="this.codigoCentro.errors?.required"> {{ getErrorMessage("codigoCentro") }}</mat-error>
+
+  </mat-form-field>
+  <mat-form-field *ngIf="this.numero!=1 && this.numero!=2" appearance="fill">
+    <mat-label>FP</mat-label>
+    <mat-select matNativeControl required [formControl]="fpDual">
+      <mat-option *ngFor="let fp of fpList | keyvalue" [value]="fp.key">{{ fp.value }}</mat-option>
+    </mat-select>
+    <mat-error *ngIf="this.fpDual.errors?.required"> {{ getErrorMessage("fpDual") }}</mat-error>
+
   </mat-form-field>
   <mat-form-field *ngIf="this.numero==4; else anotherRol" required>
     <input matInput type="text" [formControl]="formGroupProfesor" placeholder="Departamento" >

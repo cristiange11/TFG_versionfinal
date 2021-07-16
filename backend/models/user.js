@@ -31,9 +31,14 @@ module.exports = class User {
             `SELECT * FROM usuario where movil ='${movil}' AND dni !='${dni}'`);
     }
     static async save(user) {
-
+        console.log("entro a signup")
+        let codigoCentro = user.codigoCentro == null ? null : `'${user.codigoCentro}'`;
+        console.log(codigoCentro)
+        console.log(          `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fechaNacimiento, fpDual, codigoCentro) VALUES ('${user.dni}','${user.nombre}','${user.apellidos}','${user.correo}','${user.movil}','${user.direccion}','${user.password}','${user.genero}',${user.cp},'${user.rol}',STR_TO_DATE('${user.fechaNacimiento}','%d/%m/%Y'),${user.fpDual},${codigoCentro})`
+        )
+        
         const [rows, fields] = await promisePool.query(
-            `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fechaNacimiento, fpDual, codigoCentro) VALUES ('${user.dni}','${user.nombre}','${user.apellidos}','${user.correo}','${user.movil}','${user.direccion}','${user.password}','${user.genero}',${user.cp},'${user.rol}',STR_TO_DATE('${user.fechaNacimiento}','%d/%m/%Y'),'${user.fpDual}','${user.codigoCentro}')`
+            `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fechaNacimiento, fpDual, codigoCentro) VALUES ('${user.dni}','${user.nombre}','${user.apellidos}','${user.correo}','${user.movil}','${user.direccion}','${user.password}','${user.genero}',${user.cp},'${user.rol}',STR_TO_DATE('${user.fechaNacimiento}','%d/%m/%Y'),${user.fpDual},${codigoCentro})`
         );
         return rows;
     }

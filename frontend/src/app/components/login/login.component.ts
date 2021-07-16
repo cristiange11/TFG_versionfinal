@@ -42,13 +42,15 @@ export class LoginComponent implements OnInit {
           let userJson = result["user"]
           let user = new User(userJson);
           let token = result["token"]
+          console.log(result)
           this.cookieService.set( 'token', token );
           //this.cookieService.set( 'rol', user.rol );
          
           this.cookieService.set( 'user', JSON.stringify(user) );
           var userCookie =(JSON.parse(this.cookieService.get('user')));
-         
+          console.log(Number(userCookie.rol))
           if(Number(userCookie.rol) == 1){
+            console.log("entro")
             this.router.navigate(['navigation','adminpage']);
           }
         

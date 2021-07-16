@@ -25,9 +25,25 @@ export class AuthService {
     this.user = this.isUserLoggedIn$.asObservable();
   }
 
-  signup(user: User): Observable<JSON>{
+  signup(sigunForm, userJson): Observable<JSON>{
     console.log("HTTP OPTIONS + ",this.httpOptions.headers);
     console.log('SIGNUPPPP:'+this.cookieService.get('token'));
+    var user = {
+      dni : sigunForm.dni,
+      nombre: sigunForm.nombre,
+      apellidos: sigunForm.apellidos,
+      correo: sigunForm.correo,
+      movil: sigunForm.movil,
+      direccion: sigunForm.direccion,
+      password: sigunForm.password,
+      genero: sigunForm.genero,
+      cp: sigunForm.cp,
+      rol: sigunForm.rol,
+      fechaNacimiento: sigunForm.fechaNacimiento,
+      fpDual: userJson.fpDual == '' ? null : userJson.fpDual,
+      codigoCentro: userJson.codigoCentro == '' ? null : userJson.codigoCentro
+    };
+    console.log("Usuario => " + JSON.stringify(user))
     return this.http.post<JSON>(  `${this.url}/signup`, user , this.httpOptions);
     
   }
