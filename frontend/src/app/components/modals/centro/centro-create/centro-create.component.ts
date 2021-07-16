@@ -44,6 +44,6 @@ export class CentroCreateComponent implements OnInit {
           AppComponent.myapp.openDialog(res);
         });
     
-    this.dialogRef.close(Object.assign(new Centro(), this.formInstance.value));
+    this.dialogRef.close();
   }
 }

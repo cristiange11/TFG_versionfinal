@@ -11,7 +11,7 @@ import { AppComponent } from 'src/app/app.component';
 import { Empresa } from 'src/app/models/Empresa';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import { NavigationComponent } from '../navigation/navigation.component';
-
+import {EmpresaCreateComponent} from 'src/app/components/modals/empresa/empresa-create/empresa-create.component';
 @Component({
   selector: 'app-empresa',
   templateUrl: './empresa.component.html',
@@ -157,11 +157,10 @@ export class EmpresaComponent implements OnInit /* OnDestroy, AfterViewInit*/{
   public doFilter = (value: { target: HTMLInputElement }) => {
     this.dataSource.filter = value.target.value.trim().toLocaleLowerCase();
   }
-  add() {/*
-    const dialogRef = this.dialog.open(CentroCreateComponent, {
-      width: '400px',
-      data: "aoal"
-    });*/
+  add() {
+    const dialogRef = this.dialog.open(EmpresaCreateComponent, {
+      width: '400px'
+    });
   }
   edit(data: Empresa) {
     /*

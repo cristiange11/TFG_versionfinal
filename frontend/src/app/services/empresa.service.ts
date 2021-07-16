@@ -18,9 +18,17 @@ export class EmpresaService {
   }
   constructor(private cookieService: CookieService, private http: HttpClient, private errorHandlerService: ErrorHandlerService, private router: Router ) { }
   getEmpresas(): Observable<Empresa[] >{
-    
     return this.http.get<Empresa []>(this.url, this.httpOptions);
-   
   }
+  addEmpresa(empresa : Empresa): Observable<JSON>{
+    return this.http.post<JSON>(`${this.url}/create`, empresa , this.httpOptions);
+  }
+  deleteEmpresa(cifEmpresa : string): Observable<JSON>{
+    return this.http.delete<JSON>(`${this.url}/${cifEmpresa}`,  this.httpOptions);
+  }
+  updateEmpresa(empresa : Empresa): Observable<JSON>{
+    return this.http.put<JSON>(`${this.url}/update`, empresa, this.httpOptions);
+  }
+
 
 }

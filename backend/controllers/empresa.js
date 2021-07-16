@@ -102,14 +102,13 @@ exports.createEmpresa = async (req, res, next) => {
 
       try {
 
-
         const result = Empresa.createEmpresa(req.body).then(function (result) {
           console.log("Promise Resolved");
 
           res.status(201).json({ message: "success" });
         }).catch(function () {
           console.log("Promise Rejected");
-          res.status(401).json({ message: "no se ha podido crear la empresa:" + err });
+          res.status(401).json({ message: "no se ha podido crear la empresa:" });
         });
 
 

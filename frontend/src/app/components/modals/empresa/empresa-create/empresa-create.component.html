@@ -1,1 +1,40 @@
-<p>empresa-create works!</p>
+<h1 mat-dialog-title>Crear Empresa</h1>
+<div mat-dialog-content>
+  <form [formGroup]="formInstance" novalidate >
+    <mat-form-field class="fullWidth" appearance="outline">
+        <input matInput type="text" name="cifEmpresa" placeholder="CIF" formControlName="cifEmpresa" required>
+        <mat-error *ngIf="formInstance.controls['cifEmpresa']?.errors?.required">CIF requerido</mat-error>
+        <mat-error *ngIf="formInstance.controls['cifEmpresa']?.errors?.pattern">Formato CIF incorrecto</mat-error>
+      </mat-form-field>
+      <mat-form-field class="fullWidth" appearance="outline">
+        <input matInput type="text" name="nombre" formControlName="nombre" placeholder="nombre" required>
+        <mat-error *ngIf="formInstance.controls['nombre']?.errors?.required">Nombre requerido</mat-error>
+        <mat-error *ngIf="formInstance.controls['nombre']?.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
+      </mat-form-field>
+
+    <mat-form-field class="fullWidth" appearance="outline">
+        <input matInput type="text" name="direccion" formControlName="direccion" placeholder="direccion" required />
+        <mat-error *ngIf="formInstance.controls['direccion']?.errors?.required">Direcci&oacute;n requerida</mat-error>
+        <mat-error *ngIf="formInstance.controls['direccion']?.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
+    </mat-form-field>
+    <mat-form-field class="fullWidth" appearance="outline">
+        <input matInput type="text" name="telefono" formControlName="telefono" placeholder="telefono" required />
+        <mat-error *ngIf="formInstance.controls['telefono']?.errors?.required">Tel&eacute;fono requerido</mat-error>
+        <mat-error *ngIf="formInstance.controls['telefono']?.errors?.pattern">Formato tel&eacute;fono incorrecto</mat-error>
+    </mat-form-field>
+    <mat-form-field class="fullWidth" appearance="outline">
+        <input matInput type="text" name="correo" formControlName="correo" placeholder="correo" required />
+        <mat-error *ngIf="formInstance.controls['correo']?.errors?.required">Correo requerido</mat-error>
+        <mat-error *ngIf="formInstance.controls['correo']?.errors?.email">Formato correo incorrecto</mat-error>
+    </mat-form-field>
+    <mat-form-field class="fullWidth" appearance="outline">
+        <input matInput type="text" name="url" formControlName="url" placeholder="url" required />
+        <mat-error *ngIf="formInstance.controls['url']?.errors?.required">URL requerida</mat-error>
+        <mat-error *ngIf="formInstance.controls['url']?.errors?.pattern">Formato URL errónea</mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div class="mt-5" mat-dialog-actions>
+  <button mat-raised-button color="primary"  (click)="save()" [disabled]="!formInstance.valid">Yes</button>
+  <button mat-raised-button mat-dialog-close>No</button>
+</div>

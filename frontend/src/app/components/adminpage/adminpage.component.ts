@@ -171,8 +171,7 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   add() {
     const dialogRef = this.dialog.open(CentroCreateComponent, {
-      width: '400px',
-      data: "aoal"
+      width: '400px'
     });
   }
   edit(data: Centro) {
