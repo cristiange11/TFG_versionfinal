@@ -29,7 +29,9 @@ export class EmpresaComponent implements OnInit /* OnDestroy, AfterViewInit*/{
 
   public dataSource: MatTableDataSource<Empresa>;
   private serviceSubscribe: Subscription;
-  constructor( private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private empresaService: EmpresaService, public dialog: MatDialog) { }
+  constructor( private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private empresaService: EmpresaService, public dialog: MatDialog) {
+    this.dataSource = new MatTableDataSource<Empresa>();
+   }
 
   ngOnInit(): void {
     this.nagivationComponent.obtenerItems();
@@ -49,12 +51,13 @@ export class EmpresaComponent implements OnInit /* OnDestroy, AfterViewInit*/{
     this.serviceSubscribe = this.empresaService.getEmpresas().pipe(first())
       .subscribe(
         data => {
+          
           let empresas = data["empresas"];
+         
           empresas.forEach(empresaInfo => {          
             this.empresaList.push(empresaInfo);
             
           });
-          
             this.dataSource.data = this.empresaList
         },
         error => {

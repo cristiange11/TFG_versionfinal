@@ -64,6 +64,9 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { MatTableFilterModule } from 'mat-table-filter';
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
 import { EmpresaComponent } from './components/empresa/empresa.component';
+import { EmpresaCreateComponent } from './components/modals/empresa/empresa-create/empresa-create.component';
+import { EmpresaUpdateComponent } from './components/modals/empresa/empresa-update/empresa-update.component';
+import { EmpresaDeleteConfirmationComponent } from './components/modals/empresa/empresa-delete-confirmation/empresa-delete-confirmation.component';
 
 @NgModule({
   imports: [
@@ -141,6 +144,9 @@ import { EmpresaComponent } from './components/empresa/empresa.component';
     CentroCreateComponent,
     EditProfileComponent,
     EmpresaComponent,
+    EmpresaCreateComponent,
+    EmpresaUpdateComponent,
+    EmpresaDeleteConfirmationComponent,
     
   ],
 
