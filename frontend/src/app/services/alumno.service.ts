@@ -30,12 +30,11 @@ export class AlumnoService {
       cp: sigunForm.cp,
       rol: sigunForm.rol,
       fechaNacimiento: sigunForm.fechaNacimiento,
-      fpDual: userJson.fpDual == '' ? null : userJson.fpDual,
-      codigoCentro: userJson.codigoCentro == '' ? null : userJson.codigoCentro
+      fpDual: userJson.fpDual,
+      codigoCentro: userJson.codigoCentro
     };
     
     var alumno = new Alumno(user, formulario2);
-    console.log(alumno)
     return this.http.post<JSON>(`${this.url}/create`, alumno , this.httpOptions);   
   }
 }

@@ -236,24 +236,26 @@ this.centroService.getCentros().pipe(first())
           AppComponent.myapp.openDialog(arrayRes);
         },
         error => {
+          console.log(error)
           error.error.errors.forEach(errorInfo => {
             const formControl = this.signupForm.get(errorInfo.param);
              if (formControl) {
                formControl.setErrors({
                  serverError: errorInfo.message
                });  
+              
              }
-             
-            if (this.numeroExpediente) {
+             if (errorInfo.param == "numeroExpediente"){
               this.numeroExpediente.setErrors({
                 serverError: errorInfo.message
               });  
-            }        
+            }
+                
            });
         });
-    }/*else if(this.numero==4){
+    }else if(this.numero==4){
       
-      this.profesorService.createProfesor(this.signupForm.value, this.formGroupProfesor.value).pipe(first())
+      this.profesorService.createProfesor(this.signupForm.value, userJson, this.formGroupProfesor.value).pipe(first())
       .subscribe(
         data => {
           var arrayRes= new Array();
@@ -276,7 +278,7 @@ this.centroService.getCentros().pipe(first())
         });
     }else if(this.numero==3){
      
-      this.tutorService.createTutor(this.signupForm.value, this.formGroupTutor.value).pipe(first())
+      this.tutorService.createTutor(this.signupForm.value, userJson, this.formGroupTutor.value).pipe(first())
       .subscribe(
         data => {
           var arrayRes= new Array();
@@ -293,7 +295,7 @@ this.centroService.getCentros().pipe(first())
              }          
            });
         });
-    }*/
+    }
     
   }
   getErrorMessage(attribute: String) {

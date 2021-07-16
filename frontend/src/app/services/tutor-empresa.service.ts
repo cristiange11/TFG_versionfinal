@@ -18,9 +18,24 @@ export class TutorEmpresaService {
     headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),
   }
   constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { }
-  createTutor(formulario1 , formulario2): Observable<JSON>{    
-    var tutor = new TutorEmpresa(formulario1, formulario2);
-    console.log(tutor)
+  createTutor(sigunForm , userJson,  formulario2): Observable<JSON>{    
+    var user = {
+      dni : sigunForm.dni,
+      nombre: sigunForm.nombre,
+      apellidos: sigunForm.apellidos,
+      correo: sigunForm.correo,
+      movil: sigunForm.movil,
+      direccion: sigunForm.direccion,
+      password: sigunForm.password,
+      genero: sigunForm.genero,
+      cp: sigunForm.cp,
+      rol: sigunForm.rol,
+      fechaNacimiento: sigunForm.fechaNacimiento,
+      fpDual: userJson.fpDual,
+      codigoCentro: userJson.codigoCentro
+    };
+    var tutor = new TutorEmpresa(user, formulario2);
+    
     return this.http.post<JSON>(`${this.url}/create`, tutor , this.httpOptions);   
   }
 }

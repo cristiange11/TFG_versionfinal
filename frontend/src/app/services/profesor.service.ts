@@ -17,8 +17,23 @@ export class ProfesorService {
   }
   
   constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { }
-  createProfesor(formulario1 , formulario2): Observable<JSON>{    
-    var profesor = new Profesor(formulario1, formulario2);   
+  createProfesor(sigunForm , userJson, formulario2): Observable<JSON>{  
+    var user = {
+      dni : sigunForm.dni,
+      nombre: sigunForm.nombre,
+      apellidos: sigunForm.apellidos,
+      correo: sigunForm.correo,
+      movil: sigunForm.movil,
+      direccion: sigunForm.direccion,
+      password: sigunForm.password,
+      genero: sigunForm.genero,
+      cp: sigunForm.cp,
+      rol: sigunForm.rol,
+      fechaNacimiento: sigunForm.fechaNacimiento,
+      fpDual: userJson.fpDual,
+      codigoCentro: userJson.codigoCentro 
+    };  
+    var profesor = new Profesor(user, formulario2);   
     return this.http.post<JSON>(`${this.url}/create`, profesor , this.httpOptions);   
   }
 }
