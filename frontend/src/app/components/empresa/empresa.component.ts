@@ -18,7 +18,7 @@ import { EmpresaUpdateComponent } from '../modals/empresa/empresa-update/empresa
   templateUrl: './empresa.component.html',
   styleUrls: ['./empresa.component.css']
 })
-export class EmpresaComponent implements OnInit /* OnDestroy, AfterViewInit*/{
+export class EmpresaComponent implements OnInit , OnDestroy, AfterViewInit{
   myApp = AppComponent.myapp;
   empresaList: Array<Empresa> = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;

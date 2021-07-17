@@ -26,6 +26,9 @@ export class FpdualesService {
   getFps(): Observable<Fpduales[] >{    
     return this.http.get<Fpduales[]>(this.url, this.httpOptions); 
   }
+  getFp(id): Observable<Fpduales>{    
+    return this.http.get<Fpduales>(`${this.url}/${id}`, this.httpOptions); 
+  }
   addFp(fpDual : Fpduales): Observable<JSON>{
     return this.http.post<JSON>(`${this.url}/create`, fpDual , this.httpOptions);
   }

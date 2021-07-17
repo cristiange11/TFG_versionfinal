@@ -131,7 +131,6 @@ exports.login = async (req, res, next) => {
 exports.getUsuarios = async (req, res, next) => {
   try {
     const usuario = await User.getUsers();
-
     res.status(200).json({ "usuarios": usuario[0] });
 
   } catch (err) {

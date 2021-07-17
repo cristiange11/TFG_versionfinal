@@ -33,6 +33,11 @@ module.exports = class FP_dual {
             await connection.release();
         }
     }
+    static async getFp(id) {
+        const [rows, fields] = await promisePool.query(
+            `SELECT * FROM fp_duales id = '${id}'`);
+        return rows;
+    }
     static async getFps() {
         const [rows, fields] = await promisePool.query(
             `SELECT * FROM fp_duales `);

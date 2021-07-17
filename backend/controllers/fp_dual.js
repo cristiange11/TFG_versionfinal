@@ -44,6 +44,24 @@ exports.DeleteCentroAndFPsByCentro = async (req, res, next) => {
     }
   }
 };
+exports.getFp = async (req, res, next) => {
+  
+  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], { header: true }));
+  console.log(expirado)
+  if (expirado) {
+    res.status(401).json({ "errors": "Sesión expirada" });
+  } else {
+    try {
+      
+      const fps = await FP_dual.getFp(req.params.id);
+
+      res.status(200).json({ fps: fps });
+    } catch (err) {
+      res.status(500).json({ error: err });
+    }
+  }
+
+};
 exports.getFps = async (req, res, next) => {
   
   console.log(req.headers);

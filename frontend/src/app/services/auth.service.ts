@@ -21,8 +21,7 @@ export class AuthService {
   }
   
   constructor(private cookieService: CookieService, private http: HttpClient, private errorHandlerService: ErrorHandlerService, private router: Router ) { 
-    this.isUserLoggedIn$ = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
-    this.user = this.isUserLoggedIn$.asObservable();
+    
   }
 
   signup(sigunForm, userJson): Observable<JSON>{
@@ -68,6 +67,10 @@ export class AuthService {
       fpDual: userJson.fpDual,
       codigoCentro: userJson.codigoCentro
     };
+    console.log("User => " + user.dni)
+    return this.http.put<JSON>(`${this.url}/update`, user, this.httpOptions);
+  }
+  updateUserForm(user: User): Observable<JSON>{
     
     return this.http.put<JSON>(`${this.url}/update`, user, this.httpOptions);
   }

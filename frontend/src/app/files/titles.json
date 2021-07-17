@@ -3,5 +3,10 @@
     "direccion" : "Dirección",
     "telefono" : "Teléfono",
     "cifEmpresa" : "CIF",
-    "url" : "URL"
+    "url" : "URL",
+    "genero" : "Género",
+    "fpDual" : "FP Dual",
+    "movil" : "Móvil",
+    "fechaNacimiento": "Fecha de nacimiento"
+
 }

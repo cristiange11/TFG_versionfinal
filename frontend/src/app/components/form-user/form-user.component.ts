@@ -87,7 +87,7 @@ fpDual = new FormControl("", [Validators.required]);
       dni: new FormControl("", [Validators.required, Validators.pattern(/^\d{8}[a-zA-Z]$/)]),
       nombre: new FormControl("", [Validators.required, Validators.minLength(4)]),
       apellidos: new FormControl("", [Validators.required, Validators.minLength(4)]),
-      direccion: new FormControl("", [Validators.required]),
+      direccion: new FormControl("", [Validators.required, Validators.minLength(4)]),
       cp: new FormControl("", [Validators.required, Validators.pattern(/^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/)]),
       genero: new FormControl("", [Validators.required]),
       movil: new FormControl("", [Validators.required, Validators.pattern(/^(\+34|0034|34)?[ -]*(6|7)[ -]*([0-9][ -]*){8}$/)]),
@@ -320,6 +320,7 @@ this.centroService.getCentros().pipe(first())
     } else if (attribute == "direccion") {
       let direccion = this.signupForm.get("direccion");
       return direccion.hasError('required') ? 'Introduce la dirección' :
+            direccion.hasError('minlength') ? 'Longitud mínima de 4' :
         '';
     } else if (attribute == "cp") {
       let cp = this.signupForm.get("cp");

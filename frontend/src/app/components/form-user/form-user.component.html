@@ -19,6 +19,7 @@
   <mat-form-field>
     <input matInput type="text" formControlName="direccion" placeholder="Direcci&oacute;n" required>
     <mat-error *ngIf="this.signupForm.get('direccion').errors?.required">{{ getErrorMessage("direccion") }}</mat-error>
+    <mat-error *ngIf="this.signupForm.get('direccion').errors?.minlength">{{ getErrorMessage("direccion") }}</mat-error>
 
   </mat-form-field>
   <mat-form-field>

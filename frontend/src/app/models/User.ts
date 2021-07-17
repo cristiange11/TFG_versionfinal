@@ -11,7 +11,7 @@ export class User {
     cp: string;
     rol: string;
     fechaNacimiento: string;
-    fpDual: string;
+    fpDual: any;
     codigoCentro: string;
     constructor(form){
         this.dni= form.dni;

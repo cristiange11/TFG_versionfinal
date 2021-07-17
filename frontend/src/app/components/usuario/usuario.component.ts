@@ -12,6 +12,7 @@ import { User } from 'src/app/models/User';
 import { AuthService } from 'src/app/services/auth.service';
 import { NavigationComponent } from '../navigation/navigation.component';
 import { DatePipe } from '@angular/common';
+import { UsuarioUpdateComponent } from '../modals/usuario/usuario-update/usuario-update.component';
 
 @Component({
   selector: 'app-usuario',
@@ -70,7 +71,7 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
               genero: usuarioInfo.genero,
               cp: usuarioInfo.cp,
               rol: usuarioInfo.rol,
-              fechaNacimiento: this.datepipe.transform(usuarioInfo.fechaNacimiento, "dd/MM/YYYY"),
+              fechaNacimiento: this.datepipe.transform(usuarioInfo.fechaNacimiento, "YYYY-MM-dd"),
               fpDual: usuarioInfo.fpDual,
               codigoCentro: usuarioInfo.codigoCentro,
             }
@@ -81,9 +82,7 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
         },
         error => {
           console.log(error);
-          /* var arrayRes= new Array();
-       arrayRes.push(error.error.errors);
-       AppComponent.myapp.openDialog(arrayRes);*/
+         
         });
   }
   private filter() {
@@ -179,18 +178,14 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
   public doFilter = (value: { target: HTMLInputElement }) => {
     this.dataSource.filter = value.target.value.trim().toLocaleLowerCase();
   }
-  add() {
-    /* const dialogRef = this.dialog.open(FpdualCreateComponent, {
-       width: '400px'
-     });*/
-  }
+  
   edit(data: User) {
-    /*
-    const dialogRef = this.dialog.open(FpdualUpdateComponent, {
+    
+    const dialogRef = this.dialog.open(UsuarioUpdateComponent, {
       width: '400px',
       data: data
     });
-    */
+    
   }
 
   delete(codigoCentro: any) {

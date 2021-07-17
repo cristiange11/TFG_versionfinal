@@ -12,7 +12,9 @@ router.delete('/:codigoCentro', fpController.DeleteCentroAndFPsByCentro);
 
 router.get('/', fpController.getFps);
 
-router.delete('/:codigoCentro', fpController.deleteFp);
+router.get('/:id', fpController.getFp);
+
+router.delete('/:id', fpController.deleteFp);
 
 router.post(
   '/create',

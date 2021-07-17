@@ -23,7 +23,6 @@ module.exports = class User {
 
   
     static async findMovil(movil,dni) {
-       
         return await promisePool.query(
             `SELECT * FROM usuario where movil ='${movil}' AND dni !='${dni}'`);
     }
@@ -46,15 +45,16 @@ module.exports = class User {
     }
     
     static async updateUser(user, password) {
-        
+        console.log(user.fechaNacimiento)
+        let codigoCentro = user.codigoCentro == null ? null : `'${user.codigoCentro}'`;
         return await promisePool.query(
             `UPDATE usuario SET nombre='${user.nombre}',apellidos='${user.apellidos}',correo='${user.correo}',
             movil='${user.movil}',direccion='${user.direccion}',password='${password}',genero='${user.genero}',
-            cp='${user.cp}',rol='${user.rol}',fechaNacimiento=STR_TO_DATE('${user.fechaNacimiento}','%d/%m/%Y'),fpDual='${user.fpDual}'
-            ,codigoCentro='${user.codigoCentro}' WHERE dni='${user.dni}'`);
+            cp='${user.cp}',rol='${user.rol}',fechaNacimiento=STR_TO_DATE('${user.fechaNacimiento}','%Y-%m-%d'),fpDual=${user.fpDual}
+            ,codigoCentro=${codigoCentro} WHERE dni='${user.dni}'`);
     }
     static async getUsers() {
         return await promisePool.query(
-            'SELECT * FROM usuario WHERE  CAST(fechaNacimiento AS CHAR)');
+            'SELECT * FROM usuario ');
     }
 };

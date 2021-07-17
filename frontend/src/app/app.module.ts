@@ -72,7 +72,6 @@ import { FpdualComponent } from './components/fpdual/fpdual.component';
 import { FpdualUpdateComponent } from './components/modals/fpdual/fpdual-update/fpdual-update.component';
 import { FpdualCreateComponent } from './components/modals/fpdual/fpdual-create/fpdual-create.component';
 import { UsuarioComponent } from './components/usuario/usuario.component';
-import { UsuarioCreateComponent } from './components/modals/usuario/usuario-create/usuario-create.component';
 import { UsuarioUpdateComponent } from './components/modals/usuario/usuario-update/usuario-update.component';
 
 @NgModule({
@@ -158,7 +157,6 @@ import { UsuarioUpdateComponent } from './components/modals/usuario/usuario-upda
     FpdualUpdateComponent,
     FpdualCreateComponent,
     UsuarioComponent,
-    UsuarioCreateComponent,
     UsuarioUpdateComponent,
     
   ],

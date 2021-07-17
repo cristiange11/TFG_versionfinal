@@ -1,1 +1,146 @@
-<p>usuario-update works!</p>
+<h1 mat-dialog-title>Editar Usuario</h1>
+<div mat-dialog-content>
+    <form [formGroup]="formInstance" novalidate>
+        <mat-form-field class="fullWidth" appearance="outline">
+            <mat-label>Nombre</mat-label>
+            <input matInput type="text" formControlName="nombre" required>
+            <mat-error *ngIf="this.formInstance.get('nombre').errors?.required">Nombre requerido</mat-error>
+            <mat-error *ngIf="this.formInstance.get('nombre').errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
+        </mat-form-field>
+        <mat-form-field class="fullWidth" appearance="outline">
+            <mat-label>Apellidos</mat-label>
+            <input matInput type="text" formControlName="apellidos"  required>
+            <mat-error *ngIf="this.formInstance.get('apellidos').errors?.required">Apellidos requeridos</mat-error>
+            <mat-error *ngIf="this.formInstance.get('apellidos').errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
+        </mat-form-field>
+        <mat-form-field class="fullWidth" appearance="outline">
+            <mat-label>Direcci&oacute;n</mat-label>
+            <input matInput type="text" formControlName="direccion"  required>
+            <mat-error *ngIf="this.formInstance.get('direccion').errors?.required">Direcci&oacute;n requerida</mat-error>
+            <mat-error *ngIf="this.formInstance.get('direccion').errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
+        </mat-form-field>
+        <mat-form-field class="fullWidth" appearance="outline">
+            <mat-label>CP</mat-label>
+            <input matInput type="text" formControlName="cp"  required>
+            <mat-error *ngIf="this.formInstance.get('cp').errors?.required">CP requerido</mat-error>
+            <mat-error *ngIf="this.formInstance.get('cp').errors?.pattern">Formato CP incorrecto</mat-error>
+        </mat-form-field>
+        <mat-form-field class="fullWidth" appearance="outline">
+            <mat-label>M&oacute;vil</mat-label>
+            <input matInput type="text" formControlName="movil"  required>
+            <mat-error *ngIf="this.formInstance.get('movil').errors?.required">M&oacute;vil requerido</mat-error>
+            <mat-error *ngIf="this.formInstance.get('movil').dirty && this.formInstance.get('movil').errors?.pattern">Formato m&oacute;vil incorrecto</mat-error>
+            <mat-error *ngIf="this.formInstance.get('movil').errors?.serverError">{{
+                this.formInstance.get('movil').errors?.serverError }}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="fullWidth" appearance="outline">
+            <mat-label>Correo</mat-label>
+            <input matInput type="text" formControlName="correo"  required>
+            <mat-error *ngIf=" this.formInstance.get('correo').errors?.required">Correo requerido</mat-error>
+            <mat-error *ngIf="this.formInstance.get('correo').dirty && this.formInstance.get('correo').errors?.email">Formato correo incorrecto</mat-error>
+            <mat-error *ngIf="this.formInstance.get('correo').errors?.serverError ">{{
+                this.formInstance.get('correo').errors?.serverError }}</mat-error>
+
+        </mat-form-field>
+        <mat-form-field class="fullWidth" appearance="outline">
+            <mat-label>Fecha de nacimiento</mat-label>
+            <input matInput type="date" formControlName="fechaNacimiento" placeholder="Fecha de nacimiento (dd/mm/yyyy)"
+                required>
+            <mat-error *ngIf="this.formInstance.get('fechaNacimiento').errors?.required">Fecha requerida</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Contrase&ntilde;a</mat-label>
+            <input matInput [type]="hide ? 'password' : 'text'" [formControl]="passwordFormControl"
+               required (change)="this.confirmPasswordFormControl.setValue('')">
+            <mat-error *ngIf=" passwordFormControl.errors?.required">Contrase&ntilde;a</mat-error>
+            <mat-error *ngIf=" passwordFormControl.errors?.pattern">Formato contrase&ntilde;a incorrecto</mat-error>
+            <button class="fondo" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Repita contrase&ntilde;a</mat-label>
+            <input matInput [type]="hide2 ? 'password' : 'text'" [formControl]="confirmPasswordFormControl" required>
+            <mat-error *ngIf="this.confirmPasswordFormControl.dirty && this.confirmPasswordFormControl.errors?.noMatch">
+               Las contrase&ntilde;as no coinciden </mat-error>
+            <button class="fondo" mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide2">
+                <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Rol</mat-label>
+            <mat-select matNativeControl required formControlName="rol" (selectionChange)="obtenerRol($event.value)">
+                <mat-option *ngFor="let rol of rolesList | keyvalue" [value]="rol.key" >{{ rol.value }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="this.formInstance.get('rol').errors?.required">Rol requerido</mat-error>
+
+        </mat-form-field>
+
+
+        <mat-form-field appearance="fill">
+            <mat-label>G&eacute;nero</mat-label>
+            <mat-select matNativeControl required formControlName="genero">
+                <mat-option value="masculino">Masculino</mat-option>
+                <mat-option value="femenino">Femenino</mat-option>
+            </mat-select>
+            <mat-error *ngIf="this.formInstance.get('genero').errors?.required">G&eacute;nero requerido</mat-error>
+        </mat-form-field>
+        <mat-form-field *ngIf="this.numero!=1" appearance="fill">
+            <mat-label>Centro educativo</mat-label>
+            <mat-select matNativeControl required [formControl]="codigoCentro"
+                (selectionChange)="obtenerFP($event.value)">
+                <mat-option *ngFor="let centro of centroList | keyvalue" [value]="centro.key">{{ centro.value }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="this.codigoCentro.errors?.required">Centro educativo requerido</mat-error>
+        </mat-form-field>
+        <mat-form-field *ngIf="this.numero!=1 && this.numero!=2" appearance="fill">
+            <mat-label>FP</mat-label>
+            <mat-select matNativeControl required [formControl]="fpDual">
+                <mat-option *ngFor="let fp of fpList | keyvalue" [value]="fp.key">{{ fp.value }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="this.fpDual.errors?.required">Fp dual requerido</mat-error>
+
+        </mat-form-field>
+        <mat-form-field *ngIf="this.numero==4; else anotherRol" required>
+            <input matInput type="text" [formControl]="formGroupProfesor" placeholder="Departamento">
+            <mat-error *ngIf="formGroupProfesor.errors?.required ">Departamento requerido</mat-error>
+            <mat-error *ngIf="formGroupProfesor.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
+        </mat-form-field>
+        <ng-template #anotherRol>
+            <mat-form-field *ngIf="this.numero==5; else rolTutorEmpresa" required>
+                <input matInput type="text" [formControl]="numeroExpediente" placeholder="Número de expediente">
+                <mat-error *ngIf=" numeroExpediente.errors?.required">N&uacute;,ero de expediente requerido</mat-error>
+                <mat-error *ngIf=" numeroExpediente.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
+                <mat-error *ngIf=" numeroExpediente.errors?.serverError">{{ numeroExpediente.errors?.serverError }}
+                </mat-error>
+            </mat-form-field>
+        </ng-template>
+        <ng-template #rolTutorEmpresa>
+            <mat-form-field [formGroup]="formGroupTutor" *ngIf="this.numero==3">
+                <mat-label>M&oacute;dulo de empresa</mat-label>
+                <input matInput type="text" required formControlName="moduloEmpresa">
+                <mat-error *ngIf=" this.formGroupTutor.get('moduloEmpresa').errors?.required">M&oacute;dulo requerido</mat-error>
+                <mat-error *ngIf=" this.formGroupTutor.get('moduloEmpresa').errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
+            </mat-form-field>
+            <mat-form-field [formGroup]="formGroupTutor" *ngIf="this.numero==3" appearance="fill">
+                <mat-label>Empresas</mat-label>
+                <mat-select matNativeControl required formControlName="cifEmpresa">
+                    <mat-option *ngFor="let empresa of empresaList | keyvalue" [value]="empresa.key">{{ empresa.value }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="this.formGroupTutor.get('cifEmpresa').errors?.required">CIF requerido</mat-error>
+            </mat-form-field>
+        </ng-template>
+    </form>
+</div>
+<div class="mt-5" mat-dialog-actions>
+    <button mat-raised-button color="primary"  (click)="save()"
+        [disabled]="!formInstance.valid">Yes</button>
+    <button mat-raised-button mat-dialog-close>No</button>
+</div>
