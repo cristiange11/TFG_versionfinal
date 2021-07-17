@@ -55,6 +55,6 @@ module.exports = class User {
     }
     static async getUsers() {
         return await promisePool.query(
-            `SELECT * FROM usuario `);
+            'SELECT * FROM usuario WHERE  CAST(fechaNacimiento AS CHAR)');
     }
 };

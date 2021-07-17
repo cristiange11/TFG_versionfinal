@@ -26,6 +26,7 @@ import { AdminpageComponent } from './components/adminpage/adminpage.component';
 import { FormUserComponent } from './components/form-user/form-user.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
+import { DatePipe } from '@angular/common';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatRadioModule } from '@angular/material/radio';
@@ -71,6 +72,8 @@ import { FpdualComponent } from './components/fpdual/fpdual.component';
 import { FpdualUpdateComponent } from './components/modals/fpdual/fpdual-update/fpdual-update.component';
 import { FpdualCreateComponent } from './components/modals/fpdual/fpdual-create/fpdual-create.component';
 import { UsuarioComponent } from './components/usuario/usuario.component';
+import { UsuarioCreateComponent } from './components/modals/usuario/usuario-create/usuario-create.component';
+import { UsuarioUpdateComponent } from './components/modals/usuario/usuario-update/usuario-update.component';
 
 @NgModule({
   imports: [
@@ -155,10 +158,12 @@ import { UsuarioComponent } from './components/usuario/usuario.component';
     FpdualUpdateComponent,
     FpdualCreateComponent,
     UsuarioComponent,
+    UsuarioCreateComponent,
+    UsuarioUpdateComponent,
     
   ],
 
-  providers: [ConfirmationService, MessageService, CookieService],
+  providers: [ConfirmationService, MessageService, CookieService, DatePipe],
   bootstrap: [AppComponent],
   entryComponents: [ModalComponent]
 })

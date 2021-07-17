@@ -71,4 +71,7 @@ export class AuthService {
     
     return this.http.put<JSON>(`${this.url}/update`, user, this.httpOptions);
   }
+  getUsers(): Observable<User[] >{    
+    return this.http.get<User[]>(this.url, this.httpOptions); 
+  }
 }

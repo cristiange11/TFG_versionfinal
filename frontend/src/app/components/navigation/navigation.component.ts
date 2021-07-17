@@ -52,6 +52,11 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
           icon: "far fa-user"
         },
         {
+          label:'Usuarios',
+          routerLink:'/usuario',
+          icon: "fas fa-users"
+        },
+        {
           label:'Empresas',
           routerLink:'/empresa',
           icon: "fas fa-building"

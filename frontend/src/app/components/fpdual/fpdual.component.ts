@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -19,7 +19,7 @@ import { NavigationComponent } from '../navigation/navigation.component';
   templateUrl: './fpdual.component.html',
   styleUrls: ['./fpdual.component.css']
 })
-export class FpdualComponent implements OnInit {
+export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
   myApp = AppComponent.myapp;
   fpList: Array<Fpduales> = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;

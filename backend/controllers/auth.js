@@ -132,8 +132,7 @@ exports.getUsuarios = async (req, res, next) => {
   try {
     const usuario = await User.getUsers();
 
-
-    res.status(200).json({ message: usuario });
+    res.status(200).json({ "usuarios": usuario[0] });
 
   } catch (err) {
     res.status(500).json({ error: err });

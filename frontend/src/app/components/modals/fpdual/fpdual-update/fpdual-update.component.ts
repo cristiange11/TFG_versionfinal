@@ -15,7 +15,7 @@ import { FpdualesService } from 'src/app/services/fpduales.service';
   styleUrls: ['./fpdual-update.component.css']
 })
 export class FpdualUpdateComponent implements OnInit {
-  issueThresholdForm: FormGroup;
+  formInstance: FormGroup;
    fecha;
    anio;
    totalPlazas= new FormControl("", [Validators.required, Validators.min(1)]);
@@ -26,7 +26,7 @@ export class FpdualUpdateComponent implements OnInit {
       this.fecha = new Date();
       this.anio = this.fecha.getFullYear();
       
-      this.issueThresholdForm = new FormGroup({
+      this.formInstance = new FormGroup({
         nombre: new FormControl("", [Validators.required, Validators.minLength(4)]),
         descripcion: new FormControl("", [Validators.required, Validators.minLength(4)]),
         
@@ -37,7 +37,7 @@ export class FpdualUpdateComponent implements OnInit {
         id: new FormControl("", []),
       }, {validators: this.validateScore})
       
-      this.issueThresholdForm.setValue(data); 
+      this.formInstance.setValue(data); 
     }
 
   ngOnInit(): void {
@@ -79,7 +79,7 @@ export class FpdualUpdateComponent implements OnInit {
   }
   save(){
    
-    this.fpdualesService.updateFp(this.issueThresholdForm.value).pipe(first())
+    this.fpdualesService.updateFp(this.formInstance.value).pipe(first())
       .subscribe(
         data => {
          window.location.reload();
@@ -88,7 +88,7 @@ export class FpdualUpdateComponent implements OnInit {
           error.error.errors.forEach(errorInfo => {
             if(error.status == 409){
               
-            const formControl = this.issueThresholdForm.get(errorInfo.param);
+            const formControl = this.formInstance.get(errorInfo.param);
              if (formControl) {
                formControl.setErrors({
                  serverError: errorInfo.message
