@@ -12,12 +12,11 @@ module.exports = class LogSesion {
             `SELECT * FROM log_login `);
         return rows;
     }
-    static async createInicioSesion(user, error,fechaHora){
-        console.log(`INSERT INTO log_login (usuario, fechaHoraLog, error) VALUES 
-        ('${user}',${fechaHora},${error}) `)
+    static async createInicioSesion(user, error/*,fechaHora*/){
+ 
         const [rows, fields] = await promisePool.query(
             `INSERT INTO log_login (usuario, fechaHoraLog, error) VALUES 
-            ('${user}','${fechaHora}',${error}) `);
+            ('${user}',sysdate(),${error}) `);
         return rows;
     }
 };

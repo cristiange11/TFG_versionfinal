@@ -113,7 +113,7 @@ exports.login = async (req, res, next) => {
 
 // current date
 // adjust 0 before single digit date
-let date = ("0" + date_ob.getDate()).slice(-2);
+/*let date = ("0" + date_ob.getDate()).slice(-2);
 
 // current month
 let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
@@ -134,17 +134,18 @@ let seconds = date_ob.getSeconds();
 console.log(year + "-" + month + "-" + date);
 
 // prints date & time in YYYY-MM-DD HH:MM:SS format
-const fechaHora=year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds;
+const fechaHora=year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds;*/
+
       if (!isEqual) {
         
           error = true;
         
-        LogSesion.createInicioSesion(user.dni,error,fechaHora);
+        LogSesion.createInicioSesion(user.dni,error/*,fechaHora*/);
         res.status(401).json({ message: 'Credenciales incorrectas.' });
       }
       else {
         error = false;
-        LogSesion.createInicioSesion(user.dni,error,fechaHora);
+        LogSesion.createInicioSesion(user.dni,error/*,fechaHora*/);
         const jwtBearerToken = jwt.sign({ sub: user.dni }, 'proyecto final carrera', { expiresIn: '24h' });
         
         const resJSON = { "result": { "user": userJson, "token": jwtBearerToken } }
