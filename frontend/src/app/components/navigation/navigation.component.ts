@@ -42,6 +42,18 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
     if(Number(user.rol)==1){
       this.items = [
         {
+          label:'Logs',
+          icon:'pi pi-fw pi-file',
+          items:[
+              {
+                  label:'Inicio Sesión',
+                  icon:'pi pi-fw pi-file',
+                  routerLink:'/logsesion'
+              },
+              
+          ]
+      },
+        {
           label:'FP duales',
           routerLink:'/fpdual',
           icon: "fas fa-graduation-cap"

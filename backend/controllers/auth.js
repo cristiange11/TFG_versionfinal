@@ -108,22 +108,43 @@ exports.login = async (req, res, next) => {
       
       let user = new User(userJson)
       const isEqual = await bcrypt.compare(password, user.password);
-      console.log(sysdate())
+      //console.log(sysdate())
+      let date_ob = new Date();
+
+// current date
+// adjust 0 before single digit date
+let date = ("0" + date_ob.getDate()).slice(-2);
+
+// current month
+let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+
+// current year
+let year = date_ob.getFullYear();
+
+// current hours
+let hours = date_ob.getHours();
+
+// current minutes
+let minutes = date_ob.getMinutes();
+
+// current seconds
+let seconds = date_ob.getSeconds();
+
+// prints date in YYYY-MM-DD format
+console.log(year + "-" + month + "-" + date);
+
+// prints date & time in YYYY-MM-DD HH:MM:SS format
+const fechaHora=year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds;
       if (!isEqual) {
-        var log = {
-          usuario : dni,
-          error : true, 
-        }
-        LogSesion.createInicioSesion(log);
+        
+          error = true;
+        
+        LogSesion.createInicioSesion(user.dni,error,fechaHora);
         res.status(401).json({ message: 'Credenciales incorrectas.' });
       }
       else {
-        var log = {
-          usuario : dni,
-          fechaHoraLog :new Date(dt.now()),
-          error:false, 
-        }
-        LogSesion.createInicioSesion(log);
+        error = false;
+        LogSesion.createInicioSesion(user.dni,error,fechaHora);
         const jwtBearerToken = jwt.sign({ sub: user.dni }, 'proyecto final carrera', { expiresIn: '24h' });
         
         const resJSON = { "result": { "user": userJson, "token": jwtBearerToken } }
@@ -151,7 +172,7 @@ exports.getUsuarios = async (req, res, next) => {
 
 };
 exports.updateUsuario = async (req, res, next) => {
-
+  console.log("Hola compruebo si entro")
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });

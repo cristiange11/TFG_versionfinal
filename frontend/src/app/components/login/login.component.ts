@@ -22,6 +22,16 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm=this.createFormGroup();
+    if(!this.cookieService.get('user')){
+      this.router.navigate(['home']);
+    }
+    else{
+      var user =(JSON.parse(this.cookieService.get('user')));
+    if(Number(user.rol)==1){
+      this.router.navigate(['adminpage']);
+    }
+    
+    }
   }
   createFormGroup(): FormGroup {
     const res=  new FormGroup({

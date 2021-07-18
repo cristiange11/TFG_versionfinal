@@ -26,7 +26,8 @@ router.post(
     body('apellidos').trim().not().isEmpty().withMessage("Apellidos vacío"),
     body('rol').trim().not().isEmpty().withMessage("Rol vacío"),
     body('fechaNacimiento').trim().not().isEmpty().withMessage("Fecha de nacimiento vacía")
-      .matches(/^([0][1-9]|[12][0-9]|3[01])(\/)([0][1-9]|[1][0-2])\2(\d{4})$/).withMessage("Formato fecha incorrecto: dd/mm/yyyy"),
+    
+      .matches(/^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/).withMessage("Formato fecha incorrecto: yyyy/mm/dd"),
    
     body('movil').trim().not().isEmpty().withMessage("Móvil vacío")
       .matches(/^(\+34|0034|34)?[ -]*(6|7)[ -]*([0-9][ -]*){8}$/).withMessage("Formato del móvil incorrecto")
@@ -67,7 +68,7 @@ router.put(
     body('apellidos').trim().not().isEmpty().withMessage("Apellidos vacío"),
     body('rol').trim().not().isEmpty().withMessage("Rol vacío"),
     body('fechaNacimiento').trim().not().isEmpty().withMessage("Fecha de nacimiento vacía")
-      .matches(/^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/).withMessage("Formato fecha incorrecto: dd/mm/yyyy"),
+      .matches(/^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/).withMessage("Formato fecha incorrecto: yyyy-mm-dd"),
     
     body('movil').trim().not().isEmpty().withMessage("Móvil vacío")
       .matches(/^(\+34|0034|34)?[ -]*(6|7)[ -]*([0-9][ -]*){8}$/).withMessage("Formato del móvil incorrecto")

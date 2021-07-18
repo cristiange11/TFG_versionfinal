@@ -7,6 +7,7 @@
     "genero" : "Género",
     "fpDual" : "FP Dual",
     "movil" : "Móvil",
-    "fechaNacimiento": "Fecha de nacimiento"
+    "fechaNacimiento": "Fecha de nacimiento",
+    "fechaHoraLog" : "Fecha y Hora de inicio"
 
 }

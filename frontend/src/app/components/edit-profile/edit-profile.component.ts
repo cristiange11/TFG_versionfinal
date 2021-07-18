@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
@@ -37,7 +38,7 @@ export class EditProfileComponent implements OnInit {
   rolesList = new Map<number, string>();
   fpList = new Map<number, string>();
   empresaList = new Map<string, string>();
-  constructor(private authService: AuthService, private router: Router, private cookieService: CookieService) {
+  constructor(public datepipe: DatePipe, private authService: AuthService, private router: Router, private cookieService: CookieService) {
 
   }
 
@@ -61,7 +62,7 @@ export class EditProfileComponent implements OnInit {
     this.editForm.get('cp').setValue(this.user.cp);
     this.editForm.get('movil').setValue(this.user.movil);
     this.editForm.get('correo').setValue(this.user.correo);
-    this.editForm.get('fechaNacimiento').setValue(this.user.fechaNacimiento);
+    this.editForm.get('fechaNacimiento').setValue(this.datepipe.transform(this.user.fechaNacimiento, "YYYY-MM-dd"));
     this.editForm.get('genero').setValue(this.user.genero);
 
 
@@ -85,7 +86,7 @@ export class EditProfileComponent implements OnInit {
       genero: new FormControl("", [Validators.required]),
       movil: new FormControl("", [Validators.required, Validators.pattern(/^(\+34|0034|34)?[ -]*(6|7)[ -]*([0-9][ -]*){8}$/)]),
       correo: new FormControl("", [Validators.required, Validators.email]),
-      fechaNacimiento: new FormControl("", [Validators.required, Validators.pattern(/^([0][1-9]|[12][0-9]|3[01])(\/)([0][1-9]|[1][0-2])\2(\d{4})$/)]),
+      fechaNacimiento: new FormControl("", [Validators.required]),
       password: this.passwordFormControl,
       confirmPassword: this.confirmPasswordFormControl
     })
@@ -129,7 +130,6 @@ export class EditProfileComponent implements OnInit {
     } else if (attribute == "fechaNacimiento") {
       let fechaNacimiento = this.editForm.get("fechaNacimiento");
       return fechaNacimiento.hasError('required') ? 'Introduce la fecha' :
-        fechaNacimiento.hasError('pattern') ? 'Formato fecha incorrecta' :
           '';
     }
     else if (attribute == "password") {
@@ -148,7 +148,7 @@ export class EditProfileComponent implements OnInit {
   }
   editProfile() {
 
-
+    console.log(this.editForm.value)
     this.authService.updateUsuario(this.editForm.value, this.user).pipe(first())
       .subscribe(
         data => {

@@ -92,7 +92,7 @@ fpDual = new FormControl("", [Validators.required]);
       genero: new FormControl("", [Validators.required]),
       movil: new FormControl("", [Validators.required, Validators.pattern(/^(\+34|0034|34)?[ -]*(6|7)[ -]*([0-9][ -]*){8}$/)]),
       correo: new FormControl("", [Validators.required, Validators.email]),
-      fechaNacimiento: new FormControl("", [Validators.required, Validators.pattern(/^([0][1-9]|[12][0-9]|3[01])(\/)([0][1-9]|[1][0-2])\2(\d{4})$/)]),
+      fechaNacimiento: new FormControl("", [Validators.required]),
       rol: new FormControl("", [Validators.required]),
       
       password: this.passwordFormControl,
@@ -343,7 +343,6 @@ this.centroService.getCentros().pipe(first())
     } else if (attribute == "fechaNacimiento") {
       let fechaNacimiento = this.signupForm.get("fechaNacimiento");
       return fechaNacimiento.hasError('required') ? 'Introduce la fecha' :
-        fechaNacimiento.hasError('pattern') ? 'Formato fecha incorrecta' :
           '';
     }
     else if (attribute == "password") {
