@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-07-2021 a las 16:25:42
+-- Tiempo de generación: 18-07-2021 a las 14:20:21
 -- Versión del servidor: 10.4.19-MariaDB
 -- Versión de PHP: 7.3.28
 
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `alumno` (
-  `numero_expediente` varchar(100) NOT NULL,
+  `numeroExpediente` varchar(100) NOT NULL,
   `dni` varchar(9) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -40,7 +40,7 @@ CREATE TABLE `alumno` (
 
 CREATE TABLE `alumno_modulo` (
   `dni` varchar(9) NOT NULL,
-  `codigo_modulo` int(11) NOT NULL
+  `codigoModulo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -54,7 +54,7 @@ CREATE TABLE `calificacion` (
   `dni` varchar(9) NOT NULL,
   `nota` double NOT NULL,
   `descripcion` varchar(100) NOT NULL,
-  `codigo_modulo` int(11) NOT NULL
+  `codigoModulo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -64,7 +64,7 @@ CREATE TABLE `calificacion` (
 --
 
 CREATE TABLE `centro_educativo` (
-  `codigo_centro` varchar(100) NOT NULL,
+  `codigoCentro` varchar(100) NOT NULL,
   `correo` varchar(100) NOT NULL,
   `telefono` varchar(100) NOT NULL,
   `provincia` varchar(100) NOT NULL,
@@ -77,9 +77,10 @@ CREATE TABLE `centro_educativo` (
 -- Volcado de datos para la tabla `centro_educativo`
 --
 
-INSERT INTO `centro_educativo` (`codigo_centro`, `correo`, `telefono`, `provincia`, `nombre`, `CP`, `direccion`) VALUES
-('C12', 'mateoaleman@hotmail.com', '955622733', 'Sevilla', 'Mateo aleman', '41920', 'prueba'),
-('C123', 's@hotmail.com', '954170739', 'Sevilla', 'aa', '41920', 'aa');
+INSERT INTO `centro_educativo` (`codigoCentro`, `correo`, `telefono`, `provincia`, `nombre`, `CP`, `direccion`) VALUES
+(' ', ' ', '', '', '', '', ''),
+('C12', 'mateoaleman@hotmail.com', '955622739', 'Sevilla', 'Mateo Aleman', '41920', 'c/ Asturias'),
+('C123', 'mateoalema2n@hotmail.com', '955622736', 'Sevilla', 'Picasso', '41920', 'c/ Guadalajara n');
 
 -- --------------------------------------------------------
 
@@ -88,12 +89,11 @@ INSERT INTO `centro_educativo` (`codigo_centro`, `correo`, `telefono`, `provinci
 --
 
 CREATE TABLE `empresa` (
-  `CIF` varchar(100) NOT NULL,
+  `cifEmpresa` varchar(100) NOT NULL,
   `direccion` varchar(100) NOT NULL,
   `nombre` varchar(100) NOT NULL,
-  `tipo` varchar(100) NOT NULL,
   `correo` varchar(100) NOT NULL,
-  `telefono` int(11) NOT NULL,
+  `telefono` varchar(11) NOT NULL,
   `url` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -101,8 +101,10 @@ CREATE TABLE `empresa` (
 -- Volcado de datos para la tabla `empresa`
 --
 
-INSERT INTO `empresa` (`CIF`, `direccion`, `nombre`, `tipo`, `correo`, `telefono`, `url`) VALUES
-('1234', '2123', '21', '213', '213', 123, '123');
+INSERT INTO `empresa` (`cifEmpresa`, `direccion`, `nombre`, `correo`, `telefono`, `url`) VALUES
+('1234', 'C/Asturias', 'hola', 'hola@hotmail.com', '955511212', 'wjqkwe'),
+('12345', 'a', 'a', 'a', '95123', 'a'),
+('G12345678', 'prueba', 'pruebaa', 'hola112@hotmail.com', '955511214', 'https://angular.io/tutorial/toh-pt6');
 
 -- --------------------------------------------------------
 
@@ -111,8 +113,8 @@ INSERT INTO `empresa` (`CIF`, `direccion`, `nombre`, `tipo`, `correo`, `telefono
 --
 
 CREATE TABLE `empresa_fpdual` (
-  `id_fp` int(11) NOT NULL,
-  `CIF_empresa` varchar(100) NOT NULL,
+  `idFp` int(11) NOT NULL,
+  `CifEmpresa` varchar(100) NOT NULL,
   `becas` tinyint(1) NOT NULL,
   `plazas` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -128,9 +130,9 @@ CREATE TABLE `encuesta` (
   `descripcion` varchar(100) NOT NULL,
   `titulo` varchar(100) NOT NULL,
   `resultado` varchar(100) NOT NULL,
-  `codigo_modulo` int(11) NOT NULL,
-  `dni_alumno` varchar(9) NOT NULL,
-  `dni_tutor_empresa` varchar(9) NOT NULL
+  `codigoModulo` int(11) NOT NULL,
+  `dniAlumno` varchar(9) NOT NULL,
+  `dniTutorEmpresa` varchar(9) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -142,10 +144,10 @@ CREATE TABLE `encuesta` (
 CREATE TABLE `fp_duales` (
   `nombre` varchar(100) NOT NULL,
   `descripcion` varchar(1000) NOT NULL,
-  `total_plazas` int(11) NOT NULL,
+  `totalPlazas` int(11) NOT NULL,
   `anio` year(4) NOT NULL,
-  `codigo_centro` varchar(100) NOT NULL,
-  `plazas_disponibles` int(11) NOT NULL,
+  `codigoCentro` varchar(100) NOT NULL,
+  `plazasDisponibles` int(11) NOT NULL,
   `id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -153,9 +155,9 @@ CREATE TABLE `fp_duales` (
 -- Volcado de datos para la tabla `fp_duales`
 --
 
-INSERT INTO `fp_duales` (`nombre`, `descripcion`, `total_plazas`, `anio`, `codigo_centro`, `plazas_disponibles`, `id`) VALUES
-('TRANSPORTE Y LOGUÍSTICA', 'Hola', 20, 2021, 'C12', 20, 1),
-('ADMINISTRACIÓN Y FINANZAS', 'Hola', 20, 2021, 'C123', 20, 2);
+INSERT INTO `fp_duales` (`nombre`, `descripcion`, `totalPlazas`, `anio`, `codigoCentro`, `plazasDisponibles`, `id`) VALUES
+('TRANSPORTE Y LOGUÍSTICA', 'Holaaa', 24, 2021, 'C12', 2, 1),
+('', '', 0, 0000, '', 0, 7);
 
 -- --------------------------------------------------------
 
@@ -164,8 +166,8 @@ INSERT INTO `fp_duales` (`nombre`, `descripcion`, `total_plazas`, `anio`, `codig
 --
 
 CREATE TABLE `log_calificacion` (
-  `id_calificacion` int(11) NOT NULL,
-  `id_log` int(11) NOT NULL
+  `idCalificacion` int(11) NOT NULL,
+  `idLog` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -175,8 +177,8 @@ CREATE TABLE `log_calificacion` (
 --
 
 CREATE TABLE `log_centroeducativo` (
-  `codigo_centro` varchar(100) NOT NULL,
-  `id_log` int(11) NOT NULL
+  `codigoCentro` varchar(100) NOT NULL,
+  `idLog` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -186,8 +188,8 @@ CREATE TABLE `log_centroeducativo` (
 --
 
 CREATE TABLE `log_empresa` (
-  `cif_empresa` varchar(100) NOT NULL,
-  `id_log` int(11) NOT NULL
+  `cifEmpresa` varchar(100) NOT NULL,
+  `idLog` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -197,8 +199,8 @@ CREATE TABLE `log_empresa` (
 --
 
 CREATE TABLE `log_encuesta` (
-  `id_encuesta` int(11) NOT NULL,
-  `id_log` int(11) NOT NULL
+  `idEncuesta` int(11) NOT NULL,
+  `idLog` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -210,7 +212,7 @@ CREATE TABLE `log_encuesta` (
 CREATE TABLE `log_entidad` (
   `id` int(11) NOT NULL,
   `usuario` varchar(100) NOT NULL,
-  `fecha_horaLog` datetime NOT NULL,
+  `fechaHoraLog` datetime NOT NULL,
   `DML` varchar(100) NOT NULL,
   `error` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -222,9 +224,9 @@ CREATE TABLE `log_entidad` (
 --
 
 CREATE TABLE `log_fpduales` (
-  `id_fp` int(11) NOT NULL,
+  `idFp` int(11) NOT NULL,
   `codigo_centro` varchar(100) NOT NULL,
-  `id_log` int(11) NOT NULL
+  `idLog` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -236,9 +238,18 @@ CREATE TABLE `log_fpduales` (
 CREATE TABLE `log_login` (
   `id` int(11) NOT NULL,
   `usuario` varchar(9) NOT NULL,
-  `fecha_horaLog` datetime NOT NULL,
-  `error` int(11) NOT NULL
+  `fechaHoraLog` datetime NOT NULL,
+  `error` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `log_login`
+--
+
+INSERT INTO `log_login` (`id`, `usuario`, `fechaHoraLog`, `error`) VALUES
+(1, '12345677A', '0000-00-00 00:00:00', 0),
+(2, '12345677A', '0000-00-00 00:00:00', 0),
+(3, '12345678A', '0000-00-00 00:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -247,8 +258,8 @@ CREATE TABLE `log_login` (
 --
 
 CREATE TABLE `log_modulo` (
-  `codigo_modulo` int(11) NOT NULL,
-  `id_log` int(11) NOT NULL
+  `codigoModulo` int(11) NOT NULL,
+  `idLog` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -258,8 +269,8 @@ CREATE TABLE `log_modulo` (
 --
 
 CREATE TABLE `log_resultadoaprendizaje` (
-  `id_resultado` int(11) NOT NULL,
-  `id_log` int(11) NOT NULL
+  `idResultado` int(11) NOT NULL,
+  `idLog` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -294,7 +305,7 @@ CREATE TABLE `profesor` (
 
 CREATE TABLE `profesor_modulo` (
   `dni` varchar(9) NOT NULL,
-  `codigo_modulo` int(11) NOT NULL
+  `codigoModulo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -305,7 +316,7 @@ CREATE TABLE `profesor_modulo` (
 
 CREATE TABLE `resultado_aprendizaje` (
   `id` int(11) NOT NULL,
-  `codigo_modulo` int(11) NOT NULL,
+  `codigoModulo` int(11) NOT NULL,
   `titulo` varchar(100) NOT NULL,
   `descripcion` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -318,15 +329,15 @@ CREATE TABLE `resultado_aprendizaje` (
 
 CREATE TABLE `rol` (
   `id` int(11) NOT NULL,
-  `codigo_rol` varchar(100) NOT NULL,
-  `nombre_rol` varchar(100) NOT NULL
+  `codigoRol` varchar(100) NOT NULL,
+  `nombreRol` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `rol`
 --
 
-INSERT INTO `rol` (`id`, `codigo_rol`, `nombre_rol`) VALUES
+INSERT INTO `rol` (`id`, `codigoRol`, `nombreRol`) VALUES
 (1, 'AD', 'Administrador'),
 (2, 'AD_Centro', 'Administrador de Centro'),
 (3, 'Tu', 'Tutor_empresa'),
@@ -341,9 +352,16 @@ INSERT INTO `rol` (`id`, `codigo_rol`, `nombre_rol`) VALUES
 
 CREATE TABLE `tutor_empresa` (
   `dni` varchar(9) NOT NULL,
-  `modulo_empresa` varchar(100) NOT NULL,
-  `cif_empresa` varchar(100) NOT NULL
+  `moduloEmpresa` varchar(100) NOT NULL,
+  `cifEmpresa` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `tutor_empresa`
+--
+
+INSERT INTO `tutor_empresa` (`dni`, `moduloEmpresa`, `cifEmpresa`) VALUES
+('12345677A', 'COF231', 'G12345678');
 
 -- --------------------------------------------------------
 
@@ -353,7 +371,7 @@ CREATE TABLE `tutor_empresa` (
 
 CREATE TABLE `tutor_modulo` (
   `dni` varchar(9) NOT NULL,
-  `codigo_modulo` int(11) NOT NULL
+  `codigoModulo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -373,17 +391,19 @@ CREATE TABLE `usuario` (
   `genero` varchar(100) NOT NULL,
   `cp` varchar(11) NOT NULL,
   `rol` int(11) NOT NULL,
-  `fecha_nacimiento` date NOT NULL,
-  `fp_dual` int(11) NOT NULL,
-  `codigo_centro` varchar(100) NOT NULL
+  `fechaNacimiento` date NOT NULL,
+  `fpDual` int(11) DEFAULT NULL,
+  `codigoCentro` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`dni`, `nombre`, `apellidos`, `correo`, `movil`, `direccion`, `password`, `genero`, `cp`, `rol`, `fecha_nacimiento`, `fp_dual`, `codigo_centro`) VALUES
-('12345621A', 'Cristian', 'García Espino', 'cristiangarciaespino@ail.com', '666666686', 'a', '$2a$12$ah3GQAN2hqJRbbEpxeyxgeOOq8YQeA4YSCg4Yf347/cDhuossZwGW', 'masculino', '41920', 1, '1998-02-11', 1, 'C12');
+INSERT INTO `usuario` (`dni`, `nombre`, `apellidos`, `correo`, `movil`, `direccion`, `password`, `genero`, `cp`, `rol`, `fechaNacimiento`, `fpDual`, `codigoCentro`) VALUES
+('12345458A', 'Cristian', 'García', 'cristian@gmail.com', '666666667', 'c/AS', '$2a$12$COY8y2mYS7CkPRa3Ym5krOcjhn634fGVemR8SwohKEzxPnE0/eere', 'masculino', '41920', 1, '1998-01-11', NULL, NULL),
+('12345677A', 'Cristian', 'García', 'cris@gmail.com', '666666661', 'c/Asturias n 140', '$2a$12$cQnjWo36.39tpldtd6capODAA49Ud4p2kKf3OoRXYF5MWq2sfjM12', 'masculino', '41920', 1, '1998-02-11', 1, ''),
+('12345678A', 'Cristian', 'García', 'cristiangarciaespino15@gmail.com', '650927661', 'c/Asturias', '$2a$12$wlrMa4eNTQsqKnRsl7E.0e5VifA6HIawHVIH72Uwa20V1WW.fFIYW', 'masculino', '41920', 1, '0000-00-00', 1, '');
 
 --
 -- Índices para tablas volcadas
@@ -394,95 +414,95 @@ INSERT INTO `usuario` (`dni`, `nombre`, `apellidos`, `correo`, `movil`, `direcci
 --
 ALTER TABLE `alumno`
   ADD PRIMARY KEY (`dni`),
-  ADD UNIQUE KEY `numero_expediente` (`numero_expediente`),
+  ADD UNIQUE KEY `numero_expediente` (`numeroExpediente`),
   ADD KEY `dni` (`dni`);
 
 --
 -- Indices de la tabla `alumno_modulo`
 --
 ALTER TABLE `alumno_modulo`
-  ADD PRIMARY KEY (`dni`,`codigo_modulo`),
+  ADD PRIMARY KEY (`dni`,`codigoModulo`),
   ADD KEY `dni` (`dni`),
-  ADD KEY `codigo_modulo` (`codigo_modulo`);
+  ADD KEY `codigo_modulo` (`codigoModulo`);
 
 --
 -- Indices de la tabla `calificacion`
 --
 ALTER TABLE `calificacion`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `codigo_modulo` (`codigo_modulo`),
+  ADD KEY `codigo_modulo` (`codigoModulo`),
   ADD KEY `dni` (`dni`);
 
 --
 -- Indices de la tabla `centro_educativo`
 --
 ALTER TABLE `centro_educativo`
-  ADD PRIMARY KEY (`codigo_centro`),
+  ADD PRIMARY KEY (`codigoCentro`),
   ADD UNIQUE KEY `correo` (`correo`,`telefono`);
 
 --
 -- Indices de la tabla `empresa`
 --
 ALTER TABLE `empresa`
-  ADD PRIMARY KEY (`CIF`),
+  ADD PRIMARY KEY (`cifEmpresa`),
   ADD UNIQUE KEY `correo` (`correo`,`telefono`);
 
 --
 -- Indices de la tabla `empresa_fpdual`
 --
 ALTER TABLE `empresa_fpdual`
-  ADD PRIMARY KEY (`id_fp`,`CIF_empresa`),
-  ADD KEY `nombre_fp` (`id_fp`),
-  ADD KEY `CIF_empresa` (`CIF_empresa`),
-  ADD KEY `id_fp` (`id_fp`);
+  ADD PRIMARY KEY (`idFp`,`CifEmpresa`),
+  ADD KEY `nombre_fp` (`idFp`),
+  ADD KEY `CIF_empresa` (`CifEmpresa`),
+  ADD KEY `id_fp` (`idFp`);
 
 --
 -- Indices de la tabla `encuesta`
 --
 ALTER TABLE `encuesta`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `codigo_modulo` (`codigo_modulo`),
-  ADD KEY `dni_alumno` (`dni_alumno`),
-  ADD KEY `dni_tutor_empresa` (`dni_tutor_empresa`);
+  ADD KEY `codigo_modulo` (`codigoModulo`),
+  ADD KEY `dni_alumno` (`dniAlumno`),
+  ADD KEY `dni_tutor_empresa` (`dniTutorEmpresa`);
 
 --
 -- Indices de la tabla `fp_duales`
 --
 ALTER TABLE `fp_duales`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `codigo_centro` (`codigo_centro`);
+  ADD KEY `codigo_centro` (`codigoCentro`);
 
 --
 -- Indices de la tabla `log_calificacion`
 --
 ALTER TABLE `log_calificacion`
-  ADD PRIMARY KEY (`id_calificacion`,`id_log`),
-  ADD KEY `id_calificacion` (`id_calificacion`),
-  ADD KEY `id_log` (`id_log`);
+  ADD PRIMARY KEY (`idCalificacion`,`idLog`),
+  ADD KEY `id_calificacion` (`idCalificacion`),
+  ADD KEY `id_log` (`idLog`);
 
 --
 -- Indices de la tabla `log_centroeducativo`
 --
 ALTER TABLE `log_centroeducativo`
-  ADD PRIMARY KEY (`codigo_centro`,`id_log`),
-  ADD KEY `codigo_centro` (`codigo_centro`),
-  ADD KEY `id_log` (`id_log`);
+  ADD PRIMARY KEY (`codigoCentro`,`idLog`),
+  ADD KEY `codigo_centro` (`codigoCentro`),
+  ADD KEY `id_log` (`idLog`);
 
 --
 -- Indices de la tabla `log_empresa`
 --
 ALTER TABLE `log_empresa`
-  ADD PRIMARY KEY (`cif_empresa`,`id_log`),
-  ADD KEY `cif_empresa` (`cif_empresa`),
-  ADD KEY `id_log` (`id_log`);
+  ADD PRIMARY KEY (`cifEmpresa`,`idLog`),
+  ADD KEY `cif_empresa` (`cifEmpresa`),
+  ADD KEY `id_log` (`idLog`);
 
 --
 -- Indices de la tabla `log_encuesta`
 --
 ALTER TABLE `log_encuesta`
-  ADD PRIMARY KEY (`id_encuesta`,`id_log`),
-  ADD KEY `id_encuesta` (`id_encuesta`),
-  ADD KEY `id_log` (`id_log`);
+  ADD PRIMARY KEY (`idEncuesta`,`idLog`),
+  ADD KEY `id_encuesta` (`idEncuesta`),
+  ADD KEY `id_log` (`idLog`);
 
 --
 -- Indices de la tabla `log_entidad`
@@ -495,11 +515,11 @@ ALTER TABLE `log_entidad`
 -- Indices de la tabla `log_fpduales`
 --
 ALTER TABLE `log_fpduales`
-  ADD PRIMARY KEY (`id_fp`,`codigo_centro`,`id_log`),
-  ADD KEY `nombre_fp` (`id_fp`),
+  ADD PRIMARY KEY (`idFp`,`codigo_centro`,`idLog`),
+  ADD KEY `nombre_fp` (`idFp`),
   ADD KEY `codigo_centro` (`codigo_centro`),
-  ADD KEY `id_log` (`id_log`),
-  ADD KEY `id_fp` (`id_fp`);
+  ADD KEY `id_log` (`idLog`),
+  ADD KEY `id_fp` (`idFp`);
 
 --
 -- Indices de la tabla `log_login`
@@ -512,17 +532,17 @@ ALTER TABLE `log_login`
 -- Indices de la tabla `log_modulo`
 --
 ALTER TABLE `log_modulo`
-  ADD PRIMARY KEY (`codigo_modulo`,`id_log`),
-  ADD KEY `codigo_modulo` (`codigo_modulo`),
-  ADD KEY `id_log` (`id_log`);
+  ADD PRIMARY KEY (`codigoModulo`,`idLog`),
+  ADD KEY `codigo_modulo` (`codigoModulo`),
+  ADD KEY `id_log` (`idLog`);
 
 --
 -- Indices de la tabla `log_resultadoaprendizaje`
 --
 ALTER TABLE `log_resultadoaprendizaje`
-  ADD PRIMARY KEY (`id_resultado`,`id_log`),
-  ADD KEY `id_resultado` (`id_resultado`),
-  ADD KEY `id_log` (`id_log`);
+  ADD PRIMARY KEY (`idResultado`,`idLog`),
+  ADD KEY `id_resultado` (`idResultado`),
+  ADD KEY `id_log` (`idLog`);
 
 --
 -- Indices de la tabla `modulo`
@@ -541,39 +561,39 @@ ALTER TABLE `profesor`
 -- Indices de la tabla `profesor_modulo`
 --
 ALTER TABLE `profesor_modulo`
-  ADD PRIMARY KEY (`dni`,`codigo_modulo`),
+  ADD PRIMARY KEY (`dni`,`codigoModulo`),
   ADD KEY `dni` (`dni`),
-  ADD KEY `codigo_modulo` (`codigo_modulo`);
+  ADD KEY `codigo_modulo` (`codigoModulo`);
 
 --
 -- Indices de la tabla `resultado_aprendizaje`
 --
 ALTER TABLE `resultado_aprendizaje`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `codigo_modulo` (`codigo_modulo`);
+  ADD KEY `codigo_modulo` (`codigoModulo`);
 
 --
 -- Indices de la tabla `rol`
 --
 ALTER TABLE `rol`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `codigo_rol` (`codigo_rol`);
+  ADD UNIQUE KEY `codigo_rol` (`codigoRol`);
 
 --
 -- Indices de la tabla `tutor_empresa`
 --
 ALTER TABLE `tutor_empresa`
   ADD PRIMARY KEY (`dni`),
-  ADD KEY `cif_empresa` (`cif_empresa`),
+  ADD KEY `cif_empresa` (`cifEmpresa`),
   ADD KEY `dni` (`dni`);
 
 --
 -- Indices de la tabla `tutor_modulo`
 --
 ALTER TABLE `tutor_modulo`
-  ADD PRIMARY KEY (`dni`,`codigo_modulo`),
+  ADD PRIMARY KEY (`dni`,`codigoModulo`),
   ADD KEY `dni` (`dni`),
-  ADD KEY `codigo_modulo` (`codigo_modulo`);
+  ADD KEY `codigo_modulo` (`codigoModulo`);
 
 --
 -- Indices de la tabla `usuario`
@@ -582,10 +602,10 @@ ALTER TABLE `usuario`
   ADD PRIMARY KEY (`dni`),
   ADD UNIQUE KEY `correo` (`correo`),
   ADD UNIQUE KEY `movil` (`movil`),
-  ADD KEY `nombre_fp` (`fp_dual`),
-  ADD KEY `codigo_centro` (`codigo_centro`),
-  ADD KEY `fp_dual` (`fp_dual`),
-  ADD KEY `rol` (`rol`);
+  ADD KEY `nombre_fp` (`fpDual`),
+  ADD KEY `fp_dual` (`fpDual`),
+  ADD KEY `rol` (`rol`),
+  ADD KEY `codigoCentro` (`codigoCentro`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -607,7 +627,7 @@ ALTER TABLE `encuesta`
 -- AUTO_INCREMENT de la tabla `fp_duales`
 --
 ALTER TABLE `fp_duales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `log_entidad`
@@ -619,7 +639,7 @@ ALTER TABLE `log_entidad`
 -- AUTO_INCREMENT de la tabla `log_login`
 --
 ALTER TABLE `log_login`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `modulo`
@@ -654,63 +674,63 @@ ALTER TABLE `alumno`
 --
 ALTER TABLE `alumno_modulo`
   ADD CONSTRAINT `alumno_modulo_ibfk_1` FOREIGN KEY (`dni`) REFERENCES `alumno` (`dni`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `alumno_modulo_ibfk_2` FOREIGN KEY (`codigo_modulo`) REFERENCES `modulo` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `alumno_modulo_ibfk_2` FOREIGN KEY (`codigoModulo`) REFERENCES `modulo` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `calificacion`
 --
 ALTER TABLE `calificacion`
   ADD CONSTRAINT `calificacion_ibfk_1` FOREIGN KEY (`dni`) REFERENCES `alumno` (`dni`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `calificacion_ibfk_2` FOREIGN KEY (`codigo_modulo`) REFERENCES `modulo` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `calificacion_ibfk_2` FOREIGN KEY (`codigoModulo`) REFERENCES `modulo` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `empresa_fpdual`
 --
 ALTER TABLE `empresa_fpdual`
-  ADD CONSTRAINT `empresa_fpdual_ibfk_3` FOREIGN KEY (`CIF_empresa`) REFERENCES `empresa` (`CIF`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `empresa_fpdual_ibfk_4` FOREIGN KEY (`id_fp`) REFERENCES `fp_duales` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `empresa_fpdual_ibfk_3` FOREIGN KEY (`CifEmpresa`) REFERENCES `empresa` (`cifEmpresa`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `empresa_fpdual_ibfk_4` FOREIGN KEY (`idFp`) REFERENCES `fp_duales` (`id`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `encuesta`
 --
 ALTER TABLE `encuesta`
-  ADD CONSTRAINT `encuesta_ibfk_1` FOREIGN KEY (`codigo_modulo`) REFERENCES `modulo` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `encuesta_ibfk_2` FOREIGN KEY (`dni_alumno`) REFERENCES `alumno` (`dni`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `encuesta_ibfk_3` FOREIGN KEY (`dni_tutor_empresa`) REFERENCES `tutor_empresa` (`dni`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `encuesta_ibfk_1` FOREIGN KEY (`codigoModulo`) REFERENCES `modulo` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `encuesta_ibfk_2` FOREIGN KEY (`dniAlumno`) REFERENCES `alumno` (`dni`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `encuesta_ibfk_3` FOREIGN KEY (`dniTutorEmpresa`) REFERENCES `tutor_empresa` (`dni`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `fp_duales`
 --
 ALTER TABLE `fp_duales`
-  ADD CONSTRAINT `fp_duales_ibfk_1` FOREIGN KEY (`codigo_centro`) REFERENCES `centro_educativo` (`codigo_centro`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `fp_duales_ibfk_1` FOREIGN KEY (`codigoCentro`) REFERENCES `centro_educativo` (`codigoCentro`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `log_calificacion`
 --
 ALTER TABLE `log_calificacion`
-  ADD CONSTRAINT `log_calificacion_ibfk_1` FOREIGN KEY (`id_log`) REFERENCES `log_entidad` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `log_calificacion_ibfk_2` FOREIGN KEY (`id_calificacion`) REFERENCES `calificacion` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `log_calificacion_ibfk_1` FOREIGN KEY (`idLog`) REFERENCES `log_entidad` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `log_calificacion_ibfk_2` FOREIGN KEY (`idCalificacion`) REFERENCES `calificacion` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `log_centroeducativo`
 --
 ALTER TABLE `log_centroeducativo`
-  ADD CONSTRAINT `log_centroeducativo_ibfk_1` FOREIGN KEY (`id_log`) REFERENCES `log_entidad` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `log_centroeducativo_ibfk_2` FOREIGN KEY (`codigo_centro`) REFERENCES `centro_educativo` (`codigo_centro`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `log_centroeducativo_ibfk_1` FOREIGN KEY (`idLog`) REFERENCES `log_entidad` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `log_centroeducativo_ibfk_2` FOREIGN KEY (`codigoCentro`) REFERENCES `centro_educativo` (`codigoCentro`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `log_empresa`
 --
 ALTER TABLE `log_empresa`
-  ADD CONSTRAINT `log_empresa_ibfk_1` FOREIGN KEY (`cif_empresa`) REFERENCES `empresa` (`CIF`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `log_empresa_ibfk_2` FOREIGN KEY (`id_log`) REFERENCES `log_entidad` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `log_empresa_ibfk_1` FOREIGN KEY (`cifEmpresa`) REFERENCES `empresa` (`cifEmpresa`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `log_empresa_ibfk_2` FOREIGN KEY (`idLog`) REFERENCES `log_entidad` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `log_encuesta`
 --
 ALTER TABLE `log_encuesta`
-  ADD CONSTRAINT `log_encuesta_ibfk_1` FOREIGN KEY (`id_encuesta`) REFERENCES `encuesta` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `log_encuesta_ibfk_2` FOREIGN KEY (`id_log`) REFERENCES `log_entidad` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `log_encuesta_ibfk_1` FOREIGN KEY (`idEncuesta`) REFERENCES `encuesta` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `log_encuesta_ibfk_2` FOREIGN KEY (`idLog`) REFERENCES `log_entidad` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `log_entidad`
@@ -722,9 +742,9 @@ ALTER TABLE `log_entidad`
 -- Filtros para la tabla `log_fpduales`
 --
 ALTER TABLE `log_fpduales`
-  ADD CONSTRAINT `log_fpduales_ibfk_3` FOREIGN KEY (`id_log`) REFERENCES `log_entidad` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `log_fpduales_ibfk_4` FOREIGN KEY (`codigo_centro`) REFERENCES `fp_duales` (`codigo_centro`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `log_fpduales_ibfk_5` FOREIGN KEY (`id_fp`) REFERENCES `fp_duales` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `log_fpduales_ibfk_3` FOREIGN KEY (`idLog`) REFERENCES `log_entidad` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `log_fpduales_ibfk_4` FOREIGN KEY (`codigo_centro`) REFERENCES `fp_duales` (`codigoCentro`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `log_fpduales_ibfk_5` FOREIGN KEY (`idFp`) REFERENCES `fp_duales` (`id`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `log_login`
@@ -736,15 +756,15 @@ ALTER TABLE `log_login`
 -- Filtros para la tabla `log_modulo`
 --
 ALTER TABLE `log_modulo`
-  ADD CONSTRAINT `log_modulo_ibfk_1` FOREIGN KEY (`codigo_modulo`) REFERENCES `modulo` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `log_modulo_ibfk_2` FOREIGN KEY (`id_log`) REFERENCES `log_entidad` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `log_modulo_ibfk_1` FOREIGN KEY (`codigoModulo`) REFERENCES `modulo` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `log_modulo_ibfk_2` FOREIGN KEY (`idLog`) REFERENCES `log_entidad` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `log_resultadoaprendizaje`
 --
 ALTER TABLE `log_resultadoaprendizaje`
-  ADD CONSTRAINT `log_resultadoaprendizaje_ibfk_1` FOREIGN KEY (`id_log`) REFERENCES `log_entidad` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `log_resultadoaprendizaje_ibfk_2` FOREIGN KEY (`id_resultado`) REFERENCES `resultado_aprendizaje` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `log_resultadoaprendizaje_ibfk_1` FOREIGN KEY (`idLog`) REFERENCES `log_entidad` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `log_resultadoaprendizaje_ibfk_2` FOREIGN KEY (`idResultado`) REFERENCES `resultado_aprendizaje` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `profesor`
@@ -756,36 +776,36 @@ ALTER TABLE `profesor`
 -- Filtros para la tabla `profesor_modulo`
 --
 ALTER TABLE `profesor_modulo`
-  ADD CONSTRAINT `profesor_modulo_ibfk_1` FOREIGN KEY (`codigo_modulo`) REFERENCES `modulo` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `profesor_modulo_ibfk_1` FOREIGN KEY (`codigoModulo`) REFERENCES `modulo` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `profesor_modulo_ibfk_2` FOREIGN KEY (`dni`) REFERENCES `profesor` (`dni`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `resultado_aprendizaje`
 --
 ALTER TABLE `resultado_aprendizaje`
-  ADD CONSTRAINT `resultado_aprendizaje_ibfk_1` FOREIGN KEY (`codigo_modulo`) REFERENCES `modulo` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `resultado_aprendizaje_ibfk_1` FOREIGN KEY (`codigoModulo`) REFERENCES `modulo` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `tutor_empresa`
 --
 ALTER TABLE `tutor_empresa`
   ADD CONSTRAINT `tutor_empresa_ibfk_1` FOREIGN KEY (`dni`) REFERENCES `usuario` (`dni`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tutor_empresa_ibfk_2` FOREIGN KEY (`cif_empresa`) REFERENCES `empresa` (`CIF`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `tutor_empresa_ibfk_2` FOREIGN KEY (`cifEmpresa`) REFERENCES `empresa` (`cifEmpresa`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `tutor_modulo`
 --
 ALTER TABLE `tutor_modulo`
   ADD CONSTRAINT `tutor_modulo_ibfk_1` FOREIGN KEY (`dni`) REFERENCES `tutor_empresa` (`dni`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `tutor_modulo_ibfk_2` FOREIGN KEY (`codigo_modulo`) REFERENCES `modulo` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `tutor_modulo_ibfk_2` FOREIGN KEY (`codigoModulo`) REFERENCES `modulo` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `usuario`
 --
 ALTER TABLE `usuario`
   ADD CONSTRAINT `usuario_ibfk_3` FOREIGN KEY (`rol`) REFERENCES `rol` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `usuario_ibfk_4` FOREIGN KEY (`fp_dual`) REFERENCES `fp_duales` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `usuario_ibfk_5` FOREIGN KEY (`codigo_centro`) REFERENCES `centro_educativo` (`codigo_centro`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `usuario_ibfk_4` FOREIGN KEY (`fpDual`) REFERENCES `fp_duales` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `usuario_ibfk_5` FOREIGN KEY (`codigoCentro`) REFERENCES `centro_educativo` (`codigoCentro`) ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

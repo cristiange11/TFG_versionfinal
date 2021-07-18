@@ -1,11 +1,12 @@
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
-
+const LogSesion= require('../models/log_sesion');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const jwt_decode = require('jwt-decode');
 const comprobarToken = require('../util/comprobarToken');
+var datetime = require('node-datetime');
 const RSA_PRIVATE_KEY = fs.readFileSync(__dirname + '/OPENSSL/private.pem');
 exports.signup = async (req, res, next) => {
   /*jwtDecoded = jwt_decode(req.headers['authorization']);
@@ -104,14 +105,25 @@ exports.login = async (req, res, next) => {
     const queryResult = await User.find(dni);
     if (queryResult[0].length > 0) {
       const userJson = queryResult[0][0]
-      userJson["fechaNacimiento"] = "12/12/2012";
+      
       let user = new User(userJson)
       const isEqual = await bcrypt.compare(password, user.password);
-      
+      console.log(sysdate())
       if (!isEqual) {
+        var log = {
+          usuario : dni,
+          error : true, 
+        }
+        LogSesion.createInicioSesion(log);
         res.status(401).json({ message: 'Credenciales incorrectas.' });
       }
       else {
+        var log = {
+          usuario : dni,
+          fechaHoraLog :new Date(dt.now()),
+          error:false, 
+        }
+        LogSesion.createInicioSesion(log);
         const jwtBearerToken = jwt.sign({ sub: user.dni }, 'proyecto final carrera', { expiresIn: '24h' });
         
         const resJSON = { "result": { "user": userJson, "token": jwtBearerToken } }
