@@ -1,7 +1,7 @@
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
-const LogSesion= require('../models/log_sesion');
+const LogSesion= require('../models/logs/log_sesion');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const jwt_decode = require('jwt-decode');
@@ -16,7 +16,6 @@ exports.signup = async (req, res, next) => {
     res.status(401).json({ "errors": "Sesión expirada" });
   } 
   */
-
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], { header: true }));
   
   if (expirado) {
@@ -78,13 +77,13 @@ exports.signup = async (req, res, next) => {
           codigoCentro: codigoCentro
         };
 
-
-        const result = User.save(us).then(function (result) {
+        const user = jwt_decode(req.headers['authorization']).sub;
+        const result = User.save(us,user).then(function (result) {
           console.log("Promise Resolved");
 
           res.status(201).json({ message: "success" });
-        }).catch(function () {
-          console.log("Promise Rejected");
+        }).catch(function (err) {
+          console.log("Promise Rejected  " + err);
           res.status(401).json({ errors: "no se ha podido crear el usuario:" });
         });
 
@@ -108,33 +107,7 @@ exports.login = async (req, res, next) => {
       
       let user = new User(userJson)
       const isEqual = await bcrypt.compare(password, user.password);
-      //console.log(sysdate())
-      let date_ob = new Date();
-
-// current date
-// adjust 0 before single digit date
-/*let date = ("0" + date_ob.getDate()).slice(-2);
-
-// current month
-let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
-
-// current year
-let year = date_ob.getFullYear();
-
-// current hours
-let hours = date_ob.getHours();
-
-// current minutes
-let minutes = date_ob.getMinutes();
-
-// current seconds
-let seconds = date_ob.getSeconds();
-
-// prints date in YYYY-MM-DD format
-console.log(year + "-" + month + "-" + date);
-
-// prints date & time in YYYY-MM-DD HH:MM:SS format
-const fechaHora=year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds;*/
+     
 
       if (!isEqual) {
         

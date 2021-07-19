@@ -49,7 +49,6 @@ export class LoginComponent implements OnInit {
           let userJson = result["user"]
           let user = new User(userJson);
           let token = result["token"]
-          console.log(result)
           this.cookieService.set('token', token);
           //this.cookieService.set( 'rol', user.rol );
 

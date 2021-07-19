@@ -1,4 +1,4 @@
-const promisePool = require('../util/database');
+const promisePool = require('../../util/database');
 
 module.exports = class LogSesion {
     constructor(usuario, fechaHoraLog, error) {

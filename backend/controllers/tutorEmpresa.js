@@ -109,8 +109,10 @@ exports.createTutor = async (req, res, next) => {
         else {
             console.log("entro a crear tutor " + req.body)
             try {
+                const user = jwt_decode(req.headers['authorization']).sub;
+
                 const hashedPassword = await bcrypt.hash(req.body.password, 12);
-                const result = TutorEmpresa.createTutor(req.body, hashedPassword).then(function (result) {
+                const result = TutorEmpresa.createTutor(req.body, hashedPassword, user).then(function (result) {
                     console.log("Promise Resolved");
 
                     res.status(201).json({ message: "success" });

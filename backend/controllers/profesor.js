@@ -106,8 +106,9 @@ exports.createProfesor = async (req, res, next) => {
         }
         else {
             try {
+                const user = jwt_decode(req.headers['authorization']).sub;
                 const hashedPassword = await bcrypt.hash(req.body.password, 12);
-                const result = Profesor.createProfesor(req.body, hashedPassword).then(function (result) {
+                const result = Profesor.createProfesor(req.body, hashedPassword, user).then(function (result) {
                     console.log("Promise Resolved");
                     res.status(201).json({ profesor: "success" });
                 }).catch(function () {

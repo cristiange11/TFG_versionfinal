@@ -20,7 +20,7 @@ module.exports = class TutorEmpresa {
             `DELETE FROM tutor_empresa WHERE dni = '${dni}' `);
         return rows;
     }
-    static async createTutor(tutorEmpresa, password) {
+    static async createTutor(tutorEmpresa, password, user) {
         const connection = await promisePool.getConnection();
         try {
             await connection.beginTransaction();
@@ -32,16 +32,12 @@ module.exports = class TutorEmpresa {
             await connection.query(query)
             await connection.query(`INSERT INTO tutor_empresa (dni, moduloEmpresa, cifEmpresa) VALUES 
             ('${tutorEmpresa.dni}','${tutorEmpresa.moduloEmpresa}', '${tutorEmpresa.cifEmpresa}')`);
-            let result=await  promisePool.query(`SELECT auto_increment FROM INFORMATION_SCHEMA.TABLES WHERE table_name = 'log_entidad'`);
-            await connection.query(`INSERT INTO log_entidad(usuario,fechaHoraLog, DML, error) VALUES ('${tutorEmpresa.dni}',sysdate(),'CREATE',0)`);
-            //await connection.commit();
-            var resultArray = JSON.parse(JSON.stringify(result[0]));
-            console.log(resultArray[0].auto_increment)    
-            console.log(`INSERT INTO log_usuario(idLog, usuario) VALUES (${resultArray[0].auto_increment} , '${tutorEmpresa.dni}')`)
-            await connection.query(`INSERT INTO log_usuario(idLog, usuario) VALUES (${resultArray[0].auto_increment} , '${tutorEmpresa.dni}')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha añadido tutor empresa con DNI ${tutorEmpresa.dni} ','${user}',sysdate(), 'tutor de empresa')`);            
+
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_TUTOR','Se ha añadido tutor empresa con DNI ${tutorEmpresa.dni} ','${user}',sysdate(), 'tutor de empresa')`);            
             throw err;
         } finally {
             await connection.release();
@@ -49,7 +45,7 @@ module.exports = class TutorEmpresa {
     }
     static async updateTutor(tutor) {
         const [rows, fields] = await promisePool.query(
-            `UPDATE tutor_empresa SET moduloEmpresa='${tutor.moduloEmpresa}' and cifEmpresa = '${tutor.cifEmpresa}' WHERE dni = '${profesor.dni}'
+            `UPDATE tutor_empresa SET moduloEmpresa='${tutor.moduloEmpresa}' and cifEmpresa = '${tutor.cifEmpresa}' WHERE dni = '${tutor.dni}'
              `);
         return rows;
     }

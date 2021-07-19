@@ -6,6 +6,7 @@ const Centro = require('../models/centro');
 exports.getCentros = async (req, res, next) => {
   
   console.log(req.headers);
+  
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], { header: true }));
   console.log(expirado)
   if (expirado) {

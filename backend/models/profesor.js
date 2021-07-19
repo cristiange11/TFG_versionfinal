@@ -20,7 +20,7 @@ module.exports = class Profesor extends User {
             `DELETE FROM profesor WHERE dni = '${dni}' `);
         return rows;
     }
-    static async createProfesor(profesor, password) {
+    static async createProfesor(profesor, password, user) {
         const connection = await promisePool.getConnection();
 
         try {
@@ -33,16 +33,12 @@ module.exports = class Profesor extends User {
             await connection.query(query)
             await connection.query(`INSERT INTO profesor(dni, departamento) VALUES 
             ('${profesor.dni}','${profesor.departamento}')`);
-            let result=await  promisePool.query(`SELECT auto_increment FROM INFORMATION_SCHEMA.TABLES WHERE table_name = 'log_entidad'`);
-            await connection.query(`INSERT INTO log_entidad(usuario,fechaHoraLog, DML, error) VALUES ('${profesor.dni}',sysdate(),'CREATE',0)`);
-            //await connection.commit();
-            var resultArray = JSON.parse(JSON.stringify(result[0]));
-            console.log(resultArray[0].auto_increment)    
-            console.log(`INSERT INTO log_usuario(idLog, usuario) VALUES (${resultArray[0].auto_increment} , '${profesor.dni}')`)
-            await connection.query(`INSERT INTO log_usuario(idLog, usuario) VALUES (${resultArray[0].auto_increment} , '${profesor.dni}')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha añadido profesor con DNI ${profesor.dni} ','${user}',sysdate(), 'profesor')`);            
+
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_PROFESOR','Se ha añadido profesor con DNI ${profesor.dni} ','${user}',sysdate(), 'profesor')`);            
             console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {

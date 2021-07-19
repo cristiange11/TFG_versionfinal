@@ -26,12 +26,12 @@ module.exports = class Alumno extends User {
         return rows;
     }
 
-    static async deleteAlumno(dni) {
+    static async deleteAlumno(dni , user) {
         const [rows, fields] = await promisePool.query(
             `DELETE FROM alumno WHERE dni = '${dni}' `);
         return rows;
     }
-    static async createAlumno(alumno, password) {
+    static async createAlumno(alumno, password, user) {
         const connection = await promisePool.getConnection();
 
         try {
@@ -43,17 +43,11 @@ module.exports = class Alumno extends User {
                 '${alumno.fpDual}','${alumno.codigoCentro}')`
             await connection.query(query)
             await connection.query(`INSERT INTO alumno(dni, numeroExpediente) VALUES ('${alumno.dni}','${alumno.numeroExpediente}')`);
-            let result=await  promisePool.query(`SELECT auto_increment FROM INFORMATION_SCHEMA.TABLES WHERE table_name = 'log_entidad'`);
-            await connection.query(`INSERT INTO log_entidad(usuario,fechaHoraLog, DML, error) VALUES ('${alumno.dni}',sysdate(),'CREATE',0)`);
-            //await connection.commit();
-            var resultArray = JSON.parse(JSON.stringify(result[0]));
-            console.log(resultArray[0].auto_increment)    
-            console.log(`INSERT INTO log_usuario(idLog, usuario) VALUES (${resultArray[0].auto_increment} , '${alumno.dni}')`)
-            await connection.query(`INSERT INTO log_usuario(idLog, usuario) VALUES (${resultArray[0].auto_increment} , '${alumno.dni}')`);
-
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha añadido alumno con DNI ${alumno.dni} ','${user}',sysdate(), 'alumno')`);            
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_ALUMNO','No se ha añadido el alumno con DNI ${alumno.dni}','${user}',sysdate(), 'alumno')`);            
             console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {

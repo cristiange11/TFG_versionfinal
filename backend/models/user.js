@@ -31,17 +31,28 @@ module.exports = class User {
         return await promisePool.query(
             `SELECT * FROM usuario where correo ='${correo}' AND dni !='${dni}'`);
     }
-    static async save(user) {
-        console.log("entro a signup")
+    static async save(user,userLogado) {
+
         let codigoCentro = user.codigoCentro == null ? null : `'${user.codigoCentro}'`;
-        console.log(codigoCentro)
-        console.log(          `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fechaNacimiento, fpDual, codigoCentro) VALUES ('${user.dni}','${user.nombre}','${user.apellidos}','${user.correo}','${user.movil}','${user.direccion}','${user.password}','${user.genero}',${user.cp},'${user.rol}',STR_TO_DATE('${user.fechaNacimiento}','%Y-%m-%d'),${user.fpDual},${codigoCentro})`
-        )
+        console.log("entro")
+       const connection = await promisePool.getConnection();
+
+        try {
+            await connection.beginTransaction();
+            let query = `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fechaNacimiento, fpDual, codigoCentro) VALUES ('${user.dni}','${user.nombre}','${user.apellidos}','${user.correo}','${user.movil}','${user.direccion}','${user.password}','${user.genero}',${user.cp},'${user.rol}',STR_TO_DATE('${user.fechaNacimiento}','%Y-%m-%d'),${user.fpDual},${codigoCentro})`;
+            await connection.query(query)
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha añadido usuario con DNI ${user.dni} ','${userLogado}',sysdate(), 'user')`);            
+            await connection.commit();
+        } catch (err) {
+            await connection.query("ROLLBACK");
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_USER','No se ha añadido el user con DNI ${user.dni}','${userLogado}',sysdate(), 'user')`);            
+            console.log('ROLLBACK at querySignUp', err);
+            throw err;
+        } finally {
+            await connection.release();
+        }
         
-        const [rows, fields] = await promisePool.query(
-            `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fechaNacimiento, fpDual, codigoCentro) VALUES ('${user.dni}','${user.nombre}','${user.apellidos}','${user.correo}','${user.movil}','${user.direccion}','${user.password}','${user.genero}',${user.cp},'${user.rol}',STR_TO_DATE('${user.fechaNacimiento}','%Y-%m-%d'),${user.fpDual},${codigoCentro})`
-        );
-        return rows;
+      
     }
     
     static async updateUser(user, password) {
