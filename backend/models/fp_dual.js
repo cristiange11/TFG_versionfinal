@@ -48,12 +48,24 @@ module.exports = class FP_dual {
             `DELETE FROM fp_duales WHERE id = '${id}' `);
         return rows;
     }
-    static async createFp(fp) {
-        const [rows, fields] = await promisePool.query(
-            `INSERT INTO fp_duales (nombre, descripcion, totalPlazas, anio, codigoCentro, plazasDisponibles) VALUES 
-            ('${fp.nombre}','${fp.descripcion}','${fp.totalPlazas}','${fp.anio}','${fp.codigoCentro}',
-            '${fp.plazasDisponibles}') `);
-        return rows;
+    static async createFp(fp, user ) {
+        const connection = await promisePool.getConnection();
+
+        try {
+            await connection.beginTransaction();
+            let query = `INSERT INTO fp_duales (nombre, descripcion, totalPlazas, anio, codigoCentro, plazasDisponibles) VALUES ('${fp.nombre}','${fp.descripcion}','${fp.totalPlazas}','${fp.anio}','${fp.codigoCentro}','${fp.plazasDisponibles}') `;
+            await connection.query(query)
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha añadido FP ','${user}',sysdate(), 'FP')`);            
+            await connection.commit();
+        } catch (err) {
+            await connection.query("ROLLBACK");
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_FP','No se ha añadido FP con ','${user}',sysdate(), 'FP')`);            
+            console.log('ROLLBACK at querySignUp', err);
+            throw err;
+        } finally {
+            await connection.release();
+        }
+       
     }
     static async updateFp(fp) {
         const [rows, fields] = await promisePool.query(

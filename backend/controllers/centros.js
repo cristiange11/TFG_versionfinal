@@ -105,7 +105,9 @@ exports.createCentro = async (req, res, next) => {
     }
     else {
       try {
-        const result = Centro.createCentro(req.body).then(function (result) {
+        const user = jwt_decode(req.headers['authorization']).sub;
+
+        const result = Centro.createCentro(req.body, user).then(function (result) {
           console.log("Promise Resolved");
 
           res.status(201).json({ message: "success" });

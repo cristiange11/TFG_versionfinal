@@ -37,11 +37,24 @@ module.exports = class Centro {
             `DELETE FROM centro_educativo WHERE codigoCentro = '${codigoCentro}' `);
         return rows;
     }
-    static async createCentro(centro) {
-        const [rows, fields] = await promisePool.query(
-            `INSERT INTO centro_educativo (codigoCentro, correo, telefono, provincia, nombre, CP, direccion) VALUES 
-            ('${centro.codigoCentro}','${centro.correo}','${centro.telefono}','${centro.provincia}','${centro.nombre}','${centro.CP}','${centro.direccion}') `);
-        return rows;
+    static async createCentro(centro, user) {
+        const connection = await promisePool.getConnection();
+
+        try {
+            await connection.beginTransaction();
+            let query = `INSERT INTO centro_educativo (codigoCentro, correo, telefono, provincia, nombre, CP, direccion) VALUES ('${centro.codigoCentro}','${centro.correo}','${centro.telefono}','${centro.provincia}','${centro.nombre}','${centro.CP}','${centro.direccion}') `;
+            await connection.query(query)
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha añadido centro con codigo ${centro.codigoCentro} ','${user}',sysdate(), 'centro educativo')`);            
+            await connection.commit();
+        } catch (err) {
+            await connection.query("ROLLBACK");
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_CENTRO','No se ha añadido el centro con codigo centro ${centro.codigoCentro}','${user}',sysdate(), 'centro educativo')`);            
+            console.log('ROLLBACK at querySignUp', err);
+            throw err;
+        } finally {
+            await connection.release();
+        }
+       
     }
     static async updateCentro(centro) {
 
