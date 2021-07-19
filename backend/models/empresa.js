@@ -28,9 +28,48 @@ module.exports = class Empresa {
         return rows;
     }
     static async deleteEmpresa(cifEmpresa) {
-        const [rows, fields] = await promisePool.query(
-            `DELETE FROM empresa WHERE cifEmpresa = '${cifEmpresa}' `);
+        const connection = await promisePool.getConnection();
+
+        try {
+            await connection.beginTransaction();
+            let query = `DELETE FROM empresa WHERE cifEmpresa =  '${cifEmpresa}'`;
+            await connection.query(query);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha eliminado  la empresa ' ,'${user}',sysdate(), 'empresa')`);            
+            await connection.commit();
+        } catch (err) {
+            await connection.query("ROLLBACK");
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_EMPRESA','No se ha podido eliminar la empresa ' ,'${user}',sysdate(), 'empresa')`);            
+
+            console.log('ROLLBACK', err);
+            throw err;
+        } finally {
+            await connection.release();
+        }
+        return await promisePool.query(
+            `DELETE FROM empresa WHERE cifEmpresa =  '${cifEmpresa}'`);
         return rows;
+    }
+    static async deleteTutorEmpresaByEmpresa(cifEmpresa,user) {
+        const connection = await promisePool.getConnection();
+
+        try {
+            await connection.beginTransaction();
+            let query = `DELETE FROM usuario U , tutor_empresa T where U.dni = T.dni AND T.cifEmpresa ='${cifEmpresa}'`;
+            await connection.query(query);
+            await connection.query(`DELETE FROM tutor_empresa WHERE cifEmpresa = '${cifEmpresa}'`);
+            await connection.query(`DELETE FROM empresa WHERE cifEmpresa =  '${cifEmpresa}'`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha eliminado todo lo asociado a la empresa ' ,'${user}',sysdate(), 'empresa')`);            
+            await connection.commit();
+        } catch (err) {
+            await connection.query("ROLLBACK");
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_EMPRESA','No se ha podido eliminar la empresa ' ,'${user}',sysdate(), 'empresa')`);            
+
+            console.log('ROLLBACK', err);
+            throw err;
+        } finally {
+            await connection.release();
+        }
+        
     }
     static async createEmpresa(empresa, user) {
         const connection = await promisePool.getConnection();
@@ -43,7 +82,7 @@ module.exports = class Empresa {
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_EMPRESA','No se ha añadido empresa con CIF ${empresa.cifEmpresa}','${user}',sysdate(), 'empresa')`);            
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_EMPRESA','No se ha añadido empresa con CIF ${empresa.cifEmpresa}','${user}',sysdate(), 'empresa')`);            
             console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {
@@ -51,14 +90,23 @@ module.exports = class Empresa {
         }
         
     }
-    static async updateEmpresa(empresa) {
-        console.log( `UPDATE empresa SET direccion='${empresa.direccion}',nombre='${empresa.nombre}',
-        correo='${empresa.correo}',telefono='${empresa.telefono}',url='${empresa.url}' WHERE cifEmpresa = '${empresa.cifEmpresa}'
-         `)
-        const [rows, fields] = await promisePool.query(
-            `UPDATE empresa SET direccion='${empresa.direccion}',nombre='${empresa.nombre}',
-            correo='${empresa.correo}',telefono='${empresa.telefono}',url='${empresa.url}' WHERE cifEmpresa = '${empresa.cifEmpresa}'
-             `);
-        return rows;
+    static async updateEmpresa(empresa, user) {
+        const connection = await promisePool.getConnection();
+
+        try {
+            await connection.beginTransaction();
+            let query = `UPDATE empresa SET direccion='${empresa.direccion}',nombre='${empresa.nombre}', correo='${empresa.correo}',telefono='${empresa.telefono}',url='${empresa.url}' WHERE cifEmpresa = '${empresa.cifEmpresa}'`;
+            await connection.query(query)
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha actualizado empresa con CIF ${empresa.cifEmpresa} ','${user}',sysdate(), 'empresa')`);            
+            await connection.commit();
+        } catch (err) {
+            await connection.query("ROLLBACK");
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_EMPRESA','No se ha actualizado empresa con CIF ${empresa.cifEmpresa}','${user}',sysdate(), 'empresa')`);            
+            console.log('ROLLBACK at querySignUp', err);
+            throw err;
+        } finally {
+            await connection.release();
+        }
+        
     }
 };

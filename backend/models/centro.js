@@ -48,7 +48,7 @@ module.exports = class Centro {
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_CENTRO','No se ha añadido el centro con codigo centro ${centro.codigoCentro}','${user}',sysdate(), 'centro educativo')`);            
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_CENTRO','No se ha añadido el centro con codigo centro ${centro.codigoCentro}','${user}',sysdate(), 'centro educativo')`);            
             console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {
@@ -63,5 +63,26 @@ module.exports = class Centro {
             nombre='${centro.nombre}',CP='${centro.CP}',direccion='${centro.direccion}' WHERE codigoCentro = '${centro.codigoCentro}'
              `);
         return rows;
+    }
+    static async deleteUserAndFPByCentro(codigoCentro, user) {
+        const connection = await promisePool.getConnection();
+
+        try {
+            await connection.beginTransaction();
+            let query = `DELETE FROM usuario WHERE codigoCentro =  '${codigoCentro}'`;
+            await connection.query(query)
+            await connection.query(`DELETE FROM fp_duales WHERE codigoCentro = '${codigoCentro}'`);
+            await connection.query(`DELETE FROM centro_educativo WHERE codigoCentro =  '${codigoCentro}'`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha eliminado todo lo asociado al centro ' ,'${user}',sysdate(), 'centro educativo')`);            
+            await connection.commit();
+        } catch (err) {
+            await connection.query("ROLLBACK");
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_CENTRO','No se ha podido eliminar el centro ' ,'${user}',sysdate(), 'centro educativo')`);            
+
+            console.log('ROLLBACK', err);
+            throw err;
+        } finally {
+            await connection.release();
+        }
     }
 };

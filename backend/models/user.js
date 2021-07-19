@@ -45,7 +45,7 @@ module.exports = class User {
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_USER','No se ha añadido el user con DNI ${user.dni}','${userLogado}',sysdate(), 'user')`);            
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_USER','No se ha añadido el user con DNI ${user.dni}','${userLogado}',sysdate(), 'user')`);            
             console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {
@@ -54,15 +54,46 @@ module.exports = class User {
         
       
     }
-    
-    static async updateUser(user, password) {
-        console.log(user.fechaNacimiento)
+    static async deleteUser(dni,userLogado) {
+       
+       const connection = await promisePool.getConnection();
+
+        try {
+            await connection.beginTransaction();
+            let query = `DELETE FROM usuario WHERE dni = ${dni}`;
+            await connection.query(query)
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha borrado usuario con DNI ${user.dni} ','${userLogado}',sysdate(), 'user')`);            
+            await connection.commit();
+        } catch (err) {
+            await connection.query("ROLLBACK");
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_USER','No se ha borrado el usuario con DNI ${user.dni}','${userLogado}',sysdate(), 'user')`);            
+            console.log('ROLLBACK at querySignUp', err);
+            throw err;
+        } finally {
+            await connection.release();
+        }
+        
+    }
+    static async updateUser(user, password,userLogado) {
         let codigoCentro = user.codigoCentro == null ? null : `'${user.codigoCentro}'`;
-        return await promisePool.query(
-            `UPDATE usuario SET nombre='${user.nombre}',apellidos='${user.apellidos}',correo='${user.correo}',
-            movil='${user.movil}',direccion='${user.direccion}',password='${password}',genero='${user.genero}',
-            cp='${user.cp}',rol='${user.rol}',fechaNacimiento=STR_TO_DATE('${user.fechaNacimiento}','%Y-%m-%d'),fpDual=${user.fpDual}
-            ,codigoCentro=${codigoCentro} WHERE dni='${user.dni}'`);
+        console.log("entro")
+       const connection = await promisePool.getConnection();
+
+        try {
+            await connection.beginTransaction();
+            let query = `UPDATE usuario SET nombre='${user.nombre}',apellidos='${user.apellidos}',correo='${user.correo}', movil='${user.movil}',direccion='${user.direccion}',password='${password}',genero='${user.genero}', cp='${user.cp}',rol='${user.rol}',fechaNacimiento=STR_TO_DATE('${user.fechaNacimiento}','%Y-%m-%d'),fpDual=${user.fpDual},codigoCentro=${codigoCentro} WHERE dni='${user.dni}'`;
+            await connection.query(query)
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha actualizado usuario con DNI ${user.dni} ','${userLogado}',sysdate(), 'user')`);            
+            await connection.commit();
+        } catch (err) {
+            await connection.query("ROLLBACK");
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_USER','No se ha actualizado el usuario con DNI ${user.dni}','${userLogado}',sysdate(), 'user')`);            
+            console.log('ROLLBACK at querySignUp', err);
+            throw err;
+        } finally {
+            await connection.release();
+        }
+        
     }
     static async getUsers() {
         return await promisePool.query(

@@ -30,7 +30,8 @@ exports.deleteCentro = async (req, res, next) => {
   } else {
     try {
       console.log("codigo centro => " + req.params.codigoCentro)
-      const centro = await Centro.deleteCentro(req.params.codigoCentro)
+      const user = jwt_decode(req.headers['authorization']).sub;
+      const centro = await Centro.deleteCentro(req.params.codigoCentro,user)
 
       res.status(201).json({ message: "success" });
 
@@ -65,7 +66,8 @@ exports.updateCentro = async (req, res, next) => {
     else {
       try {
         console.log("entro a updatear")
-        const result = Centro.updateCentro(req.body).then(function (result) {
+        const user = jwt_decode(req.headers['authorization']).sub;
+        const result = Centro.updateCentro(req.body,user).then(function (result) {
           console.log("Promise Resolved");
 
           res.status(201).json({ message: "sucess" });
@@ -82,6 +84,27 @@ exports.updateCentro = async (req, res, next) => {
     }
   }
 }
+exports.deleteUserAndFPByCentro = async (req, res, next) => {
+  console.log(req.headers);
+  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], { header: true }));
+  console.log(expirado)
+  if (expirado) {
+    res.status(401).json({ "errors": "Sesión expirada" });
+  } else {
+    console.log(req.params)
+    const codigoCentro = req.params.codigoCentro;
+
+    try {
+      const user = jwt_decode(req.headers['authorization']).sub;
+      const centro = await Centro.deleteUserAndFPByCentro(req.params.codigoCentro, user);
+
+      res.status(200).json({ centro: centro });
+
+    } catch (err) {
+      res.status(500).json({ error: err });
+    }
+  }
+};
 exports.createCentro = async (req, res, next) => {
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if (expirado) {

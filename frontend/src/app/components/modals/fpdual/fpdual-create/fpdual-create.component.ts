@@ -71,7 +71,7 @@ export class FpdualCreateComponent implements OnInit {
  }
  save(){
    
-   /*this.fpdualesService.addFp(this.formInstance.value).pipe(first())
+   this.fpdualesService.addFp(this.formInstance.value).pipe(first())
      .subscribe(
        data => {
         window.location.reload();
@@ -95,7 +95,7 @@ export class FpdualCreateComponent implements OnInit {
          this.dialogRef.close();
            }   
           });
-       });*/
+       });
    
      
 

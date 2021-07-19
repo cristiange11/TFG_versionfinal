@@ -50,7 +50,7 @@ module.exports = class FP_dual {
     }
     static async createFp(fp, user ) {
         const connection = await promisePool.getConnection();
-
+        console.log("entro a")
         try {
             await connection.beginTransaction();
             let query = `INSERT INTO fp_duales (nombre, descripcion, totalPlazas, anio, codigoCentro, plazasDisponibles) VALUES ('${fp.nombre}','${fp.descripcion}','${fp.totalPlazas}','${fp.anio}','${fp.codigoCentro}','${fp.plazasDisponibles}') `;

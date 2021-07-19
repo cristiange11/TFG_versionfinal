@@ -30,7 +30,8 @@ exports.deleteProfesor = async (req, res, next) => {
         const dni = req.params.dni;
 
         try {
-            const profesor = await Profesor.deleteProfesor(dni);
+            const user = jwt_decode(req.headers['authorization']).sub;
+            const profesor = await Profesor.deleteProfesor(dni,user);
             res.status(200).json({ profesor: "sucess" });
 
         } catch (err) {
@@ -64,8 +65,8 @@ exports.updateProfesor = async (req, res, next) => {
         else {
 
             try {
-
-                const result = Profesor.updateProfesor(req.body).then(function (result) {
+                const user = jwt_decode(req.headers['authorization']).sub;
+                const result = Profesor.updateProfesor(req.body,user).then(function (result) {
                     console.log("Promise Resolved");
 
                     res.status(201).json({ profesor: "sucess" });

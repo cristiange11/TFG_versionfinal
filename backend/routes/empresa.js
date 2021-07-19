@@ -8,7 +8,7 @@ const empresaController = require('../controllers/empresa');
 
 router.get('/', empresaController.getEmpresas);
 
-router.delete('/:CIF', empresaController.deleteEmpresa);
+router.delete('/delete/:CIF', empresaController.deleteTutorEmpresaByEmpresa);
 
 router.post(
   '/create',

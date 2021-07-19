@@ -20,6 +20,23 @@ exports.getEmpresas = async (req, res, next) => {
   }
 };
 
+exports.deleteTutorEmpresaByEmpresa = async (req, res, next) => {
+  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
+  if (expirado) {
+    res.status(401).json({ "errors": "Sesión expirada" });
+  } else {
+    const CIF = req.params.CIF;
+    try {
+      const user = jwt_decode(req.headers['authorization']).sub;
+      const empresa = await Empresa.deleteTutorEmpresaByEmpresa(CIF,user);
+      res.status(200).json({ message: empresa });
+
+    } catch (err) {
+      res.status(500).json({ error: err });
+    }
+  }
+
+};
 exports.deleteEmpresa = async (req, res, next) => {
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if (expirado) {
@@ -27,8 +44,9 @@ exports.deleteEmpresa = async (req, res, next) => {
   } else {
     const CIF = req.params.CIF;
     try {
-      const centro = await Centro.deleteCentro(codigoCentro);
-      res.status(200).json({ message: centro });
+      const user = jwt_decode(req.headers['authorization']).sub;
+      const empresa = await Empresa.deleteEmpresa(CIF,user);
+      res.status(200).json({ message: empresa });
 
     } catch (err) {
       res.status(500).json({ error: err });
@@ -60,7 +78,8 @@ exports.updateEmpresa = async (req, res, next) => {
     else {
 
       try {
-        const result = Empresa.updateEmpresa(req.body).then(function (result) {
+        const user = jwt_decode(req.headers['authorization']).sub;
+        const result = Empresa.updateEmpresa(req.body, user).then(function (result) {
           console.log("Promise Resolved");
 
           res.status(201).json({ message: "success" });

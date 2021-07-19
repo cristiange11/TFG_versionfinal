@@ -73,8 +73,6 @@ import { FpdualUpdateComponent } from './components/modals/fpdual/fpdual-update/
 import { FpdualCreateComponent } from './components/modals/fpdual/fpdual-create/fpdual-create.component';
 import { UsuarioComponent } from './components/usuario/usuario.component';
 import { UsuarioUpdateComponent } from './components/modals/usuario/usuario-update/usuario-update.component';
-import { LogInicioSesionComponent } from './components/logs/log-inicio-sesion/log-inicio-sesion.component';
-import { LogCentroEducativoComponent } from './components/logs/log-centro-educativo/log-centro-educativo.component';
 
 @NgModule({
   imports: [
@@ -160,8 +158,6 @@ import { LogCentroEducativoComponent } from './components/logs/log-centro-educat
     FpdualCreateComponent,
     UsuarioComponent,
     UsuarioUpdateComponent,
-    LogInicioSesionComponent,
-    LogCentroEducativoComponent,
     
   ],
 

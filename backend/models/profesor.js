@@ -15,10 +15,25 @@ module.exports = class Profesor extends User {
         return rows;
     }
 
-    static async deleteProfesor(dni) {
-        const [rows, fields] = await promisePool.query(
-            `DELETE FROM profesor WHERE dni = '${dni}' `);
-        return rows;
+    static async deleteProfesor(dni,user) {
+        const connection = await promisePool.getConnection();
+
+        try {
+            await connection.beginTransaction();
+            let query =  `DELETE FROM profesor WHERE dni = '${dni}' `;
+            await connection.query(query)
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha borrado profesor con DNI ${dni} ','${user}',sysdate(), 'profesor')`);            
+
+            await connection.commit();
+        } catch (err) {
+            await connection.query("ROLLBACK");
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_PROFESOR','No se ha borrado profesor con DNI ${profesor.dni} ','${user}',sysdate(), 'profesor')`);            
+            console.log('ROLLBACK at querySignUp', err);
+            throw err;
+        } finally {
+            await connection.release();
+        }
+        
     }
     static async createProfesor(profesor, password, user) {
         const connection = await promisePool.getConnection();
@@ -38,17 +53,31 @@ module.exports = class Profesor extends User {
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_PROFESOR','Se ha añadido profesor con DNI ${profesor.dni} ','${user}',sysdate(), 'profesor')`);            
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_PROFESOR','No se ha añadido profesor con DNI ${profesor.dni} ','${user}',sysdate(), 'profesor')`);            
             console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {
             await connection.release();
         }
     }
-    static async updateProfesor(profesor) {
-        const [rows, fields] = await promisePool.query(
-            `UPDATE profesor SET departamento='${profesor.departamento}'WHERE dni = '${profesor.dni}'
-             `);
-        return rows;
+    static async updateProfesor(profesor,user) {
+        const connection = await promisePool.getConnection();
+
+        try {
+            await connection.beginTransaction();
+            let query =  `UPDATE profesor SET departamento='${profesor.departamento}'WHERE dni = '${profesor.dni}'`;
+            await connection.query(query)
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha actualizado profesor con DNI ${dni} ','${user}',sysdate(), 'profesor')`);            
+
+            await connection.commit();
+        } catch (err) {
+            await connection.query("ROLLBACK");
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_PROFESOR','No se ha actualizado profesor con DNI ${profesor.dni} ','${user}',sysdate(), 'profesor')`);            
+            console.log('ROLLBACK at querySignUp', err);
+            throw err;
+        } finally {
+            await connection.release();
+        }
+        
     }
 };

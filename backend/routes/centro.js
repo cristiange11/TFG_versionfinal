@@ -10,6 +10,9 @@ router.get('/', centroController.getCentros);
 
 router.delete('/:codigoCentro', centroController.deleteCentro);
 
+router.delete('/delete/:codigoCentro', centroController.deleteUserAndFPByCentro);
+
+
 router.post(
   '/create',
   [

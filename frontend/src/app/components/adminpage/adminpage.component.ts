@@ -198,7 +198,7 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
               const dialogRef2 = this.dialog.open(CentroDeleteConfirmationComponent);
               dialogRef2.afterClosed().subscribe( result => {
                   if(result){
-                    this.fpService.deleteFPByCentro(codigoCentro).pipe(first())
+                    this.centroService.deleteUserAndFPByCentro(codigoCentro).pipe(first())
                     .subscribe(
                       data => {
                           window.location.reload();

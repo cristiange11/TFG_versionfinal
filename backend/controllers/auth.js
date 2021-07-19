@@ -169,9 +169,9 @@ exports.updateUsuario = async (req, res, next) => {
       }
     else {
       try {
-        console.log("entro a updatear")
+        const user = jwt_decode(req.headers['authorization']).sub;
         const hashedPassword = await bcrypt.hash(req.body.password, 12);
-        const result = User.updateUser(req.body, hashedPassword).then(function (result) {
+        const result = User.updateUser(req.body, hashedPassword,user).then(function (result) {
           console.log("Promise Resolved");
 
           res.status(201).json({ user: req.body });

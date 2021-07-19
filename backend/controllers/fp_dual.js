@@ -161,6 +161,7 @@ exports.createFp = async (req, res, next) => {
     }
     else {
       try {
+        console.log("Hola entro a registrar")
         const user = jwt_decode(req.headers['authorization']).sub;
         const result = FP_dual.createFp(req.body, user).then(function (result) {
           console.log("Promise Resolved");

@@ -31,5 +31,8 @@ export class CentroService {
   updateCentro(centro : Centro): Observable<JSON>{
     return this.http.put<JSON>(`${this.url}/update`, centro, this.httpOptions);
   }
-
+  deleteUserAndFPByCentro(codigoCentro : string): Observable<JSON>{
+    console.log(`${this.url}/${codigoCentro}`);
+    return this.http.delete<JSON>(`${this.url}/delete/${codigoCentro}`,  this.httpOptions);
+  }
 }
