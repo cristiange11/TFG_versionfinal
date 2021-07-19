@@ -80,6 +80,7 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
           });
 
           this.dataSource.data = this.userList;
+         
         },
         error => {
           console.log(error);

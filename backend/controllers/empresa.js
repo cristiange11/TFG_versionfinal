@@ -44,6 +44,7 @@ exports.deleteEmpresa = async (req, res, next) => {
   } else {
     const CIF = req.params.CIF;
     try {
+      
       const user = jwt_decode(req.headers['authorization']).sub;
       const empresa = await Empresa.deleteEmpresa(CIF,user);
       res.status(200).json({ message: empresa });

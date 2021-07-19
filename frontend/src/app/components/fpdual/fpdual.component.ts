@@ -10,7 +10,9 @@ import { first } from 'rxjs/operators';
 import { AppComponent } from 'src/app/app.component';
 import { Fpduales } from 'src/app/models/Fpduales';
 import { FpdualesService } from 'src/app/services/fpduales.service';
+import { DeleteComponent } from '../modals/delete/delete.component';
 import { FpdualCreateComponent } from '../modals/fpdual/fpdual-create/fpdual-create.component';
+import { FpdualDeleteConfirmationComponent } from '../modals/fpdual/fpdual-delete-confirmation/fpdual-delete-confirmation.component';
 import { FpdualUpdateComponent } from '../modals/fpdual/fpdual-update/fpdual-update.component';
 import { NavigationComponent } from '../navigation/navigation.component';
 
@@ -34,6 +36,8 @@ export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
   private serviceSubscribe: Subscription;
   constructor( private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private fpService: FpdualesService, public dialog: MatDialog) {
     this.dataSource = new MatTableDataSource<Fpduales>();
+    document.body.style.background = "linear-gradient(to right, #3ab4a2, #1d69fd)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
    }
 
   ngOnInit(): void {
@@ -64,9 +68,7 @@ export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
         },
         error => {
           console.log(error);
-         /* var arrayRes= new Array();
-      arrayRes.push(error.error.errors);
-      AppComponent.myapp.openDialog(arrayRes);*/
+         
         });
   }
   private filter() {
@@ -176,22 +178,22 @@ export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
     
   }
 
-  delete(codigoCentro: any) {
-    /*const dialogRef = this.dialog.open(DeleteComponent);
+  delete(id: any) {
+    const dialogRef = this.dialog.open(DeleteComponent);
     
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.centroService.deleteCentro(codigoCentro).pipe(first())
+        this.fpService.deleteFp(id).pipe(first())
         .subscribe(
           data => {
             window.location.reload();
           },
           error => {
             if(error.status == 409){
-              const dialogRef2 = this.dialog.open(CentroDeleteConfirmationComponent);
+              const dialogRef2 = this.dialog.open(FpdualDeleteConfirmationComponent);
               dialogRef2.afterClosed().subscribe( result => {
                   if(result){
-                    this.fpService.deleteFPByCentro(codigoCentro).pipe(first())
+                    this.fpService.deleteUsuariosByFP(id).pipe(first())
                     .subscribe(
                       data => {
                           window.location.reload();
@@ -207,7 +209,7 @@ export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
             }
           });
       }
-    });*/
+    });
 
   }
   ngAfterViewInit(): void {

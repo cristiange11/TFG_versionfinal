@@ -29,6 +29,8 @@ export class EmpresaService {
   updateEmpresa(empresa : Empresa): Observable<JSON>{
     return this.http.put<JSON>(`${this.url}/update`, empresa, this.httpOptions);
   }
-
+  deleteTutorEmpresaByEmpresa(cifEmpresa : string): Observable<JSON>{
+    return this.http.delete<JSON>(`${this.url}/delete/${cifEmpresa}`,  this.httpOptions);
+  }
 
 }

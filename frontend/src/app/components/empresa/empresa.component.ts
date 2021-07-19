@@ -13,6 +13,8 @@ import { EmpresaService } from 'src/app/services/empresa.service';
 import { NavigationComponent } from '../navigation/navigation.component';
 import {EmpresaCreateComponent} from 'src/app/components/modals/empresa/empresa-create/empresa-create.component';
 import { EmpresaUpdateComponent } from '../modals/empresa/empresa-update/empresa-update.component';
+import { DeleteComponent } from '../modals/delete/delete.component';
+import { EmpresaDeleteConfirmationComponent } from '../modals/empresa/empresa-delete-confirmation/empresa-delete-confirmation.component';
 @Component({
   selector: 'app-empresa',
   templateUrl: './empresa.component.html',
@@ -32,7 +34,8 @@ export class EmpresaComponent implements OnInit , OnDestroy, AfterViewInit{
   private serviceSubscribe: Subscription;
   constructor( private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private empresaService: EmpresaService, public dialog: MatDialog) {
     this.dataSource = new MatTableDataSource<Empresa>();
-   }
+    document.body.style.background = "linear-gradient(to right, #3ab4a2, #1d69fd)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  }
 
   ngOnInit(): void {
     this.nagivationComponent.obtenerItems();
@@ -173,22 +176,23 @@ export class EmpresaComponent implements OnInit , OnDestroy, AfterViewInit{
     
   }
 
-  delete(CIF: any) {/*
+  delete(CIF: string) {
+    
     const dialogRef = this.dialog.open(DeleteComponent);
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.centroService.deleteCentro(codigoCentro).pipe(first())
+        this.empresaService.deleteEmpresa(CIF).pipe(first())
         .subscribe(
           data => {
             window.location.reload();
           },
           error => {
-            if(error.status == 409){
-              const dialogRef2 = this.dialog.open(CentroDeleteConfirmationComponent);
+           if(error.status == 409){
+              const dialogRef2 = this.dialog.open(EmpresaDeleteConfirmationComponent);
               dialogRef2.afterClosed().subscribe( result => {
                   if(result){
-                    this.fpService.deleteFPByCentro(codigoCentro).pipe(first())
+                    this.empresaService.deleteTutorEmpresaByEmpresa(CIF).pipe(first())
                     .subscribe(
                       data => {
                           window.location.reload();
@@ -205,7 +209,7 @@ export class EmpresaComponent implements OnInit , OnDestroy, AfterViewInit{
           });
       }
     });
-*/
+
   }
   ngAfterViewInit(): void {
     

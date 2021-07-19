@@ -19,9 +19,8 @@ export class FpdualesService {
   getFPdual(id: number): Observable<Fpduales [] >{     
     return this.http.get<Fpduales []>(`${this.url}/${id}`, this.httpOptions); 
   }
-  deleteFPByCentro(codigoCentro : string): Observable<JSON>{
-    console.log(`${this.url}/${codigoCentro}`);
-    return this.http.delete<JSON>(`${this.url}/${codigoCentro}`,  this.httpOptions);
+  deleteUsuariosByFP(id): Observable<JSON>{
+    return this.http.delete<JSON>(`${this.url}/delete/${id}`,  this.httpOptions);
   }
   getFps(): Observable<Fpduales[] >{    
     return this.http.get<Fpduales[]>(this.url, this.httpOptions); 

@@ -9,15 +9,9 @@ const comprobarToken = require('../util/comprobarToken');
 var datetime = require('node-datetime');
 const RSA_PRIVATE_KEY = fs.readFileSync(__dirname + '/OPENSSL/private.pem');
 exports.signup = async (req, res, next) => {
-  /*jwtDecoded = jwt_decode(req.headers['authorization']);
-  let expiresIn = jwtDecoded["exp"];
-  let currentTime = Math.trunc(new Date().getTime()/1000)
-  if (currentTime >= expiresIn) {
-    res.status(401).json({ "errors": "Sesión expirada" });
-  } 
-  */
-  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], { header: true }));
   
+  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], { header: true }));
+    console.log("cumpruebo si esta expirado" + expirado)
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
   }
@@ -189,6 +183,7 @@ exports.updateUsuario = async (req, res, next) => {
     else {
       try {
         const user = jwt_decode(req.headers['authorization']).sub;
+        console.log("campos " + req.body)
         const hashedPassword = await bcrypt.hash(req.body.password, 12);
         const result = User.updateUser(req.body, hashedPassword,user).then(function (result) {
           console.log("Promise Resolved");

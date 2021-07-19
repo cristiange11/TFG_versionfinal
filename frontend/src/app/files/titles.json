@@ -8,6 +8,10 @@
     "fpDual" : "FP Dual",
     "movil" : "Móvil",
     "fechaNacimiento": "Fecha de nacimiento",
-    "fechaHoraLog" : "Fecha y Hora de inicio"
+    "fechaHoraLog" : "Fecha y hora de inicio",
+    "descripcion" : "Descripción",
+    "totalPlazas" : "Total de plazas",
+    "plazasDisponibles" : "Plazas disponibles",
+    "anio" : "año"
 
 }

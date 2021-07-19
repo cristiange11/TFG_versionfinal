@@ -30,12 +30,10 @@ exports.DeleteUsuariosByFP = async (req, res, next) => {
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
   } else {
-    console.log(req.params)
-    const codigoCentro = req.params.codigoCentro;
 
     try {
       const user = jwt_decode(req.headers['authorization']).sub;
-      const fp = await Fpdual.DeleteUsuariosByFP(req.params.codigoCentro,user);
+      const fp = await Fpdual.DeleteUsuariosByFP(req.params.id,user);
 
       res.status(200).json({ fps: fp });
 
@@ -87,7 +85,7 @@ exports.deleteFp = async (req, res, next) => {
     res.status(401).json({ "errors": "Sesión expirada" });
   } else {
     try {
-      console.log("codigo centro => " + req.params.id)
+      console.log("entro a comprobar")
       const user = jwt_decode(req.headers['authorization']).sub;
       const centro = await Fpdual.deleteFp(req.params.id, user);
 

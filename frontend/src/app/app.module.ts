@@ -73,6 +73,7 @@ import { FpdualUpdateComponent } from './components/modals/fpdual/fpdual-update/
 import { FpdualCreateComponent } from './components/modals/fpdual/fpdual-create/fpdual-create.component';
 import { UsuarioComponent } from './components/usuario/usuario.component';
 import { UsuarioUpdateComponent } from './components/modals/usuario/usuario-update/usuario-update.component';
+import { FpdualDeleteConfirmationComponent } from './components/modals/fpdual/fpdual-delete-confirmation/fpdual-delete-confirmation.component';
 
 @NgModule({
   imports: [
@@ -158,6 +159,7 @@ import { UsuarioUpdateComponent } from './components/modals/usuario/usuario-upda
     FpdualCreateComponent,
     UsuarioComponent,
     UsuarioUpdateComponent,
+    FpdualDeleteConfirmationComponent,
     
   ],
 
