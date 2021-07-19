@@ -13,6 +13,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { NavigationComponent } from '../navigation/navigation.component';
 import { DatePipe } from '@angular/common';
 import { UsuarioUpdateComponent } from '../modals/usuario/usuario-update/usuario-update.component';
+import { DeleteComponent } from '../modals/delete/delete.component';
 
 @Component({
   selector: 'app-usuario',
@@ -82,7 +83,7 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
         },
         error => {
           console.log(error);
-         
+
         });
   }
   private filter() {
@@ -178,48 +179,32 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
   public doFilter = (value: { target: HTMLInputElement }) => {
     this.dataSource.filter = value.target.value.trim().toLocaleLowerCase();
   }
-  
+
   edit(data: User) {
-    
+
     const dialogRef = this.dialog.open(UsuarioUpdateComponent, {
       width: '400px',
       data: data
     });
-    
+
   }
 
-  delete(codigoCentro: any) {
-    /*const dialogRef = this.dialog.open(DeleteComponent);
-    
+  delete(dni: string) {
+    const dialogRef = this.dialog.open(DeleteComponent);
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.centroService.deleteCentro(codigoCentro).pipe(first())
-        .subscribe(
-          data => {
-            window.location.reload();
-          },
-          error => {
-            if(error.status == 409){
-              const dialogRef2 = this.dialog.open(CentroDeleteConfirmationComponent);
-              dialogRef2.afterClosed().subscribe( result => {
-                  if(result){
-                    this.fpService.deleteFPByCentro(codigoCentro).pipe(first())
-                    .subscribe(
-                      data => {
-                          window.location.reload();
-                      },
-                      error => {
-                        const res = new Array();
-                        res.push("No se ha podido borrar.");
-                        AppComponent.myapp.openDialog(res);
-                      }
-                    )
-                  }
-              });
-            }
-          });
+        this.userService.deleteUser(dni).pipe(first())
+          .subscribe(
+            data => {
+              window.location.reload();
+            },
+            error => {
+              const res = new Array();
+              res.push("No se ha podido borrar.");
+              AppComponent.myapp.openDialog(res);
+            });
       }
-    });*/
+    });
 
   }
   ngAfterViewInit(): void {

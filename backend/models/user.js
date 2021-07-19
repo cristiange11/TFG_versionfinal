@@ -57,16 +57,15 @@ module.exports = class User {
     static async deleteUser(dni,userLogado) {
        
        const connection = await promisePool.getConnection();
-
         try {
             await connection.beginTransaction();
-            let query = `DELETE FROM usuario WHERE dni = ${dni}`;
-            await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha borrado usuario con DNI ${user.dni} ','${userLogado}',sysdate(), 'user')`);            
+            let query = `DELETE FROM usuario WHERE dni = '${dni}'`;
+            await connection.query(query);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha borrado usuario con DNI ${dni} ','${userLogado}',sysdate(), 'user')`);            
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_USER','No se ha borrado el usuario con DNI ${user.dni}','${userLogado}',sysdate(), 'user')`);            
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_USER','No se ha borrado el usuario con DNI ${dni}','${userLogado}',sysdate(), 'user')`);            
             console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {

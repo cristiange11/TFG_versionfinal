@@ -32,10 +32,23 @@ module.exports = class Centro {
         return rows;
     }
 
-    static async deleteCentro(codigoCentro) {
-        const [rows, fields] = await promisePool.query(
-            `DELETE FROM centro_educativo WHERE codigoCentro = '${codigoCentro}' `);
-        return rows;
+    static async deleteCentro(codigoCentro,user) {
+        const connection = await promisePool.getConnection();
+
+        try {
+            await connection.beginTransaction();
+            let query =  `DELETE FROM centro_educativo WHERE codigoCentro = '${codigoCentro}' `;
+            await connection.query(query);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha eliminado el centro','${user}',sysdate(), 'centro educativo')`);            
+            await connection.commit();
+        } catch (err) {
+            await connection.query("ROLLBACK");
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_CENTRO','No se ha borrado el centro con codigo centro ${centro.codigoCentro}','${user}',sysdate(), 'centro educativo')`);            
+            console.log('ROLLBACK at querySignUp', err);
+            throw err;
+        } finally {
+            await connection.release();
+        }
     }
     static async createCentro(centro, user) {
         const connection = await promisePool.getConnection();
@@ -56,13 +69,24 @@ module.exports = class Centro {
         }
        
     }
-    static async updateCentro(centro) {
+    static async updateCentro(centro,user) {
+        const connection = await promisePool.getConnection();
 
-        const [rows, fields] = await promisePool.query(
-            `UPDATE centro_educativo SET correo='${centro.correo}',telefono='${centro.telefono}',provincia='${centro.provincia}',
-            nombre='${centro.nombre}',CP='${centro.CP}',direccion='${centro.direccion}' WHERE codigoCentro = '${centro.codigoCentro}'
-             `);
-        return rows;
+        try {
+            await connection.beginTransaction();
+            let query = `UPDATE centro_educativo SET correo='${centro.correo}',telefono='${centro.telefono}',provincia='${centro.provincia}', nombre='${centro.nombre}',CP='${centro.CP}',direccion='${centro.direccion}' WHERE codigoCentro = '${centro.codigoCentro}'`;
+            await connection.query(query);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha actualizado todo lo asociado al centro ${centro.codigoCentro}' ,'${user}',sysdate(), 'centro educativo')`);            
+            await connection.commit();
+        } catch (err) {
+            await connection.query("ROLLBACK");
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_CENTRO','No se ha podido actualizar el centro ${centro.codigoCentro}' ,'${user}',sysdate(), 'centro educativo')`);            
+
+            console.log('ROLLBACK', err);
+            throw err;
+        } finally {
+            await connection.release();
+        }
     }
     static async deleteUserAndFPByCentro(codigoCentro, user) {
         const connection = await promisePool.getConnection();

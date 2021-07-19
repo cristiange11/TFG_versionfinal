@@ -14,7 +14,7 @@
 
     <table mat-table  align="center" [dataSource]="dataSource" matSort class="mat-elevation-z8" cdkDropList>
       <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
-        <th mat-header-cell *matHeaderCellDef>
+        <th id="cel" mat-header-cell *matHeaderCellDef>
           <div style="display: flex; align-items: center;">
             <span mat-sort-header>{{myApp.getTitle(column)}}</span>
            
@@ -23,7 +23,7 @@
         <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
       </ng-container>
       <ng-container [matColumnDef]="'actions'">
-        <th mat-header-cell *matHeaderCellDef> actions </th>
+        <th id="cel2" mat-header-cell *matHeaderCellDef> actions </th>
         <td mat-cell *matCellDef="let element">
           <button mat-icon-button (click)="edit(element)">
             <mat-icon mat-icon-button color='primary'>edit</mat-icon>

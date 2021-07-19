@@ -73,17 +73,6 @@ module.exports = class TutorEmpresa {
             await connection.release();
         }
         
-        const [rows, fields] = await promisePool.query(
-            `UPDATE tutor_empresa SET moduloEmpresa='${tutor.moduloEmpresa}' and cifEmpresa = '${tutor.cifEmpresa}' WHERE dni = '${tutor.dni}'
-             `);
-        return rows;
     }
-    static async updateTutor(tutorEmpresa) {
-        
-        const [rows, fields] = await promisePool.query(
-            `UPDATE tutor_empresa SET moduloEmpresa='${tsutorEmpresa.moduloEmpresa}'
-             WHERE dni = '${tutorEmpresa.dni}'
-             `);
-        return rows;
-    }
+    
 };

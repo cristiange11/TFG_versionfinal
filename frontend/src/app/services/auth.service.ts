@@ -74,7 +74,10 @@ export class AuthService {
     
     return this.http.put<JSON>(`${this.url}/update`, user, this.httpOptions);
   }
-  getUsers(): Observable<User[] >{    
-    return this.http.get<User[]>(this.url, this.httpOptions); 
+  getUsers(): Observable<JSON[] >{    
+    return this.http.get<JSON[]>(this.url, this.httpOptions); 
+  }
+  deleteUser(dni: string): Observable<JSON>{
+    return this.http.delete<JSON>(`${this.url}/${dni}`,  this.httpOptions);
   }
 }

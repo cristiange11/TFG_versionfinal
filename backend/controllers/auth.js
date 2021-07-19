@@ -135,6 +135,25 @@ exports.login = async (req, res, next) => {
     next(err);
   }
 };
+exports.deleteUser = async (req, res, next) => {
+  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
+  if (expirado) {
+    res.status(401).json({ "errors": "Sesión expirada" });
+  } else {
+    try {
+      const user = jwt_decode(req.headers['authorization']).sub;
+      console.log(req.params)
+       await User.deleteUser(req.params.dni,user);
+      res.status(200).json({ message: "sucesss" });
+
+    } catch (err) {
+      console.log(err)
+      res.status(500).json({ error: err });
+    }
+  }
+
+};
+
 exports.getUsuarios = async (req, res, next) => {
   try {
     const usuario = await User.getUsers();

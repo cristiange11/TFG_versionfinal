@@ -2,7 +2,6 @@ const { validationResult } = require('express-validator');
 const jwt_decode = require('jwt-decode');
 const comprobarToken = require('../util/comprobarToken');
 const Fpdual = require('../models/fp_dual');
-const FP_dual = require('../models/fp_dual');
 
 exports.getFpByCentro = async (req, res, next) => {
   console.log(req.headers);
@@ -24,7 +23,7 @@ exports.getFpByCentro = async (req, res, next) => {
     }
   }
 };
-exports.DeleteCentroAndFPsByCentro = async (req, res, next) => {
+exports.DeleteUsuariosByFP = async (req, res, next) => {
   console.log(req.headers);
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], { header: true }));
   console.log(expirado)
@@ -35,7 +34,8 @@ exports.DeleteCentroAndFPsByCentro = async (req, res, next) => {
     const codigoCentro = req.params.codigoCentro;
 
     try {
-      const fp = await Fpdual.DeleteCentroAndFPsByCentro(req.params.codigoCentro);
+      const user = jwt_decode(req.headers['authorization']).sub;
+      const fp = await Fpdual.DeleteUsuariosByFP(req.params.codigoCentro,user);
 
       res.status(200).json({ fps: fp });
 
@@ -53,7 +53,7 @@ exports.getFp = async (req, res, next) => {
   } else {
     try {
       
-      const fps = await FP_dual.getFp(req.params.id);
+      const fps = await Fpdual.getFp(req.params.id);
 
       res.status(200).json({ fps: fps });
     } catch (err) {
@@ -71,8 +71,8 @@ exports.getFps = async (req, res, next) => {
     res.status(401).json({ "errors": "Sesión expirada" });
   } else {
     try {
-      
-      const fps = await FP_dual.getFps();
+      console.log("entro a obtener los fps")
+      const fps = await Fpdual.getFps();
 
       res.status(200).json({ fps: fps });
     } catch (err) {
@@ -88,7 +88,8 @@ exports.deleteFp = async (req, res, next) => {
   } else {
     try {
       console.log("codigo centro => " + req.params.id)
-      const centro = await FP_dual.deleteFp(req.params.id)
+      const user = jwt_decode(req.headers['authorization']).sub;
+      const centro = await Fpdual.deleteFp(req.params.id, user);
 
       res.status(201).json({ message: "success" });
 
@@ -120,8 +121,8 @@ exports.updateFp = async (req, res, next) => {
     }
     else {
       try {
-        console.log("entro a updatear")
-        const result = FP_dual.updateFp(req.body).then(function (result) {
+        const user = jwt_decode(req.headers['authorization']).sub;
+        const result = Fpdual.updateFp(req.body,user).then(function (result) {
           console.log("Promise Resolved");
 
           res.status(201).json({ message: "sucess" });
@@ -163,7 +164,7 @@ exports.createFp = async (req, res, next) => {
       try {
         console.log("Hola entro a registrar")
         const user = jwt_decode(req.headers['authorization']).sub;
-        const result = FP_dual.createFp(req.body, user).then(function (result) {
+        const result = Fpdual.createFp(req.body, user).then(function (result) {
           console.log("Promise Resolved");
 
           res.status(201).json({ message: "success" });

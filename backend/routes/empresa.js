@@ -10,6 +10,8 @@ router.get('/', empresaController.getEmpresas);
 
 router.delete('/delete/:CIF', empresaController.deleteTutorEmpresaByEmpresa);
 
+router.delete('/:CIF', empresaController.deleteEmpresa);
+
 router.post(
   '/create',
   [

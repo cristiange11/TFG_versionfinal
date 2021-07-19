@@ -45,9 +45,7 @@ module.exports = class Empresa {
         } finally {
             await connection.release();
         }
-        return await promisePool.query(
-            `DELETE FROM empresa WHERE cifEmpresa =  '${cifEmpresa}'`);
-        return rows;
+       
     }
     static async deleteTutorEmpresaByEmpresa(cifEmpresa,user) {
         const connection = await promisePool.getConnection();
