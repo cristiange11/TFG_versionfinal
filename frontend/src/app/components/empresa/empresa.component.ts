@@ -34,7 +34,7 @@ export class EmpresaComponent implements OnInit , OnDestroy, AfterViewInit{
   private serviceSubscribe: Subscription;
   constructor( private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private empresaService: EmpresaService, public dialog: MatDialog) {
     this.dataSource = new MatTableDataSource<Empresa>();
-    document.body.style.background = "linear-gradient(to right, #3ab4a2, #1d69fd)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    document.body.style.background = "linear-gradient(to right,#c8aeee, #94e9ad)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
 
   ngOnInit(): void {

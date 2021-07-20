@@ -36,6 +36,7 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
   private serviceSubscribe: Subscription;
 
   constructor(public datepipe: DatePipe, private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private userService: AuthService, public dialog: MatDialog) {
+    document.body.style.background = "linear-gradient(to right, #eeaeca, #94bbe9)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     this.dataSource = new MatTableDataSource<User>();
   }
 

@@ -48,6 +48,12 @@ module.exports = class FP_dual {
             `SELECT * FROM fp_duales `);
         return rows;
     }
+    static async getFpsConPlazasDisponibles(codigoCentro) {
+        console.log("entro a obtener los fps con plazas disponibles ")
+        const [rows, fields] = await promisePool.query(
+            `SELECT * FROM fp_duales where plazasDisponibles > 0 AND codigoCentro ='${codigoCentro}'`);
+        return rows;
+    }
     static async deleteFp(id,user) {
         const connection = await promisePool.getConnection();
         console.log("entro a")

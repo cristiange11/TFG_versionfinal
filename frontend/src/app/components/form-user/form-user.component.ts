@@ -174,7 +174,7 @@ this.centroService.getCentros().pipe(first())
     return this.numero;
   }
   obtenerFP(centro): void {
-
+    if(this.numero != 5){
     this.fpdualesService.getFPdual(centro).pipe(first())
       .subscribe(
         data => {
@@ -189,6 +189,23 @@ this.centroService.getCentros().pipe(first())
         error => {
           console.log(error.error.message);
         });
+    }  else{
+      this.fpdualesService.getFPdualByAlumno(centro).pipe(first())
+      .subscribe(
+        data => {
+          this.fpList = new Map<number, string>();
+          let fps = data["fps"]
+          fps.forEach(fpInfo => {
+            var fp = fpInfo as Fpduales
+           
+            this.fpList.set(fp.id, fp.nombre)
+          });
+        },
+        error => {
+          console.log(error.error.message);
+        });
+
+    }
   }
   signup(): void {
     var userJson = {

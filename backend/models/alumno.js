@@ -14,6 +14,7 @@ module.exports = class Alumno extends User {
         return await promisePool.query(
             `SELECT * FROM alumno where numeroExpediente = '${numeroExpediente}'`);
     }
+  
     static async getAlumnos() {
         const [rows, fields] = await promisePool.query(
             `SELECT * FROM alumno `);
@@ -57,6 +58,7 @@ module.exports = class Alumno extends User {
                 '${alumno.fpDual}','${alumno.codigoCentro}')`
             await connection.query(query)
             await connection.query(`INSERT INTO alumno(dni, numeroExpediente) VALUES ('${alumno.dni}','${alumno.numeroExpediente}')`);
+            await connection.query(`UPDATE fp_duales SET plazasDisponibles=plazasDisponibles-1 WHERE id = ${alumno.fpDual}`);
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha añadido alumno con DNI ${alumno.dni} ','${user}',sysdate(), 'alumno')`);            
             await connection.commit();
         } catch (err) {

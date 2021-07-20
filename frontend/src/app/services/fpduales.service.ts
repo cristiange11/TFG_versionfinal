@@ -19,6 +19,10 @@ export class FpdualesService {
   getFPdual(id: number): Observable<Fpduales [] >{     
     return this.http.get<Fpduales []>(`${this.url}/${id}`, this.httpOptions); 
   }
+  getFPdualByAlumno(codigoCentro: number): Observable<Fpduales [] >{     
+    
+    return this.http.get<Fpduales []>(`${this.url}/alumno/${codigoCentro}`, this.httpOptions); 
+  }
   deleteUsuariosByFP(id): Observable<JSON>{
     return this.http.delete<JSON>(`${this.url}/delete/${id}`,  this.httpOptions);
   }
