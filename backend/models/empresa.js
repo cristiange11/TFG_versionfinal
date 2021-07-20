@@ -54,7 +54,6 @@ module.exports = class Empresa {
             await connection.beginTransaction();
             let query = `DELETE FROM usuario U , tutor_empresa T where U.dni = T.dni AND T.cifEmpresa ='${cifEmpresa}'`;
             await connection.query(query);
-            await connection.query(`DELETE FROM tutor_empresa WHERE cifEmpresa = '${cifEmpresa}'`);
             await connection.query(`DELETE FROM empresa WHERE cifEmpresa =  '${cifEmpresa}'`);
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha eliminado todo lo asociado a la empresa ' ,'${user}',sysdate(), 'empresa')`);            
             await connection.commit();

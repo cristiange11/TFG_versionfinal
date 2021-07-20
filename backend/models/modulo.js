@@ -32,14 +32,13 @@ module.exports = class Modulo {
         }
        
     }
-    static async deleteTutormoduloBymodulo(id,user) {
+    static async deleteAllBymodulo(id,user) {
         const connection = await promisePool.getConnection();
 
         try {
             await connection.beginTransaction();
-            let query = `DELETE FROM usuario U , tutor_modulo T where U.dni = T.dni AND T.id ='${id}'`;
+            let query = `DELETE FROM usuario U , alumno A, alumno_modulo AM, `;
             await connection.query(query);
-            await connection.query(`DELETE FROM tutor_modulo WHERE id = '${id}'`);
             await connection.query(`DELETE FROM modulo WHERE id =  '${id}'`);
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha eliminado todo lo asociado a la modulo ' ,'${user}',sysdate(), 'modulo')`);            
             await connection.commit();
@@ -54,18 +53,18 @@ module.exports = class Modulo {
         }
         
     }
-    static async createmodulo(modulo, user) {
+    static async createModulo(modulo, user) {
         const connection = await promisePool.getConnection();
 
         try {
             await connection.beginTransaction();
-            let query = `INSERT INTO modulo(id, direccion, nombre, correo, telefono, url) VALUES ('${modulo.id}','${modulo.direccion}','${modulo.nombre}','${modulo.correo}','${modulo.telefono}','${modulo.url}') `;
+            let query = `INSERT INTO modulo(nombre, descripcion, curso) VALUES ('${modulo.nombre}','${modulo.descripcion}','${modulo.curso}') `;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha añadido modulo con CIF ${modulo.id} ','${user}',sysdate(), 'modulo')`);            
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha creado el modulo con id ${modulo.id} ','${user}',sysdate(), 'modulo')`);            
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_modulo','No se ha añadido modulo con CIF ${modulo.id}','${user}',sysdate(), 'modulo')`);            
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_MODULO','No se ha añadido modulo con id ${modulo.id}','${user}',sysdate(), 'modulo')`);            
             console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {
@@ -73,18 +72,18 @@ module.exports = class Modulo {
         }
         
     }
-    static async updatemodulo(modulo, user) {
+    static async updateModulo(modulo, user) {
         const connection = await promisePool.getConnection();
 
         try {
             await connection.beginTransaction();
-            let query = `UPDATE modulo SET direccion='${modulo.direccion}',nombre='${modulo.nombre}', correo='${modulo.correo}',telefono='${modulo.telefono}',url='${modulo.url}' WHERE id = '${modulo.id}'`;
+            let query = `UPDATE modulo SET nombre='${modulo.nombre}', descripcion='${modulo.descripcion}',curso='${modulo.curso}' WHERE id = '${modulo.id}'`;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha actualizado modulo con CIF ${modulo.id} ','${user}',sysdate(), 'modulo')`);            
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha actualizado el modulo con id ${modulo.id} ','${user}',sysdate(), 'modulo')`);            
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_modulo','No se ha actualizado modulo con CIF ${modulo.id}','${user}',sysdate(), 'modulo')`);            
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_modulo','No se ha actualizado el modulo con id ${modulo.id}','${user}',sysdate(), 'modulo')`);            
             console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {
