@@ -5,14 +5,14 @@ const cors = require('cors');
 const ports = process.env.PORT || 3000;
 const authRoutes = require('./routes/auth');
 const centroRoutes = require('./routes/centro');
-const fpRoutes = require('./routes/fp_dual');
+const fpRoutes = require('./routes/fpDual');
 const empresaRoutes = require('./routes/empresa');
 const rolesRoutes = require('./routes/roles');
 const tutorRoutes = require('./routes/tutorEmpresa');
 const alumnoRoutes = require('./routes/alumno');
 const profesorRoutes = require('./routes/profesor');
 const moduloRoutes = require('./routes/modulo');
-const logSesionRoutes= require('./routes/log_sesion');
+const logSesionRoutes= require('./routes/logSesion');
 
 app.use(cors());
 

@@ -1,7 +1,7 @@
 const { validationResult } = require('express-validator');
 const jwt_decode = require('jwt-decode');
 const comprobarToken = require('../../util/comprobarToken');
-const LogSesion = require('../../models/logs/log_sesion');
+const LogSesion = require('../../models/logs/logSesion');
 
 exports.getSesions = async (req, res, next) => {
   console.log(req.headers);

@@ -159,7 +159,6 @@ export class EditProfileComponent implements OnInit {
           var arrayRes = new Array();
           arrayRes.push("Usuario actualizado correctamente");
           AppComponent.myapp.openDialog(arrayRes);
-          window.location.reload();
         },
         error => {
 

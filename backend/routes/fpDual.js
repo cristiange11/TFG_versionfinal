@@ -2,9 +2,9 @@ const express = require('express');
 const { body } = require('express-validator');
 const router = express.Router();
 
-const Fp = require('../models/fp_dual');
+const Fp = require('../models/fpDual');
 
-const fpController = require('../controllers/fp_dual');
+const fpController = require('../controllers/fpDual');
 
 router.get('/:codigoCentro', fpController.getFpByCentro);
 
