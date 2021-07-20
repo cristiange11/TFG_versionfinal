@@ -20,7 +20,7 @@ module.exports = class Modulo {
             await connection.beginTransaction();
             let query = `DELETE FROM modulo WHERE codigo =  ${codigo}`;
             await connection.query(query);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha eliminado el módulo ${id}' ,'${user}',sysdate(), 'modulo')`);            
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha eliminado el módulo ${codigo}' ,'${user}',sysdate(), 'modulo')`);            
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
@@ -83,7 +83,7 @@ module.exports = class Modulo {
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_modulo','No se ha actualizado el modulo con id ${modulo.id}','${user}',sysdate(), 'modulo')`);            
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_MODULO','No se ha actualizado el modulo con id ${modulo.id}','${user}',sysdate(), 'modulo')`);            
             console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {
