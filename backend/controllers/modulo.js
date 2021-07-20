@@ -13,7 +13,7 @@ exports.getModulos = async (req, res, next) => {
   } else {
     try {
       console.log("entro a obtener los modulos")
-      const modulos = await Modulo.getModulos();
+      const modulos = await Modulo.getModulos(req.params.fpDual);
 
       res.status(200).json({ modulos: modulos });
     } catch (err) {
@@ -63,12 +63,13 @@ exports.updateModulo = async (req, res, next) => {
     else {
       try {
         const user = jwt_decode(req.headers['authorization']).sub;
+        console.log(req.body)
         Modulo.updateModulo(req.body,user).then(function (result) {
           console.log("Promise Resolved");
 
           res.status(201).json({ message: "sucess" });
         }).catch(function () {
-          res.status(401).json({  "errors": "no se ha podido actualizar el FP"  });
+          res.status(401).json({  "errors": "no se ha podido actualizar el módulo"  });
 
         });
 

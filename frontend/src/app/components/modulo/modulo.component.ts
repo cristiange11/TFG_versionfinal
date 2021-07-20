@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -9,33 +9,37 @@ import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { AppComponent } from 'src/app/app.component';
 import { Fpduales } from 'src/app/models/Fpduales';
-import { FpdualesService } from 'src/app/services/fpduales.service';
+import { Modulo } from 'src/app/models/Modulo';
+import { ModuloService } from 'src/app/services/modulo.service';
+import { FpdualComponent } from '../fpdual/fpdual.component';
 import { DeleteComponent } from '../modals/delete/delete.component';
 import { FpdualCreateComponent } from '../modals/fpdual/fpdual-create/fpdual-create.component';
 import { FpdualDeleteConfirmationComponent } from '../modals/fpdual/fpdual-delete-confirmation/fpdual-delete-confirmation.component';
 import { FpdualUpdateComponent } from '../modals/fpdual/fpdual-update/fpdual-update.component';
+import { ModuloCreateComponent } from '../modals/modulo/modulo-create/modulo-create.component';
+import { ModuloUpdateComponent } from '../modals/modulo/modulo-update/modulo-update.component';
 import { NavigationComponent } from '../navigation/navigation.component';
 
 @Component({
-  selector: 'app-fpdual',
-  templateUrl: './fpdual.component.html',
-  styleUrls: ['./fpdual.component.css']
+  selector: 'app-modulo',
+  templateUrl: './modulo.component.html',
+  styleUrls: ['./modulo.component.css']
 })
-export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
+export class ModuloComponent implements OnInit {
   myApp = AppComponent.myapp;
-  fpList: Array<Fpduales> = [];
+  moduloList: Array<Modulo> = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  
-  public displayedColumns: string[] = ['nombre', 'descripcion', 'totalPlazas', 'plazasDisponibles', 'codigoCentro', 'anio'];
-  public columnsToDisplay: string[] = [...this.displayedColumns, 'actions', 'modulos'];
+  @ViewChild(FpdualComponent) fp : Fpduales;
+  public displayedColumns: string[] = ['nombre', 'descripcion', 'curso'];
+  public columnsToDisplay: string[] = [...this.displayedColumns, 'actions', 'resultadoAprendizaje'];
 
   public columnsFilters = {};
 
-  public dataSource: MatTableDataSource<Fpduales>;
+  public dataSource: MatTableDataSource<Modulo>;
   private serviceSubscribe: Subscription;
-  constructor( private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private fpService: FpdualesService, public dialog: MatDialog) {
-    this.dataSource = new MatTableDataSource<Fpduales>();
+  constructor( private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private moduloService: ModuloService, public dialog: MatDialog) {
+    this.dataSource = new MatTableDataSource<Modulo>();
     document.body.style.background = "linear-gradient(to right, #3ab4a2, #1d69fd)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
    }
@@ -55,16 +59,17 @@ export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
     }
   }
   getAll() {
-    this.serviceSubscribe = this.fpService.getFps().pipe(first())
+    
+    this.serviceSubscribe = this.moduloService.getModulos(Number(sessionStorage.getItem('fpDual'))).pipe(first())
       .subscribe(
         data => {
-          let centros = data["fps"];
-          centros.forEach(fpInfo => {          
-            this.fpList.push(fpInfo);
+          let modulos = data["modulos"];
+          modulos.forEach(moduloInfo => {          
+            this.moduloList.push(moduloInfo);
             
           });
           
-            this.dataSource.data = this.fpList;
+            this.dataSource.data = this.moduloList;
         },
         error => {
           console.log(error);
@@ -73,7 +78,7 @@ export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
   }
   private filter() {
 
-    this.dataSource.filterPredicate = (data: Fpduales, filter: string) => {
+    this.dataSource.filterPredicate = (data: Modulo, filter: string) => {
       let find = true;
 
       for (var columnName in this.columnsFilters) {
@@ -165,25 +170,21 @@ export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
     this.dataSource.filter = value.target.value.trim().toLocaleLowerCase();
   }
   add() {
-    const dialogRef = this.dialog.open(FpdualCreateComponent, {
+    const dialogRef = this.dialog.open(ModuloCreateComponent, {
       width: '400px'
     });
   }
-  edit(data: Fpduales) {
-    
-    const dialogRef = this.dialog.open(FpdualUpdateComponent, {
+  edit(data: Modulo) {
+    console.log(data)
+    const dialogRef = this.dialog.open(ModuloUpdateComponent, {
       width: '400px',
       data: data
     });
     
   }
-  getModulos(id : number){
-    sessionStorage.setItem('fpDual', id.toString());
-    
-    this.router.navigate(['modulo']);
-  }
+
   delete(id: any) {
-    const dialogRef = this.dialog.open(DeleteComponent);
+    /*const dialogRef = this.dialog.open(DeleteComponent);
     
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
@@ -213,7 +214,7 @@ export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
             }
           });
       }
-    });
+    });*/
 
   }
 
@@ -227,4 +228,5 @@ export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
   ngOnDestroy(): void {
     this.serviceSubscribe.unsubscribe();
   }
+
 }

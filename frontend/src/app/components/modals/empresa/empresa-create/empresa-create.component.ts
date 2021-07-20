@@ -22,7 +22,6 @@ export class EmpresaCreateComponent implements OnInit {
         correo: new FormControl("", [Validators.required, Validators.email]),
         url: new FormControl("", [Validators.required, Validators.pattern(/^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/)]),
       })
-      //this.formInstance.setValue(data);
     }
     
 

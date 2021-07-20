@@ -6,7 +6,7 @@ const Modulo = require('../models/modulo');
 
 const moduloController = require('../controllers/modulo');
 
-router.get('/', moduloController.getModulos);
+router.get('/:fpDual', moduloController.getModulos);
 
 router.delete('/:codigo', moduloController.deleteModulo);
 
@@ -16,7 +16,6 @@ router.post(
     
     body('nombre').trim().not().isEmpty().withMessage("Nombre vacío"),
     body('curso').trim().not().isEmpty().withMessage("Curso vacío"),
-    body('curso').trim().not().isNumeric().withMessage("Curso tiene que ser numérico"),
     body('descripcion').trim().not().isEmpty().withMessage("Descripción vacía")
   ],
   moduloController.createModulo
@@ -27,7 +26,6 @@ router.put(
   [
     body('nombre').trim().not().isEmpty().withMessage("Nombre vacío"),
     body('curso').trim().not().isEmpty().withMessage("Curso vacío"),
-    body('curso').trim().not().isNumeric().withMessage("Curso tiene que ser numérico"),
     body('descripcion').trim().not().isEmpty().withMessage("Descripción vacía")
   ],
   moduloController.updateModulo
