@@ -77,6 +77,9 @@ import { FpdualDeleteConfirmationComponent } from './components/modals/fpdual/fp
 import { ModuloComponent } from './components/modulo/modulo.component';
 import { ModuloCreateComponent } from './components/modals/modulo/modulo-create/modulo-create.component';
 import { ModuloUpdateComponent } from './components/modals/modulo/modulo-update/modulo-update.component';
+import { ResultadoAprendizajeComponent } from './components/resultado-aprendizaje/resultado-aprendizaje.component';
+import { ResultadoAprendizajeCreateComponent } from './components/modals/resultado-aprendizaje/resultado-aprendizaje-create/resultado-aprendizaje-create.component';
+import { ResultadoAprendizajeUpdateComponent } from './components/modals/resultado-aprendizaje/resultado-aprendizaje-update/resultado-aprendizaje-update.component';
 
 @NgModule({
   imports: [
@@ -166,6 +169,9 @@ import { ModuloUpdateComponent } from './components/modals/modulo/modulo-update/
     ModuloComponent,
     ModuloCreateComponent,
     ModuloUpdateComponent,
+    ResultadoAprendizajeComponent,
+    ResultadoAprendizajeCreateComponent,
+    ResultadoAprendizajeUpdateComponent,
     
   ],
 

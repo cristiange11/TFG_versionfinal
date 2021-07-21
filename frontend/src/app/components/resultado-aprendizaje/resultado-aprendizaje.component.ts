@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -8,73 +8,71 @@ import { CookieService } from 'ngx-cookie-service';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { AppComponent } from 'src/app/app.component';
-import { Fpduales } from 'src/app/models/Fpduales';
-import { Modulo } from 'src/app/models/Modulo';
-import { ModuloService } from 'src/app/services/modulo.service';
-import { FpdualComponent } from '../fpdual/fpdual.component';
+import { ResultadoAprendizaje } from 'src/app/models/ResultadoAprendizaje';
+import { ResultadoAprendizajeService } from 'src/app/services/resultado-aprendizaje.service';
 import { DeleteComponent } from '../modals/delete/delete.component';
-import { ModuloCreateComponent } from '../modals/modulo/modulo-create/modulo-create.component';
-import { ModuloUpdateComponent } from '../modals/modulo/modulo-update/modulo-update.component';
+import { ResultadoAprendizajeCreateComponent } from '../modals/resultado-aprendizaje/resultado-aprendizaje-create/resultado-aprendizaje-create.component';
+import { ResultadoAprendizajeUpdateComponent } from '../modals/resultado-aprendizaje/resultado-aprendizaje-update/resultado-aprendizaje-update.component';
 import { NavigationComponent } from '../navigation/navigation.component';
 
 @Component({
-  selector: 'app-modulo',
-  templateUrl: './modulo.component.html',
-  styleUrls: ['./modulo.component.css']
+  selector: 'app-resultado-aprendizaje',
+  templateUrl: './resultado-aprendizaje.component.html',
+  styleUrls: ['./resultado-aprendizaje.component.css']
 })
-export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterViewInit {
   myApp = AppComponent.myapp;
-  moduloList: Array<Modulo> = [];
+  resultadoAprendizajeList: Array<ResultadoAprendizaje> = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  public displayedColumns: string[] = ['nombre', 'descripcion', 'curso'];
-  public columnsToDisplay: string[] = [...this.displayedColumns, 'actions', 'resultadoAprendizaje', 'encuesta'];
+  public displayedColumns: string[] = ['titulo', 'descripcion'];
+  public columnsToDisplay: string[] = [...this.displayedColumns, 'actions'];
 
   public columnsFilters = {};
 
-  public dataSource: MatTableDataSource<Modulo>;
+  public dataSource: MatTableDataSource<ResultadoAprendizaje>;
   private serviceSubscribe: Subscription;
-  constructor( private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private moduloService: ModuloService, public dialog: MatDialog) {
-    this.dataSource = new MatTableDataSource<Modulo>();
+  constructor(private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private resultadoAprendizajeService: ResultadoAprendizajeService, public dialog: MatDialog) {
+    this.dataSource = new MatTableDataSource<ResultadoAprendizaje>();
     document.body.style.background = "linear-gradient(to right, #3ab4a2, #1d69fd)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
-   }
+  }
 
   ngOnInit(): void {
     this.nagivationComponent.obtenerItems();
     this.getAll();
-    if(!this.cookieService.get('user')){
+    if (!this.cookieService.get('user')) {
       this.router.navigate(['home']);
     }
-    else{
-      var user =(JSON.parse(this.cookieService.get('user')));
-    if(Number(user.rol)!=1){
-      this.router.navigate(['home']);
-    }
-    
+    else {
+      var user = (JSON.parse(this.cookieService.get('user')));
+      if (Number(user.rol) != 1) {
+        this.router.navigate(['home']);
+      }
+
     }
   }
   getAll() {
-    
-    this.serviceSubscribe = this.moduloService.getModulos(Number(sessionStorage.getItem('fpDual'))).pipe(first())
+
+    this.serviceSubscribe = this.resultadoAprendizajeService.getResultadoAprendizaje(Number(sessionStorage.getItem('codigoModulo'))).pipe(first())
       .subscribe(
         data => {
-          let modulos = data["modulos"];
-          modulos.forEach(moduloInfo => {          
-            this.moduloList.push(moduloInfo);
-            
+          let resultadoAprendizaje = data["resultadoAprendizaje"];
+          resultadoAprendizaje.forEach(resultadoAprendizajeInfo => {
+            this.resultadoAprendizajeList.push(resultadoAprendizajeInfo);
+
           });
-          
-            this.dataSource.data = this.moduloList;
+
+          this.dataSource.data = this.resultadoAprendizajeList;
         },
         error => {
           console.log(error);
-         
+
         });
   }
   private filter() {
 
-    this.dataSource.filterPredicate = (data: Modulo, filter: string) => {
+    this.dataSource.filterPredicate = (data: ResultadoAprendizaje, filter: string) => {
       let find = true;
 
       for (var columnName in this.columnsFilters) {
@@ -166,74 +164,56 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dataSource.filter = value.target.value.trim().toLocaleLowerCase();
   }
   add() {
-    const dialogRef = this.dialog.open(ModuloCreateComponent, {
+    const dialogRef = this.dialog.open(ResultadoAprendizajeCreateComponent, {
       width: '400px'
     });
   }
-  edit(data: Modulo) {
+  edit(data: ResultadoAprendizaje) {
     console.log(data)
-    const dialogRef = this.dialog.open(ModuloUpdateComponent, {
+    const dialogRef = this.dialog.open(ResultadoAprendizajeUpdateComponent, {
       width: '400px',
       data: data
     });
-    
+
   }
-  getResultadosAprendizaje(codigoModulo){
-    console.log(codigoModulo)
-    sessionStorage.setItem('codigoModulo', codigoModulo.toString());
-    
-    this.router.navigate(['resultadoaprendizaje']);
-  }
-  getEncuesta(codigoModulo){
-    console.log(codigoModulo)
-    sessionStorage.setItem('codigoModulo', codigoModulo.toString());
-    
-    this.router.navigate(['resultadoaprendizaje']);
+  atras(){
+    this.router.navigate(['modulo']);
   }
   delete(id: any) {
-    /*const dialogRef = this.dialog.open(DeleteComponent);
-    
+    const dialogRef = this.dialog.open(DeleteComponent);
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.fpService.deleteFp(id).pipe(first())
-        .subscribe(
-          data => {
-            window.location.reload();
-          },
-          error => {
-            if(error.status == 409){
-              const dialogRef2 = this.dialog.open(FpdualDeleteConfirmationComponent);
-              dialogRef2.afterClosed().subscribe( result => {
-                  if(result){
-                    this.fpService.deleteUsuariosByFP(id).pipe(first())
-                    .subscribe(
-                      data => {
-                          window.location.reload();
-                      },
-                      error => {
-                        const res = new Array();
-                        res.push("No se ha podido borrar.");
-                        AppComponent.myapp.openDialog(res);
-                      }
-                    )
-                  }
-              });
-            }
-          });
+        this.resultadoAprendizajeService.deleteResultadoAprendizaje(id).pipe(first())
+          .subscribe(
+            data => {
+              window.location.reload();
+            },
+            error => {
+
+              error => {
+                const res = new Array();
+                res.push("No se ha podido borrar.");
+                AppComponent.myapp.openDialog(res);
+
+              }
+            });
       }
-    });*/
+    });
 
   }
 
-  
+
   ngAfterViewInit(): void {
-    
+
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    
+
   }
   ngOnDestroy(): void {
     this.serviceSubscribe.unsubscribe();
   }
 
 }
+
+

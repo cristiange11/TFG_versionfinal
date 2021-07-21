@@ -21,7 +21,6 @@
 }
 :host ::ng-deep a:link, a:visited, a:active {
   text-decoration:none;
-  margin-left: 20px;
 }
 :host ::ng-deep p-menubarsub {
   width: 100%;

@@ -5,7 +5,7 @@
           <input matInput type="text" (keyup)="doFilter($any($event))" placeholder="Buscar">
         </mat-form-field>
       </div>
-      <div class="col-md-1"><button mat-raised-button id="dch" align="right" color="primary" (click)="add()">Crear M&oacute;dulo</button></div>
+      <div class="col-md-1"><button mat-raised-button id="dch" align="right" color="primary" (click)="add()">Crear</button></div>
     </div>
     
   <div class="example-container mat-elevation-z8" >
@@ -34,8 +34,16 @@
         <ng-container [matColumnDef]="'resultadoAprendizaje'">
           <th mat-header-cell *matHeaderCellDef> Resultado Aprendizaje </th>
           <td mat-cell *matCellDef="let element">
-            <button mat-icon-button>
+            <button mat-icon-button (click)="getResultadosAprendizaje(element['codigo'])">
               <mat-icon mat-icon-button color='primary'>search</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <ng-container [matColumnDef]="'encuesta'">
+          <th mat-header-cell *matHeaderCellDef> Encuesta </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button (click)="getEncuesta(element['codigo'])">
+              <mat-icon mat-icon-button color='primary'>list_alt</mat-icon>
             </button>
           </td>
         </ng-container>

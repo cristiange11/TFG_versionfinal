@@ -12,6 +12,7 @@
     "descripcion" : "Descripción",
     "totalPlazas" : "Total de plazas",
     "plazasDisponibles" : "Plazas disponibles",
-    "anio" : "año"
+    "anio" : "año",
+    "titulo" : "título"
 
 }
