@@ -13,6 +13,9 @@
     "totalPlazas" : "Total de plazas",
     "plazasDisponibles" : "Plazas disponibles",
     "anio" : "año",
-    "titulo" : "título"
+    "titulo" : "título",
+    "dniTutorEmpresa" : "DNI tutor",
+    "dniAlumno" : "DNI alumno"
+
 
 }

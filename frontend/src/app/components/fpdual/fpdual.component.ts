@@ -58,8 +58,8 @@ export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
     this.serviceSubscribe = this.fpService.getFps().pipe(first())
       .subscribe(
         data => {
-          let centros = data["fps"];
-          centros.forEach(fpInfo => {          
+          let fps = data["fps"];
+          fps.forEach(fpInfo => {          
             this.fpList.push(fpInfo);
             
           });

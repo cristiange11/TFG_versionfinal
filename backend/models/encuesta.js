@@ -39,7 +39,7 @@ module.exports = class ResultadoAprendizaje {
         const connection = await promisePool.getConnection();
         try {
             await connection.beginTransaction();
-            let query = `INSERT INTO encuesta(codigoModulo, titulo, descripcion, dniAlumno, dniTutorEmpresa) VALUES ('${encuesta.codigoModulo}','${encuesta.titulo}','${encuesta.descripcion}', '${encuesta.dniAlumno}' , '${encuesta.dniTutorEmpresa}' ) WHERE id = ${encuesta.id}`;
+            let query = `INSERT INTO encuesta(codigoModulo, titulo, descripcion, dniAlumno, dniTutorEmpresa) VALUES (${encuesta.codigoModulo},'${encuesta.titulo}','${encuesta.descripcion}', '${encuesta.dniAlumno}' , '${encuesta.dniTutorEmpresa}' ) WHERE id = ${encuesta.id}`;
             await connection.query(query)
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha creado la encuesta con id ${encuesta.id} ','${user}',sysdate(), 'encuesta')`);            
             await connection.commit();

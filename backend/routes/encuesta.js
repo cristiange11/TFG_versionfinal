@@ -39,7 +39,6 @@ router.post(
         return Promise.reject('Tutor no existente en la aplicación');
       }
     }),
-    body('curso').trim().not().isEmpty().withMessage("Curso vacío"),
     body('descripcion').trim().not().isEmpty().withMessage("Descripción vacía")
   ],
   encuestaController.createEncuesta
@@ -72,7 +71,6 @@ router.put(
         return Promise.reject('Tutor no existente en la aplicación');
       }
     }),
-    body('curso').trim().not().isEmpty().withMessage("Curso vacío"),
     body('descripcion').trim().not().isEmpty().withMessage("Descripción vacía"),
     body('resultado').trim().not().isEmpty().withMessage("Resultado vacío"),
   ],

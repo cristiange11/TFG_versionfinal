@@ -176,9 +176,6 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
     });
 
   }
-  atras(){
-    this.router.navigate(['modulo']);
-  }
   delete(id: any) {
     const dialogRef = this.dialog.open(DeleteComponent);
 
@@ -190,13 +187,10 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
               window.location.reload();
             },
             error => {
-
-              error => {
                 const res = new Array();
                 res.push("No se ha podido borrar.");
                 AppComponent.myapp.openDialog(res);
-
-              }
+              
             });
       }
     });

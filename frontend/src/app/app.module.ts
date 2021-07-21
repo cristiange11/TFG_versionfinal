@@ -80,6 +80,9 @@ import { ModuloUpdateComponent } from './components/modals/modulo/modulo-update/
 import { ResultadoAprendizajeComponent } from './components/resultado-aprendizaje/resultado-aprendizaje.component';
 import { ResultadoAprendizajeCreateComponent } from './components/modals/resultado-aprendizaje/resultado-aprendizaje-create/resultado-aprendizaje-create.component';
 import { ResultadoAprendizajeUpdateComponent } from './components/modals/resultado-aprendizaje/resultado-aprendizaje-update/resultado-aprendizaje-update.component';
+import { EncuestaComponent } from './components/encuesta/encuesta.component';
+import { EncuestaCreateComponent } from './components/modals/encuesta/encuesta-create/encuesta-create.component';
+import { EncuestaUpdateComponent } from './components/modals/encuesta/encuesta-update/encuesta-update.component';
 
 @NgModule({
   imports: [
@@ -172,6 +175,9 @@ import { ResultadoAprendizajeUpdateComponent } from './components/modals/resulta
     ResultadoAprendizajeComponent,
     ResultadoAprendizajeCreateComponent,
     ResultadoAprendizajeUpdateComponent,
+    EncuestaComponent,
+    EncuestaCreateComponent,
+    EncuestaUpdateComponent,
     
   ],
 

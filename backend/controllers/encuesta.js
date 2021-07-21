@@ -110,7 +110,7 @@ exports.createEncuesta = async (req, res, next) => {
 
           res.status(201).json({ message: "success" });
         }).catch(function () {
-          res.status(401).json({ message: "no se ha podido crear la encuesta:" + err });
+          res.status(401).json({ "errors": "no se ha podido crear la encuesta:"  });
 
         });
 

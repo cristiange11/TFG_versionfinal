@@ -36,7 +36,7 @@ router.post(
     .matches(/^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/).withMessage("Formato fecha incorrecto: yyyy-mm-dd"),
     body('fpDual').trim().not().isEmpty().withMessage("FP vacío")
     .custom(async (fpDual) => {
-      const user = await Centro.find(fpDual);
+      const user = await Fpdual.find(fpDual);
       if (user[0].length == 0) {
         return Promise.reject('FP dual no existente');
       }

@@ -303,6 +303,7 @@ this.centroService.getCentros().pipe(first())
           AppComponent.myapp.openDialog(arrayRes);
         },
         error => {
+          console.log(error);
           error.error.errors.forEach(errorInfo => {
             const formControl = this.signupForm.get(errorInfo.param);
              if (formControl) {

@@ -13,6 +13,7 @@ const alumnoRoutes = require('./routes/alumno');
 const profesorRoutes = require('./routes/profesor');
 const resultadoAprendizajeRoutes = require('./routes/resultadoAprendizaje');
 const moduloRoutes = require('./routes/modulo');
+const encuestaRoutes= require('./routes/encuesta');
 const logSesionRoutes= require('./routes/logSesion');
 
 app.use(cors());
@@ -41,4 +42,5 @@ app.use("/modulo", moduloRoutes);
 
 app.use("/resultadoaprendizaje", resultadoAprendizajeRoutes);
 
+app.use("/encuesta" , encuestaRoutes);
 app.listen(ports, () => console.log(`Listening on port ${ports}`));

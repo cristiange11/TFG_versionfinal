@@ -1,0 +1,44 @@
+<h1 mat-dialog-title>Editar Encuesta</h1>
+<div mat-dialog-content>
+  <form [formGroup]="formInstance" novalidate >
+    <mat-form-field class="fullWidth" appearance="outline">
+      <mat-label>T&iacute;tulo</mat-label>
+        <input matInput type="text" name="titulo" placeholder="T&iacute;tulo" formControlName="titulo" required>
+        <mat-error *ngIf="formInstance.controls['titulo']?.errors?.required">T&iacute;tulo</mat-error>
+        <mat-error *ngIf="formInstance.controls['titulo']?.errors?.minlength">T&iacute;tulo</mat-error>
+        <mat-error *ngIf="this.formInstance.get('titulo').errors?.serverError">{{ this.formInstance.get('titulo').errors?.serverError }}</mat-error>
+      </mat-form-field>
+    <mat-form-field class="fullWidth" appearance="outline">
+      <mat-label>Descripci&oacute;n</mat-label>
+        <input matInput type="text" name="descripcion" formControlName="descripcion" placeholder="descripcion" required />
+        <mat-error *ngIf="formInstance.controls['descripcion']?.errors?.required">Descripci&oacute;n requerida</mat-error>
+        <mat-error *ngIf="formInstance.controls['descripcion']?.errors?.minlength">Cadena m&iacute;nima de 4 caracteres</mat-error>
+        <mat-error *ngIf="this.formInstance.get('descripcion').errors?.serverError">{{ this.formInstance.get('descripcion').errors?.serverError }}</mat-error>
+    </mat-form-field>  
+    <mat-form-field class="fullWidth" appearance="outline">
+        <mat-label>DNI Alumno</mat-label>
+          <input matInput type="text" name="dniAlumno" formControlName="dniAlumno" placeholder="dniAlumno" required />
+          <mat-error *ngIf="formInstance.controls['dniAlumno']?.errors?.required">Descripci&oacute;n requerida</mat-error>
+          <mat-error *ngIf="formInstance.controls['dniAlumno']?.errors?.pattern">Formato DNI alumno incorrecto</mat-error>
+          <mat-error *ngIf="this.formInstance.get('dniAlumno').errors?.serverError">{{ this.formInstance.get('dniAlumno').errors?.serverError }}</mat-error>
+      </mat-form-field>  
+      <mat-form-field class="fullWidth" appearance="outline">
+        <mat-label>Resultado</mat-label>
+          <input matInput type="text" name="resultado" formControlName="resultado" placeholder="resultado" required />
+          <mat-error *ngIf="formInstance.controls['resultado']?.errors?.required">Descripci&oacute;n requerida</mat-error>
+          <mat-error *ngIf="formInstance.controls['resultado']?.errors?.min || formInstance.controls['resultado']?.errors?.max ">La nota tiene que estar entre 0 y 10</mat-error>
+          <mat-error *ngIf="this.formInstance.get('resultado').errors?.serverError">{{ this.formInstance.get('descripcion').errors?.serverError }}</mat-error>
+      </mat-form-field> 
+      <mat-form-field class="fullWidth" appearance="outline">
+        <mat-label>DNI Tutor Empresa</mat-label>
+          <input matInput type="text" name="dniTutorEmpresa" formControlName="dniTutorEmpresa" placeholder="dniTutorEmpresa" required />
+          <mat-error *ngIf="formInstance.controls['dniTutorEmpresa']?.errors?.required">Descripci&oacute;n requerida</mat-error>
+          <mat-error *ngIf="formInstance.controls['dniTutorEmpresa']?.errors?.pattern">Formato DNI tutor incorrecto</mat-error>
+          <mat-error *ngIf="this.formInstance.get('dniTutorEmpresa').errors?.serverError">{{ this.formInstance.get('dniTutorEmpresa').errors?.serverError }}</mat-error>
+      </mat-form-field>  
+</form>
+</div>
+<div class="mt-5" mat-dialog-actions>
+  <button mat-raised-button color="primary"  (click)="save()" [disabled]="!formInstance.valid">Yes</button>
+  <button mat-raised-button mat-dialog-close>No</button>
+</div>

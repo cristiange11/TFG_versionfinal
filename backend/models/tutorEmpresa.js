@@ -35,6 +35,7 @@ module.exports = class TutorEmpresa {
     }
     static async createTutor(tutorEmpresa, password, user) {
         const connection = await promisePool.getConnection();
+        
         try {
             await connection.beginTransaction();
             let query = `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, 

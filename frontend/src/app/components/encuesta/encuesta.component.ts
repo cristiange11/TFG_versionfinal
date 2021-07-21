@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -8,34 +8,36 @@ import { CookieService } from 'ngx-cookie-service';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { AppComponent } from 'src/app/app.component';
+import { Encuesta } from 'src/app/models/Encuesta';
 import { Fpduales } from 'src/app/models/Fpduales';
-import { Modulo } from 'src/app/models/Modulo';
-import { ModuloService } from 'src/app/services/modulo.service';
-import { FpdualComponent } from '../fpdual/fpdual.component';
+import { EncuestaService } from 'src/app/services/encuesta.service';
 import { DeleteComponent } from '../modals/delete/delete.component';
-import { ModuloCreateComponent } from '../modals/modulo/modulo-create/modulo-create.component';
-import { ModuloUpdateComponent } from '../modals/modulo/modulo-update/modulo-update.component';
+import { EncuestaCreateComponent } from '../modals/encuesta/encuesta-create/encuesta-create.component';
+import { FpdualCreateComponent } from '../modals/fpdual/fpdual-create/fpdual-create.component';
+import { FpdualDeleteConfirmationComponent } from '../modals/fpdual/fpdual-delete-confirmation/fpdual-delete-confirmation.component';
+import { FpdualUpdateComponent } from '../modals/fpdual/fpdual-update/fpdual-update.component';
 import { NavigationComponent } from '../navigation/navigation.component';
 
 @Component({
-  selector: 'app-modulo',
-  templateUrl: './modulo.component.html',
-  styleUrls: ['./modulo.component.css']
+  selector: 'app-encuesta',
+  templateUrl: './encuesta.component.html',
+  styleUrls: ['./encuesta.component.css']
 })
-export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
+export class EncuestaComponent implements OnInit , OnDestroy, AfterViewInit {
   myApp = AppComponent.myapp;
-  moduloList: Array<Modulo> = [];
+  encuestaList: Array<Encuesta> = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  public displayedColumns: string[] = ['nombre', 'descripcion', 'curso'];
-  public columnsToDisplay: string[] = [...this.displayedColumns, 'actions', 'resultadoAprendizaje', 'encuesta'];
+  
+  public displayedColumns: string[] = ['titulo', 'descripcion', 'dniTutorEmpresa', 'dniAlumno', 'resultado'];
+  public columnsToDisplay: string[] = [...this.displayedColumns, 'actions'];
 
   public columnsFilters = {};
 
-  public dataSource: MatTableDataSource<Modulo>;
+  public dataSource: MatTableDataSource<Encuesta>;
   private serviceSubscribe: Subscription;
-  constructor( private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private moduloService: ModuloService, public dialog: MatDialog) {
-    this.dataSource = new MatTableDataSource<Modulo>();
+  constructor( private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private encuestaService: EncuestaService, public dialog: MatDialog) {
+    this.dataSource = new MatTableDataSource<Encuesta>();
     document.body.style.background = "linear-gradient(to right, #3ab4a2, #1d69fd)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
    }
@@ -55,17 +57,17 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   getAll() {
-    
-    this.serviceSubscribe = this.moduloService.getModulos(Number(sessionStorage.getItem('fpDual'))).pipe(first())
+    console.log(Number(sessionStorage.getItem('codigoModulo')))
+    this.serviceSubscribe = this.encuestaService.getEncuestas(Number(sessionStorage.getItem('codigoModulo'))).pipe(first())
       .subscribe(
         data => {
-          let modulos = data["modulos"];
-          modulos.forEach(moduloInfo => {          
-            this.moduloList.push(moduloInfo);
+          let encuestas = data["encuestas"];
+          encuestas.forEach(encuestaInfo => {          
+            this.encuestaList.push(encuestaInfo);
             
           });
           
-            this.dataSource.data = this.moduloList;
+            this.dataSource.data = this.encuestaList;
         },
         error => {
           console.log(error);
@@ -74,7 +76,7 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   private filter() {
 
-    this.dataSource.filterPredicate = (data: Modulo, filter: string) => {
+    this.dataSource.filterPredicate = (data: Encuesta, filter: string) => {
       let find = true;
 
       for (var columnName in this.columnsFilters) {
@@ -166,62 +168,38 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dataSource.filter = value.target.value.trim().toLocaleLowerCase();
   }
   add() {
-    const dialogRef = this.dialog.open(ModuloCreateComponent, {
+    const dialogRef = this.dialog.open(EncuestaCreateComponent, {
       width: '400px'
     });
   }
-  edit(data: Modulo) {
-    console.log(data)
-    const dialogRef = this.dialog.open(ModuloUpdateComponent, {
+  edit(data: Fpduales) {
+    
+    const dialogRef = this.dialog.open(FpdualUpdateComponent, {
       width: '400px',
       data: data
     });
     
   }
-  getResultadosAprendizaje(codigoModulo){
-    console.log(codigoModulo)
-    sessionStorage.setItem('codigoModulo', codigoModulo.toString());
-    
-    this.router.navigate(['resultadoaprendizaje']);
-  }
-  getEncuesta(codigoModulo){
-    console.log(codigoModulo)
-    sessionStorage.setItem('codigoModulo', codigoModulo.toString());
-    
-    this.router.navigate(['encuesta']);
-  }
+  
   delete(id: any) {
-    /*const dialogRef = this.dialog.open(DeleteComponent);
+    const dialogRef = this.dialog.open(DeleteComponent);
     
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.fpService.deleteFp(id).pipe(first())
-        .subscribe(
-          data => {
-            window.location.reload();
-          },
-          error => {
-            if(error.status == 409){
-              const dialogRef2 = this.dialog.open(FpdualDeleteConfirmationComponent);
-              dialogRef2.afterClosed().subscribe( result => {
-                  if(result){
-                    this.fpService.deleteUsuariosByFP(id).pipe(first())
-                    .subscribe(
-                      data => {
-                          window.location.reload();
-                      },
-                      error => {
-                        const res = new Array();
-                        res.push("No se ha podido borrar.");
-                        AppComponent.myapp.openDialog(res);
-                      }
-                    )
-                  }
-              });
-            }
-          });
+        this.encuestaService.deleteEncuesta(id).pipe(first())
+          .subscribe(
+            data => {
+              window.location.reload();
+            },
+            error => {
+
+                const res = new Array();
+                res.push("No se ha podido borrar.");
+                AppComponent.myapp.openDialog(res);
+
+            });
       }
-    });*/
+    });
 
   }
 

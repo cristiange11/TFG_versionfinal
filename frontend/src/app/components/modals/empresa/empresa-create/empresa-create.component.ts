@@ -33,6 +33,7 @@ export class EmpresaCreateComponent implements OnInit {
       .subscribe(
         data => {
          window.location.reload();
+         this.dialogRef.close();
         },
         error => {
           console.log(error)
@@ -41,7 +42,7 @@ export class EmpresaCreateComponent implements OnInit {
           AppComponent.myapp.openDialog(res);
         });
     
-    this.dialogRef.close();
+    
   }
 }
 
