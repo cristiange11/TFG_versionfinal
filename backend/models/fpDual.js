@@ -9,6 +9,14 @@ module.exports = class FP_dual {
         this.codigoCentro = codigoCentro;
         this.plazasDisponibles = plazasDisponibles;
     }
+    static async find(id) {
+
+        const [rows, fields] = await promisePool.query(
+            `SELECT * FROM fp_duales WHERE id=${id}  `);
+
+        return rows;
+    }
+    
     static async getNombreFPByCentro(codigoCentro) {
 
         const [rows, fields] = await promisePool.query(

@@ -3,7 +3,7 @@ const { body } = require('express-validator');
 const router = express.Router();
 
 const Fp = require('../models/fpDual');
-
+const Centro = require('../models/centro');
 const fpController = require('../controllers/fpDual');
 
 router.get('/:codigoCentro', fpController.getFpByCentro);
@@ -25,7 +25,13 @@ router.post(
     body('descripcion').trim().not().isEmpty().withMessage("Dirección vacía"),
     body('totalPlazas').trim().not().isEmpty().withMessage("Total de plazas vacías"),
     body('anio').trim().not().isEmpty().withMessage("Año vacío"),
-    body('codigoCentro').trim().not().isEmpty().withMessage("Código centro vacío"),
+    body('codigoCentro').trim().not().isEmpty().withMessage("Código centro vacío")
+    .custom(async (codigoCentro) => {
+      const user = await Centro.find(codigoCentro);
+      if (user[0].length == 0) {
+        return Promise.reject('Centro no existente');
+      }
+    }),
     body('plazasDisponibles').trim().not().isEmpty().withMessage("Plazas disponibles vacías")
       .custom(async (plazasDisponibles , {req}) => {
         if (plazasDisponibles > req.body.totalPlazas) {
@@ -43,7 +49,12 @@ router.put(
     body('descripcion').trim().not().isEmpty().withMessage("Dirección vacía"),
     body('totalPlazas').trim().not().isEmpty().withMessage("Total de plazas vacías"),
     body('anio').trim().not().isEmpty().withMessage("Año vacío"),
-    body('codigoCentro').trim().not().isEmpty().withMessage("Código centro vacío"),
+    body('codigoCentro').trim().not().isEmpty().withMessage("Código centro vacío").custom(async (codigoCentro) => {
+      const user = await Centro.find(codigoCentro);
+      if (user[0].length == 0) {
+        return Promise.reject('Centro no existente');
+      }
+    }),
     body('plazasDisponibles').trim().not().isEmpty().withMessage("Plazas disponibles vacías")
       .custom(async (plazasDisponibles , {req}) => {
         if (plazasDisponibles > req.body.totalPlazas) {

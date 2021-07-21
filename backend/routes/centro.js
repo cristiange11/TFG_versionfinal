@@ -55,7 +55,6 @@ router.put(
     body('provincia').trim().not().isEmpty().withMessage("Provincia vacía"),
     body('CP').trim().not().isEmpty().withMessage("CP vacío")
       .matches(/^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/).withMessage("Formato CP vacío"),
-    body('codigoCentro').trim().not().isEmpty().withMessage("Código centro vacío"),
     body('telefono').trim().not().isEmpty().withMessage("Teléfono vacío")
       .matches(/^(\+34|0034|34)?[ -]*(8|9)[ -]*([0-9][ -]*){8}$/).withMessage("Formato teléfono incorrecto")
       .custom(async (telefono, {req}) => {

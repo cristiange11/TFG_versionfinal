@@ -8,6 +8,11 @@ module.exports = class Modulo {
         this.curso = curso;
     }
     
+    static async find(codigo) {
+        const [rows, fields] = await promisePool.query(
+            `SELECT * FROM modulo where codigo = ${codigo}`);
+        return rows;
+    }
     static async getModulos(fpDual) {
         const [rows, fields] = await promisePool.query(
             `SELECT * FROM modulo where fpDual = ${fpDual}`);
