@@ -6,6 +6,8 @@
         <input matInput type="text" name="nombre" formControlName="nombre" required>
         <mat-error *ngIf="formInstance.controls['nombre']?.errors?.required">Nombre requerido</mat-error>
         <mat-error *ngIf="formInstance.controls['nombre']?.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
+        <mat-error *ngIf="formInstance.controls['nombre']?.errors?.serverError">{{formInstance.controls['nombre']?.errors?.serverError}}</mat-error>
+
       </mat-form-field>
 
       <mat-form-field class="fullWidth" appearance="outline">
@@ -13,18 +15,24 @@
         <input matInput type="text" name="provincia" formControlName="provincia" required />
         <mat-error *ngIf="formInstance.controls['provincia']?.errors?.required">Provincia requerida</mat-error>
         <mat-error *ngIf="formInstance.controls['provincia']?.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
+        <mat-error *ngIf="formInstance.controls['provincia']?.errors?.serverError">{{formInstance.controls['provincia']?.errors?.serverError}}</mat-error>
+
     </mat-form-field>
     <mat-form-field class="fullWidth" appearance="outline">
       <mat-label>Direcci&oacute;n</mat-label>
         <input matInput type="text" name="direccion" formControlName="direccion" required />
         <mat-error *ngIf="formInstance.controls['direccion']?.errors?.required">Direcci&oacute;n requerida</mat-error>
         <mat-error *ngIf="formInstance.controls['direccion']?.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
+        <mat-error *ngIf="formInstance.controls['direccion']?.errors?.serverError">{{formInstance.controls['direccion']?.errors?.serverError}}</mat-error>
+
     </mat-form-field>
     <mat-form-field class="fullWidth" appearance="outline">
       <mat-label>CP</mat-label>
         <input matInput type="text" name="CP" formControlName="CP" required />
         <mat-error *ngIf="formInstance.controls['CP']?.errors?.required">CP requerido</mat-error>
         <mat-error *ngIf="formInstance.controls['CP']?.errors?.pattern">Formato CP incorrecto</mat-error>
+        <mat-error *ngIf="formInstance.controls['CP']?.errors?.serverError">{{formInstance.controls['CP']?.errors?.serverError}}</mat-error>
+
     </mat-form-field>
     <mat-form-field class="fullWidth" appearance="outline">
       <mat-label>Tel&eacute;fono</mat-label>

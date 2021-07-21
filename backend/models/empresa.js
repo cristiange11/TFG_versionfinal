@@ -11,6 +11,7 @@ module.exports = class Empresa {
         this.url = url;
     }
     static async findTelefono(telefono, cifEmpresa) {
+        console.log(`SELECT * FROM empresa where telefono = '${telefono}' AND cifEmpresa != '${cifEmpresa}'`)
         return await promisePool.query(
             `SELECT * FROM empresa where telefono = '${telefono}' AND cifEmpresa != '${cifEmpresa}'`);
     }

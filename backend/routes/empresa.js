@@ -20,7 +20,7 @@ router.post(
       .custom(async (cifEmpresa) => {
         const empresa = await Empresa.find(cifEmpresa);
         if (empresa[0].length > 0) {
-          return Promise.reject('CIF introducido ya existe!');
+          return Promise.reject('CIF introducido ya existe');
         }
       }),
     body('direccion').trim().not().isEmpty().withMessage("Dirección vacía"),
@@ -28,16 +28,17 @@ router.post(
     body('telefono').trim().not().isEmpty().withMessage("Teléfono vacío")
       .matches(/^(\+34|0034|34)?[ -]*(8|9)[ -]*([0-9][ -]*){8}$/).withMessage("Formato teléfono incorrecto")
       .custom(async (telefono,{req}) => {
+        console.log(telefono + " " + req.body.cifEmpresa)
         const user = await Empresa.findTelefono(telefono, req.body.cifEmpresa);
         if (user[0].length > 0) {
-          return Promise.reject('Teléfono introducido ya existe!');
+          return Promise.reject('Teléfono introducido ya existe');
         }
       }),body('correo')
       .isEmail().withMessage("Formato email incorrecto")
       .custom(async (correo , {req}) => {
         const user = await Empresa.findCorreo(correo, req.body.cifEmpresa);
         if (user[0].length > 0) {
-          return Promise.reject('Correo ya existe!');
+          return Promise.reject('Correo ya existe');
         }
       
     })
@@ -60,7 +61,7 @@ router.put(
       .custom(async (telefono , {req}) => {
         const user = await Empresa.findTelefono(telefono, req.body.cifEmpresa);
         if (user[0].length > 0) {
-          return Promise.reject('Teléfono introducido ya existe!');
+          return Promise.reject('Teléfono introducido ya existe');
         }
       }),
       body('correo')
@@ -68,7 +69,7 @@ router.put(
       .custom(async (correo , {req}) => {
         const user = await Empresa.findCorreo(correo, req.body.cifEmpresa);
         if (user[0].length > 0) {
-          return Promise.reject('Correo ya existe!');
+          return Promise.reject('Correo ya existe');
         }
       
     })

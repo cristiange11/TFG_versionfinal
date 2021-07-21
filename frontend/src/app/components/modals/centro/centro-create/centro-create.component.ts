@@ -39,11 +39,24 @@ export class CentroCreateComponent implements OnInit {
         },
         error => {
           console.log(error)
-          const res = new Array();
+          if(error.status == 409){
+            console.log("entro" + error)
+            error.error.errors.forEach(errorInfo => {
+              const formControl = this.formInstance.get(errorInfo.param);
+               if (formControl) {
+                 formControl.setErrors({
+                   serverError: errorInfo.message
+                 });  
+               }          
+             });
+          }else if(error.status == 401){
+            const res = new Array();
           res.push("No se ha podido crear.");
           AppComponent.myapp.openDialog(res);
+          this.dialogRef.close();
+          }
         });
     
-    this.dialogRef.close();
+    //this.dialogRef.close();
   }
 }

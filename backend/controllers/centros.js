@@ -122,7 +122,7 @@ exports.createCentro = async (req, res, next) => {
         message: element.msg
       })
     });
-
+    console.log(errors)
     if (!errors.isEmpty()) {
       res.status(409).json({ "errors": resJSON });
     }
