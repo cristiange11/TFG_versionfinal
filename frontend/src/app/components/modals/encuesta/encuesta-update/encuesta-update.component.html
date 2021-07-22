@@ -27,7 +27,7 @@
           <input matInput type="text" name="resultado" formControlName="resultado" placeholder="resultado" required />
           <mat-error *ngIf="formInstance.controls['resultado']?.errors?.required">Descripci&oacute;n requerida</mat-error>
           <mat-error *ngIf="formInstance.controls['resultado']?.errors?.min || formInstance.controls['resultado']?.errors?.max ">La nota tiene que estar entre 0 y 10</mat-error>
-          <mat-error *ngIf="this.formInstance.get('resultado').errors?.serverError">{{ this.formInstance.get('descripcion').errors?.serverError }}</mat-error>
+          <mat-error *ngIf="this.formInstance.get('resultado').errors?.serverError">{{ this.formInstance.get('resultado').errors?.serverError }}</mat-error>
       </mat-form-field> 
       <mat-form-field class="fullWidth" appearance="outline">
         <mat-label>DNI Tutor Empresa</mat-label>

@@ -6,12 +6,16 @@
         <input matInput type="text" name="titulo" placeholder="T&iacute;tulo" formControlName="titulo" required>
         <mat-error *ngIf="formInstance.controls['titulo']?.errors?.required">T&iacute;tulo</mat-error>
         <mat-error *ngIf="formInstance.controls['titulo']?.errors?.minlength">T&iacute;tulo</mat-error>
+        <mat-error *ngIf="this.formInstance.get('titulo').errors?.serverError">{{ this.formInstance.get('titulo').errors?.serverError }}</mat-error>
+
       </mat-form-field>
     <mat-form-field class="fullWidth" appearance="outline">
       <mat-label>Descripci&oacute;n</mat-label>
         <input matInput type="text" name="descripcion" formControlName="descripcion" placeholder="descripcion" required />
         <mat-error *ngIf="formInstance.controls['descripcion']?.errors?.required">Descripci&oacute;n requerida</mat-error>
         <mat-error *ngIf="formInstance.controls['descripcion']?.errors?.minlength">Cadena m&iacute;nima de 4 caracteres</mat-error>
+        <mat-error *ngIf="this.formInstance.get('descripcion').errors?.serverError">{{ this.formInstance.get('descripcion').errors?.serverError }}</mat-error>
+
     </mat-form-field>  
 </form>
 </div>

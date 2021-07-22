@@ -18,8 +18,7 @@ export class FpdualUpdateComponent implements OnInit {
   formInstance: FormGroup;
    fecha;
    anio;
-   totalPlazas= new FormControl("", [Validators.required, Validators.min(1)]);
-   plazasDisponibles =  new FormControl("", [Validators.required,  this.validateScore]);
+  
   centroList = new Map<string, string>();
   constructor(public cookieService: CookieService, public router: Router, public dialogRef: MatDialogRef< FpdualUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Fpduales, public fpdualesService: FpdualesService, public centroService: CentroService) { 
@@ -35,7 +34,7 @@ export class FpdualUpdateComponent implements OnInit {
         plazasDisponibles : new FormControl("", [Validators.required]),
         codigoCentro: new FormControl("", [Validators.required]),
         id: new FormControl("", []),
-      }, {validators: this.validateScore})
+      }, {validators: this.validateScore('totalPlazas' , 'plazasDisponibles')})
       
       this.formInstance.setValue(data); 
     }
@@ -68,14 +67,14 @@ export class FpdualUpdateComponent implements OnInit {
         });
   } 
   
- validateScore(control: AbstractControl): ValidationErrors | null {
-    if (control && control.get("plazasDisponibles") && control.get("totalPlazas")) {
-      const totalPlazas = control.get("totalPlazas").value;
-      const plazasDisponibles = control.get("plazasDisponibles").value;  
-      
-      return plazasDisponibles > totalPlazas ? {  scoreError: true } : null
+  validateScore(totalPlazas: string, plazasDisponibles: string) {
+    return (group: FormGroup): {[key: string]: any} => {
+      // get values
+      let valueTotalPlazas = group.get(totalPlazas).value;
+      let valuePlazasDisponibles = group.get(plazasDisponibles).value;
+      console.log(valueTotalPlazas + " " + valuePlazasDisponibles)
+      return valueTotalPlazas >= valuePlazasDisponibles ? null : {scoreError: true}; 
     }
-    return null;
   }
   save(){
    

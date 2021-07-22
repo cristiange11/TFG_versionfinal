@@ -21,7 +21,12 @@ router.post(
       }
     }),
     body('nombre').trim().not().isEmpty().withMessage("Nombre vacío"),
-    body('curso').trim().not().isEmpty().withMessage("Curso vacío"),
+    body('curso').trim().not().isEmpty().withMessage("Curso vacío")
+    .custom(async (curso) => {
+      if(curso != "1" && curso != "2"){
+        return Promise.reject('Introduce un curso válido');
+      }
+    }),
     body('descripcion').trim().not().isEmpty().withMessage("Descripción vacía")
   ],
   moduloController.createModulo

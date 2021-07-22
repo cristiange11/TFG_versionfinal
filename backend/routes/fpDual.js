@@ -24,7 +24,15 @@ router.post(
     body('nombre').trim().not().isEmpty().withMessage("Nombre vacío"),
     body('descripcion').trim().not().isEmpty().withMessage("Dirección vacía"),
     body('totalPlazas').trim().not().isEmpty().withMessage("Total de plazas vacías"),
-    body('anio').trim().not().isEmpty().withMessage("Año vacío"),
+    body('anio').trim().not().isEmpty().withMessage("Año vacío")
+    .custom(async (anio) => {
+      let fecha = new Date();
+      let anioActual = fecha.getFullYear();
+      console.log(anioActual + " " + anio)
+      if(anio<anioActual){
+       return Promise.reject('Año pasado')
+      }
+    }),
     body('codigoCentro').trim().not().isEmpty().withMessage("Código centro vacío")
     .custom(async (codigoCentro) => {
       const user = await Centro.find(codigoCentro);
@@ -48,7 +56,15 @@ router.put(
     body('nombre').trim().not().isEmpty().withMessage("Nombre vacío"),
     body('descripcion').trim().not().isEmpty().withMessage("Dirección vacía"),
     body('totalPlazas').trim().not().isEmpty().withMessage("Total de plazas vacías"),
-    body('anio').trim().not().isEmpty().withMessage("Año vacío"),
+    body('anio').trim().not().isEmpty().withMessage("Año vacío")
+    .custom(async (anio) => {
+      let fecha = new Date();
+      let anioActual = fecha.getFullYear();
+      console.log(anioActual + " " + anio)
+      if(anio<anioActual){
+       return Promise.reject('Año pasado')
+      }
+    }),
     body('codigoCentro').trim().not().isEmpty().withMessage("Código centro vacío").custom(async (codigoCentro) => {
       const user = await Centro.find(codigoCentro);
       if (user[0].length == 0) {
