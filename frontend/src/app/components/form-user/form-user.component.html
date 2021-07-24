@@ -117,11 +117,14 @@
     <mat-error *ngIf="this.formGroupProfesor.errors?.serverError">{{ this.formGroupProfesor.errors?.serverError }}</mat-error>
   </mat-form-field>
   
-  <mat-form-field appearance="fill"   *ngIf="this.numero==4; else anotherRol">
+  <mat-form-field appearance="fill"   *ngIf="this.numero==4; ">
     <mat-label>M&oacute;dulos</mat-label>
     <mat-select [formControl]="modulo" multiple>
       <mat-option *ngFor="let modulo of moduloList | keyvalue" [value]="modulo.key">{{modulo.value}}</mat-option>
     </mat-select>
+    <mat-error *ngIf="modulo.errors?.required ">M&oacute;dulo requerido</mat-error>
+    <mat-error *ngIf="this.modulo.errors?.serverError">M&oacute;dulo requerido</mat-error>
+
   </mat-form-field> 
   
   <ng-template  #anotherRol>
@@ -134,6 +137,15 @@
     </mat-form-field>
   </ng-template>
   <ng-template  #rolTutorEmpresa>
+    <mat-form-field appearance="fill"   *ngIf="this.numero==3">
+      <mat-label>M&oacute;dulos</mat-label>
+      <mat-select [formControl]="modulo" multiple>
+        <mat-option *ngFor="let modulo of moduloList | keyvalue" [value]="modulo.key">{{modulo.value}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="modulo.errors?.required ">M&oacute;dulo requerido</mat-error>
+      <mat-error *ngIf="this.modulo.errors?.serverError">M&oacute;dulo requerido</mat-error>
+  
+    </mat-form-field> 
     <mat-form-field [formGroup]="formGroupTutor" *ngIf="this.numero==3">
         <input  matInput type="text" required formControlName="moduloEmpresa"  placeholder="Modulo de la empresa" >
         <mat-error *ngIf=" this.formGroupTutor.get('moduloEmpresa').errors?.required">{{ getErrorMessage("moduloEmpresa") }}</mat-error>

@@ -73,7 +73,8 @@ router.post(
         return Promise.reject('Empresa no existente');
       }
     }),
-    body('moduloEmpresa').trim().not().isEmpty().withMessage("Módulo de la empresa vacía")
+    body('moduloEmpresa').trim().not().isEmpty().withMessage("Módulo de la empresa vacía"),
+
 
   ],
   tutorController.createTutor

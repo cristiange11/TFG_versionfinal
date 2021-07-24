@@ -64,7 +64,7 @@ router.post(
       .normalizeEmail(),
     body('password').trim().isLength({ min: 6 }).withMessage("Contraseña con una longitud menor a 6"),
     body('departamento').trim().not().isEmpty().withMessage("Departamento vacío"),
-
+      
   ],
   profesorController.createProfesor
 );
