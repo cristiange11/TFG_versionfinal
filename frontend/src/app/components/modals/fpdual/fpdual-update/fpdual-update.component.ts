@@ -18,6 +18,8 @@ export class FpdualUpdateComponent implements OnInit {
   formInstance: FormGroup;
    fecha;
    anio;
+   totalPlazasControl =new FormControl("", [Validators.required, Validators.min(1)]);
+   plazasDisponiblesControl = new FormControl("", [Validators.required, this.validateScore()]);
   
   centroList = new Map<string, string>();
   constructor(public cookieService: CookieService, public router: Router, public dialogRef: MatDialogRef< FpdualUpdateComponent>,
@@ -30,11 +32,11 @@ export class FpdualUpdateComponent implements OnInit {
         descripcion: new FormControl("", [Validators.required, Validators.minLength(4)]),
         
         anio: new FormControl("", [Validators.required , Validators.min(this.anio)]),
-        totalPlazas: new FormControl("", [Validators.required, Validators.min(1)]),
-        plazasDisponibles : new FormControl("", [Validators.required]),
+        totalPlazas: this.totalPlazasControl,
+        plazasDisponibles : this.plazasDisponiblesControl,
         codigoCentro: new FormControl("", [Validators.required]),
         id: new FormControl("", []),
-      }, {validators: this.validateScore('totalPlazas' , 'plazasDisponibles')})
+      }, )
       
       this.formInstance.setValue(data); 
     }
@@ -66,15 +68,17 @@ export class FpdualUpdateComponent implements OnInit {
           console.log(error.error.message);
         });
   } 
+
   
-  validateScore(totalPlazas: string, plazasDisponibles: string) {
-    return (group: FormGroup): {[key: string]: any} => {
-      // get values
-      let valueTotalPlazas = group.get(totalPlazas).value;
-      let valuePlazasDisponibles = group.get(plazasDisponibles).value;
-      console.log(valueTotalPlazas + " " + valuePlazasDisponibles)
-      return valueTotalPlazas >= valuePlazasDisponibles ? null : {scoreError: true}; 
-    }
+  validateScore(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null =>
+    (Number(control.value) <= Number(this.totalPlazasValue)
+      ? null : { scoreError: true })
+  }
+
+  get totalPlazasValue() {
+    console.log("Valor => " + this.totalPlazasControl.value)
+    return this.totalPlazasControl.value;
   }
   save(){
    

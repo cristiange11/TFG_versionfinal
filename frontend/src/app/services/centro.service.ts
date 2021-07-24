@@ -14,25 +14,33 @@ import { Centro } from "../models/Centro";
 })
 export class CentroService {
   private url = "http://localhost:3000/centro";
-  httpOptions: { headers: HttpHeaders } = {
-    headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),
-  }
+  
   constructor(private http: HttpClient,  private router: Router, private cookieService: CookieService ) { 
   }
-  getCentros(): Observable<Centro[] >{    
-    return this.http.get<Centro[]>(this.url, this.httpOptions); 
+  getCentros(): Observable<Centro[] >{  
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+
+    return this.http.get<Centro[]>(this.url, httpOptions); 
   }
   addCentro(centro : Centro): Observable<JSON>{
-    return this.http.post<JSON>(`${this.url}/create`, centro , this.httpOptions);
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+
+    return this.http.post<JSON>(`${this.url}/create`, centro , httpOptions);
   }
   deleteCentro(codigoCentro : string): Observable<JSON>{
-    return this.http.delete<JSON>(`${this.url}/${codigoCentro}`,  this.httpOptions);
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    return this.http.delete<JSON>(`${this.url}/${codigoCentro}`,  httpOptions);
   }
   updateCentro(centro : Centro): Observable<JSON>{
-    return this.http.put<JSON>(`${this.url}/update`, centro, this.httpOptions);
+    var httpOptions: { headers: HttpHeaders } = {
+      headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),
+    }
+    return this.http.put<JSON>(`${this.url}/update`, centro, httpOptions);
   }
   deleteUserAndFPByCentro(codigoCentro : string): Observable<JSON>{
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+
     console.log(`${this.url}/${codigoCentro}`);
-    return this.http.delete<JSON>(`${this.url}/delete/${codigoCentro}`,  this.httpOptions);
+    return this.http.delete<JSON>(`${this.url}/delete/${codigoCentro}`,  httpOptions);
   }
 }

@@ -4,7 +4,7 @@ const comprobarToken = require('../util/comprobarToken');
 const Alumno = require('../models/alumno');
 const bcrypt = require('bcryptjs');
 exports.getAlumnos = async (req, res, next) => {
-    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], { header: true }));
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
     console.log(expirado)
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
@@ -20,7 +20,7 @@ exports.getAlumnos = async (req, res, next) => {
 }
 };
 exports.getAlumno = async (req, res, next) => {
-    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], { header: true }));
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
     console.log(expirado)
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
@@ -37,7 +37,7 @@ exports.getAlumno = async (req, res, next) => {
     }
 };
 exports.deleteAlumno = async (req, res, next) => {
-    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], { header: true }));
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
     console.log(expirado)
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
@@ -94,7 +94,7 @@ exports.updateAlumno = async (req, res, next) => {
     }
 };*/
 exports.createAlumno = async (req, res, next) => {
-    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], { header: true }));
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
     console.log(expirado)
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });

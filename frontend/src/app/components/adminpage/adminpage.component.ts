@@ -43,6 +43,8 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
    }
 
   ngOnInit(): void {
+    console.log("Token " + this.cookieService.get('token'));
+    console.log("USER " + this.cookieService.get('user'))
     this.nagivationComponent.obtenerItems();
     this.getAll();
     if(!this.cookieService.get('user')){
@@ -70,6 +72,14 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
             this.dataSource.data = this.centroList
         },
         error => {
+          console.log(error);
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            this.nagivationComponent.closeSession();
+           
+            var arrayRes= new Array();
+            arrayRes.push(error.error.errors);
+            AppComponent.myapp.openDialog(arrayRes);
+          }
           console.log(error);
          /* var arrayRes= new Array();
       arrayRes.push(error.error.errors);

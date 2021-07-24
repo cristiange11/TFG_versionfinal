@@ -19,7 +19,7 @@
     </mat-form-field>
       <mat-form-field class="fullWidth" appearance="outline">
         <mat-label>Total de plazas</mat-label>
-        <input matInput type="text" name="totalPlazas" formControlName="totalPlazas" required />
+        <input matInput type="text" name="totalPlazas" formControlName="totalPlazas" (change)="this.plazasDisponiblesControl.setValue('')" required />
         <mat-error *ngIf="formInstance.controls['totalPlazas']?.errors?.required">Total de plazas requeridas</mat-error>
         <mat-error *ngIf="formInstance.controls['totalPlazas']?.errors?.min">Valor m&iacute;nimo de 1</mat-error>
         <mat-error *ngIf="this.formInstance.get('totalPlazas').errors?.serverError">{{ this.formInstance.get('totalPlazas').errors?.serverError }}</mat-error>
@@ -30,7 +30,8 @@
         <input matInput type="text" name="plazasDisponibles"  formControlName="plazasDisponibles" required />
         <mat-error *ngIf="formInstance.controls['plazasDisponibles']?.errors?.required">Plazas disponibles requeridas</mat-error>
         <mat-error *ngIf="formInstance.controls['plazasDisponibles']?.errors?.min">Valor m&iacute;nimo de 1</mat-error>
-        <mat-error *ngIf="formInstance.hasError('scoreError')">Plazas disponibles debe ser menor a Total plazas</mat-error>
+         <mat-error *ngIf="this.plazasDisponiblesControl.dirty && plazasDisponiblesControl.hasError('scoreError')">Plazas disponibles < Total plazas</mat-error> 
+        
         <mat-error *ngIf="this.formInstance.get('plazasDisponibles').errors?.serverError">{{ this.formInstance.get('plazasDisponibles').errors?.serverError }}</mat-error>
 
     </mat-form-field>

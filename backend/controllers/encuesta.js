@@ -6,7 +6,7 @@ const Encuesta = require('../models/encuesta');
 exports.getEncuestas = async (req, res, next) => {
   
   console.log(req.headers);
-  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], { header: true }));
+  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
   console.log(expirado)
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });

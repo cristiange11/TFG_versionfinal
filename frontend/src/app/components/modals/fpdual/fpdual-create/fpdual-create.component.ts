@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
@@ -18,7 +18,8 @@ export class FpdualCreateComponent implements OnInit {
   formInstance: FormGroup;
   fecha;
   anio;
-
+  totalPlazasControl =new FormControl("", [Validators.required, Validators.min(1)]);
+  plazasDisponiblesControl = new FormControl("", [Validators.required, this.validateScore()]);
   centroList = new Map<string, string>();
   constructor(public cookieService: CookieService, public router: Router, public dialogRef: MatDialogRef<FpdualCreateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Fpduales, public fpdualesService: FpdualesService, public centroService: CentroService) {
@@ -28,9 +29,9 @@ export class FpdualCreateComponent implements OnInit {
     this.formInstance = new FormGroup({
       nombre: new FormControl("", [Validators.required, Validators.minLength(4)]),
       descripcion: new FormControl("", [Validators.required, Validators.minLength(4)]),
-      totalPlazas: new FormControl("", [Validators.required, Validators.min(1)]),
+      totalPlazas: this.totalPlazasControl,
       anio: new FormControl("", [Validators.required, Validators.min(this.anio)]),
-      plazasDisponibles: new FormControl("", [Validators.required, Validators.min(1)/*, this.validateScore*/]),
+      plazasDisponibles: this.plazasDisponiblesControl,
       codigoCentro: new FormControl("", [Validators.required]),
     },)
   }
@@ -61,13 +62,15 @@ export class FpdualCreateComponent implements OnInit {
           console.log(error.error.message);
         });
   }
-  validateScore(control: AbstractControl): ValidationErrors | null {
-    if (control && control.get("plazasDisponibles") && control.get("totalPlazas")) {
-      const totalPlazas = control.get("totalPlazas").value;
-      const plazasDisponibles = control.get("plazasDisponibles").value;
-      return (plazasDisponibles > totalPlazas) ? { scoreError: true } : null
-    }
-    return null;
+  validateScore(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null =>
+    (Number(control.value) <= Number(this.totalPlazasValue)
+      ? null : { scoreError: true })
+  }
+
+  get totalPlazasValue() {
+    console.log("Valor => " + this.totalPlazasControl.value)
+    return this.totalPlazasControl.value;
   }
   save() {
 

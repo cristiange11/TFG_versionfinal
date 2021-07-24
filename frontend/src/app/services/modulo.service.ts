@@ -9,20 +9,22 @@ import { Modulo } from '../models/Modulo';
 })
 export class ModuloService {
   private url = "http://localhost:3000/modulo";
-  httpOptions: { headers: HttpHeaders } = {
-    headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),
-  }
+
   constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { }
-  getModulos(fpDual : number): Observable<Modulo[] >{    
-    return this.http.get<Modulo[]>(`${this.url}/${fpDual}`,  this.httpOptions); 
+  getModulos(fpDual : number): Observable<Modulo[] >{   
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),} 
+    return this.http.get<Modulo[]>(`${this.url}/${fpDual}`,  httpOptions); 
   }
   addModulo(modulo : Modulo): Observable<JSON>{
-    return this.http.post<JSON>(`${this.url}/create`, modulo , this.httpOptions);
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    return this.http.post<JSON>(`${this.url}/create`, modulo , httpOptions);
   }
   deleteModulo(id): Observable<JSON>{
-    return this.http.delete<JSON>(`${this.url}/${id}`,  this.httpOptions);
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    return this.http.delete<JSON>(`${this.url}/${id}`,  httpOptions);
   }
   updateModulo(modulo : Modulo): Observable<JSON>{
-    return this.http.put<JSON>(`${this.url}/update`, modulo, this.httpOptions);
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    return this.http.put<JSON>(`${this.url}/update`, modulo, httpOptions);
   }
 }

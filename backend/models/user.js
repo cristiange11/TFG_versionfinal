@@ -95,7 +95,8 @@ module.exports = class User {
         
     }
     static async getUsers() {
+
         return await promisePool.query(
-            'SELECT * FROM usuario ');
+            'SELECT usuario.*, rol.nombreRol, fp_duales.nombre AS nombreFP, centro_educativo.nombre AS nombreCentro FROM usuario LEFT JOIN rol ON rol.id = usuario.rol LEFT JOIN fp_duales ON fp_duales.id = usuario.fpDual LEFT JOIN centro_educativo ON centro_educativo.codigoCentro = usuario.codigoCentro');
     }
 };

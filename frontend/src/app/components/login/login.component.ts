@@ -54,9 +54,8 @@ export class LoginComponent implements OnInit {
 
           this.cookieService.set('user', JSON.stringify(user));
           var userCookie = (JSON.parse(this.cookieService.get('user')));
-
+          
           if (Number(userCookie.rol) == 1) {
-            console.log("entro")
             this.router.navigate(['navigation', 'adminpage']);
           }
 

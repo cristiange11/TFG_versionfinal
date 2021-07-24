@@ -10,20 +10,22 @@ import { ResultadoAprendizaje } from '../models/ResultadoAprendizaje';
 })
 export class ResultadoAprendizajeService {
   private url = "http://localhost:3000/resultadoaprendizaje";
-  httpOptions: { headers: HttpHeaders } = {
-    headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),
-  }
+
   constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { }
-  getResultadoAprendizaje(codigoModulo : number): Observable<ResultadoAprendizaje[] >{    
-    return this.http.get<ResultadoAprendizaje[]>(`${this.url}/${codigoModulo}`,  this.httpOptions); 
+  getResultadoAprendizaje(codigoModulo : number): Observable<ResultadoAprendizaje[] >{ 
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}   
+    return this.http.get<ResultadoAprendizaje[]>(`${this.url}/${codigoModulo}`,  httpOptions); 
   }
   addResultadoAprendizaje(resultadoAprendizaje : ResultadoAprendizaje): Observable<JSON>{
-    return this.http.post<JSON>(`${this.url}/create`, resultadoAprendizaje , this.httpOptions);
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    return this.http.post<JSON>(`${this.url}/create`, resultadoAprendizaje , httpOptions);
   }
   deleteResultadoAprendizaje(id): Observable<JSON>{
-    return this.http.delete<JSON>(`${this.url}/${id}`,  this.httpOptions);
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    return this.http.delete<JSON>(`${this.url}/${id}`,  httpOptions);
   }
   updateResultadoAprendizaje(resultadoAprendizaje : ResultadoAprendizaje): Observable<JSON>{
-    return this.http.put<JSON>(`${this.url}/update`, resultadoAprendizaje, this.httpOptions);
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    return this.http.put<JSON>(`${this.url}/update`, resultadoAprendizaje, httpOptions);
   }
 }

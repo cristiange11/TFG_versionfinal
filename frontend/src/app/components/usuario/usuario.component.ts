@@ -73,7 +73,7 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
               genero: usuarioInfo.genero,
               cp: usuarioInfo.cp,
               rol: usuarioInfo.rol,
-              fechaNacimiento: this.datepipe.transform(usuarioInfo.fechaNacimiento, "YYYY-MM-dd"),
+              fechaNacimiento: this.datepipe.transform(usuarioInfo.fechaNacimiento, "dd/MM/YYYY"),
               fpDual: usuarioInfo.fpDual,
               codigoCentro: usuarioInfo.codigoCentro,
             }

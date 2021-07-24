@@ -10,7 +10,7 @@ var datetime = require('node-datetime');
 const RSA_PRIVATE_KEY = fs.readFileSync(__dirname + '/OPENSSL/private.pem');
 exports.signup = async (req, res, next) => {
   
-  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], { header: true }));
+  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
     console.log("cumpruebo si esta expirado" + expirado)
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
@@ -114,7 +114,7 @@ exports.login = async (req, res, next) => {
         error = false;
         LogSesion.createInicioSesion(user.dni,error/*,fechaHora*/);
         const jwtBearerToken = jwt.sign({ sub: user.dni }, 'proyecto final carrera', { expiresIn: '24h' });
-        
+        console.log("Token login => " + jwtBearerToken);
         const resJSON = { "result": { "user": userJson, "token": jwtBearerToken } }
         res.status(200).json(resJSON);
       }

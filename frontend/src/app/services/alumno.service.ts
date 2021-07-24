@@ -12,10 +12,7 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 })
 export class AlumnoService {
   private url = "http://localhost:3000/alumno";
-  
-  httpOptions: { headers: HttpHeaders } = {
-    headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),
-  }
+
   constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { }
   createAlumno(sigunForm , userJson,  formulario2): Observable<JSON>{ 
     var user = {
@@ -35,6 +32,8 @@ export class AlumnoService {
     };
     
     var alumno = new Alumno(user, formulario2);
-    return this.http.post<JSON>(`${this.url}/create`, alumno , this.httpOptions);   
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+
+    return this.http.post<JSON>(`${this.url}/create`, alumno , httpOptions);   
   }
 }

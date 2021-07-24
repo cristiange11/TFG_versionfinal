@@ -5,7 +5,7 @@ const TutorEmpresa = require('../models/tutorEmpresa');
 const bcrypt = require('bcryptjs');
 exports.getTutores = async (req, res, next) => {
     console.log(req.headers);
-    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], { header: true }));
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
     console.log(expirado)
     if (expirado) {
         res.status(401).json({ "errors": "Sesión expirada" });
@@ -23,7 +23,7 @@ exports.getTutores = async (req, res, next) => {
 };
 exports.deleteTutor = async (req, res, next) => {
     console.log(req.headers);
-    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], { header: true }));
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
     console.log(expirado)
     if (expirado) {
         res.status(401).json({ "errors": "Sesión expirada" });
@@ -42,7 +42,7 @@ exports.deleteTutor = async (req, res, next) => {
 };
 exports.updateTutor = async (req, res, next) => {
     console.log(req.headers);
-    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], { header: true }));
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
     console.log(expirado)
     if (expirado) {
         res.status(401).json({ "errors": "Sesión expirada" });
@@ -85,7 +85,7 @@ exports.updateTutor = async (req, res, next) => {
 };
 exports.createTutor = async (req, res, next) => {
     console.log(req.headers);
-    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], { header: true }));
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
     console.log(expirado)
     if (expirado) {
         res.status(401).json({ "errors": "Sesión expirada" });

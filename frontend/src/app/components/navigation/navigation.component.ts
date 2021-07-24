@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { CookieService } from 'ngx-cookie-service';
 import { MenuItem } from 'primeng/api';
@@ -12,7 +13,7 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
   items: MenuItem[];
 
 
-  constructor(private changeDetector: ChangeDetectorRef, private cookieService: CookieService) {
+  constructor(private changeDetector: ChangeDetectorRef, private router: Router, private cookieService: CookieService) {
 
   }
   ngAfterViewChecked(): void {
@@ -20,11 +21,12 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
   }
   ngOnInit(): void {
     this.obtenerItems();
-
+    
 
   }
   closeSession() {
     this.cookieService.deleteAll();
+    this.router.navigate(['home']);
   }
   obtenerItems() {
 

@@ -12,10 +12,7 @@ import { Profesor } from "../models/Profesor";
 })
 export class ProfesorService {
   private url = "http://localhost:3000/profesor";
-  httpOptions: { headers: HttpHeaders } = {
-    headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),
-  }
-  
+
   constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { }
   createProfesor(sigunForm , userJson, formulario2): Observable<JSON>{  
     var user = {
@@ -34,6 +31,7 @@ export class ProfesorService {
       codigoCentro: userJson.codigoCentro 
     };  
     var profesor = new Profesor(user, formulario2);   
-    return this.http.post<JSON>(`${this.url}/create`, profesor , this.httpOptions);   
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    return this.http.post<JSON>(`${this.url}/create`, profesor , httpOptions);   
   }
 }

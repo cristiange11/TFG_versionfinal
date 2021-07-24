@@ -11,35 +11,40 @@ import { Fpduales } from '../models/Fpduales';
 })
 export class FpdualesService {
   private url = "http://localhost:3000/fpduales";
-  httpOptions: { headers: HttpHeaders } = {
-    headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),
-  }
+ 
   constructor(private cookieService: CookieService, private http: HttpClient, private router: Router ) { 
   }
   getFPdual(id: number): Observable<Fpduales [] >{     
-    return this.http.get<Fpduales []>(`${this.url}/${id}`, this.httpOptions); 
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    return this.http.get<Fpduales []>(`${this.url}/${id}`, httpOptions); 
   }
   getFPdualByAlumno(codigoCentro: number): Observable<Fpduales [] >{     
-    
-    return this.http.get<Fpduales []>(`${this.url}/alumno/${codigoCentro}`, this.httpOptions); 
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    return this.http.get<Fpduales []>(`${this.url}/alumno/${codigoCentro}`, httpOptions); 
   }
   deleteUsuariosByFP(id): Observable<JSON>{
-    return this.http.delete<JSON>(`${this.url}/delete/${id}`,  this.httpOptions);
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    return this.http.delete<JSON>(`${this.url}/delete/${id}`,  httpOptions);
   }
-  getFps(): Observable<Fpduales[] >{    
-    return this.http.get<Fpduales[]>(this.url, this.httpOptions); 
+  getFps(): Observable<Fpduales[] >{  
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}  
+    return this.http.get<Fpduales[]>(this.url, httpOptions); 
   }
-  getFp(id): Observable<Fpduales>{    
-    return this.http.get<Fpduales>(`${this.url}/${id}`, this.httpOptions); 
+  getFp(id): Observable<Fpduales>{  
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}  
+    return this.http.get<Fpduales>(`${this.url}/${id}`, httpOptions); 
   }
   addFp(fpDual : Fpduales): Observable<JSON>{
-    return this.http.post<JSON>(`${this.url}/create`, fpDual , this.httpOptions);
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    return this.http.post<JSON>(`${this.url}/create`, fpDual , httpOptions);
   }
   deleteFp(id): Observable<JSON>{
-    return this.http.delete<JSON>(`${this.url}/${id}`,  this.httpOptions);
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    return this.http.delete<JSON>(`${this.url}/${id}`,  httpOptions);
   }
   updateFp(fpDual : Fpduales): Observable<JSON>{
-    return this.http.put<JSON>(`${this.url}/update`, fpDual, this.httpOptions);
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    return this.http.put<JSON>(`${this.url}/update`, fpDual, httpOptions);
   }
   
 }

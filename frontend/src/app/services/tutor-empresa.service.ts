@@ -14,9 +14,7 @@ import { TutorEmpresa } from "../models/TutorEmpresa";
 export class TutorEmpresaService {
   private url = "http://localhost:3000/tutor";
   
-  httpOptions: { headers: HttpHeaders } = {
-    headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),
-  }
+  
   constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { }
   createTutor(sigunForm , userJson,  formulario2): Observable<JSON>{    
     var user = {
@@ -35,7 +33,7 @@ export class TutorEmpresaService {
       codigoCentro: userJson.codigoCentro
     };
     var tutor = new TutorEmpresa(user, formulario2);
-   
-    return this.http.post<JSON>(`${this.url}/create`, tutor , this.httpOptions);   
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    return this.http.post<JSON>(`${this.url}/create`, tutor , httpOptions);   
   }
 }

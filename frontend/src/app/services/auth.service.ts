@@ -16,16 +16,13 @@ export class AuthService {
   isUserLoggedIn$ : BehaviorSubject<User>;
   public user: Observable<User>;
   userDni: Pick<User, "dni">;
-  httpOptions: { headers: HttpHeaders } = {
-    headers: new HttpHeaders({ "authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),
-  }
+
   
   constructor(private cookieService: CookieService, private http: HttpClient, private errorHandlerService: ErrorHandlerService, private router: Router ) { 
     
   }
 
   signup(sigunForm, userJson): Observable<JSON>{
-    console.log("HTTP OPTIONS + ",this.httpOptions.headers);
     console.log('SIGNUPPPP:'+this.cookieService.get('token'));
     var user = {
       dni : sigunForm.dni,
@@ -43,12 +40,14 @@ export class AuthService {
       codigoCentro: userJson.codigoCentro == '' ? null : userJson.codigoCentro
     };
     console.log("Usuario => " + JSON.stringify(user))
-    return this.http.post<JSON>(  `${this.url}/signup`, user , this.httpOptions);
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+
+    return this.http.post<JSON>(  `${this.url}/signup`, user , httpOptions);
     
   }
   login( dni: Pick<User, "dni">, password: Pick<User, "password">): Observable<JSON> {
     console.log('LOGIIIIIIN');
-    return this.http.post<JSON>(`${this.url}/login`, { dni, password }, this.httpOptions);   
+    return this.http.post<JSON>(`${this.url}/login`, { dni, password });   
   }
   updateUsuario(editForm , userJson): Observable<JSON>{
     
@@ -68,16 +67,23 @@ export class AuthService {
       codigoCentro: userJson.codigoCentro
     };
     console.log("User => " + user.dni)
-    return this.http.put<JSON>(`${this.url}/update`, user, this.httpOptions);
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+
+    return this.http.put<JSON>(`${this.url}/update`, user,httpOptions);
   }
   updateUserForm(user: User): Observable<JSON>{
-    
-    return this.http.put<JSON>(`${this.url}/update`, user, this.httpOptions);
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+
+    return this.http.put<JSON>(`${this.url}/update`, user, httpOptions);
   }
   getUsers(): Observable<JSON[] >{    
-    return this.http.get<JSON[]>(this.url, this.httpOptions); 
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+
+    return this.http.get<JSON[]>(this.url, httpOptions); 
   }
   deleteUser(dni: string): Observable<JSON>{
-    return this.http.delete<JSON>(`${this.url}/${dni}`,  this.httpOptions);
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+
+    return this.http.delete<JSON>(`${this.url}/${dni}`,  httpOptions);
   }
 }

@@ -12,15 +12,12 @@ import { Rol } from '../models/Rol';
 })
 export class RolService {
   private url = "http://localhost:3000/roles";
-  httpOptions: { headers: HttpHeaders } = {
-    headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),
-  }
  
   constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { 
   }
   getRoles(): Observable<Rol[] >{
-    
-    return this.http.get<Rol[]>(this.url, this.httpOptions);
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    return this.http.get<Rol[]>(this.url, httpOptions);
     
    
   }
