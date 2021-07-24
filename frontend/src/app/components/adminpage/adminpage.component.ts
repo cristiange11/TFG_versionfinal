@@ -74,11 +74,7 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
         error => {
           console.log(error);
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            this.nagivationComponent.closeSession();
-           
-            var arrayRes= new Array();
-            arrayRes.push(error.error.errors);
-            AppComponent.myapp.openDialog(arrayRes);
+            this.nagivationComponent.closeSession();         
           }
           console.log(error);
          /* var arrayRes= new Array();
@@ -180,13 +176,13 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dataSource.filter = value.target.value.trim().toLocaleLowerCase();
   }
   add() {
-    const dialogRef = this.dialog.open(CentroCreateComponent, {
+    this.dialog.open(CentroCreateComponent, {
       width: '400px'
     });
   }
   edit(data: Centro) {
     
-    const dialogRef = this.dialog.open(CentroUpdateComponent, {
+    this.dialog.open(CentroUpdateComponent, {
       width: '400px',
       data: data
     });

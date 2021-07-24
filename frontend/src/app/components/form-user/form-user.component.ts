@@ -19,6 +19,8 @@ import { AppComponent } from '../../app.component';
 import {AppRoutingModule} from '../../app-routing.module';
 import { RouterModule, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { ModuloService } from 'src/app/services/modulo.service';
+import { Modulo } from 'src/app/models/Modulo';
 @Component({
   selector: 'app-form-user',
   templateUrl: './form-user.component.html',
@@ -32,6 +34,7 @@ export class FormUserComponent implements OnInit {
   formGroupTutor;
   numeroExpediente;
   formGroupProfesor;
+  modulo;
   passwordFormControl = new FormControl("", [
     Validators.required,
     Validators.pattern(
@@ -45,12 +48,12 @@ fpDual = new FormControl("", [Validators.required]);
     Validators.required,
     this.checkConfirmPassword()
   ]);
-
+  moduloList = new Map<number, string>();
   centroList = new Map<string, string>();
   rolesList = new Map<number, string>();
   fpList = new Map<number, string>();
   empresaList = new Map<string, string>();
-  constructor(private cookieService: CookieService, private router:Router, private appRouting: AppRoutingModule, private authService: AuthService, private tutorService: TutorEmpresaService, private profesorService: ProfesorService, private alumnoService: AlumnoService, private empresaService: EmpresaService, private centroService: CentroService, private rolService: RolService, private fpdualesService: FpdualesService) {
+  constructor(private moduloService: ModuloService, private cookieService: CookieService, private router:Router, private appRouting: AppRoutingModule, private authService: AuthService, private tutorService: TutorEmpresaService, private profesorService: ProfesorService, private alumnoService: AlumnoService, private empresaService: EmpresaService, private centroService: CentroService, private rolService: RolService, private fpdualesService: FpdualesService) {
     document.body.style.background = "linear-gradient(to right, #1dcd9b, #00d4ff)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
 
@@ -113,7 +116,7 @@ fpDual = new FormControl("", [Validators.required]);
 
   obtenerRol(rol): number {
     this.numero = rol;
-    //if(rol!=1 && rol!=2) {
+
 
 this.centroService.getCentros().pipe(first())
       .subscribe(
@@ -148,11 +151,10 @@ this.centroService.getCentros().pipe(first())
       ]);
     } 
     else if(rol == 4){
-      this.formGroupProfesor = new FormControl("", [
-        Validators.required,
-        Validators.minLength(6)
-      ]);
+      this.formGroupProfesor = new FormControl("", [Validators.required, Validators.minLength(6)]);
+      this.modulo = new FormControl("", [Validators.required]);
     }else if (rol == 3) {
+      this.modulo = new FormControl("", [Validators.required]);
       this.formGroupTutor = new FormGroup({
         moduloEmpresa: new FormControl("", [Validators.required, Validators.minLength(6)]),
         cifEmpresa: new FormControl("", [Validators.required]),
@@ -173,6 +175,24 @@ this.centroService.getCentros().pipe(first())
     }
     return this.numero;
   }
+  obtenerModulo(fp): void {
+  
+    this.moduloService.getModulos(fp).pipe(first())
+      .subscribe(
+        data => {
+          this.moduloList = new Map<number, string>();
+          let modulos = data["modulos"]
+          modulos.forEach(moduloInfo => {
+            var modulo = moduloInfo as Modulo
+           
+            this.moduloList.set(modulo.codigo, modulo.nombre)
+          });
+          
+        },
+        error => {
+          console.log(error.error.message);
+        });
+  }
   obtenerFP(centro): void {
     if(this.numero != 5){
     this.fpdualesService.getFPdual(centro).pipe(first())
@@ -186,6 +206,7 @@ this.centroService.getCentros().pipe(first())
             this.fpList.set(fp.id, fp.nombre)
           });
         },
+        
         error => {
           console.log(error.error.message);
         });
@@ -272,7 +293,7 @@ this.centroService.getCentros().pipe(first())
         });
     }else if(this.numero==4){
       
-      this.profesorService.createProfesor(this.signupForm.value, userJson, this.formGroupProfesor.value).pipe(first())
+      this.profesorService.createProfesor(this.signupForm.value, userJson, this.formGroupProfesor.value, this.modulo.value).pipe(first())
       .subscribe(
         data => {
           var arrayRes= new Array();
@@ -282,7 +303,7 @@ this.centroService.getCentros().pipe(first())
         error => {
           
         if(error.status==409){
-          
+          console.log(error)
           error.error.errors.forEach(errorInfo => {
             const formControl = this.signupForm.get(errorInfo.param);
              if (formControl) {

@@ -1,5 +1,5 @@
 export class Modulo {
-    id: number;
+    codigo: number;
     nombre: string;
     descripcion: string;
     curso: string;

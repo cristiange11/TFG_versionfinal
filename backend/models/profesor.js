@@ -37,17 +37,17 @@ module.exports = class Profesor extends User {
     }
     static async createProfesor(profesor, password, user) {
         const connection = await promisePool.getConnection();
-
+        console.log(profesor.modulo)
+        console.log(`INSERT INTO profesor_modulo (codigoModulo, dni) SELECT modulo.codigo, profesor.dni FROM modulo, profesor WHERE modulo.codigo = ${profesor.modulo.modulo} AND profesor.dni="${profesor.dni}"`)
         try {
             await connection.beginTransaction();
-            let query = `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, 
-                fechaNacimiento, fpDual, codigoCentro) VALUES ('${profesor.dni}','${profesor.nombre}',
-                '${profesor.apellidos}','${profesor.correo}','${profesor.movil}','${profesor.direccion}','${password}',
-                '${profesor.genero}',${profesor.cp},'${profesor.rol}',STR_TO_DATE('${profesor.fechaNacimiento}','%Y-%m-%d'),
-                '${profesor.fpDual}','${profesor.codigoCentro}')`
+            let query = `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fechaNacimiento, fpDual, codigoCentro) VALUES ('${profesor.dni}','${profesor.nombre}','${profesor.apellidos}','${profesor.correo}','${profesor.movil}','${profesor.direccion}','${password}','${profesor.genero}',${profesor.cp},'${profesor.rol}',STR_TO_DATE('${profesor.fechaNacimiento}','%Y-%m-%d'),'${profesor.fpDual}','${profesor.codigoCentro}')`
             await connection.query(query)
-            await connection.query(`INSERT INTO profesor(dni, departamento) VALUES 
-            ('${profesor.dni}','${profesor.departamento}')`);
+            await connection.query(`INSERT INTO profesor(dni, departamento) VALUES ('${profesor.dni}','${profesor.departamento}')`);
+            profesor.modulo.modulo.forEach(async (moduloInser) =>{
+                 await connection.query(`INSERT INTO profesor_modulo (codigoModulo, dni) SELECT modulo.codigo, profesor.dni FROM modulo, profesor WHERE modulo.codigo = ${moduloInser} AND profesor.dni='${profesor.dni}'`);
+            })
+
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha añadido profesor con DNI ${profesor.dni} ','${user}',sysdate(), 'profesor')`);            
 
             await connection.commit();

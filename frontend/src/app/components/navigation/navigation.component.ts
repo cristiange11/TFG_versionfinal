@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { CookieService } from 'ngx-cookie-service';
 import { MenuItem } from 'primeng/api';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-navigation',
@@ -25,6 +26,9 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
 
   }
   closeSession() {
+    const res = new Array();
+    res.push("Sesión expirada");
+    AppComponent.myapp.openDialog(res);
     this.cookieService.deleteAll();
     this.router.navigate(['home']);
   }

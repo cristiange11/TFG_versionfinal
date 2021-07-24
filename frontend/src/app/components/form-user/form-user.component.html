@@ -75,7 +75,7 @@
   <mat-form-field appearance="fill">
     <mat-label>Rol</mat-label>
     <mat-select matNativeControl required formControlName="rol" (selectionChange)="obtenerRol($event.value)">
-      <mat-option *ngFor="let rol of rolesList | keyvalue" [value]="rol.key"value="admin">{{ rol.value }}</mat-option>
+      <mat-option *ngFor="let rol of rolesList | keyvalue" [value]="rol.key" value="admin">{{ rol.value }}</mat-option>
     </mat-select>
     <mat-error *ngIf="this.signupForm.get('rol').errors?.required"> {{ getErrorMessage("rol") }}</mat-error>
     <mat-error *ngIf="this.signupForm.get('rol').errors?.serverError">{{ this.signupForm.get('rol').errors?.serverError }}</mat-error>
@@ -101,19 +101,29 @@
   </mat-form-field>
   <mat-form-field *ngIf="this.numero!=1 && this.numero!=2" appearance="fill">
     <mat-label>FP</mat-label>
-    <mat-select matNativeControl required [formControl]="fpDual">
+    <mat-select matNativeControl required [formControl]="fpDual" (selectionChange)="obtenerModulo($event.value)">
       <mat-option *ngFor="let fp of fpList | keyvalue" [value]="fp.key">{{ fp.value }}</mat-option>
     </mat-select>
     <mat-error *ngIf="this.fpDual.errors?.required"> {{ getErrorMessage("fpDual") }}</mat-error>
     <mat-error *ngIf="this.fpDual.errors?.serverError">{{ this.fpDual.errors?.serverError }}</mat-error>
 
   </mat-form-field>
-  <mat-form-field *ngIf="this.numero==4; else anotherRol" required>
+
+  
+  <mat-form-field  *ngIf="this.numero==4; else anotherRol">
     <input matInput type="text" [formControl]="formGroupProfesor" placeholder="Departamento" >
     <mat-error *ngIf="formGroupProfesor.errors?.required ">{{ getErrorMessage("formGroupProfesor") }}</mat-error>
     <mat-error *ngIf="formGroupProfesor.errors?.minlength">{{ getErrorMessage("formGroupProfesor") }}</mat-error>
     <mat-error *ngIf="this.formGroupProfesor.errors?.serverError">{{ this.formGroupProfesor.errors?.serverError }}</mat-error>
   </mat-form-field>
+  
+  <mat-form-field appearance="fill"   *ngIf="this.numero==4; else anotherRol">
+    <mat-label>M&oacute;dulos</mat-label>
+    <mat-select [formControl]="modulo" multiple>
+      <mat-option *ngFor="let modulo of moduloList | keyvalue" [value]="modulo.key">{{modulo.value}}</mat-option>
+    </mat-select>
+  </mat-form-field> 
+  
   <ng-template  #anotherRol>
     <mat-form-field *ngIf="this.numero==5; else rolTutorEmpresa" required>
       <input matInput type="text" [formControl]="numeroExpediente" placeholder="Número de expediente" >
