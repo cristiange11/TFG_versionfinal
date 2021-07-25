@@ -45,8 +45,8 @@ export class EmpresaCreateComponent implements OnInit {
         },
 
         error => {
-          if (error.status == 401 && error.error.errors == "Sesión expirada") {
-            this.nagivationComponent.closeSession();
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            AppComponent.myapp.openDialogSesion();                             
           }
         });
   }
@@ -55,13 +55,12 @@ export class EmpresaCreateComponent implements OnInit {
     this.empresaService.addEmpresa(this.formInstance.value).pipe(first())
       .subscribe(
         data => {
-          //window.location.reload();
-          this.dialogRef.close();
+          window.location.reload();
         },
         error => {
-          console.log(error)
+          
           if (error.status == 409) {
-            console.log("entro" + error)
+           
             error.error.errors.forEach(errorInfo => {
               const formControl = this.formInstance.get(errorInfo.param);
               if (formControl) {
@@ -70,8 +69,9 @@ export class EmpresaCreateComponent implements OnInit {
                 });
               }
             });
-          } else if (error.status == 401 && error.error.errors == "Sesión expirada") {
-            this.nagivationComponent.closeSession();
+          } else if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            this.dialogRef.close(); 
+            AppComponent.myapp.openDialogSesion();                             
           }
           else if (error.status == 401) {
             const res = new Array();

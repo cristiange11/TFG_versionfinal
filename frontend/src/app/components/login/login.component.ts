@@ -58,6 +58,9 @@ export class LoginComponent implements OnInit {
           if (Number(userCookie.rol) == 1) {
             this.router.navigate(['navigation', 'adminpage']);
           }
+          else if(Number(userCookie.rol) == 2) {
+            this.router.navigate(['navigation', 'fpdual']);
+          }
 
         },
         error => {

@@ -201,24 +201,9 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
             window.location.reload();
           },
           error => {
-            /*if(error.status == 409){
-              const dialogRef2 = this.dialog.open(FpdualDeleteConfirmationComponent);
-              dialogRef2.afterClosed().subscribe( result => {
-                  if(result){
-                    this.fpService.deleteUsuariosByFP(id).pipe(first())
-                    .subscribe(
-                      data => {
-                          window.location.reload();
-                      },
-                      error => {
-                        const res = new Array();
-                        res.push("No se ha podido borrar.");
-                        AppComponent.myapp.openDialog(res);
-                      }
-                    )
-                  }
-              });
-            }*/
+            if(error.status == 401 && error.error.errors == "Sesión expirada"){
+              AppComponent.myapp.openDialogSesion();                             
+            }
           });
       }
     });

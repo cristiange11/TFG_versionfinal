@@ -1,10 +1,9 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component,  OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef} from '@angular/material/dialog';
 import { first } from 'rxjs/operators';
 import { AppComponent } from 'src/app/app.component';
-import { Empresa } from 'src/app/models/Empresa';
-import { Modulo } from 'src/app/models/Modulo';
+
 import { ModuloService } from 'src/app/services/modulo.service';
 
 @Component({
@@ -38,8 +37,10 @@ export class ModuloCreateComponent implements OnInit {
           this.dialogRef.close();
         },
         error => {
-
-          if (error.status == 409) {
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            AppComponent.myapp.openDialogSesion();                             
+          }
+          else if (error.status == 409) {
             error.error.errors.forEach(errorInfo => {
               const formControl = this.formInstance.get(errorInfo.param);
               if (formControl) {

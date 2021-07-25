@@ -48,7 +48,7 @@ export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
     }
     else{
       var user =(JSON.parse(this.cookieService.get('user')));
-    if(Number(user.rol)!=1){
+    if(Number(user.rol)!=1 && Number(user.rol)!=2 ){
       this.router.navigate(['home']);
     }
     
@@ -67,7 +67,9 @@ export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
             this.dataSource.data = this.fpList;
         },
         error => {
-          console.log(error);
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            AppComponent.myapp.openDialogSesion();                             
+          }
          
         });
   }
@@ -193,7 +195,10 @@ export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
             window.location.reload();
           },
           error => {
-            if(error.status == 409){
+            if(error.status == 401 && error.error.errors == "Sesión expirada"){
+              AppComponent.myapp.openDialogSesion();                             
+            }
+            else if(error.status == 409){
               const dialogRef2 = this.dialog.open(FpdualDeleteConfirmationComponent);
               dialogRef2.afterClosed().subscribe( result => {
                   if(result){
@@ -203,9 +208,14 @@ export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
                           window.location.reload();
                       },
                       error => {
+                        if(error.status == 401 && error.error.errors == "Sesión expirada"){
+                          AppComponent.myapp.openDialogSesion();                             
+                        }
+                        else{
                         const res = new Array();
                         res.push("No se ha podido borrar.");
                         AppComponent.myapp.openDialog(res);
+                        }
                       }
                     )
                   }

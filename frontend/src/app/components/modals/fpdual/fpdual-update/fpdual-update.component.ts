@@ -65,7 +65,9 @@ export class FpdualUpdateComponent implements OnInit {
           });
         },
         error => {
-          console.log(error.error.message);
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            AppComponent.myapp.openDialogSesion();                             
+          }
         });
   } 
 
@@ -88,24 +90,26 @@ export class FpdualUpdateComponent implements OnInit {
          window.location.reload();
         },
         error => {
-          error.error.errors.forEach(errorInfo => {
-            if(error.status == 409){
-              
-            const formControl = this.formInstance.get(errorInfo.param);
-             if (formControl) {
-               formControl.setErrors({
-                 serverError: errorInfo.message
-               });  
-             }   
-
-            }   else if(error.status == 401){
-              
-              var arrayRes= new Array();
-          arrayRes.push(error.error.message);
-          AppComponent.myapp.openDialog(arrayRes); 
-          this.dialogRef.close();
-            }   
-           });
+          if (error.status == 409) {
+           
+            error.error.errors.forEach(errorInfo => {
+              const formControl = this.formInstance.get(errorInfo.param);
+              if (formControl) {
+                formControl.setErrors({
+                  serverError: errorInfo.message
+                });
+              }
+            });
+          } else if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            this.dialogRef.close(); 
+            AppComponent.myapp.openDialogSesion();                             
+          }
+          else if (error.status == 401) {
+            const res = new Array();
+            res.push("No se ha podido crear.");
+            AppComponent.myapp.openDialog(res);
+            this.dialogRef.close();
+          }
         });
     
       

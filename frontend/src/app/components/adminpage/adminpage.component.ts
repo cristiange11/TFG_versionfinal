@@ -74,7 +74,8 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
         error => {
           console.log(error);
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            this.nagivationComponent.closeSession();         
+            AppComponent.myapp.openDialogSesion();    
+           
           }
           
          /* var arrayRes= new Array();
@@ -200,7 +201,11 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
             window.location.reload();
           },
           error => {
-            if(error.status == 409){
+            if(error.status == 401 && error.error.errors == "Sesión expirada"){
+              AppComponent.myapp.openDialogSesion();    
+             
+            }
+            else if(error.status == 409){
               const dialogRef2 = this.dialog.open(CentroDeleteConfirmationComponent);
               dialogRef2.afterClosed().subscribe( result => {
                   if(result){
@@ -210,9 +215,14 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
                           window.location.reload();
                       },
                       error => {
+                        if(error.status == 401 && error.error.errors == "Sesión expirada"){
+                          AppComponent.myapp.openDialogSesion();    
+                         
+                        }
+                        else{
                         const res = new Array();
                         res.push("No se ha podido borrar.");
-                        AppComponent.myapp.openDialog(res);
+                        AppComponent.myapp.openDialog(res);}
                       }
                     )
                   }

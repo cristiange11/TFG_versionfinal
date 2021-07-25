@@ -66,7 +66,9 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
           this.dataSource.data = this.resultadoAprendizajeList;
         },
         error => {
-          console.log(error);
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            AppComponent.myapp.openDialogSesion();                             
+          }
 
         });
   }
@@ -187,10 +189,13 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
               window.location.reload();
             },
             error => {
+              if(error.status == 401 && error.error.errors == "Sesión expirada"){
+                AppComponent.myapp.openDialogSesion();                             
+              }else{
                 const res = new Array();
                 res.push("No se ha podido borrar.");
                 AppComponent.myapp.openDialog(res);
-              
+              }
             });
       }
     });

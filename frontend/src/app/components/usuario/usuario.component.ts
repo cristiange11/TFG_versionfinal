@@ -48,7 +48,7 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     else {
       var user = (JSON.parse(this.cookieService.get('user')));
-      if (Number(user.rol) != 1) {
+      if (Number(user.rol) != 1 && Number(user.rol)!=2) {
         this.router.navigate(['home']);
       }
 
@@ -85,8 +85,8 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
           console.log(this.dataSource.data)
         },
         error => {
-          if (error.status == 401 && error.error.errors == "Sesión expirada") {
-            this.nagivationComponent.closeSession();
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            AppComponent.myapp.openDialogSesion();                             
           }
 
 
@@ -205,9 +205,13 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
               window.location.reload();
             },
             error => {
+              if(error.status == 401 && error.error.errors == "Sesión expirada"){
+                AppComponent.myapp.openDialogSesion();                             
+              }else{
               const res = new Array();
               res.push("No se ha podido borrar.");
               AppComponent.myapp.openDialog(res);
+              }
             });
       }
     });

@@ -38,9 +38,9 @@ export class CentroCreateComponent implements OnInit {
          window.location.reload();
         },
         error => {
-          console.log(error)
+          
           if(error.status == 409){
-            console.log("entro" + error)
+            
             error.error.errors.forEach(errorInfo => {
               const formControl = this.formInstance.get(errorInfo.param);
                if (formControl) {
@@ -49,7 +49,12 @@ export class CentroCreateComponent implements OnInit {
                  });  
                }          
              });
-          }else if(error.status == 401){
+          }
+          else if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            this.dialogRef.close(); 
+            AppComponent.myapp.openDialogSesion();                             
+          }
+          else if(error.status == 401){
             const res = new Array();
           res.push("No se ha podido crear.");
           AppComponent.myapp.openDialog(res);

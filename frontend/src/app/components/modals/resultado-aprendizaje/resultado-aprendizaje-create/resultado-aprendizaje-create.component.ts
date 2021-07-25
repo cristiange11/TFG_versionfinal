@@ -34,8 +34,10 @@ export class ResultadoAprendizajeCreateComponent implements OnInit {
           this.dialogRef.close();
         },
         error => {
-
-          if (error.status == 409) {
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            AppComponent.myapp.openDialogSesion();                             
+          }
+          else if (error.status == 409) {
             error.error.errors.forEach(errorInfo => {
               const formControl = this.formInstance.get(errorInfo.param);
               if (formControl) {

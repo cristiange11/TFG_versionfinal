@@ -180,6 +180,7 @@ import { LogComponent } from './components/log/log.component';
     EncuestaCreateComponent,
     EncuestaUpdateComponent,
     LogComponent,
+   
     
   ],
 

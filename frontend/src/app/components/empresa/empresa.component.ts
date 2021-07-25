@@ -45,7 +45,7 @@ export class EmpresaComponent implements OnInit , OnDestroy, AfterViewInit{
     }
     else{
       var user =(JSON.parse(this.cookieService.get('user')));
-    if(Number(user.rol)!=1){
+    if(Number(user.rol)!=1 && Number(user.rol)!=2){
       this.router.navigate(['home']);
     }
     
@@ -66,7 +66,10 @@ export class EmpresaComponent implements OnInit , OnDestroy, AfterViewInit{
             this.dataSource.data = this.empresaList
         },
         error => {
-          console.log(error.error.message);
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            AppComponent.myapp.openDialogSesion();    
+           
+          }
         });
   }
   private filter() {
@@ -163,13 +166,13 @@ export class EmpresaComponent implements OnInit , OnDestroy, AfterViewInit{
     this.dataSource.filter = value.target.value.trim().toLocaleLowerCase();
   }
   add() {
-    const dialogRef = this.dialog.open(EmpresaCreateComponent, {
+    this.dialog.open(EmpresaCreateComponent, {
       width: '400px'
     });
   }
   edit(data: Empresa) {
     
-    const dialogRef = this.dialog.open(EmpresaUpdateComponent, {
+    this.dialog.open(EmpresaUpdateComponent, {
       width: '400px',
       data: data
     });
@@ -188,7 +191,11 @@ export class EmpresaComponent implements OnInit , OnDestroy, AfterViewInit{
             window.location.reload();
           },
           error => {
-           if(error.status == 409){
+            if(error.status == 401 && error.error.errors == "Sesión expirada"){
+              AppComponent.myapp.openDialogSesion();    
+             
+            }
+           else if(error.status == 409){
               const dialogRef2 = this.dialog.open(EmpresaDeleteConfirmationComponent);
               dialogRef2.afterClosed().subscribe( result => {
                   if(result){
@@ -198,9 +205,13 @@ export class EmpresaComponent implements OnInit , OnDestroy, AfterViewInit{
                           window.location.reload();
                       },
                       error => {
+                        if(error.status == 401 && error.error.errors == "Sesión expirada"){
+                          AppComponent.myapp.openDialogSesion();                             
+                        }else{
                         const res = new Array();
                         res.push("No se ha podido borrar.");
                         AppComponent.myapp.openDialog(res);
+                        }
                       }
                     )
                   }

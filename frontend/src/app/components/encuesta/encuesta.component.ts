@@ -71,7 +71,9 @@ export class EncuestaComponent implements OnInit , OnDestroy, AfterViewInit {
             this.dataSource.data = this.encuestaList;
         },
         error => {
-          console.log(error);
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            AppComponent.myapp.openDialogSesion();                             
+          }
          
         });
   }
@@ -193,11 +195,13 @@ export class EncuestaComponent implements OnInit , OnDestroy, AfterViewInit {
               window.location.reload();
             },
             error => {
-
+              if(error.status == 401 && error.error.errors == "Sesión expirada"){
+                AppComponent.myapp.openDialogSesion();                             
+              }else{
                 const res = new Array();
                 res.push("No se ha podido borrar.");
                 AppComponent.myapp.openDialog(res);
-
+              }
             });
       }
     });

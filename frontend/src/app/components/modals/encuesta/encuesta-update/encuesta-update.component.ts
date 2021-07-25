@@ -38,12 +38,13 @@ export class EncuestaUpdateComponent implements OnInit {
     this.encuestaService.updateEncuesta(this.formInstance.value).pipe(first())
       .subscribe(
         data => {
-         //window.location.reload();
-         this.dialogRef.close();
+         window.location.reload();
         },
         error => {
-          
-          if(error.status == 409){
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            AppComponent.myapp.openDialogSesion();                             
+          }
+          else if(error.status == 409){
             error.error.errors.forEach(errorInfo => {
               const formControl = this.formInstance.get(errorInfo.param);
                if (formControl) {

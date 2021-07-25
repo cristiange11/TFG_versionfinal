@@ -64,7 +64,7 @@ export class FormUserComponent implements OnInit {
     }
     else{
       var user =(JSON.parse(this.cookieService.get('user')));
-    if(Number(user.rol)!=1){
+    if(Number(user.rol)!=1 && Number(user.rol)!=2){
       this.router.navigate(['home']);
     }
     }
@@ -80,7 +80,7 @@ export class FormUserComponent implements OnInit {
         },
         error => {
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            this.nagivationComponent.closeSession();         
+            AppComponent.myapp.openDialogSesion();                             
           }
         });
 
@@ -133,23 +133,10 @@ this.centroService.getCentros().pipe(first())
         },
         error => {
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            this.nagivationComponent.closeSession();         
+            AppComponent.myapp.openDialogSesion();                             
           }
         });
-    /*this.rolService.getRoles().pipe(first())
-      .subscribe(
-        data => {
-          this.rolesList = new Map<number, string>();
-          let rol = data["roles"]
-          rol.forEach(rolInfo => {
-            this.rolesList.set(rolInfo.id, rolInfo.nombreRol)
-          });
-        },
-        error => {
-          if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            this.nagivationComponent.closeSession();         
-          }
-        });*/
+   
 
     if (rol == 5) {
       this.numeroExpediente = new FormControl("", [
@@ -200,7 +187,7 @@ this.centroService.getCentros().pipe(first())
         },
         error => {
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            this.nagivationComponent.closeSession();         
+            AppComponent.myapp.openDialogSesion();                             
           }
         });
   }
@@ -220,7 +207,7 @@ this.centroService.getCentros().pipe(first())
         
         error => {
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            this.nagivationComponent.closeSession();         
+            AppComponent.myapp.openDialogSesion();                             
           }
         });
     }  else{
@@ -237,7 +224,7 @@ this.centroService.getCentros().pipe(first())
         },
         error => {
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            this.nagivationComponent.closeSession();         
+            AppComponent.myapp.openDialogSesion();                             
           }
         });
 
@@ -272,8 +259,8 @@ this.centroService.getCentros().pipe(first())
             }          
           });
         }
-        if(error.status == 401 && error.error.errors == "Sesión expirada"){
-          this.nagivationComponent.closeSession();         
+        else if(error.status == 401 && error.error.errors == "Sesión expirada"){
+          AppComponent.myapp.openDialogSesion();                             
         }
         });
       }
@@ -307,7 +294,7 @@ this.centroService.getCentros().pipe(first())
            });
           }
           else if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            this.nagivationComponent.closeSession();         
+            AppComponent.myapp.openDialogSesion();                             
           }
         });
     }else if(this.numero==4){
@@ -333,7 +320,7 @@ this.centroService.getCentros().pipe(first())
            });
           }
           else if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            this.nagivationComponent.closeSession();         
+            AppComponent.myapp.openDialogSesion();                             
           }
         });
     }else if(this.numero==3){
@@ -357,7 +344,7 @@ this.centroService.getCentros().pipe(first())
            });
           }
           else if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            this.nagivationComponent.closeSession();         
+            AppComponent.myapp.openDialogSesion();                             
           }
         });
     }

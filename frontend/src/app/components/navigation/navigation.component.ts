@@ -26,9 +26,7 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
 
   }
   closeSession() {
-    const res = new Array();
-    res.push("Sesión expirada");
-    AppComponent.myapp.openDialog(res);
+    
     this.cookieService.deleteAll();
     this.router.navigate(['home']);
   }
@@ -45,14 +43,9 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
     }
     else {
       var user = JSON.parse(this.cookieService.get('user'));
-      if (Number(user.rol) == 1) {
+      if (Number(user.rol) == 1 || Number(user.rol) == 2) {
         this.items = [
-          {
-            label: 'Logs',
-            icon: 'pi pi-fw pi-file',
-            routerLink: '/log'
-            
-          },
+          
           {
             label: 'FP duales',
             routerLink: '/fpdual',
@@ -78,14 +71,23 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
             routerLink: '/formuser',
             icon: "fas fa-user-plus"
           },
-          {
-            label: 'Cerrar Sesión',
-            routerLink: '/home',
-            icon: "fas fa-sign-out-alt",
-            command: () => this.closeSession(),
-          },
+          
         ]
+        if(Number(user.rol) == 1){
+          this.items.push({
+            label: 'Logs',
+            icon: 'pi pi-fw pi-file',
+            routerLink: '/log'
+            
+          });
+        }
       }
+      this.items.push({
+        label: 'Cerrar Sesión',
+        routerLink: '/home',
+        icon: "fas fa-sign-out-alt",
+        command: () => this.closeSession(),
+      });
     }
   }
 }

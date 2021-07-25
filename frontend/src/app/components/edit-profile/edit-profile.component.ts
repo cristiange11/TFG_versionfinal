@@ -51,7 +51,7 @@ export class EditProfileComponent implements OnInit {
     else {
       this.user = (JSON.parse(this.cookieService.get('user')));
       
-      if (Number(this.user.rol) != 1) {
+      if (Number(this.user.rol) != 1 && Number(this.user.rol)!=2)  {
         this.router.navigate(['home']);
       }
 
@@ -161,8 +161,11 @@ export class EditProfileComponent implements OnInit {
           AppComponent.myapp.openDialog(arrayRes);
         },
         error => {
-
-          if (error.status == 401) {
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            AppComponent.myapp.openDialogSesion();    
+           
+          }
+          else if (error.status == 401) {
             var arrayRes = new Array();
             arrayRes.push(error.error.errors);
             AppComponent.myapp.openDialog(arrayRes);

@@ -36,11 +36,12 @@ export class EncuestaCreateComponent implements OnInit {
       .subscribe(
         data => {
          window.location.reload();
-         this.dialogRef.close();
         },
         error => {
-          console.log(error)
-          if(error.status == 409){
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            AppComponent.myapp.openDialogSesion();                             
+          }
+          else if(error.status == 409){
             
             error.error.errors.forEach(errorInfo => {
               const formControl = this.formInstance.get(errorInfo.param);

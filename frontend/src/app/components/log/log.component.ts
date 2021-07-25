@@ -74,7 +74,9 @@ export class LogComponent implements OnInit , OnDestroy, AfterViewInit {
             this.dataSource.data = this.logList;
         },
         error => {
-          console.log(error);
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            AppComponent.myapp.openDialogSesion();                             
+          }
          
         });
   }

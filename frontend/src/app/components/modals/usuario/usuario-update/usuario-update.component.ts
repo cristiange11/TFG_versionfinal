@@ -102,7 +102,9 @@ export class UsuarioUpdateComponent implements OnInit {
           });
         },
         error => {
-          console.log(error.error.message);
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            AppComponent.myapp.openDialogSesion();                             
+          }
         });
   }
 
@@ -129,7 +131,9 @@ export class UsuarioUpdateComponent implements OnInit {
           });
         },
         error => {
-          console.log(error.error.message);
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            AppComponent.myapp.openDialogSesion();                             
+          }
         });
   
 
@@ -163,7 +167,9 @@ export class UsuarioUpdateComponent implements OnInit {
             });
           },
           error => {
-            console.log(error.error.message);
+            if(error.status == 401 && error.error.errors == "Sesión expirada"){
+              AppComponent.myapp.openDialogSesion();                             
+            }
           });
     }
     return this.numero;
@@ -183,7 +189,9 @@ export class UsuarioUpdateComponent implements OnInit {
 
         },
         error => {
-          console.log(error.error.message);
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            AppComponent.myapp.openDialogSesion();                             
+          }
         });
   }
   obtenerFP(centro): void {
@@ -200,7 +208,9 @@ export class UsuarioUpdateComponent implements OnInit {
           });
         },
         error => {
-          console.log(error.error.message);
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            AppComponent.myapp.openDialogSesion();                             
+          }
         });
   }
   save() {
@@ -231,8 +241,8 @@ export class UsuarioUpdateComponent implements OnInit {
                 }
               });
             }
-            else if (error.status == 401) {
-              console.log(error)
+            else if(error.status == 401 && error.error.errors == "Sesión expirada"){
+              AppComponent.myapp.openDialogSesion();                             
             }
           });
     }
@@ -263,8 +273,8 @@ export class UsuarioUpdateComponent implements OnInit {
 
               });
             }
-            else if (error.status == 401 && error.error.errors == "Sesión expirada") {
-              this.nagivationComponent.closeSession();
+            else if(error.status == 401 && error.error.errors == "Sesión expirada"){
+              AppComponent.myapp.openDialogSesion();                             
             }
           });
     } else if (this.numero == 4) {
@@ -286,8 +296,8 @@ export class UsuarioUpdateComponent implements OnInit {
                   });
                 }
               });
-            } else if (error.status == 401 && error.error.errors == "Sesión expirada") {
-              this.nagivationComponent.closeSession();
+            } else if(error.status == 401 && error.error.errors == "Sesión expirada"){
+              AppComponent.myapp.openDialogSesion();                             
             }
           });
     } else if (this.numero == 3) {
@@ -298,6 +308,10 @@ export class UsuarioUpdateComponent implements OnInit {
           window.location.reload();
         },
         error => {
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            AppComponent.myapp.openDialogSesion();                             
+          }
+          else if(error.status==409){
           error.error.errors.forEach(errorInfo => {
             const formControl = this.formInstance.get(errorInfo.param);
              if (formControl) {
@@ -306,8 +320,9 @@ export class UsuarioUpdateComponent implements OnInit {
                });  
              }          
            });
-        });
-    }
+        }});
+      }
+    
 
 
   }
