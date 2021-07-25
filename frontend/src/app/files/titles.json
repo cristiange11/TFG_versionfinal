@@ -1,5 +1,5 @@
 {
-    "codigoCentro" : "Código Centro",
+    
     "direccion" : "Dirección",
     "telefono" : "Teléfono",
     "cifEmpresa" : "CIF",
@@ -15,7 +15,8 @@
     "anio" : "año",
     "titulo" : "título",
     "dniTutorEmpresa" : "DNI tutor",
-    "dniAlumno" : "DNI alumno"
-
+    "dniAlumno" : "DNI alumno",
+    "codigoCentro" : "Nombre Centro",
+    "Tutor_empresa" : "Tutor empresa"
 
 }

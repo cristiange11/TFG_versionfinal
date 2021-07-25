@@ -27,7 +27,7 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  public displayedColumns: string[] = ['nombre', 'apellidos', 'correo', 'movil', 'direccion', 'genero', 'fechaNacimiento', 'fpDual', 'codigoCentro'];
+  public displayedColumns: string[] = ['nombre', 'apellidos', 'correo', 'movil', 'direccion', 'genero', 'fechaNacimiento', 'rol', 'codigoCentro', 'fpDual' ];
   public columnsToDisplay: string[] = [...this.displayedColumns, 'actions'];
 
   public columnsFilters = {};
@@ -59,9 +59,10 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe(
         data => {
           let usuarios = data["usuarios"];
+          
           console.log(data["usuarios"])
           usuarios.forEach(usuarioInfo => {
-
+            console.log("Info del user " + usuarioInfo.nombreCentro)
             var user = {
               dni: usuarioInfo.dni,
               nombre: usuarioInfo.nombre,
@@ -72,16 +73,17 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
               password: usuarioInfo.password,
               genero: usuarioInfo.genero,
               cp: usuarioInfo.cp,
-              rol: usuarioInfo.rol,
+              rol: usuarioInfo.nombreRol,
               fechaNacimiento: this.datepipe.transform(usuarioInfo.fechaNacimiento, "dd/MM/YYYY"),
-              fpDual: usuarioInfo.fpDual,
-              codigoCentro: usuarioInfo.codigoCentro,
+              fpDual: usuarioInfo.nombreFP,
+              codigoCentro: usuarioInfo.nombreCentro,
             }
+           
             this.userList.push(user);
+            
           });
-
           this.dataSource.data = this.userList;
-         
+          console.log(this.dataSource.data)
         },
         error => {
           console.log(error);
