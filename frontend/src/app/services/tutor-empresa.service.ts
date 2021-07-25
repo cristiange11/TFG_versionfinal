@@ -16,7 +16,7 @@ export class TutorEmpresaService {
   
   
   constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { }
-  createTutor(sigunForm , userJson,  formulario2, modulo): Observable<JSON>{    
+  formarTutor(sigunForm , userJson,  formulario2, modulo){
     var tutor = {
       dni : sigunForm.dni,
       nombre: sigunForm.nombre,
@@ -35,8 +35,16 @@ export class TutorEmpresaService {
       cifEmpresa: formulario2.cifEmpresa,
       modulo : {modulo : modulo}
     };
-    console.log(tutor)
+    return tutor;
+  }
+  createTutor(sigunForm , userJson,  formulario2, modulo): Observable<JSON>{    
+    var tutor = this.formarTutor(sigunForm , userJson,  formulario2, modulo);
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
     return this.http.post<JSON>(`${this.url}/create`, tutor , httpOptions);   
+  }
+  updateTutor(sigunForm , userJson,  formulario2, modulo): Observable<JSON>{    
+    var tutor = this.formarTutor(sigunForm , userJson,  formulario2, modulo);
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    return this.http.put<JSON>(`${this.url}/update`, tutor , httpOptions);   
   }
 }

@@ -57,14 +57,19 @@ module.exports = class TutorEmpresa {
             await connection.release();
         }
     }
-    static async updateTutor(tutor,user) {
+    static async updateTutor(tutor,password, user) {
         const connection = await promisePool.getConnection();
+        console.log(tutor)
         try {
             await connection.beginTransaction();
-            let query =  `UPDATE tutor_empresa SET moduloEmpresa='${tutor.moduloEmpresa}' and cifEmpresa = '${tutor.cifEmpresa}' WHERE dni = '${tutor.dni}'`;
+            let query = `UPDATE usuario SET nombre='${tutor.nombre}',apellidos='${tutor.apellidos}',correo='${tutor.correo}', movil='${tutor.movil}',direccion='${tutor.direccion}',password='${password}',genero='${tutor.genero}', cp='${tutor.cp}',rol='${tutor.rol}',fechaNacimiento=STR_TO_DATE('${tutor.fechaNacimiento}','%Y-%m-%d'),fpDual=${tutor.fpDual},codigoCentro='${tutor.codigoCentro}' WHERE dni='${tutor.dni}'`;
             await connection.query(query);
+            await connection.query(`UPDATE tutor_empresa SET moduloEmpresa='${tutor.moduloEmpresa}' and cifEmpresa = '${tutor.cifEmpresa}' WHERE dni = '${tutor.dni}'`);
+            await connection.query(`DELETE  FROM tutor_modulo WHERE DNI = '${tutor.dni}'`);
+            tutor.modulo.modulo.forEach(async (moduloInser) =>{
+                await connection.query(`INSERT INTO tutor_modulo (codigoModulo, dni) SELECT modulo.codigo, tutor_empresa.dni FROM modulo, tutor_empresa WHERE modulo.codigo = ${moduloInser} AND tutor_empresa.dni='${tutor.dni}'`);
+            })
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha actualizado tutor empresa con DNI ${tutor.dni} ','${user}',sysdate(), 'tutor de empresa')`);            
-
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");

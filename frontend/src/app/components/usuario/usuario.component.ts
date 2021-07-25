@@ -27,7 +27,7 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  public displayedColumns: string[] = ['nombre', 'apellidos', 'correo', 'movil', 'direccion', 'genero', 'fechaNacimiento', 'rol', 'codigoCentro', 'fpDual' ];
+  public displayedColumns: string[] = ['nombre', 'apellidos', 'correo', 'movil', 'direccion', 'genero', 'fechaNacimiento', 'rol', 'codigoCentro', 'fpDual'];
   public columnsToDisplay: string[] = [...this.displayedColumns, 'actions'];
 
   public columnsFilters = {};
@@ -59,10 +59,9 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe(
         data => {
           let usuarios = data["usuarios"];
-          
-          console.log(data["usuarios"])
+
           usuarios.forEach(usuarioInfo => {
-            console.log("Info del user " + usuarioInfo.nombreCentro)
+            
             var user = {
               dni: usuarioInfo.dni,
               nombre: usuarioInfo.nombre,
@@ -80,13 +79,16 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
             }
            
             this.userList.push(user);
-            
+
           });
           this.dataSource.data = this.userList;
           console.log(this.dataSource.data)
         },
         error => {
-          console.log(error);
+          if (error.status == 401 && error.error.errors == "Sesión expirada") {
+            this.nagivationComponent.closeSession();
+          }
+
 
         });
   }
@@ -185,12 +187,12 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   edit(data: User) {
-
-    const dialogRef = this.dialog.open(UsuarioUpdateComponent, {
+    console.log("Le doy a editar")
+    this.dialog.open(UsuarioUpdateComponent, {
       width: '400px',
       data: data
     });
-
+  
   }
 
   delete(dni: string) {

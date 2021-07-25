@@ -60,15 +60,19 @@ module.exports = class Profesor extends User {
             await connection.release();
         }
     }
-    static async updateProfesor(profesor,user) {
+    static async updateProfesor(profesor,password, user) {
         const connection = await promisePool.getConnection();
 
         try {
             await connection.beginTransaction();
-            let query =  `UPDATE profesor SET departamento='${profesor.departamento}'WHERE dni = '${profesor.dni}'`;
-            await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha actualizado profesor con DNI ${dni} ','${user}',sysdate(), 'profesor')`);            
-
+            let query = `UPDATE usuario SET nombre='${profesor.nombre}',apellidos='${profesor.apellidos}',correo='${profesor.correo}', movil='${profesor.movil}',direccion='${profesor.direccion}',password='${password}',genero='${profesor.genero}', cp='${profesor.cp}',rol='${profesor.rol}',fechaNacimiento=STR_TO_DATE('${profesor.fechaNacimiento}','%Y-%m-%d'),fpDual=${profesor.fpDual},codigoCentro='${profesor.codigoCentro}' WHERE dni='${profesor.dni}'`;
+            await connection.query(query);
+            await connection.query(`UPDATE profesor SET departamento='${profesor.departamento}' WHERE dni = '${profesor.dni}'`);
+            await connection.query(`DELETE  FROM profesor_modulo WHERE DNI = '${profesor.dni}'`);
+            profesor.modulo.modulo.forEach(async (moduloInser) =>{
+                await connection.query(`INSERT INTO profesor_modulo (codigoModulo, dni) SELECT modulo.codigo, profesor.dni FROM modulo, profesor WHERE modulo.codigo = ${moduloInser} AND profesor.dni='${profesor.dni}'`);
+           })
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha actualizado profesor con DNI ${profesor.dni} ','${user}',sysdate(), 'profesor')`);            
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");

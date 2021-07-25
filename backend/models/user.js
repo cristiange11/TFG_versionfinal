@@ -34,7 +34,6 @@ module.exports = class User {
     static async save(user,userLogado) {
 
         let codigoCentro = user.codigoCentro == null ? null : `'${user.codigoCentro}'`;
-        console.log("entro")
        const connection = await promisePool.getConnection();
 
         try {
@@ -75,7 +74,6 @@ module.exports = class User {
     }
     static async updateUser(user, password,userLogado) {
         let codigoCentro = user.codigoCentro == null ? null : `'${user.codigoCentro}'`;
-        console.log("entro")
        const connection = await promisePool.getConnection();
 
         try {

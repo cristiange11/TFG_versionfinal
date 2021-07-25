@@ -76,7 +76,7 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
             this.nagivationComponent.closeSession();         
           }
-          console.log(error);
+          
          /* var arrayRes= new Array();
       arrayRes.push(error.error.errors);
       AppComponent.myapp.openDialog(arrayRes);*/

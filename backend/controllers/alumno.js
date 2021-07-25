@@ -52,33 +52,38 @@ exports.deleteAlumno = async (req, res, next) => {
         res.status(500).json({ error: err });
     }
 }
-};/*
+};
 exports.updateAlumno = async (req, res, next) => {
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
+    console.log(expirado)
+    if (expirado) {
+      res.status(401).json({ "errors": "Sesión expirada" });
+    } else {
     const errors = validationResult(req);
     const resu = errors.array();
-    var cadena = "";
-    resu.forEach(element => {
-        cadena += element.msg + "\n";
 
+    const resJSON = [{
+        param: String,
+        message: String,
+    }]
+    resu.forEach(element => {
+        resJSON.push({
+            param: element.param,
+            message: element.msg
+        })
     });
 
     if (!errors.isEmpty()) {
-        res.status(409).json({ message: cadena });
+        res.status(409).json({ "errors": resJSON });
     }
     else {
-        const dni = req.body.dni;
-        const numero_expediente = req.body.numero_expediente;
-
         try {
-            const alumno = {
-                dni: dni,
-                numero_expediente: numero_expediente
-            };
-
-            const result = Alumno.updateAlumno(alumno).then(function (result) {
+            const user = jwt_decode(req.headers['authorization']).sub;
+            const hashedPassword = await bcrypt.hash(req.body.password, 12);
+            Alumno.updateAlumno(req.body,hashedPassword, user).then(function (result) {
                 console.log("Promise Resolved");
 
-                res.status(201).json({ alumno: alumno });
+                res.status(201).json({ alumno: "success" });
             }).catch(function () {
                 console.log("Promise Rejected");
             });
@@ -91,8 +96,8 @@ exports.updateAlumno = async (req, res, next) => {
             }
             next(err);
         }
-    }
-};*/
+    }}
+};
 exports.createAlumno = async (req, res, next) => {
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
     console.log(expirado)

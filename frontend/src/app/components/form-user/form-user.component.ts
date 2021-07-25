@@ -21,6 +21,7 @@ import { RouterModule, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { ModuloService } from 'src/app/services/modulo.service';
 import { Modulo } from 'src/app/models/Modulo';
+import { NavigationComponent } from '../navigation/navigation.component';
 @Component({
   selector: 'app-form-user',
   templateUrl: './form-user.component.html',
@@ -42,7 +43,7 @@ export class FormUserComponent implements OnInit {
     )
   ]);
   codigoCentro = new FormControl("", [Validators.required]);
-fpDual = new FormControl("", [Validators.required]);  
+  fpDual = new FormControl("", [Validators.required]);  
 
   confirmPasswordFormControl = new FormControl("", [
     Validators.required,
@@ -53,7 +54,7 @@ fpDual = new FormControl("", [Validators.required]);
   rolesList = new Map<number, string>();
   fpList = new Map<number, string>();
   empresaList = new Map<string, string>();
-  constructor(private moduloService: ModuloService, private cookieService: CookieService, private router:Router, private appRouting: AppRoutingModule, private authService: AuthService, private tutorService: TutorEmpresaService, private profesorService: ProfesorService, private alumnoService: AlumnoService, private empresaService: EmpresaService, private centroService: CentroService, private rolService: RolService, private fpdualesService: FpdualesService) {
+  constructor(private nagivationComponent: NavigationComponent, private moduloService: ModuloService, private cookieService: CookieService, private router:Router, private appRouting: AppRoutingModule, private authService: AuthService, private tutorService: TutorEmpresaService, private profesorService: ProfesorService, private alumnoService: AlumnoService, private empresaService: EmpresaService, private centroService: CentroService, private rolService: RolService, private fpdualesService: FpdualesService) {
     document.body.style.background = "linear-gradient(to right, #1dcd9b, #00d4ff)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
 
@@ -78,7 +79,9 @@ fpDual = new FormControl("", [Validators.required]);
           });
         },
         error => {
-          console.log(error.error.message);
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            this.nagivationComponent.closeSession();         
+          }
         });
 
     this.signupForm = this.createFormGroup();
@@ -129,9 +132,11 @@ this.centroService.getCentros().pipe(first())
           });
         },
         error => {
-          console.log(error.error.message);
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            this.nagivationComponent.closeSession();         
+          }
         });
-    this.rolService.getRoles().pipe(first())
+    /*this.rolService.getRoles().pipe(first())
       .subscribe(
         data => {
           this.rolesList = new Map<number, string>();
@@ -141,8 +146,10 @@ this.centroService.getCentros().pipe(first())
           });
         },
         error => {
-          console.log(error.error.message);
-        });
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            this.nagivationComponent.closeSession();         
+          }
+        });*/
 
     if (rol == 5) {
       this.numeroExpediente = new FormControl("", [
@@ -170,7 +177,9 @@ this.centroService.getCentros().pipe(first())
             });
           },
           error => {
-            console.log(error.error.message);
+            if(error.status == 401 && error.error.errors == "Sesión expirada"){
+              this.nagivationComponent.closeSession();         
+            }
           });
     }
     return this.numero;
@@ -190,7 +199,9 @@ this.centroService.getCentros().pipe(first())
           
         },
         error => {
-          console.log(error.error.message);
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            this.nagivationComponent.closeSession();         
+          }
         });
   }
   obtenerFP(centro): void {
@@ -208,7 +219,9 @@ this.centroService.getCentros().pipe(first())
         },
         
         error => {
-          console.log(error.error.message);
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            this.nagivationComponent.closeSession();         
+          }
         });
     }  else{
       this.fpdualesService.getFPdualByAlumno(centro).pipe(first())
@@ -223,7 +236,9 @@ this.centroService.getCentros().pipe(first())
           });
         },
         error => {
-          console.log(error.error.message);
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            this.nagivationComponent.closeSession();         
+          }
         });
 
     }
@@ -257,8 +272,8 @@ this.centroService.getCentros().pipe(first())
             }          
           });
         }
-        else if(error.status == 401){
-         console.log(error)
+        if(error.status == 401 && error.error.errors == "Sesión expirada"){
+          this.nagivationComponent.closeSession();         
         }
         });
       }
@@ -274,7 +289,7 @@ this.centroService.getCentros().pipe(first())
           AppComponent.myapp.openDialog(arrayRes);
         },
         error => {
-          console.log(error)
+          if(error.status == 409){
           error.error.errors.forEach(errorInfo => {
             const formControl = this.signupForm.get(errorInfo.param);
              if (formControl) {
@@ -290,6 +305,10 @@ this.centroService.getCentros().pipe(first())
             }
                 
            });
+          }
+          else if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            this.nagivationComponent.closeSession();         
+          }
         });
     }else if(this.numero==4){
       
@@ -313,6 +332,9 @@ this.centroService.getCentros().pipe(first())
              }          
            });
           }
+          else if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            this.nagivationComponent.closeSession();         
+          }
         });
     }else if(this.numero==3){
      
@@ -324,7 +346,7 @@ this.centroService.getCentros().pipe(first())
           AppComponent.myapp.openDialog(arrayRes);
         },
         error => {
-          console.log(error);
+          if(error.status == 409){
           error.error.errors.forEach(errorInfo => {
             const formControl = this.signupForm.get(errorInfo.param);
              if (formControl) {
@@ -333,6 +355,10 @@ this.centroService.getCentros().pipe(first())
                });  
              }          
            });
+          }
+          else if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            this.nagivationComponent.closeSession();         
+          }
         });
     }
     

@@ -41,7 +41,7 @@ exports.deleteProfesor = async (req, res, next) => {
 };
 exports.updateProfesor = async (req, res, next) => {
     console.log(req.headers);
-    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
     console.log(expirado)
     if (expirado) {
         res.status(401).json({ "errors": "Sesión expirada" });
@@ -66,7 +66,8 @@ exports.updateProfesor = async (req, res, next) => {
 
             try {
                 const user = jwt_decode(req.headers['authorization']).sub;
-                const result = Profesor.updateProfesor(req.body,user).then(function (result) {
+                const hashedPassword = await bcrypt.hash(req.body.password, 12);
+                Profesor.updateProfesor(req.body,hashedPassword, user).then(function (result) {
                     console.log("Promise Resolved");
 
                     res.status(201).json({ profesor: "sucess" });
@@ -109,7 +110,7 @@ exports.createProfesor = async (req, res, next) => {
             try {
                 const user = jwt_decode(req.headers['authorization']).sub;
                 const hashedPassword = await bcrypt.hash(req.body.password, 12);
-                const result = Profesor.createProfesor(req.body, hashedPassword, user).then(function (result) {
+                Profesor.createProfesor(req.body, hashedPassword, user).then(function (result) {
                     console.log("Promise Resolved");
                     res.status(201).json({ profesor: "success" });
                 }).catch(function () {

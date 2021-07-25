@@ -63,19 +63,15 @@ export class AuthService {
       cp: editForm.cp,
       rol: userJson.rol,
       fechaNacimiento: editForm.fechaNacimiento,
-      fpDual: userJson.fpDual,
-      codigoCentro: userJson.codigoCentro
+      fpDual: userJson.fpDual == '' ? null : userJson.fpDual,
+      codigoCentro: userJson.codigoCentro == '' ? null : userJson.codigoCentro
     };
     console.log("User => " + user.dni)
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
 
     return this.http.put<JSON>(`${this.url}/update`, user,httpOptions);
   }
-  updateUserForm(user: User): Observable<JSON>{
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
-
-    return this.http.put<JSON>(`${this.url}/update`, user, httpOptions);
-  }
+  
   getUsers(): Observable<JSON[] >{    
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
 

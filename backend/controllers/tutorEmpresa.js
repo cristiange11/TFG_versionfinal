@@ -68,10 +68,12 @@ exports.updateTutor = async (req, res, next) => {
 
             try {
                 const user = jwt_decode(req.headers['authorization']).sub;
-                const result = TutorEmpresa.updateTutor(req.body,user).then(function (result) {
+                const hashedPassword = await bcrypt.hash(req.body.password, 12);
+
+                TutorEmpresa.updateTutor(req.body,hashedPassword,user).then(function (result) {
                     console.log("Promise Resolved");
 
-                    res.status(201).json({ message: "sucess" }); W
+                    res.status(201).json({ message: "sucess" }); 
                 }).catch(function () {
                     console.log("Promise Rejected");
                 });

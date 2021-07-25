@@ -1,7 +1,7 @@
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
-const LogSesion= require('../models/logs/logSesion');
+const LogSesion = require('../models/logs/logSesion');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const jwt_decode = require('jwt-decode');
@@ -9,9 +9,9 @@ const comprobarToken = require('../util/comprobarToken');
 var datetime = require('node-datetime');
 const RSA_PRIVATE_KEY = fs.readFileSync(__dirname + '/OPENSSL/private.pem');
 exports.signup = async (req, res, next) => {
-  
+
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-    console.log("cumpruebo si esta expirado" + expirado)
+  console.log("cumpruebo si esta expirado" + expirado)
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
   }
@@ -72,7 +72,7 @@ exports.signup = async (req, res, next) => {
         };
 
         const user = jwt_decode(req.headers['authorization']).sub;
-        const result = User.save(us,user).then(function (result) {
+        const result = User.save(us, user).then(function (result) {
           console.log("Promise Resolved");
 
           res.status(201).json({ message: "success" });
@@ -98,21 +98,21 @@ exports.login = async (req, res, next) => {
     const queryResult = await User.find(dni);
     if (queryResult[0].length > 0) {
       const userJson = queryResult[0][0]
-      
+
       let user = new User(userJson)
       const isEqual = await bcrypt.compare(password, user.password);
-     
+
 
       if (!isEqual) {
-        
-          error = true;
-        
-        LogSesion.createInicioSesion(user.dni,error/*,fechaHora*/);
+
+        error = true;
+
+        LogSesion.createInicioSesion(user.dni, error/*,fechaHora*/);
         res.status(401).json({ message: 'Credenciales incorrectas.' });
       }
       else {
         error = false;
-        LogSesion.createInicioSesion(user.dni,error/*,fechaHora*/);
+        LogSesion.createInicioSesion(user.dni, error/*,fechaHora*/);
         const jwtBearerToken = jwt.sign({ sub: user.dni }, 'proyecto final carrera', { expiresIn: '24h' });
         console.log("Token login => " + jwtBearerToken);
         const resJSON = { "result": { "user": userJson, "token": jwtBearerToken } }
@@ -124,7 +124,7 @@ exports.login = async (req, res, next) => {
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
-      
+
     }
     next(err);
   }
@@ -137,7 +137,7 @@ exports.deleteUser = async (req, res, next) => {
     try {
       const user = jwt_decode(req.headers['authorization']).sub;
       console.log(req.params)
-       await User.deleteUser(req.params.dni,user);
+      await User.deleteUser(req.params.dni, user);
       res.status(200).json({ message: "sucesss" });
 
     } catch (err) {
@@ -149,14 +149,19 @@ exports.deleteUser = async (req, res, next) => {
 };
 
 exports.getUsuarios = async (req, res, next) => {
-  try {
-    const usuario = await User.getUsers();
-    res.status(200).json({ "usuarios": usuario[0] });
+  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
+  if (expirado) {
+    res.status(401).json({ "errors": "Sesión expirada" });
+  } else {
 
-  } catch (err) {
-    res.status(500).json({ error: err });
+    try {
+      const usuario = await User.getUsers();
+      res.status(200).json({ "usuarios": usuario[0] });
+
+    } catch (err) {
+      res.status(500).json({ error: err });
+    }
   }
-
 };
 exports.updateUsuario = async (req, res, next) => {
   console.log("Hola compruebo si entro")
@@ -164,33 +169,33 @@ exports.updateUsuario = async (req, res, next) => {
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
   } else {
-   
-      const errors = validationResult(req);
-      const resu = errors.array();
-      const resJSON = [{
-        param: String,
-        message: String,
-      }]
-      resu.forEach(element => {
-        resJSON.push({
-          param: element.param,
-          message: element.msg
-        })
-      });
-      if (!errors.isEmpty()) {
-        res.status(409).json({ "errors": resJSON });
-      }
+
+    const errors = validationResult(req);
+    const resu = errors.array();
+    const resJSON = [{
+      param: String,
+      message: String,
+    }]
+    resu.forEach(element => {
+      resJSON.push({
+        param: element.param,
+        message: element.msg
+      })
+    });
+    if (!errors.isEmpty()) {
+      res.status(409).json({ "errors": resJSON });
+    }
     else {
       try {
         const user = jwt_decode(req.headers['authorization']).sub;
         console.log("campos " + req.body)
         const hashedPassword = await bcrypt.hash(req.body.password, 12);
-        const result = User.updateUser(req.body, hashedPassword,user).then(function (result) {
+        const result = User.updateUser(req.body, hashedPassword, user).then(function (result) {
           console.log("Promise Resolved");
 
           res.status(201).json({ user: req.body });
         }).catch(function () {
-          res.status(401).json({ errors: "No se ha podido actualizar el usuario"  });
+          res.status(401).json({ errors: "No se ha podido actualizar el usuario" });
 
         });
 

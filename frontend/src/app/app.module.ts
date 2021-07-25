@@ -181,7 +181,7 @@ import { EncuestaUpdateComponent } from './components/modals/encuesta/encuesta-u
     
   ],
 
-  providers: [ConfirmationService, MessageService, CookieService, DatePipe],
+  providers: [ConfirmationService, MessageService, CookieService, DatePipe, NavigationComponent],
   bootstrap: [AppComponent],
   entryComponents: [ModalComponent]
 })
