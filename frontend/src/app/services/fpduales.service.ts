@@ -18,6 +18,10 @@ export class FpdualesService {
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
     return this.http.get<Fpduales []>(`${this.url}/${id}`, httpOptions); 
   }
+  getFPsByCentro(codigoCentro: number): Observable<Fpduales [] >{     
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    return this.http.get<Fpduales []>(`${this.url}/adminCentro/${codigoCentro}`, httpOptions); 
+  }
   getFPdualByAlumno(codigoCentro: number): Observable<Fpduales [] >{     
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
     return this.http.get<Fpduales []>(`${this.url}/alumno/${codigoCentro}`, httpOptions); 

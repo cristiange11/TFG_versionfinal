@@ -10,18 +10,14 @@ module.exports = class FP_dual {
         this.plazasDisponibles = plazasDisponibles;
     }
     static async find(id) {
-
         const [rows, fields] = await promisePool.query(
             `SELECT * FROM fp_duales WHERE id=${id}  `);
-
         return rows;
     }
     
     static async getNombreFPByCentro(codigoCentro) {
-
         const [rows, fields] = await promisePool.query(
             `SELECT F.id, F.nombre FROM fp_duales as F, centro_educativo as C WHERE C.codigoCentro=F.codigoCentro and C.codigoCentro='${codigoCentro}'  `);
-
         return rows;
     }
     static async DeleteUsuariosByFP(fpDual , user) {
@@ -49,8 +45,13 @@ module.exports = class FP_dual {
             `SELECT * FROM fp_duales id = '${id}'`);
         return rows;
     }
+    static async getFpsByAdminCentro(codigoCentro) {
+        console.log(`SELECT * FROM fp_duales where codigoCentro = '${codigoCentro}'`)
+        const [rows, fields] = await promisePool.query(
+            `SELECT * FROM fp_duales where codigoCentro = '${codigoCentro}'`);
+        return rows;
+    }
     static async getFps() {
-        console.log("entro a obtener los fps con la consulta")
         const [rows, fields] = await promisePool.query(
             `SELECT * FROM fp_duales `);
         return rows;

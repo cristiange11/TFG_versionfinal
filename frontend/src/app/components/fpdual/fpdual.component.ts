@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { AppComponent } from 'src/app/app.component';
 import { Fpduales } from 'src/app/models/Fpduales';
+import { User } from 'src/app/models/User';
 import { FpdualesService } from 'src/app/services/fpduales.service';
 import { DeleteComponent } from '../modals/delete/delete.component';
 import { FpdualCreateComponent } from '../modals/fpdual/fpdual-create/fpdual-create.component';
@@ -24,6 +25,7 @@ import { NavigationComponent } from '../navigation/navigation.component';
 export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
   myApp = AppComponent.myapp;
   fpList: Array<Fpduales> = [];
+  user;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   
@@ -42,19 +44,22 @@ export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.nagivationComponent.obtenerItems();
-    this.getAll();
+    
     if(!this.cookieService.get('user')){
       this.router.navigate(['home']);
     }
     else{
-      var user =(JSON.parse(this.cookieService.get('user')));
-    if(Number(user.rol)!=1 && Number(user.rol)!=2 ){
+       this.user =(JSON.parse(this.cookieService.get('user')));
+    if(Number(this.user.rol)!=1 && Number(this.user.rol)!=2 ){
       this.router.navigate(['home']);
     }
     
     }
+    this.getAll();
   }
   getAll() {
+    console.log("Usuario => " + this.user.codigoCentro)
+    if(Number(this.user.rol)==1){
     this.serviceSubscribe = this.fpService.getFps().pipe(first())
       .subscribe(
         data => {
@@ -71,8 +76,28 @@ export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
             AppComponent.myapp.openDialogSesion();                             
           }
          
-        });
+        });     
   }
+  else{
+    this.serviceSubscribe = this.fpService.getFPsByCentro(this.user.codigoCentro).pipe(first())
+      .subscribe(
+        data => {
+          let fps = data["fps"];
+          fps.forEach(fpInfo => {          
+            this.fpList.push(fpInfo);
+            console.log(fps)
+          });
+            
+            this.dataSource.data = this.fpList;
+        },
+        error => {
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            AppComponent.myapp.openDialogSesion();                             
+          }
+         
+        });    
+  }
+}
   private filter() {
 
     this.dataSource.filterPredicate = (data: Fpduales, filter: string) => {
@@ -167,13 +192,13 @@ export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
     this.dataSource.filter = value.target.value.trim().toLocaleLowerCase();
   }
   add() {
-    const dialogRef = this.dialog.open(FpdualCreateComponent, {
+    this.dialog.open(FpdualCreateComponent, {
       width: '400px'
     });
   }
   edit(data: Fpduales) {
-    
-    const dialogRef = this.dialog.open(FpdualUpdateComponent, {
+    console.log(data)
+    this.dialog.open(FpdualUpdateComponent, {
       width: '400px',
       data: data
     });

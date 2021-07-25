@@ -154,7 +154,25 @@ exports.updateFp = async (req, res, next) => {
       }
     }
   }
-}
+};
+exports.getFpsByAdminCentro = async (req, res, next) => {
+  console.log(req.headers);
+  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
+
+  if (expirado) {
+    res.status(401).json({ "errors": "Sesión expirada" });
+  } else {
+
+    try {
+      const fp = await Fpdual.getFpsByAdminCentro(req.params.codigoCentro);
+
+      res.status(200).json({ fps: fp });
+
+    } catch (err) {
+      res.status(500).json({ error: err });
+    }
+  }
+};
 exports.createFp = async (req, res, next) => {
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if (expirado) {

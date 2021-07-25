@@ -14,6 +14,8 @@ router.get('/', fpController.getFps);
 
 router.get('/:id', fpController.getFp);
 
+router.get('/adminCentro/:codigoCentro', fpController.getFpsByAdminCentro);
+
 router.get('/alumno/:codigoCentro', fpController.getFpsConPlazasDisponibles);
 
 router.delete('/:id', fpController.deleteFp);
