@@ -46,10 +46,38 @@
       <mat-label>URL</mat-label>
         <input matInput type="text" name="url" formControlName="url" placeholder="url" required />
         <mat-error *ngIf="formInstance.controls['url']?.errors?.required">URL requerida</mat-error>
-        <mat-error *ngIf="formInstance.controls['url']?.errors?.pattern">Formato URL errónea</mat-error>
+        <mat-error *ngIf="formInstance.controls['url']?.errors?.pattern">Formato URL err&oacute;nea</mat-error>
         <mat-error *ngIf="formInstance.controls['url']?.errors?.serverError">{{ formInstance.controls['url']?.errors?.serverError }}</mat-error>
-
     </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>FP</mat-label>
+      <mat-select matNativeControl required formControlName="fpDual">
+        <mat-option *ngFor="let fp of fpList | keyvalue" [value]="fp.key">{{ fp.value }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="formInstance.controls['fpDual']?.errors?.required">FP dual requerido</mat-error>
+      <mat-error *ngIf="formInstance.controls['fpDual']?.errors?.serverError">{{ formInstance.controls['fpDual']?.errors?.serverError }}</mat-error>
+  
+    </mat-form-field>
+    <mat-form-field class="fullWidth" appearance="outline">
+      <mat-label>Plazas</mat-label>
+        <input matInput type="text" name="plazas" formControlName="plazas" placeholder="plazas" required />
+        <mat-error *ngIf="formInstance.controls['plazas']?.errors?.required">Plaza requerida</mat-error>
+        <mat-error *ngIf="formInstance.controls['plazas']?.errors?.min">M&iacute;nima 1 plaza</mat-error>
+        <mat-error *ngIf="formInstance.controls['plazas']?.errors?.serverError">{{ formInstance.controls['plazas']?.errors?.serverError }}</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Becas</mat-label>
+      <mat-select matNativeControl required formControlName="becas">
+        <mat-option  value="si">S&iacute;</mat-option>
+      <mat-option  value="no" >No</mat-option>
+      </mat-select>
+      <mat-error *ngIf="formInstance.controls['becas']?.errors?.required">beecas requerida</mat-error>
+      <mat-error *ngIf="formInstance.controls['becas']?.errors?.serverError">{{ formInstance.controls['becas']?.errors?.serverError }}</mat-error>
+    </mat-form-field>
+   
+        <input matInput type="text" name="becas" formControlName="becas" placeholder="becas" required />
+       
+   
   </form>
 </div>
 <div class="mt-5" mat-dialog-actions>

@@ -3,8 +3,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { first } from 'rxjs/operators';
 import { AppComponent } from 'src/app/app.component';
+import { NavigationComponent } from 'src/app/components/navigation/navigation.component';
 import { Empresa } from 'src/app/models/Empresa';
+import { Fpduales } from 'src/app/models/Fpduales';
 import { EmpresaService } from 'src/app/services/empresa.service';
+import { FpdualesService } from 'src/app/services/fpduales.service';
 @Component({
   selector: 'app-empresa-create',
   templateUrl: './empresa-create.component.html',
@@ -12,8 +15,8 @@ import { EmpresaService } from 'src/app/services/empresa.service';
 })
 export class EmpresaCreateComponent implements OnInit {
   formInstance: FormGroup;
-  constructor(public dialogRef: MatDialogRef<EmpresaCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Empresa, public empresaService: EmpresaService) {
+  fpList = new Map<number, string>();
+  constructor(public dialogRef: MatDialogRef<EmpresaCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: Empresa, private nagivationComponent: NavigationComponent, public empresaService: EmpresaService, private fpdualesService: FpdualesService) {
     this.formInstance = new FormGroup({
       cifEmpresa: new FormControl("", [Validators.required, Validators.pattern(/^[a-zA-Z]{1}\d{7}[a-zA-Z0-9]{1}$/)]),
       nombre: new FormControl("", [Validators.required, Validators.minLength(4)]),
@@ -21,18 +24,38 @@ export class EmpresaCreateComponent implements OnInit {
       telefono: new FormControl("", [Validators.required, Validators.pattern(/^(\+34|0034|34)?[ -]*(8|9)[ -]*([0-9][ -]*){8}$/)]),
       correo: new FormControl("", [Validators.required, Validators.email]),
       url: new FormControl("", [Validators.required, Validators.pattern(/^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/)]),
+      plazas: new FormControl("", [Validators.required, Validators.min(1)]),
+      becas: new FormControl("", [Validators.required]),
+      fpDual: new FormControl("", [Validators.required]),
     })
   }
 
 
   ngOnInit(): void {
+    this.fpdualesService.getFps().pipe(first())
+      .subscribe(
+        data => {
+          this.fpList = new Map<number, string>();
+          let fps = data["fps"]
+          fps.forEach(fpInfo => {
+            var fp = fpInfo as Fpduales
+
+            this.fpList.set(fp.id, fp.nombre)
+          });
+        },
+
+        error => {
+          if (error.status == 401 && error.error.errors == "Sesión expirada") {
+            this.nagivationComponent.closeSession();
+          }
+        });
   }
   save() {
     console.log(this.formInstance.value);
     this.empresaService.addEmpresa(this.formInstance.value).pipe(first())
       .subscribe(
         data => {
-          window.location.reload();
+          //window.location.reload();
           this.dialogRef.close();
         },
         error => {
@@ -47,7 +70,10 @@ export class EmpresaCreateComponent implements OnInit {
                 });
               }
             });
-          } else if (error.status == 401) {
+          } else if (error.status == 401 && error.error.errors == "Sesión expirada") {
+            this.nagivationComponent.closeSession();
+          }
+          else if (error.status == 401) {
             const res = new Array();
             res.push("No se ha podido crear.");
             AppComponent.myapp.openDialog(res);

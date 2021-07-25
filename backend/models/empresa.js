@@ -71,11 +71,12 @@ module.exports = class Empresa {
     }
     static async createEmpresa(empresa, user) {
         const connection = await promisePool.getConnection();
-
+        console.log(`INSERT INTO empresa_fpdual(idFp, CifEmpresa, becas, plazas) VALUES (${empresa.fpDual},'${empresa.cifEmpresa}','${empresa.becas}','${empresa.plazas}')`)
         try {
             await connection.beginTransaction();
             let query = `INSERT INTO empresa(cifEmpresa, direccion, nombre, correo, telefono, url) VALUES ('${empresa.cifEmpresa}','${empresa.direccion}','${empresa.nombre}','${empresa.correo}','${empresa.telefono}','${empresa.url}') `;
             await connection.query(query)
+            await connection.query(`INSERT INTO empresa_fpdual(idFp, CifEmpresa, becas, plazas) VALUES (${empresa.fpDual},'${empresa.cifEmpresa}','${empresa.becas}','${empresa.plazas}')`)
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha añadido empresa con CIF ${empresa.cifEmpresa} ','${user}',sysdate(), 'empresa')`);            
             await connection.commit();
         } catch (err) {

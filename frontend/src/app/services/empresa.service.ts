@@ -19,7 +19,8 @@ export class EmpresaService {
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
     return this.http.get<Empresa []>(this.url, httpOptions);
   }
-  addEmpresa(empresa : Empresa): Observable<JSON>{
+  addEmpresa(empresa): Observable<JSON>{
+     empresa.becas == 'si' ? empresa.becas=1 : empresa.becas=0;
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
     return this.http.post<JSON>(`${this.url}/create`, empresa , httpOptions);
   }

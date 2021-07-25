@@ -45,6 +45,8 @@ router.post(
       .normalizeEmail(),
     body('url').trim().not().isEmpty().withMessage("URL vacía")
     .matches(/^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/).withMessage("Formato CIF incorrecto"),
+    body('becas').trim().not().isEmpty().withMessage("Becas vacía"),
+    body('plazas').trim().not().isEmpty().withMessage("Plazas vacía")
   ],
   empresaController.createEmpresa
 );
