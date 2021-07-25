@@ -191,17 +191,17 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
     this.router.navigate(['encuesta']);
   }
   delete(id: any) {
-    /*const dialogRef = this.dialog.open(DeleteComponent);
-    
+    const dialogRef = this.dialog.open(DeleteComponent);
+    console.log(id)
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.fpService.deleteFp(id).pipe(first())
+        this.moduloService.deleteModulo(id).pipe(first())
         .subscribe(
           data => {
             window.location.reload();
           },
           error => {
-            if(error.status == 409){
+            /*if(error.status == 409){
               const dialogRef2 = this.dialog.open(FpdualDeleteConfirmationComponent);
               dialogRef2.afterClosed().subscribe( result => {
                   if(result){
@@ -218,10 +218,10 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
                     )
                   }
               });
-            }
+            }*/
           });
       }
-    });*/
+    });
 
   }
 

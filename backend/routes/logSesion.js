@@ -2,9 +2,9 @@ const express = require('express');
 
 const router = express.Router();
 
-const LogSesion = require('../models/logs/logSesion');
+const LogSesion = require('../models/log');
 
-const logSesionController = require('../controllers/logs/logSesion');
+const logSesionController = require('../controllers/log');
 
 router.get('/', logSesionController.getSesions);
 

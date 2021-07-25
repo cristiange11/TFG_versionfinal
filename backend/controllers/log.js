@@ -1,7 +1,7 @@
 const { validationResult } = require('express-validator');
 const jwt_decode = require('jwt-decode');
-const comprobarToken = require('../../util/comprobarToken');
-const LogSesion = require('../../models/logs/logSesion');
+const comprobarToken = require('../util/comprobarToken');
+const Log = require('../models/log');
 
 exports.getSesions = async (req, res, next) => {
   console.log(req.headers);
@@ -12,9 +12,9 @@ exports.getSesions = async (req, res, next) => {
   } else {
 
     try {
-      const sesiones = await LogSesion.getInicioSesiones();
+      const sesiones = await Log.getLogs();
 
-      res.status(200).json({ logSesion: sesiones });
+      res.status(200).json({ logs: sesiones });
 
     } catch (err) {
       res.status(500).json({ error: err });

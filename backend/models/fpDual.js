@@ -26,13 +26,12 @@ module.exports = class FP_dual {
     }
     static async DeleteUsuariosByFP(fpDual , user) {
         const connection = await promisePool.getConnection();
-        console.log(`DELETE FROM usuario WHERE fpDual = '${fpDual}'`)
-        console.log(`DELETE FROM fp_duales WHERE id =  '${fpDual}'`)
-        console.log(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha borrado el FP ${fpDual} y todo lo asociado','${user}',sysdate(), 'FP')`)
+        
         try {
             await connection.beginTransaction();
             let query = `DELETE FROM usuario WHERE fpDual = '${fpDual}'`;
             await connection.query(query)
+            await connection.query(`DELETE FROM modulo WHERE fpDual =  '${fpDual}'`);
             await connection.query(`DELETE FROM fp_duales WHERE id =  '${fpDual}'`);
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha borrado el FP ${fpDual} y todo lo asociado','${user}',sysdate(), 'FP')`);  
             await connection.commit();

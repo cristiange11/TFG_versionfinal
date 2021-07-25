@@ -1,7 +1,7 @@
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
-const LogSesion = require('../models/logs/logSesion');
+const LogSesion = require('../models/log');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const jwt_decode = require('jwt-decode');

@@ -90,12 +90,15 @@ module.exports = class Centro {
     }
     static async deleteUserAndFPByCentro(codigoCentro, user) {
         const connection = await promisePool.getConnection();
-
+        console.log(`DELETE t1 FROM modulo t1 INNER JOIN fp_duales t2 ON ( t1.fpDual = t2.id) WHERE t2.codigoCentro = '${codigoCentro}'`)
         try {
             await connection.beginTransaction();
             let query = `DELETE FROM usuario WHERE codigoCentro =  '${codigoCentro}'`;
             await connection.query(query)
+              
+            await connection.query(`DELETE t1 FROM modulo t1 INNER JOIN fp_duales t2 ON ( t1.fpDual = t2.id) WHERE t2.codigoCentro = '${codigoCentro}'`);
             await connection.query(`DELETE FROM fp_duales WHERE codigoCentro = '${codigoCentro}'`);
+            
             await connection.query(`DELETE FROM centro_educativo WHERE codigoCentro =  '${codigoCentro}'`);
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha eliminado todo lo asociado al centro ' ,'${user}',sysdate(), 'centro educativo')`);            
             await connection.commit();

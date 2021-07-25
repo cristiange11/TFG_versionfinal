@@ -30,7 +30,7 @@ exports.deleteEncuesta = async (req, res, next) => {
     try {
       console.log("entro a comprobar")
       const user = jwt_decode(req.headers['authorization']).sub;
-      await Encuesta.deleteEncuesta(req.params.codigo, user);
+      await Encuesta.deleteEncuesta(req.params.id, user);
 
       res.status(201).json({ message: "success" });
 

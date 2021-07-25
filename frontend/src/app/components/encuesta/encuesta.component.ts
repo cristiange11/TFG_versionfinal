@@ -13,6 +13,7 @@ import { Fpduales } from 'src/app/models/Fpduales';
 import { EncuestaService } from 'src/app/services/encuesta.service';
 import { DeleteComponent } from '../modals/delete/delete.component';
 import { EncuestaCreateComponent } from '../modals/encuesta/encuesta-create/encuesta-create.component';
+import { EncuestaUpdateComponent } from '../modals/encuesta/encuesta-update/encuesta-update.component';
 import { FpdualCreateComponent } from '../modals/fpdual/fpdual-create/fpdual-create.component';
 import { FpdualDeleteConfirmationComponent } from '../modals/fpdual/fpdual-delete-confirmation/fpdual-delete-confirmation.component';
 import { FpdualUpdateComponent } from '../modals/fpdual/fpdual-update/fpdual-update.component';
@@ -168,13 +169,13 @@ export class EncuestaComponent implements OnInit , OnDestroy, AfterViewInit {
     this.dataSource.filter = value.target.value.trim().toLocaleLowerCase();
   }
   add() {
-    const dialogRef = this.dialog.open(EncuestaCreateComponent, {
+     this.dialog.open(EncuestaCreateComponent, {
       width: '400px'
     });
   }
   edit(data: Fpduales) {
     
-    const dialogRef = this.dialog.open(FpdualUpdateComponent, {
+     this.dialog.open(EncuestaUpdateComponent, {
       width: '400px',
       data: data
     });

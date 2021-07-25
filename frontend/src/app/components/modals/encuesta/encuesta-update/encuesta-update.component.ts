@@ -18,6 +18,7 @@ export class EncuestaUpdateComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef< EncuestaCreateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Encuesta, public encuestaService: EncuestaService) { 
       this.formInstance = new FormGroup({
+        id: new FormControl("", []),
         titulo: new FormControl("", [Validators.required, Validators.minLength(4)]),
         descripcion: new FormControl("", [Validators.required, Validators.minLength(4)]),
         codigoModulo : new FormControl("",[]),
@@ -25,7 +26,7 @@ export class EncuestaUpdateComponent implements OnInit {
         dniAlumno: new FormControl("", [Validators.required, Validators.pattern(/^\d{8}[a-zA-Z]$/)]),
         dniTutorEmpresa: new FormControl("", [Validators.required, Validators.pattern(/^\d{8}[a-zA-Z]$/)]),
       });
-      this.formInstance.setValue({titulo : data.titulo, descripcion : data.descripcion , codigoModulo : Number(sessionStorage.getItem('codigoModulo')), resultado : "", dniAlumno: data.dniAlumno, dniTutorEmpresa: data.dniTutorEmpresa })
+      this.formInstance.setValue({id: data.id, titulo : data.titulo, descripcion : data.descripcion , codigoModulo : Number(sessionStorage.getItem('codigoModulo')), resultado : "", dniAlumno: data.dniAlumno, dniTutorEmpresa: data.dniTutorEmpresa })
 
     }
     
@@ -34,10 +35,10 @@ export class EncuestaUpdateComponent implements OnInit {
   }
   save(){
     console.log(this.formInstance.value);
-    this.encuestaService.addEncuesta(this.formInstance.value).pipe(first())
+    this.encuestaService.updateEncuesta(this.formInstance.value).pipe(first())
       .subscribe(
         data => {
-         window.location.reload();
+         //window.location.reload();
          this.dialogRef.close();
         },
         error => {

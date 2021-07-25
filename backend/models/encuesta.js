@@ -18,7 +18,7 @@ module.exports = class ResultadoAprendizaje {
     }
     static async deleteEncuesta(id, user) {
         const connection = await promisePool.getConnection();
-        
+        console.log(`DELETE FROM encuesta WHERE id =  ${id}`)
         try {
             await connection.beginTransaction();
             let query = `DELETE FROM encuesta WHERE id =  ${id}`;
@@ -39,9 +39,9 @@ module.exports = class ResultadoAprendizaje {
         const connection = await promisePool.getConnection();
         try {
             await connection.beginTransaction();
-            let query = `INSERT INTO encuesta(codigoModulo, titulo, descripcion, dniAlumno, dniTutorEmpresa) VALUES (${encuesta.codigoModulo},'${encuesta.titulo}','${encuesta.descripcion}', '${encuesta.dniAlumno}' , '${encuesta.dniTutorEmpresa}' ) WHERE id = ${encuesta.id}`;
+            let query = `INSERT INTO encuesta(codigoModulo, titulo, descripcion, dniAlumno, dniTutorEmpresa) VALUES (${encuesta.codigoModulo},'${encuesta.titulo}','${encuesta.descripcion}', '${encuesta.dniAlumno}' , '${encuesta.dniTutorEmpresa}' ) `;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha creado la encuesta con id ${encuesta.id} ','${user}',sysdate(), 'encuesta')`);            
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha creado la encuesta con id ${encuesta.nombre} ','${user}',sysdate(), 'encuesta')`);            
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
@@ -55,10 +55,10 @@ module.exports = class ResultadoAprendizaje {
     }
     static async updateEncuesta(encuesta, user) {
         const connection = await promisePool.getConnection();
-
+        console.log( `UPDATE encuesta SET codigoModulo='${encuesta.codigoModulo}', titulo='${encuesta.titulo}',descripcion='${encuesta.descripcion}', resultado = '${encuesta.resultado}', dniAlumno= '${encuesta.dniAlumno}' , dniTutorEmpresa = '${encuesta.dniTutorEmpresa}' WHERE id = '${encuesta.id}'`)
         try {
             await connection.beginTransaction();
-            let query = `UPDATE encuesta SET codigoModulo='${encuesta.codigoModulo}', titulo='${encuesta.titulo}',descripcion='${encuesta.descripcion}', resultado = ${encuesta.resultado}, dniAlumno= '${encuesta.dniAlumno}' , dniTutorEmpresa = '${encuesta.dniTutorEmpresa}' WHERE id = '${encuesta.id}'`;
+            let query = `UPDATE encuesta SET codigoModulo='${encuesta.codigoModulo}', titulo='${encuesta.titulo}',descripcion='${encuesta.descripcion}', resultado = '${encuesta.resultado}', dniAlumno= '${encuesta.dniAlumno}' , dniTutorEmpresa = '${encuesta.dniTutorEmpresa}' WHERE id = '${encuesta.id}'`;
             await connection.query(query)
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha actualizado la encuesta con id ${encuesta.id} ','${user}',sysdate(), 'encuesta')`);            
             await connection.commit();

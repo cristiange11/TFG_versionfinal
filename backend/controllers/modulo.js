@@ -28,7 +28,7 @@ exports.deleteModulo = async (req, res, next) => {
     res.status(401).json({ "errors": "Sesión expirada" });
   } else {
     try {
-      console.log("entro a comprobar")
+     
       const user = jwt_decode(req.headers['authorization']).sub;
       await Modulo.deleteModulo(req.params.codigo, user);
 
