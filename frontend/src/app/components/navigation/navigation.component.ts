@@ -50,14 +50,8 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
           {
             label: 'Logs',
             icon: 'pi pi-fw pi-file',
-            items: [
-              {
-                label: 'Inicio Sesión',
-                icon: 'pi pi-fw pi-file',
-                routerLink: '/logsesion'
-              },
-
-            ]
+            routerLink: '/log'
+            
           },
           {
             label: 'FP duales',

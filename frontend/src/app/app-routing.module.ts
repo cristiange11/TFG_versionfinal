@@ -13,6 +13,7 @@ import { UsuarioComponent } from './components/usuario/usuario.component';
 import { ModuloComponent } from './components/modulo/modulo.component';
 import { ResultadoAprendizajeComponent } from './components/resultado-aprendizaje/resultado-aprendizaje.component';
 import { EncuestaComponent } from './components/encuesta/encuesta.component';
+import { LogComponent } from './components/log/log.component';
 const routes: Routes = [
   {path: "", component: HomeComponent},
   {path: "navigation", component: NavigationComponent},
@@ -26,6 +27,7 @@ const routes: Routes = [
   {path: "modulo", component: ModuloComponent},
   {path: "resultadoaprendizaje", component: ResultadoAprendizajeComponent},
   {path: "encuesta", component: EncuestaComponent},
+  {path: "log", component: LogComponent},
   {path: "**", redirectTo: ""}
 ];
 

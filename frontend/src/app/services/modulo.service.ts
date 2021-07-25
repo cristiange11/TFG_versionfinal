@@ -11,9 +11,9 @@ export class ModuloService {
   private url = "http://localhost:3000/modulo";
 
   constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { }
-  getModulos(fpDual : number): Observable<Modulo[] >{   
+  getModulos(fpDual : number): Observable<JSON[] >{   
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),} 
-    return this.http.get<Modulo[]>(`${this.url}/${fpDual}`,  httpOptions); 
+    return this.http.get<JSON[]>(`${this.url}/${fpDual}`,  httpOptions); 
   }
   addModulo(modulo : Modulo): Observable<JSON>{
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}

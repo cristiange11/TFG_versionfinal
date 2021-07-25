@@ -1,7 +1,7 @@
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
-const LogSesion = require('../models/log');
+const promisePool = require('../util/database');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const jwt_decode = require('jwt-decode');
@@ -104,15 +104,13 @@ exports.login = async (req, res, next) => {
 
 
       if (!isEqual) {
+        await promisePool.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_LOGIN','Credenciales incorrectas ' ,'${req.body.dni}',sysdate(), 'login')`);            
 
-        error = true;
-
-        LogSesion.createInicioSesion(user.dni, error/*,fechaHora*/);
         res.status(401).json({ message: 'Credenciales incorrectas.' });
       }
       else {
-        error = false;
-        LogSesion.createInicioSesion(user.dni, error/*,fechaHora*/);
+        await promisePool.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha logado usuario ' ,'${req.body.dni}',sysdate(), 'login')`);            
+
         const jwtBearerToken = jwt.sign({ sub: user.dni }, 'proyecto final carrera', { expiresIn: '24h' });
         console.log("Token login => " + jwtBearerToken);
         const resJSON = { "result": { "user": userJson, "token": jwtBearerToken } }

@@ -14,7 +14,7 @@ const profesorRoutes = require('./routes/profesor');
 const resultadoAprendizajeRoutes = require('./routes/resultadoAprendizaje');
 const moduloRoutes = require('./routes/modulo');
 const encuestaRoutes= require('./routes/encuesta');
-const logSesionRoutes= require('./routes/logSesion');
+const logRoutes= require('./routes/logSesion');
 
 app.use(cors());
 
@@ -36,7 +36,7 @@ app.use('/alumno',alumnoRoutes);
 
 app.use("/profesor", profesorRoutes);
 
-app.use("/log/inicioSesion", logSesionRoutes);
+app.use("/log", logRoutes);
 
 app.use("/modulo", moduloRoutes);
 

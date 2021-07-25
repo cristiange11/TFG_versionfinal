@@ -3,7 +3,7 @@ const jwt_decode = require('jwt-decode');
 const comprobarToken = require('../util/comprobarToken');
 const Log = require('../models/log');
 
-exports.getSesions = async (req, res, next) => {
+exports.getLogs = async (req, res, next) => {
   console.log(req.headers);
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], { header: true }));
   console.log(expirado)
@@ -12,9 +12,9 @@ exports.getSesions = async (req, res, next) => {
   } else {
 
     try {
-      const sesiones = await Log.getLogs();
+      const log = await Log.getLogs();
 
-      res.status(200).json({ logs: sesiones });
+      res.status(200).json({ logs: log });
 
     } catch (err) {
       res.status(500).json({ error: err });

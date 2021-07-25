@@ -2,10 +2,10 @@ const express = require('express');
 
 const router = express.Router();
 
-const LogSesion = require('../models/log');
+const Log = require('../models/log');
 
-const logSesionController = require('../controllers/log');
+const logController = require('../controllers/log');
 
-router.get('/', logSesionController.getSesions);
+router.get('/', logController.getLogs);
 
 module.exports = router;
