@@ -4,7 +4,7 @@ const comprobarToken = require('../util/comprobarToken');
 const ResultadoAprendizaje = require('../models/resultadoAprendizaje');
 
 exports.getResultadoAprendizajes = async (req, res, next) => {
-  if (!req.is('application/json')) {
+  if (req.headers['content-type'] != "application/json") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -24,7 +24,7 @@ exports.getResultadoAprendizajes = async (req, res, next) => {
 }
 };
 exports.deleteResultadoAprendizaje = async (req, res, next) => {
-  if (!req.is('application/json')) {
+  if (req.headers['content-type'] != "application/json") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -46,7 +46,7 @@ exports.deleteResultadoAprendizaje = async (req, res, next) => {
 }
 };
 exports.updateResultadoAprendizaje = async (req, res, next) => {
-  if (!req.is('application/json')) {
+  if (req.headers['content-type'] != "application/json") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -93,7 +93,7 @@ exports.updateResultadoAprendizaje = async (req, res, next) => {
 }
 }
 exports.createResultadoAprendizaje = async (req, res, next) => {
-  if (!req.is('application/json')) {
+  if (req.headers['content-type'] != "application/json") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{

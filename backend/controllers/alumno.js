@@ -4,7 +4,7 @@ const comprobarToken = require('../util/comprobarToken');
 const Alumno = require('../models/alumno');
 const bcrypt = require('bcryptjs');
 exports.getAlumnos = async (req, res, next) => {
-    if (!req.is('application/json')) {
+    if (req.headers['content-type'] != "application/json") {
         res.status(406).json({ "errors": "No aceptable" });
       }
       else{
@@ -25,7 +25,7 @@ exports.getAlumnos = async (req, res, next) => {
       }
 };
 exports.getAlumno = async (req, res, next) => {
-    if (!req.is('application/json')) {
+    if (req.headers['content-type'] != "application/json") {
         res.status(406).json({ "errors": "No aceptable" });
       }
       else{
@@ -47,7 +47,7 @@ exports.getAlumno = async (req, res, next) => {
 }
 };
 exports.deleteAlumno = async (req, res, next) => {
-    if (!req.is('application/json')) {
+    if (req.headers['content-type'] != "application/json") {
         res.status(406).json({ "errors": "No aceptable" });
       }
       else{
@@ -69,7 +69,7 @@ exports.deleteAlumno = async (req, res, next) => {
       }
 };
 exports.updateAlumno = async (req, res, next) => {
-    if (!req.is('application/json')) {
+    if (req.headers['content-type'] != "application/json") {
         res.status(406).json({ "errors": "No aceptable" });
       }
       else{
@@ -119,7 +119,7 @@ exports.updateAlumno = async (req, res, next) => {
 }
 };
 exports.createAlumno = async (req, res, next) => {
-    if (!req.is('application/json')) {
+    if (req.headers['content-type'] != "application/json") {
         res.status(406).json({ "errors": "No aceptable" });
       }
       else{

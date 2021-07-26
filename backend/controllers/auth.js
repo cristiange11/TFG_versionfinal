@@ -9,7 +9,7 @@ const comprobarToken = require('../util/comprobarToken');
 var datetime = require('node-datetime');
 const RSA_PRIVATE_KEY = fs.readFileSync(__dirname + '/OPENSSL/private.pem');
 exports.signup = async (req, res, next) => {
-  if (!req.is('application/json')) {
+  if (req.headers['content-type'] != "application/json") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -95,7 +95,7 @@ exports.signup = async (req, res, next) => {
 };
 
 exports.login = async (req, res, next) => {
-  if (!req.is('application/json')) {
+  if (req.headers['content-type'] != "application/json") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -136,7 +136,7 @@ exports.login = async (req, res, next) => {
 }
 };
 exports.deleteUser = async (req, res, next) => {
-  if (!req.is('application/json')) {
+  if (req.headers['content-type'] != "application/json") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -159,7 +159,7 @@ exports.deleteUser = async (req, res, next) => {
 };
 
 exports.getUsuarios = async (req, res, next) => {
-  if (!req.is('application/json')) {
+  if (req.headers['content-type'] != "application/json") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -179,7 +179,7 @@ exports.getUsuarios = async (req, res, next) => {
 }
 };
 exports.updateUsuario = async (req, res, next) => {
-  if (!req.is('application/json')) {
+  if (req.headers['content-type'] != "application/json") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -227,7 +227,7 @@ exports.updateUsuario = async (req, res, next) => {
   }
 };
 exports.getUsersByCentro = async (req, res, next) => {
-  if (!req.is('application/json')) {
+  if (req.headers['content-type'] != "application/json") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{

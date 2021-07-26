@@ -4,8 +4,8 @@ const comprobarToken = require('../util/comprobarToken');
 const Centro = require('../models/centro');
 
 exports.getCentros = async (req, res, next) => {
-
-  if (!req.is('application/json')) {
+  console.log(req.headers['content-type'] != "application/json")
+  if (req.headers['content-type'] != "application/json") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -27,7 +27,7 @@ exports.getCentros = async (req, res, next) => {
 
 };
 exports.deleteCentro = async (req, res, next) => {
-  if (!req.is('application/json')) {
+  if (req.headers['content-type'] != "application/json") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -51,7 +51,7 @@ exports.deleteCentro = async (req, res, next) => {
 }
 };
 exports.updateCentro = async (req, res, next) => {
-  if (!req.is('application/json')) {
+  if (req.headers['content-type'] != "application/json") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -98,7 +98,7 @@ exports.updateCentro = async (req, res, next) => {
 }
 }
 exports.deleteUserAndFPByCentro = async (req, res, next) => {
-  if (!req.is('application/json')) {
+  if (req.headers['content-type'] != "application/json") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -124,7 +124,7 @@ exports.deleteUserAndFPByCentro = async (req, res, next) => {
 }
 };
 exports.createCentro = async (req, res, next) => {
-  if (!req.is('application/json')) {
+  if (req.headers['content-type'] != "application/json") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{

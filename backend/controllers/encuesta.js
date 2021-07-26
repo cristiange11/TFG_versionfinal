@@ -4,7 +4,7 @@ const comprobarToken = require('../util/comprobarToken');
 const Encuesta = require('../models/encuesta');
 
 exports.getEncuestas = async (req, res, next) => {
-  if (!req.is('application/json')) {
+  if (req.headers['content-type'] != "application/json") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -25,7 +25,7 @@ exports.getEncuestas = async (req, res, next) => {
 }
 };
 exports.deleteEncuesta = async (req, res, next) => {
-  if (!req.is('application/json')) {
+  if (req.headers['content-type'] != "application/json") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -47,7 +47,7 @@ exports.deleteEncuesta = async (req, res, next) => {
 }
 };
 exports.updateEncuesta = async (req, res, next) => {
-  if (!req.is('application/json')) {
+  if (req.headers['content-type'] != "application/json") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -94,7 +94,7 @@ exports.updateEncuesta = async (req, res, next) => {
 }
 }
 exports.createEncuesta = async (req, res, next) => {
-  if (!req.is('application/json')) {
+  if (req.headers['content-type'] != "application/json") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
