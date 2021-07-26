@@ -83,16 +83,6 @@
             </button>
         </mat-form-field>
 
-        <mat-form-field appearance="fill">
-            <mat-label>Rol</mat-label>
-            <mat-select matNativeControl required formControlName="rol" (selectionChange)="obtenerRol($event.value)">
-                <mat-option *ngFor="let rol of rolesList | keyvalue" [value]="rol.key" >{{ rol.value }}
-                </mat-option>
-            </mat-select>
-            <mat-error *ngIf="this.formInstance.get('rol').errors?.required">Rol requerido</mat-error>
-            <mat-error *ngIf="this.formInstance.get('rol').errors?.serverError">{{ this.formInstance.get('rol').errors?.serverError }}</mat-error>
-
-        </mat-form-field>
 
 
         <mat-form-field appearance="fill">

@@ -24,7 +24,7 @@ export class CentroCreateComponent implements OnInit {
         correo: new FormControl("", [Validators.required, Validators.email]),
         codigoCentro: new FormControl("", [Validators.required, Validators.minLength(4)]),
       })
-      //this.formInstance.setValue(data);
+     
     }
     
 

@@ -1,6 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { first } from 'rxjs/operators';
 import { AppComponent } from 'src/app/app.component';
 import { NavigationComponent } from 'src/app/components/navigation/navigation.component';
@@ -16,7 +18,8 @@ import { FpdualesService } from 'src/app/services/fpduales.service';
 export class EmpresaCreateComponent implements OnInit {
   formInstance: FormGroup;
   fpList = new Map<number, string>();
-  constructor(public dialogRef: MatDialogRef<EmpresaCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: Empresa, private nagivationComponent: NavigationComponent, public empresaService: EmpresaService, private fpdualesService: FpdualesService) {
+  user;
+  constructor(private router: Router, private cookieService: CookieService, public dialogRef: MatDialogRef<EmpresaCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: Empresa, private nagivationComponent: NavigationComponent, public empresaService: EmpresaService, private fpdualesService: FpdualesService) {
     
     this.formInstance = new FormGroup({
       cifEmpresa: new FormControl("", [Validators.required, Validators.pattern(/^[a-zA-Z]{1}\d{7}[a-zA-Z0-9]{1}$/)]),
@@ -29,6 +32,17 @@ export class EmpresaCreateComponent implements OnInit {
       becas: new FormControl("", [Validators.required]),
       fpDual: new FormControl("", [Validators.required]),
     })
+    if(!this.cookieService.get('user')){
+      this.router.navigate(['home']);
+    }
+    else{
+      this.user =(JSON.parse(this.cookieService.get('user')));
+    if(Number(this.user.rol)!=1 && Number(this.user.rol) != 2){
+      this.dialogRef.close();
+      this.router.navigate(['home']);
+    }
+    
+  }
   }
 
 
@@ -47,6 +61,7 @@ export class EmpresaCreateComponent implements OnInit {
 
         error => {
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            this.dialogRef.close();
             AppComponent.myapp.openDialogSesion();                             
           }else if (error.status == 406) {
             const res = new Array();

@@ -99,33 +99,7 @@ export class UsuarioUpdateComponent implements OnInit {
       }
   }
   ngOnInit(): void {
-    
-
-    this.rolService.getRoles().pipe(first())
-      .subscribe(
-        data => {
-          this.rolesList = new Map<number, string>();
-          let rol = data["roles"]
-          rol.forEach(rolInfo => {
-            if(Number(this.user.rol) == 1){
-              this.rolesList.set(rolInfo.id, rolInfo.nombreRol)
-            }
-            else if(Number(this.user.rol) == 2 && rolInfo.id != 1){
-              this.rolesList.set(rolInfo.id, rolInfo.nombreRol)
-            }
-            
-          });
-        },
-        error => {
-          if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            AppComponent.myapp.openDialogSesion();                             
-          }
-          else if (error.status == 406) {
-            const res = new Array();
-            res.push("Petición incorrecta.");
-            AppComponent.myapp.openDialog(res);
-          }
-        });
+   
   }
 
   checkConfirmPassword(): ValidatorFn {

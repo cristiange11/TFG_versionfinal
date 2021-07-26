@@ -36,6 +36,7 @@ export class FpdualCreateComponent implements OnInit {
       codigoCentro: new FormControl("", [Validators.required]),
     },)
     if(!this.cookieService.get('user')){
+      this.dialogRef.close();
       this.router.navigate(['home']);
     }
     else{
@@ -51,17 +52,7 @@ export class FpdualCreateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (!this.cookieService.get('user')) {
-      this.router.navigate(['home']);
-    }
-    else {
-      var user = (JSON.parse(this.cookieService.get('user')));
-      if (Number(user.rol) != 1) {
-        this.router.navigate(['home']);
-      }
-
-    }
-
+   
     this.centroService.getCentros().pipe(first())
       .subscribe(
         data => {
@@ -74,6 +65,7 @@ export class FpdualCreateComponent implements OnInit {
         },
         error => {
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            this.dialogRef.close();
             AppComponent.myapp.openDialogSesion();                             
           }else if (error.status == 406) {
             const res = new Array();

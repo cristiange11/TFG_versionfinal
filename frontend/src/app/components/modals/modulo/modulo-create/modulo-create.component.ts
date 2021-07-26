@@ -38,6 +38,7 @@ export class ModuloCreateComponent implements OnInit {
         },
         error => {
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            this.dialogRef.close();
             AppComponent.myapp.openDialogSesion();                             
           }else if (error.status == 406) {
             const res = new Array();
