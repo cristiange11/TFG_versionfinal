@@ -19,7 +19,22 @@ exports.getEmpresas = async (req, res, next) => {
     }
   }
 };
+exports.getEmpresasByCentro = async (req, res, next) => {
+  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
+  if (expirado) {
+    res.status(401).json({ "errors": "Sesión expirada" });
+  } else {
+    try {
 
+      const empresas = await Empresa.getEmpresasByCentro(req.params.codigoCentro);
+
+      res.status(200).json({ empresas: empresas });
+
+    } catch (err) {
+      res.status(500).json({ error: err });
+    }
+  }
+};
 exports.deleteTutorEmpresaByEmpresa = async (req, res, next) => {
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if (expirado) {

@@ -15,9 +15,13 @@ export class EmpresaService {
   private url = "http://localhost:3000/empresa";
 
   constructor(private cookieService: CookieService, private http: HttpClient, private errorHandlerService: ErrorHandlerService, private router: Router ) { }
-  getEmpresas(): Observable<Empresa[] >{
+  getEmpresas(): Observable<JSON[] >{
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
-    return this.http.get<Empresa []>(this.url, httpOptions);
+    return this.http.get<JSON []>(this.url, httpOptions);
+  }
+  getEmpresasByCentro(codigoCentro): Observable<JSON[] >{
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    return this.http.get<JSON []>(`${this.url}/${codigoCentro}`, httpOptions);
   }
   addEmpresa(empresa): Observable<JSON>{
      empresa.becas == 'si' ? empresa.becas=1 : empresa.becas=0;

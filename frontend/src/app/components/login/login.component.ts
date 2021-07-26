@@ -54,12 +54,13 @@ export class LoginComponent implements OnInit {
 
           this.cookieService.set('user', JSON.stringify(user));
           var userCookie = (JSON.parse(this.cookieService.get('user')));
-          
+         
           if (Number(userCookie.rol) == 1) {
-            this.router.navigate(['navigation', 'adminpage']);
+            this.router.navigate(['adminpage']);
           }
+          
           else if(Number(userCookie.rol) == 2) {
-            this.router.navigate(['navigation', 'fpdual']);
+            this.router.navigate(['fpdual']);
           }
 
         },
