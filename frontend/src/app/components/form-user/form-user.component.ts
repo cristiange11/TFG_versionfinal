@@ -137,7 +137,7 @@ this.centroService.getCentros().pipe(first())
           }
           else if (error.status == 406) {
             const res = new Array();
-            res.push("Cabecera incorrecta.");
+            res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
           }
         });
@@ -174,7 +174,7 @@ this.centroService.getCentros().pipe(first())
               this.nagivationComponent.closeSession();         
             } else if (error.status == 406) {
               const res = new Array();
-              res.push("Cabecera incorrecta.");
+              res.push("Petición incorrecta.");
               AppComponent.myapp.openDialog(res);
             }
           });
@@ -202,7 +202,7 @@ this.centroService.getCentros().pipe(first())
           }
           else if (error.status == 406) {
             const res = new Array();
-            res.push("Cabecera incorrecta.");
+            res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
           }
         });
@@ -227,7 +227,7 @@ this.centroService.getCentros().pipe(first())
           }
           else if (error.status == 406) {
             const res = new Array();
-            res.push("Cabecera incorrecta.");
+            res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
           }
         });
@@ -248,7 +248,7 @@ this.centroService.getCentros().pipe(first())
             AppComponent.myapp.openDialogSesion();                             
           } else if (error.status == 406) {
             const res = new Array();
-            res.push("Cabecera incorrecta.");
+            res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
           }
         });
@@ -285,7 +285,7 @@ this.centroService.getCentros().pipe(first())
           });
         } else if (error.status == 406) {
           const res = new Array();
-          res.push("Cabecera incorrecta.");
+          res.push("Petición incorrecta.");
           AppComponent.myapp.openDialog(res);
         }
         else if(error.status == 401 && error.error.errors == "Sesión expirada"){
@@ -327,7 +327,7 @@ this.centroService.getCentros().pipe(first())
           }
           else if (error.status == 406) {
             const res = new Array();
-            res.push("Cabecera incorrecta.");
+            res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
           }
         });
@@ -354,7 +354,7 @@ this.centroService.getCentros().pipe(first())
            });
           } else if (error.status == 406) {
             const res = new Array();
-            res.push("Cabecera incorrecta.");
+            res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
           }
           else if(error.status == 401 && error.error.errors == "Sesión expirada"){
@@ -386,7 +386,7 @@ this.centroService.getCentros().pipe(first())
           }
           else if (error.status == 406) {
             const res = new Array();
-            res.push("Cabecera incorrecta.");
+            res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
           }
         });

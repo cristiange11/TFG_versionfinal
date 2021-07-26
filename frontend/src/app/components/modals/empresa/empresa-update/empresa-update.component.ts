@@ -53,7 +53,7 @@ export class EmpresaUpdateComponent implements OnInit {
           }
           else if (error.status == 406) {
             const res = new Array();
-            res.push("Cabecera incorrecta.");
+            res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
           }
           else if (error.status == 401) {

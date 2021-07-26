@@ -70,7 +70,7 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
             AppComponent.myapp.openDialogSesion();                             
           } else if (error.status == 406) {
             const res = new Array();
-            res.push("Cabecera incorrecta.");
+            res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
           }
 
@@ -197,7 +197,7 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
                 AppComponent.myapp.openDialogSesion();                             
               } else if (error.status == 406) {
                 const res = new Array();
-                res.push("Cabecera incorrecta.");
+                res.push("Petición incorrecta.");
                 AppComponent.myapp.openDialog(res);
               }
               else{

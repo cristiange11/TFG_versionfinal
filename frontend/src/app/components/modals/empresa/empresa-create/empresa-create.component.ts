@@ -17,6 +17,7 @@ export class EmpresaCreateComponent implements OnInit {
   formInstance: FormGroup;
   fpList = new Map<number, string>();
   constructor(public dialogRef: MatDialogRef<EmpresaCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: Empresa, private nagivationComponent: NavigationComponent, public empresaService: EmpresaService, private fpdualesService: FpdualesService) {
+    
     this.formInstance = new FormGroup({
       cifEmpresa: new FormControl("", [Validators.required, Validators.pattern(/^[a-zA-Z]{1}\d{7}[a-zA-Z0-9]{1}$/)]),
       nombre: new FormControl("", [Validators.required, Validators.minLength(4)]),
@@ -49,7 +50,7 @@ export class EmpresaCreateComponent implements OnInit {
             AppComponent.myapp.openDialogSesion();                             
           }else if (error.status == 406) {
             const res = new Array();
-            res.push("Cabecera incorrecta.");
+            res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
           }
         });
@@ -79,7 +80,7 @@ export class EmpresaCreateComponent implements OnInit {
           }
           else if (error.status == 406) {
             const res = new Array();
-            res.push("Cabecera incorrecta.");
+            res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
           }
           else if (error.status == 401) {
