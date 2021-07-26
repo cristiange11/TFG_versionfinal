@@ -77,9 +77,14 @@ module.exports = class Alumno extends User {
             await connection.query(query);
             await connection.query(`UPDATE alumno SET numeroExpediente='${alumno.numeroExpediente}' WHERE dni = '${alumno.dni}'`);            
             await connection.query(`DELETE  FROM alumno_modulo WHERE DNI = '${alumno.dni}'`);
-            alumno.modulo.modulo.forEach(async (moduloInser) =>{
-                await connection.query(`INSERT INTO alumno_modulo (codigoModulo, dni) SELECT modulo.codigo, alumno.dni FROM modulo, alumno WHERE modulo.codigo = ${moduloInser} AND alumno.dni='${alumno.dni}'`);
-           })
+            const alumno = JSON.parse(JSON.stringify(alumno.modulo.modulo));
+
+            for (var i = 0; i < alumno.length; i++) {
+
+                const moduloInser = alumno[i];
+
+                await connection.query(`INSERT INTO alumno_modulo (codigoModulo, dni) SELECT modulo.codigo, tutor_empresa.dni FROM modulo, tutor_empresa WHERE modulo.codigo = ${moduloInser} AND tutor_empresa.dni='${alumno.dni}'`);
+            }
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha añadido alumno con DNI ${alumno.dni} ','${user}',sysdate(), 'alumno')`);            
             await connection.commit();
         } catch (err) {

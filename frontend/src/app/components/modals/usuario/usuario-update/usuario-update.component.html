@@ -133,7 +133,7 @@
         
           </mat-form-field>     
         <ng-template #anotherRol>
-            <mat-form-field *ngIf="this.numero==5; else rolTutorEmpresa" required>
+            <mat-form-field *ngIf="this.numero=='Alumno'; else rolTutorEmpresa" required>
                 <input matInput type="text" [formControl]="numeroExpediente" placeholder="Número de expediente">
                 <mat-error *ngIf=" numeroExpediente.errors?.required">N&uacute;,ero de expediente requerido</mat-error>
                 <mat-error *ngIf=" numeroExpediente.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>

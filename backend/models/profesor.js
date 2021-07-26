@@ -65,17 +65,23 @@ module.exports = class Profesor extends User {
         }
     }
     static async updateProfesor(profesor, password, user) {
+        console.log("entro")
         const connection = await promisePool.getConnection();
-
+        console.log(`UPDATE usuario SET nombre='${profesor.nombre}',apellidos='${profesor.apellidos}',correo='${profesor.correo}', movil='${profesor.movil}',direccion='${profesor.direccion}',password='${password}',genero='${profesor.genero}', cp='${profesor.cp}',rol='${profesor.rol}',fechaNacimiento=STR_TO_DATE('${profesor.fechaNacimiento}','%Y-%m-%d'),fpDual=${profesor.fpDual},codigoCentro='${profesor.codigoCentro}' WHERE dni='${profesor.dni}'`)
         try {
             await connection.beginTransaction();
             let query = `UPDATE usuario SET nombre='${profesor.nombre}',apellidos='${profesor.apellidos}',correo='${profesor.correo}', movil='${profesor.movil}',direccion='${profesor.direccion}',password='${password}',genero='${profesor.genero}', cp='${profesor.cp}',rol='${profesor.rol}',fechaNacimiento=STR_TO_DATE('${profesor.fechaNacimiento}','%Y-%m-%d'),fpDual=${profesor.fpDual},codigoCentro='${profesor.codigoCentro}' WHERE dni='${profesor.dni}'`;
             await connection.query(query);
             await connection.query(`UPDATE profesor SET departamento='${profesor.departamento}' WHERE dni = '${profesor.dni}'`);
             await connection.query(`DELETE  FROM profesor_modulo WHERE DNI = '${profesor.dni}'`);
-            profesor.modulo.modulo.forEach(async (moduloInser) => {
+            const profesores = JSON.parse(JSON.stringify(profesor.modulo.modulo));
+
+            for (var i = 0; i < profesores.length; i++) {
+
+                const moduloInser = profesores[i];
+
                 await connection.query(`INSERT INTO profesor_modulo (codigoModulo, dni) SELECT modulo.codigo, profesor.dni FROM modulo, profesor WHERE modulo.codigo = ${moduloInser} AND profesor.dni='${profesor.dni}'`);
-            })
+            }
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha actualizado profesor con DNI ${profesor.dni} ','${user}',sysdate(), 'profesor')`);
             await connection.commit();
         } catch (err) {

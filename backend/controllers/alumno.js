@@ -29,7 +29,7 @@ exports.getAlumno = async (req, res, next) => {
         res.status(406).json({ "errors": "No aceptable" });
       }
       else{
-    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
     console.log(expirado)
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
@@ -38,6 +38,7 @@ exports.getAlumno = async (req, res, next) => {
     const dni = req.params.dni;
     try {
         const alumno = await Alumno.getAlumno(dni);
+        
         res.status(200).json({ alumno: alumno });
 
     } catch (err) {

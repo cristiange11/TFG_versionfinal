@@ -71,9 +71,14 @@ module.exports = class TutorEmpresa {
             await connection.query(query);
             await connection.query(`UPDATE tutor_empresa SET moduloEmpresa='${tutor.moduloEmpresa}' and cifEmpresa = '${tutor.cifEmpresa}' WHERE dni = '${tutor.dni}'`);
             await connection.query(`DELETE  FROM tutor_modulo WHERE DNI = '${tutor.dni}'`);
-            tutor.modulo.modulo.forEach(async (moduloInser) =>{
-                await connection.query(`INSERT INTO tutor_modulo (codigoModulo, dni) SELECT modulo.codigo, tutor_empresa.dni FROM modulo, tutor_empresa WHERE modulo.codigo = ${moduloInser} AND tutor_empresa.dni='${tutor.dni}'`);
-            })
+            const tutor = JSON.parse(JSON.stringify(tutorEmpresa.modulo.modulo));
+
+            for (var i = 0; i < tutor.length; i++) {
+
+                const moduloInser = tutor[i];
+
+                await connection.query(`INSERT INTO tutor_modulo (codigoModulo, dni) SELECT modulo.codigo, tutor_empresa.dni FROM modulo, tutor_empresa WHERE modulo.codigo = ${moduloInser} AND tutor_empresa.dni='${tutorEmpresa.dni}'`);
+            }
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha actualizado tutor empresa con DNI ${tutor.dni} ','${user}',sysdate(), 'tutor de empresa')`);            
             await connection.commit();
         } catch (err) {
