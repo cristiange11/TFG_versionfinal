@@ -43,10 +43,15 @@ module.exports = class TutorEmpresa {
             let query = `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fechaNacimiento, fpDual, codigoCentro) VALUES ('${tutorEmpresa.dni}','${tutorEmpresa.nombre}','${tutorEmpresa.apellidos}','${tutorEmpresa.correo}','${tutorEmpresa.movil}','${tutorEmpresa.direccion}','${password}','${tutorEmpresa.genero}',${tutorEmpresa.cp},'${tutorEmpresa.rol}',STR_TO_DATE('${tutorEmpresa.fechaNacimiento}','%Y-%m-%d'),'${tutorEmpresa.fpDual}','${tutorEmpresa.codigoCentro}')`;
             await connection.query(query);
             await connection.query(`INSERT INTO tutor_empresa (dni, moduloEmpresa, cifEmpresa) VALUES ('${tutorEmpresa.dni}','${tutorEmpresa.moduloEmpresa}', '${tutorEmpresa.cifEmpresa}')`);
-            tutorEmpresa.modulo.modulo.forEach(async (moduloInser) =>{
+            const tutor = JSON.parse(JSON.stringify(tutorEmpresa.modulo.modulo));
+
+            for (var i = 0; i < tutor.length; i++) {
+
+                const moduloInser = tutor[i];
+
                 await connection.query(`INSERT INTO tutor_modulo (codigoModulo, dni) SELECT modulo.codigo, tutor_empresa.dni FROM modulo, tutor_empresa WHERE modulo.codigo = ${moduloInser} AND tutor_empresa.dni='${tutorEmpresa.dni}'`);
-                
-            })
+            }
+            
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha añadido tutor empresa con DNI ${tutorEmpresa.dni} ','${user}',sysdate(), 'tutor de empresa')`);            
             await connection.commit();
         } catch (err) {
