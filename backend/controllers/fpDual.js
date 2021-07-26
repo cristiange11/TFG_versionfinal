@@ -4,7 +4,10 @@ const comprobarToken = require('../util/comprobarToken');
 const Fpdual = require('../models/fpDual');
 
 exports.getFpByCentro = async (req, res, next) => {
-  console.log(req.headers);
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
   console.log(expirado)
   if (expirado) {
@@ -22,9 +25,14 @@ exports.getFpByCentro = async (req, res, next) => {
       res.status(500).json({ error: err });
     }
   }
+}
 };
 exports.DeleteUsuariosByFP = async (req, res, next) => {
-  console.log(req.headers);
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
+  
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
   console.log(expirado)
   if (expirado) {
@@ -41,9 +49,13 @@ exports.DeleteUsuariosByFP = async (req, res, next) => {
       res.status(500).json({ error: err });
     }
   }
+}
 };
 exports.getFp = async (req, res, next) => {
-  
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
   console.log(expirado)
   if (expirado) {
@@ -58,11 +70,13 @@ exports.getFp = async (req, res, next) => {
       res.status(500).json({ error: err });
     }
   }
-
+  }
 };
 exports.getFps = async (req, res, next) => {
-  
-  console.log(req.headers);
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
   console.log(expirado)
   if (expirado) {
@@ -77,10 +91,13 @@ exports.getFps = async (req, res, next) => {
       res.status(500).json({ error: err });
     }
   }
-
+}
 };
 exports.getFpsConPlazasDisponibles = async (req, res, next) => {
-  
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   console.log(req.headers);
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
   console.log(expirado)
@@ -95,9 +112,13 @@ exports.getFpsConPlazasDisponibles = async (req, res, next) => {
       res.status(500).json({ error: err });
     }
   }
-
+  }
 };
 exports.deleteFp = async (req, res, next) => {
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
@@ -113,8 +134,13 @@ exports.deleteFp = async (req, res, next) => {
       res.status(409).json({ error: err });
     }
   }
+}
 };
 exports.updateFp = async (req, res, next) => {
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
@@ -154,9 +180,13 @@ exports.updateFp = async (req, res, next) => {
       }
     }
   }
+}
 };
 exports.getFpsByAdminCentro = async (req, res, next) => {
-  console.log(req.headers);
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
 
   if (expirado) {
@@ -172,8 +202,13 @@ exports.getFpsByAdminCentro = async (req, res, next) => {
       res.status(500).json({ error: err });
     }
   }
+}
 };
 exports.createFp = async (req, res, next) => {
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
@@ -214,4 +249,5 @@ exports.createFp = async (req, res, next) => {
       }
     }
   }
+}
 };

@@ -4,8 +4,10 @@ const comprobarToken = require('../util/comprobarToken');
 const Encuesta = require('../models/encuesta');
 
 exports.getEncuestas = async (req, res, next) => {
-  
-  console.log(req.headers);
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
   console.log(expirado)
   if (expirado) {
@@ -20,9 +22,13 @@ exports.getEncuestas = async (req, res, next) => {
       res.status(500).json({ error: err });
     }
   }
-
+}
 };
 exports.deleteEncuesta = async (req, res, next) => {
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
@@ -38,8 +44,13 @@ exports.deleteEncuesta = async (req, res, next) => {
       res.status(409).json({ error: err });
     }
   }
+}
 };
 exports.updateEncuesta = async (req, res, next) => {
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
@@ -81,7 +92,12 @@ exports.updateEncuesta = async (req, res, next) => {
     }
   }
 }
+}
 exports.createEncuesta = async (req, res, next) => {
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
@@ -121,4 +137,5 @@ exports.createEncuesta = async (req, res, next) => {
       }
     }
   }
+}
 };

@@ -78,19 +78,28 @@ export class UsuarioUpdateComponent implements OnInit {
       direccion: data.direccion, cp: data.cp, genero: data.genero, movil: data.movil, correo: data.correo,
       fechaNacimiento: this.datepipe.transform(data.fechaNacimiento, "YYYY-dd-MM"), rol: data.rol, password: "", confirmPassword: ""
     })
+    this.rellenarFormulario(data);
     this.user = data;
-  }
-
-  ngOnInit(): void {
-    if (!this.cookieService.get('user')) {
+    if(!this.cookieService.get('user')){
       this.router.navigate(['home']);
     }
-    else {
-      var user1 = (JSON.parse(this.cookieService.get('user')));
-      if (Number(user1.rol) != 1) {
-        this.router.navigate(['home']);
-      }
+    else{
+      this.user =(JSON.parse(this.cookieService.get('user')));
+    if(Number(this.user.rol)!=1 && Number(this.user.rol) != 2){
+      this.dialogRef.close();
+      this.router.navigate(['home']);
     }
+    
+  }
+  }
+  rellenarFormulario(data){
+    console.log(data)
+      if(data.rol == "Alumno"){
+        //this.numeroExpediente.setValue({numeroExpediente: })
+      }
+  }
+  ngOnInit(): void {
+    
 
     this.rolService.getRoles().pipe(first())
       .subscribe(
@@ -98,12 +107,23 @@ export class UsuarioUpdateComponent implements OnInit {
           this.rolesList = new Map<number, string>();
           let rol = data["roles"]
           rol.forEach(rolInfo => {
-            this.rolesList.set(rolInfo.id, rolInfo.nombreRol)
+            if(Number(this.user.rol) == 1){
+              this.rolesList.set(rolInfo.id, rolInfo.nombreRol)
+            }
+            else if(Number(this.user.rol) == 2 && rolInfo.id != 1){
+              this.rolesList.set(rolInfo.id, rolInfo.nombreRol)
+            }
+            
           });
         },
         error => {
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
             AppComponent.myapp.openDialogSesion();                             
+          }
+          else if (error.status == 406) {
+            const res = new Array();
+            res.push("Cabecera incorrecta.");
+            AppComponent.myapp.openDialog(res);
           }
         });
   }
@@ -133,6 +153,11 @@ export class UsuarioUpdateComponent implements OnInit {
         error => {
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
             AppComponent.myapp.openDialogSesion();                             
+          }
+          else if (error.status == 406) {
+            const res = new Array();
+            res.push("Cabecera incorrecta.");
+            AppComponent.myapp.openDialog(res);
           }
         });
   
@@ -170,6 +195,11 @@ export class UsuarioUpdateComponent implements OnInit {
             if(error.status == 401 && error.error.errors == "Sesión expirada"){
               AppComponent.myapp.openDialogSesion();                             
             }
+            else if (error.status == 406) {
+              const res = new Array();
+              res.push("Cabecera incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
           });
     }
     return this.numero;
@@ -192,6 +222,11 @@ export class UsuarioUpdateComponent implements OnInit {
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
             AppComponent.myapp.openDialogSesion();                             
           }
+          else if (error.status == 406) {
+            const res = new Array();
+            res.push("Cabecera incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }
         });
   }
   obtenerFP(centro): void {
@@ -210,6 +245,11 @@ export class UsuarioUpdateComponent implements OnInit {
         error => {
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
             AppComponent.myapp.openDialogSesion();                             
+          }
+          else if (error.status == 406) {
+            const res = new Array();
+            res.push("Cabecera incorrecta.");
+            AppComponent.myapp.openDialog(res);
           }
         });
   }
@@ -244,6 +284,11 @@ export class UsuarioUpdateComponent implements OnInit {
             else if(error.status == 401 && error.error.errors == "Sesión expirada"){
               AppComponent.myapp.openDialogSesion();                             
             }
+            else if (error.status == 406) {
+              const res = new Array();
+              res.push("Cabecera incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
           });
     }
 
@@ -276,6 +321,11 @@ export class UsuarioUpdateComponent implements OnInit {
             else if(error.status == 401 && error.error.errors == "Sesión expirada"){
               AppComponent.myapp.openDialogSesion();                             
             }
+            else if (error.status == 406) {
+              const res = new Array();
+              res.push("Cabecera incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
           });
     } else if (this.numero == 4) {
 
@@ -299,6 +349,11 @@ export class UsuarioUpdateComponent implements OnInit {
             } else if(error.status == 401 && error.error.errors == "Sesión expirada"){
               AppComponent.myapp.openDialogSesion();                             
             }
+            else if (error.status == 406) {
+              const res = new Array();
+              res.push("Cabecera incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
           });
     } else if (this.numero == 3) {
 
@@ -308,8 +363,14 @@ export class UsuarioUpdateComponent implements OnInit {
           window.location.reload();
         },
         error => {
+          console.log(error)
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
             AppComponent.myapp.openDialogSesion();                             
+          }
+          else if (error.status == 406) {
+            const res = new Array();
+            res.push("Cabecera incorrecta.");
+            AppComponent.myapp.openDialog(res);
           }
           else if(error.status==409){
           error.error.errors.forEach(errorInfo => {

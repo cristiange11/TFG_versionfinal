@@ -44,7 +44,7 @@
 
     </mat-form-field>
     
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" *ngIf="this.user.rol == '1'">
         <mat-label>Centros</mat-label>
         <mat-select matNativeControl required formControlName="codigoCentro" >
           <mat-option *ngFor="let cent of centroList | keyvalue" [value]="cent.key" >{{ cent.value }}</mat-option>

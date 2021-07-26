@@ -4,8 +4,10 @@ const comprobarToken = require('../util/comprobarToken');
 const ResultadoAprendizaje = require('../models/resultadoAprendizaje');
 
 exports.getResultadoAprendizajes = async (req, res, next) => {
-  
-  console.log(req.headers);
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
   console.log(expirado)
   if (expirado) {
@@ -19,9 +21,13 @@ exports.getResultadoAprendizajes = async (req, res, next) => {
       res.status(500).json({ error: err });
     }
   }
-
+}
 };
 exports.deleteResultadoAprendizaje = async (req, res, next) => {
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
@@ -37,8 +43,13 @@ exports.deleteResultadoAprendizaje = async (req, res, next) => {
       res.status(409).json({ error: err });
     }
   }
+}
 };
 exports.updateResultadoAprendizaje = async (req, res, next) => {
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
@@ -80,7 +91,12 @@ exports.updateResultadoAprendizaje = async (req, res, next) => {
     }
   }
 }
+}
 exports.createResultadoAprendizaje = async (req, res, next) => {
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
@@ -119,5 +135,6 @@ exports.createResultadoAprendizaje = async (req, res, next) => {
         res.status(500).json({ error: err });
       }
     }
+  }
   }
 };

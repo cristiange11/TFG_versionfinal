@@ -135,6 +135,11 @@ this.centroService.getCentros().pipe(first())
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
             AppComponent.myapp.openDialogSesion();                             
           }
+          else if (error.status == 406) {
+            const res = new Array();
+            res.push("Cabecera incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }
         });
    
 
@@ -164,8 +169,13 @@ this.centroService.getCentros().pipe(first())
             });
           },
           error => {
+            
             if(error.status == 401 && error.error.errors == "Sesión expirada"){
               this.nagivationComponent.closeSession();         
+            } else if (error.status == 406) {
+              const res = new Array();
+              res.push("Cabecera incorrecta.");
+              AppComponent.myapp.openDialog(res);
             }
           });
     }
@@ -186,8 +196,14 @@ this.centroService.getCentros().pipe(first())
           
         },
         error => {
+          
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
             AppComponent.myapp.openDialogSesion();                             
+          }
+          else if (error.status == 406) {
+            const res = new Array();
+            res.push("Cabecera incorrecta.");
+            AppComponent.myapp.openDialog(res);
           }
         });
   }
@@ -209,6 +225,11 @@ this.centroService.getCentros().pipe(first())
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
             AppComponent.myapp.openDialogSesion();                             
           }
+          else if (error.status == 406) {
+            const res = new Array();
+            res.push("Cabecera incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }
         });
     }  else{
       this.fpdualesService.getFPdualByAlumno(centro).pipe(first())
@@ -225,6 +246,10 @@ this.centroService.getCentros().pipe(first())
         error => {
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
             AppComponent.myapp.openDialogSesion();                             
+          } else if (error.status == 406) {
+            const res = new Array();
+            res.push("Cabecera incorrecta.");
+            AppComponent.myapp.openDialog(res);
           }
         });
 
@@ -258,6 +283,10 @@ this.centroService.getCentros().pipe(first())
               });  
             }          
           });
+        } else if (error.status == 406) {
+          const res = new Array();
+          res.push("Cabecera incorrecta.");
+          AppComponent.myapp.openDialog(res);
         }
         else if(error.status == 401 && error.error.errors == "Sesión expirada"){
           AppComponent.myapp.openDialogSesion();                             
@@ -296,6 +325,11 @@ this.centroService.getCentros().pipe(first())
           else if(error.status == 401 && error.error.errors == "Sesión expirada"){
             AppComponent.myapp.openDialogSesion();                             
           }
+          else if (error.status == 406) {
+            const res = new Array();
+            res.push("Cabecera incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }
         });
     }else if(this.numero==4){
       
@@ -318,6 +352,10 @@ this.centroService.getCentros().pipe(first())
                });  
              }          
            });
+          } else if (error.status == 406) {
+            const res = new Array();
+            res.push("Cabecera incorrecta.");
+            AppComponent.myapp.openDialog(res);
           }
           else if(error.status == 401 && error.error.errors == "Sesión expirada"){
             AppComponent.myapp.openDialogSesion();                             
@@ -345,6 +383,11 @@ this.centroService.getCentros().pipe(first())
           }
           else if(error.status == 401 && error.error.errors == "Sesión expirada"){
             AppComponent.myapp.openDialogSesion();                             
+          }
+          else if (error.status == 406) {
+            const res = new Array();
+            res.push("Cabecera incorrecta.");
+            AppComponent.myapp.openDialog(res);
           }
         });
     }

@@ -46,8 +46,8 @@ export class AuthService {
     
   }
   login( dni: Pick<User, "dni">, password: Pick<User, "password">): Observable<JSON> {
-    console.log('LOGIIIIIIN');
-    return this.http.post<JSON>(`${this.url}/login`, { dni, password });   
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({  "Content-Type" : "application/json"}),}
+    return this.http.post<JSON>(`${this.url}/login`, { dni, password }, httpOptions);   
   }
   updateUsuario(editForm , userJson): Observable<JSON>{
     

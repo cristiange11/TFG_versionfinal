@@ -9,7 +9,10 @@ const comprobarToken = require('../util/comprobarToken');
 var datetime = require('node-datetime');
 const RSA_PRIVATE_KEY = fs.readFileSync(__dirname + '/OPENSSL/private.pem');
 exports.signup = async (req, res, next) => {
-
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
   console.log("cumpruebo si esta expirado" + expirado)
   if (expirado) {
@@ -88,10 +91,14 @@ exports.signup = async (req, res, next) => {
       }
     }
   }
+}
 };
 
 exports.login = async (req, res, next) => {
-
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   const dni = req.body.dni;
   const password = req.body.password;
   try {
@@ -126,8 +133,13 @@ exports.login = async (req, res, next) => {
     }
     next(err);
   }
+}
 };
 exports.deleteUser = async (req, res, next) => {
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
@@ -143,10 +155,14 @@ exports.deleteUser = async (req, res, next) => {
       res.status(500).json({ error: err });
     }
   }
-
+}
 };
 
 exports.getUsuarios = async (req, res, next) => {
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
@@ -160,9 +176,13 @@ exports.getUsuarios = async (req, res, next) => {
       res.status(500).json({ error: err });
     }
   }
+}
 };
 exports.updateUsuario = async (req, res, next) => {
-  console.log("Hola compruebo si entro")
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
@@ -204,8 +224,13 @@ exports.updateUsuario = async (req, res, next) => {
       }
     }
   }
+  }
 };
 exports.getUsersByCentro = async (req, res, next) => {
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
@@ -219,4 +244,5 @@ exports.getUsersByCentro = async (req, res, next) => {
       res.status(500).json({ error: err });
     }
   }
+}
 };

@@ -18,6 +18,7 @@ export class FpdualUpdateComponent implements OnInit {
   formInstance: FormGroup;
    fecha;
    anio;
+   user;
    totalPlazasControl =new FormControl("", [Validators.required, Validators.min(1)]);
    plazasDisponiblesControl = new FormControl("", [Validators.required, this.validateScore()]);
   
@@ -39,21 +40,21 @@ export class FpdualUpdateComponent implements OnInit {
       }, )
       
       this.formInstance.setValue(data); 
+      if(!this.cookieService.get('user')){
+        this.router.navigate(['home']);
+      }
+      else{
+        this.user =(JSON.parse(this.cookieService.get('user')));
+      if(Number(this.user.rol)!=1 && Number(this.user.rol) != 2){
+        this.dialogRef.close();
+        this.router.navigate(['home']);
+      }
+      
     }
-
+  }
+    
   ngOnInit(): void {
-    if(!this.cookieService.get('user')){
-      this.router.navigate(['home']);
-    }
-    else{
-      var user =(JSON.parse(this.cookieService.get('user')));
-    if(Number(user.rol)!=1){
-      this.router.navigate(['home']);
-    }
-    
-    }
-   
-    
+       
     this.centroService.getCentros().pipe(first())
       .subscribe(
         data => {
@@ -67,6 +68,10 @@ export class FpdualUpdateComponent implements OnInit {
         error => {
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
             AppComponent.myapp.openDialogSesion();                             
+          }else if (error.status == 406) {
+            const res = new Array();
+            res.push("Cabecera incorrecta.");
+            AppComponent.myapp.openDialog(res);
           }
         });
   } 
@@ -103,6 +108,10 @@ export class FpdualUpdateComponent implements OnInit {
           } else if(error.status == 401 && error.error.errors == "Sesión expirada"){
             this.dialogRef.close(); 
             AppComponent.myapp.openDialogSesion();                             
+          }else if (error.status == 406) {
+            const res = new Array();
+            res.push("Cabecera incorrecta.");
+            AppComponent.myapp.openDialog(res);
           }
           else if (error.status == 401) {
             const res = new Array();

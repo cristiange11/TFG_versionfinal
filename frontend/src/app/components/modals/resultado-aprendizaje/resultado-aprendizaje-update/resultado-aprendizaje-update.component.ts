@@ -54,6 +54,11 @@ export class ResultadoAprendizajeUpdateComponent implements OnInit {
             AppComponent.myapp.openDialog(res);
             this.dialogRef.close();
           }
+          else if (error.status == 406) {
+            const res = new Array();
+            res.push("Cabecera incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }
 
         });
   }

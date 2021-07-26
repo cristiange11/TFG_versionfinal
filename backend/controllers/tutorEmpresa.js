@@ -4,7 +4,10 @@ const comprobarToken = require('../util/comprobarToken');
 const TutorEmpresa = require('../models/tutorEmpresa');
 const bcrypt = require('bcryptjs');
 exports.getTutores = async (req, res, next) => {
-    console.log(req.headers);
+    if (!req.is('application/json')) {
+        res.status(406).json({ "errors": "No aceptable" });
+      }
+      else{
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
     console.log(expirado)
     if (expirado) {
@@ -20,9 +23,13 @@ exports.getTutores = async (req, res, next) => {
 
         }
     }
+}
 };
 exports.deleteTutor = async (req, res, next) => {
-    console.log(req.headers);
+    if (!req.is('application/json')) {
+        res.status(406).json({ "errors": "No aceptable" });
+      }
+      else{
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
     console.log(expirado)
     if (expirado) {
@@ -39,9 +46,13 @@ exports.deleteTutor = async (req, res, next) => {
 
         }
     }
+}
 };
 exports.updateTutor = async (req, res, next) => {
-    console.log(req.headers);
+    if (!req.is('application/json')) {
+        res.status(406).json({ "errors": "No aceptable" });
+      }
+      else{
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
     console.log(expirado)
     if (expirado) {
@@ -84,9 +95,13 @@ exports.updateTutor = async (req, res, next) => {
             }
         }
     }
+}
 };
 exports.createTutor = async (req, res, next) => {
-    console.log(req.headers);
+    if (!req.is('application/json')) {
+        res.status(406).json({ "errors": "No aceptable" });
+      }
+      else{
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
     console.log(expirado)
     if (expirado) {
@@ -130,4 +145,5 @@ exports.createTutor = async (req, res, next) => {
             }
         }
     }
+}
 };

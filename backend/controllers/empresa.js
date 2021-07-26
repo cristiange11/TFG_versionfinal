@@ -4,6 +4,10 @@ const comprobarToken = require('../util/comprobarToken');
 const Empresa = require('../models/empresa');
 
 exports.getEmpresas = async (req, res, next) => {
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
@@ -18,8 +22,13 @@ exports.getEmpresas = async (req, res, next) => {
       res.status(500).json({ error: err });
     }
   }
+}
 };
 exports.getEmpresasByCentro = async (req, res, next) => {
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
@@ -34,8 +43,13 @@ exports.getEmpresasByCentro = async (req, res, next) => {
       res.status(500).json({ error: err });
     }
   }
+}
 };
 exports.deleteTutorEmpresaByEmpresa = async (req, res, next) => {
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
@@ -50,9 +64,14 @@ exports.deleteTutorEmpresaByEmpresa = async (req, res, next) => {
       res.status(500).json({ error: err });
     }
   }
+}
 
 };
 exports.deleteEmpresa = async (req, res, next) => {
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
@@ -68,9 +87,14 @@ exports.deleteEmpresa = async (req, res, next) => {
       res.status(500).json({ error: err });
     }
   }
+}
 
 };
 exports.updateEmpresa = async (req, res, next) => {
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
@@ -111,8 +135,13 @@ exports.updateEmpresa = async (req, res, next) => {
       }
     }
   }
+}
 };
 exports.createEmpresa = async (req, res, next) => {
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
@@ -152,4 +181,5 @@ exports.createEmpresa = async (req, res, next) => {
       }
     }
   }
+}
 };

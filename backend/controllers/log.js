@@ -4,7 +4,10 @@ const comprobarToken = require('../util/comprobarToken');
 const Log = require('../models/log');
 
 exports.getLogs = async (req, res, next) => {
-  console.log(req.headers);
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
   console.log(expirado)
   if (expirado) {
@@ -20,4 +23,5 @@ exports.getLogs = async (req, res, next) => {
       res.status(500).json({ error: err });
     }
   }
+}
 };

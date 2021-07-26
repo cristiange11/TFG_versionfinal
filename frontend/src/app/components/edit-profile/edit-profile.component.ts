@@ -170,6 +170,11 @@ export class EditProfileComponent implements OnInit {
             arrayRes.push(error.error.errors);
             AppComponent.myapp.openDialog(arrayRes);
           }
+          else if (error.status == 406) {
+            const res = new Array();
+            res.push("Cabecera incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }
           else if (error.status == 409) {
             error.error.errors.forEach(errorInfo => {
               const formControl = this.editForm.get(errorInfo.param);

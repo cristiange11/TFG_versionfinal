@@ -68,6 +68,10 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
         error => {
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
             AppComponent.myapp.openDialogSesion();                             
+          } else if (error.status == 406) {
+            const res = new Array();
+            res.push("Cabecera incorrecta.");
+            AppComponent.myapp.openDialog(res);
           }
 
         });
@@ -191,7 +195,12 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
             error => {
               if(error.status == 401 && error.error.errors == "Sesión expirada"){
                 AppComponent.myapp.openDialogSesion();                             
-              }else{
+              } else if (error.status == 406) {
+                const res = new Array();
+                res.push("Cabecera incorrecta.");
+                AppComponent.myapp.openDialog(res);
+              }
+              else{
                 const res = new Array();
                 res.push("No se ha podido borrar.");
                 AppComponent.myapp.openDialog(res);

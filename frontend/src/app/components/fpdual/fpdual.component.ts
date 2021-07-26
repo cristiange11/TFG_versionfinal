@@ -75,6 +75,11 @@ export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
             AppComponent.myapp.openDialogSesion();                             
           }
+          else if (error.status == 406) {
+            const res = new Array();
+            res.push("Cabecera incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }
          
         });     
   }
@@ -93,6 +98,11 @@ export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
         error => {
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
             AppComponent.myapp.openDialogSesion();                             
+          }
+          else if (error.status == 406) {
+            const res = new Array();
+            res.push("Cabecera incorrecta.");
+            AppComponent.myapp.openDialog(res);
           }
          
         });    
@@ -222,6 +232,11 @@ export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
           error => {
             if(error.status == 401 && error.error.errors == "Sesión expirada"){
               AppComponent.myapp.openDialogSesion();                             
+            }
+            else if (error.status == 406) {
+              const res = new Array();
+              res.push("Cabecera incorrecta.");
+              AppComponent.myapp.openDialog(res);
             }
             else if(error.status == 409){
               const dialogRef2 = this.dialog.open(FpdualDeleteConfirmationComponent);

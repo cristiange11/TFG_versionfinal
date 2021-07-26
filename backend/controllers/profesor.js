@@ -4,7 +4,10 @@ const comprobarToken = require('../util/comprobarToken');
 const Profesor = require('../models/profesor');
 const bcrypt = require('bcryptjs');
 exports.getProfesores = async (req, res, next) => {
-    console.log(req.headers);
+    if (!req.is('application/json')) {
+        res.status(406).json({ "errors": "No aceptable" });
+      }
+      else{
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
     console.log(expirado)
     if (expirado) {
@@ -19,9 +22,13 @@ exports.getProfesores = async (req, res, next) => {
             res.status(500).json({ error: err });
         }
     }
+}
 };
 exports.deleteProfesor = async (req, res, next) => {
-    console.log(req.headers);
+    if (!req.is('application/json')) {
+        res.status(406).json({ "errors": "No aceptable" });
+      }
+      else{
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
     console.log(expirado)
     if (expirado) {
@@ -38,9 +45,13 @@ exports.deleteProfesor = async (req, res, next) => {
             res.status(500).json({ error: err });
         }
     }
+}
 };
 exports.updateProfesor = async (req, res, next) => {
-    console.log(req.headers);
+    if (!req.is('application/json')) {
+        res.status(406).json({ "errors": "No aceptable" });
+      }
+      else{
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
     console.log(expirado)
     if (expirado) {
@@ -82,9 +93,13 @@ exports.updateProfesor = async (req, res, next) => {
             }
         }
     }
+}
 };
 exports.createProfesor = async (req, res, next) => {
-    console.log(req.headers);
+    if (!req.is('application/json')) {
+        res.status(406).json({ "errors": "No aceptable" });
+      }
+      else{
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
     console.log(expirado)
     if (expirado) {
@@ -125,4 +140,5 @@ exports.createProfesor = async (req, res, next) => {
             }
         }
     }
+}
 };

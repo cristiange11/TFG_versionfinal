@@ -18,6 +18,7 @@ export class FpdualCreateComponent implements OnInit {
   formInstance: FormGroup;
   fecha;
   anio;
+  user;
   totalPlazasControl =new FormControl("", [Validators.required, Validators.min(1)]);
   plazasDisponiblesControl = new FormControl("", [Validators.required, this.validateScore()]);
   centroList = new Map<string, string>();
@@ -25,7 +26,7 @@ export class FpdualCreateComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: Fpduales, public fpdualesService: FpdualesService, public centroService: CentroService) {
     this.fecha = new Date();
     this.anio = this.fecha.getFullYear();
-
+    
     this.formInstance = new FormGroup({
       nombre: new FormControl("", [Validators.required, Validators.minLength(4)]),
       descripcion: new FormControl("", [Validators.required, Validators.minLength(4)]),
@@ -34,6 +35,19 @@ export class FpdualCreateComponent implements OnInit {
       plazasDisponibles: this.plazasDisponiblesControl,
       codigoCentro: new FormControl("", [Validators.required]),
     },)
+    if(!this.cookieService.get('user')){
+      this.router.navigate(['home']);
+    }
+    else{
+      this.user =(JSON.parse(this.cookieService.get('user')));
+    if(Number(this.user.rol)!=1 && Number(this.user.rol) != 2){
+      this.dialogRef.close();
+      this.router.navigate(['home']);
+    }
+    
+  }
+    this.formInstance.setValue({nombre : "", descripcion : "", totalPlazas: "" , anio : "", plazasDisponibles : "", codigoCentro : this.user.codigoCentro}); 
+      
   }
 
   ngOnInit(): void {
@@ -61,6 +75,10 @@ export class FpdualCreateComponent implements OnInit {
         error => {
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
             AppComponent.myapp.openDialogSesion();                             
+          }else if (error.status == 406) {
+            const res = new Array();
+            res.push("Cabecera incorrecta.");
+            AppComponent.myapp.openDialog(res);
           }
         });
   }
@@ -96,6 +114,10 @@ export class FpdualCreateComponent implements OnInit {
           } else if(error.status == 401 && error.error.errors == "Sesión expirada"){
             this.dialogRef.close(); 
             AppComponent.myapp.openDialogSesion();                             
+          }else if (error.status == 406) {
+            const res = new Array();
+            res.push("Cabecera incorrecta.");
+            AppComponent.myapp.openDialog(res);
           }
           else if (error.status == 401) {
             const res = new Array();

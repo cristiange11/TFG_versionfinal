@@ -65,10 +65,14 @@ export class LoginComponent implements OnInit {
 
         },
         error => {
-
+          if (error.status == 406) {
+            const res = new Array();
+            res.push("Cabecera incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }else{
           var arrayRes = new Array();
           arrayRes.push(error.error.message);
-          AppComponent.myapp.openDialog(arrayRes);
+          AppComponent.myapp.openDialog(arrayRes);}
         });
   }
   getErrorMessage(attribute: String) {

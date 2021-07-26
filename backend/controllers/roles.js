@@ -2,7 +2,10 @@ const Roles = require('../models/roles');
 const jwt_decode = require('jwt-decode');
 const comprobarToken = require('../util/comprobarToken');
 exports.getRoles = async (req, res, next) => {
-  console.log(req.headers);
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
   console.log(expirado)
   if (expirado) {
@@ -17,9 +20,13 @@ exports.getRoles = async (req, res, next) => {
       res.status(500).json({ error: err });
     }
   }
+}
 };
 exports.getRol = async (req, res, next) => {
-  console.log(req.headers);
+  if (!req.is('application/json')) {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
   var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
   console.log(expirado)
   if (expirado) {
@@ -36,4 +43,5 @@ exports.getRol = async (req, res, next) => {
       res.status(500).json({ error: err });
     }
   }
+}
 };

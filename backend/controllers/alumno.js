@@ -4,6 +4,10 @@ const comprobarToken = require('../util/comprobarToken');
 const Alumno = require('../models/alumno');
 const bcrypt = require('bcryptjs');
 exports.getAlumnos = async (req, res, next) => {
+    if (!req.is('application/json')) {
+        res.status(406).json({ "errors": "No aceptable" });
+      }
+      else{
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
     console.log(expirado)
     if (expirado) {
@@ -18,8 +22,13 @@ exports.getAlumnos = async (req, res, next) => {
         res.status(500).json({ error: err });
     }
 }
+      }
 };
 exports.getAlumno = async (req, res, next) => {
+    if (!req.is('application/json')) {
+        res.status(406).json({ "errors": "No aceptable" });
+      }
+      else{
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
     console.log(expirado)
     if (expirado) {
@@ -35,8 +44,13 @@ exports.getAlumno = async (req, res, next) => {
         res.status(500).json({ error: err });
     }
     }
+}
 };
 exports.deleteAlumno = async (req, res, next) => {
+    if (!req.is('application/json')) {
+        res.status(406).json({ "errors": "No aceptable" });
+      }
+      else{
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
     console.log(expirado)
     if (expirado) {
@@ -52,8 +66,13 @@ exports.deleteAlumno = async (req, res, next) => {
         res.status(500).json({ error: err });
     }
 }
+      }
 };
 exports.updateAlumno = async (req, res, next) => {
+    if (!req.is('application/json')) {
+        res.status(406).json({ "errors": "No aceptable" });
+      }
+      else{
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
     console.log(expirado)
     if (expirado) {
@@ -97,8 +116,13 @@ exports.updateAlumno = async (req, res, next) => {
             next(err);
         }
     }}
+}
 };
 exports.createAlumno = async (req, res, next) => {
+    if (!req.is('application/json')) {
+        res.status(406).json({ "errors": "No aceptable" });
+      }
+      else{
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
     console.log(expirado)
     if (expirado) {
@@ -135,5 +159,6 @@ exports.createAlumno = async (req, res, next) => {
             res.status(500).json({ error: err });
         }
     }
+}
 }
 };
