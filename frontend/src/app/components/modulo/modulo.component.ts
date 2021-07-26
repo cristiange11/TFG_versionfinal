@@ -24,6 +24,7 @@ import { NavigationComponent } from '../navigation/navigation.component';
 })
 export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
   myApp = AppComponent.myapp;
+  user;
   moduloList: Array<Modulo> = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -47,8 +48,8 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
       this.router.navigate(['home']);
     }
     else{
-      var user =(JSON.parse(this.cookieService.get('user')));
-    if(Number(user.rol)!=1 && Number(user.rol)!=2){
+      this.user =(JSON.parse(this.cookieService.get('user')));
+    if(Number(this.user.rol)!=1 && Number(this.user.rol)!=2){
       this.router.navigate(['home']);
     }
     

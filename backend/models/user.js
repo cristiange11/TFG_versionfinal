@@ -92,6 +92,11 @@ module.exports = class User {
         }
         
     }
+    static async getUsersByCentro() {
+        console.log( 'SELECT usuario.*, rol.nombreRol, fp_duales.nombre AS nombreFP FROM usuario LEFT JOIN rol ON rol.id = usuario.rol LEFT JOIN fp_duales ON fp_duales.id = usuario.fpDual LEFT JOIN centro_educativo ON centro_educativo.codigoCentro = usuario.codigoCentro');
+        return await promisePool.query(
+            'SELECT usuario.*, rol.nombreRol, fp_duales.nombre AS nombreFP FROM usuario LEFT JOIN rol ON rol.id = usuario.rol LEFT JOIN fp_duales ON fp_duales.id = usuario.fpDual INNER JOIN centro_educativo ON centro_educativo.codigoCentro = usuario.codigoCentro');
+    }
     static async getUsers() {
 
         return await promisePool.query(

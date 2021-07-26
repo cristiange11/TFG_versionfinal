@@ -55,6 +55,8 @@ router.post('/login', authController.login);
 
 router.get('/', authController.getUsuarios);
 
+router.get('/:codigoCentro', authController.getUsersByCentro);
+
 router.delete('/:dni',authController.deleteUser);
 
 router.put(

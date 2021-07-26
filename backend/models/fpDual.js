@@ -46,7 +46,7 @@ module.exports = class FP_dual {
         return rows;
     }
     static async getFpsByAdminCentro(codigoCentro) {
-        console.log(`SELECT * FROM fp_duales where codigoCentro = '${codigoCentro}'`)
+       
         const [rows, fields] = await promisePool.query(
             `SELECT * FROM fp_duales where codigoCentro = '${codigoCentro}'`);
         return rows;

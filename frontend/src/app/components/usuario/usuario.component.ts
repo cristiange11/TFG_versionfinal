@@ -24,6 +24,7 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
 
   myApp = AppComponent.myapp;
   userList: Array<User> = [];
+  user;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -42,19 +43,22 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.nagivationComponent.obtenerItems();
-    this.getAll();
+    
     if (!this.cookieService.get('user')) {
       this.router.navigate(['home']);
     }
     else {
-      var user = (JSON.parse(this.cookieService.get('user')));
-      if (Number(user.rol) != 1 && Number(user.rol)!=2) {
+       this.user = (JSON.parse(this.cookieService.get('user')));
+      if (Number(this.user.rol) != 1 && Number(this.user.rol)!=2) {
         this.router.navigate(['home']);
       }
 
     }
+    this.getAll();
   }
   getAll() {
+    console.log(Number(this.user.rol) )
+    if(Number(this.user.rol) == 1){
     this.serviceSubscribe = this.userService.getUsers().pipe(first())
       .subscribe(
         data => {
@@ -91,6 +95,44 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
         });
+      }else{
+        this.serviceSubscribe = this.userService.getUsersByCentro(this.user.codigoCentro).pipe(first())
+      .subscribe(
+        data => {
+          let usuarios = data["usuarios"];
+
+          usuarios.forEach(usuarioInfo => {
+            console.log(usuarioInfo);
+            var user = {
+              dni: usuarioInfo.dni,
+              nombre: usuarioInfo.nombre,
+              apellidos: usuarioInfo.apellidos,
+              correo: usuarioInfo.correo,
+              movil: usuarioInfo.movil,
+              direccion: usuarioInfo.direccion,
+              password: usuarioInfo.password,
+              genero: usuarioInfo.genero,
+              cp: usuarioInfo.cp,
+              rol: usuarioInfo.nombreRol,
+              fechaNacimiento: this.datepipe.transform(usuarioInfo.fechaNacimiento, "dd/MM/YYYY"),
+              fpDual: usuarioInfo.nombreFP,
+              codigoCentro: usuarioInfo.nombreCentro,
+            }
+           
+            this.userList.push(user);
+
+          });
+          this.dataSource.data = this.userList;
+          console.log(this.dataSource.data)
+        },
+        error => {
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            AppComponent.myapp.openDialogSesion();                             
+          }
+
+
+        });
+      }
   }
   private filter() {
 

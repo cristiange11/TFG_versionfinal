@@ -204,4 +204,19 @@ exports.updateUsuario = async (req, res, next) => {
       }
     }
   }
-}
+};
+exports.getUsersByCentro = async (req, res, next) => {
+  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
+  if (expirado) {
+    res.status(401).json({ "errors": "Sesión expirada" });
+  } else {
+
+    try {
+      const usuario = await User.getUsersByCentro(req.params.codigoCentro);
+      res.status(200).json({ "usuarios": usuario[0] });
+
+    } catch (err) {
+      res.status(500).json({ error: err });
+    }
+  }
+};
