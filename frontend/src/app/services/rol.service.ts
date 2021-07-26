@@ -16,7 +16,7 @@ export class RolService {
   constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { 
   }
   getRoles(): Observable<Rol[] >{
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json","X-Frame-Options" : "deny"}),}
     return this.http.get<Rol[]>(this.url, httpOptions);
     
    

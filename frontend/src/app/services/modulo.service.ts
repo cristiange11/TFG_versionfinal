@@ -12,19 +12,19 @@ export class ModuloService {
 
   constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { }
   getModulos(fpDual : number): Observable<JSON[] >{   
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),} 
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),} 
     return this.http.get<JSON[]>(`${this.url}/${fpDual}`,  httpOptions); 
   }
   addModulo(modulo : Modulo): Observable<JSON>{
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.post<JSON>(`${this.url}/create`, modulo , httpOptions);
   }
   deleteModulo(id): Observable<JSON>{
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.delete<JSON>(`${this.url}/${id}`,  httpOptions);
   }
   updateModulo(modulo : Modulo): Observable<JSON>{
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.put<JSON>(`${this.url}/update`, modulo, httpOptions);
   }
 }

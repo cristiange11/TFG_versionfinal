@@ -4,7 +4,7 @@ const comprobarToken = require('../util/comprobarToken');
 const Fpdual = require('../models/fpDual');
 
 exports.getFpByCentro = async (req, res, next) => {
-  if (req.headers['content-type'] != "application/json") {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -28,7 +28,7 @@ exports.getFpByCentro = async (req, res, next) => {
 }
 };
 exports.DeleteUsuariosByFP = async (req, res, next) => {
-  if (req.headers['content-type'] != "application/json") {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -52,7 +52,7 @@ exports.DeleteUsuariosByFP = async (req, res, next) => {
 }
 };
 exports.getFp = async (req, res, next) => {
-  if (req.headers['content-type'] != "application/json") {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -73,7 +73,7 @@ exports.getFp = async (req, res, next) => {
   }
 };
 exports.getFps = async (req, res, next) => {
-  if (req.headers['content-type'] != "application/json") {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -94,7 +94,7 @@ exports.getFps = async (req, res, next) => {
 }
 };
 exports.getFpsConPlazasDisponibles = async (req, res, next) => {
-  if (req.headers['content-type'] != "application/json") {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -115,7 +115,7 @@ exports.getFpsConPlazasDisponibles = async (req, res, next) => {
   }
 };
 exports.deleteFp = async (req, res, next) => {
-  if (req.headers['content-type'] != "application/json") {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -137,7 +137,7 @@ exports.deleteFp = async (req, res, next) => {
 }
 };
 exports.updateFp = async (req, res, next) => {
-  if (req.headers['content-type'] != "application/json") {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -183,7 +183,7 @@ exports.updateFp = async (req, res, next) => {
 }
 };
 exports.getFpsByAdminCentro = async (req, res, next) => {
-  if (req.headers['content-type'] != "application/json") {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -205,7 +205,7 @@ exports.getFpsByAdminCentro = async (req, res, next) => {
 }
 };
 exports.createFp = async (req, res, next) => {
-  if (req.headers['content-type'] != "application/json") {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{

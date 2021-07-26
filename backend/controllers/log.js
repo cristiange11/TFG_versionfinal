@@ -4,7 +4,7 @@ const comprobarToken = require('../util/comprobarToken');
 const Log = require('../models/log');
 
 exports.getLogs = async (req, res, next) => {
-  if (req.headers['content-type'] != "application/json") {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{

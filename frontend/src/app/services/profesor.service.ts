@@ -37,13 +37,13 @@ export class ProfesorService {
 
   createProfesor(sigunForm , userJson, formulario2, modulo): Observable<JSON>{  
     var profesor = this.formarProfesor(sigunForm , userJson, formulario2, modulo);
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.post<JSON>(`${this.url}/create`,profesor , httpOptions);   
   }
     updateProfesor(sigunForm , userJson, formulario2, modulo): Observable<JSON>{  
     var profesor = this.formarProfesor(sigunForm , userJson, formulario2, modulo);
     console.log(profesor)
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.put<JSON>(`${this.url}/update`,profesor , httpOptions);   
   }
   

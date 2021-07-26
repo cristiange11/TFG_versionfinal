@@ -33,7 +33,7 @@ export class AlumnoService {
     };
     
     var alumno = new Alumno(user, formulario2);
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
 
     return this.http.post<JSON>(`${this.url}/create`, alumno , httpOptions);   
   }
@@ -56,7 +56,7 @@ export class AlumnoService {
       modulo : {modulo : modulo}
     };  
     
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.put<JSON>(`${this.url}/update`, alumno , httpOptions);   
   }
 }

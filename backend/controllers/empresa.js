@@ -4,7 +4,7 @@ const comprobarToken = require('../util/comprobarToken');
 const Empresa = require('../models/empresa');
 
 exports.getEmpresas = async (req, res, next) => {
-  if (req.headers['content-type'] != "application/json") {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -25,7 +25,7 @@ exports.getEmpresas = async (req, res, next) => {
 }
 };
 exports.getEmpresasByCentro = async (req, res, next) => {
-  if (req.headers['content-type'] != "application/json") {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -46,7 +46,7 @@ exports.getEmpresasByCentro = async (req, res, next) => {
 }
 };
 exports.deleteTutorEmpresaByEmpresa = async (req, res, next) => {
-  if (req.headers['content-type'] != "application/json") {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -68,7 +68,7 @@ exports.deleteTutorEmpresaByEmpresa = async (req, res, next) => {
 
 };
 exports.deleteEmpresa = async (req, res, next) => {
-  if (req.headers['content-type'] != "application/json") {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -91,7 +91,7 @@ exports.deleteEmpresa = async (req, res, next) => {
 
 };
 exports.updateEmpresa = async (req, res, next) => {
-  if (req.headers['content-type'] != "application/json") {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -138,7 +138,7 @@ exports.updateEmpresa = async (req, res, next) => {
 }
 };
 exports.createEmpresa = async (req, res, next) => {
-  if (req.headers['content-type'] != "application/json") {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny")  {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{

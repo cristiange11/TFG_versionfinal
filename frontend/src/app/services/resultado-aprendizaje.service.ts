@@ -13,19 +13,19 @@ export class ResultadoAprendizajeService {
 
   constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { }
   getResultadoAprendizaje(codigoModulo : number): Observable<ResultadoAprendizaje[] >{ 
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}   
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}   
     return this.http.get<ResultadoAprendizaje[]>(`${this.url}/${codigoModulo}`,  httpOptions); 
   }
   addResultadoAprendizaje(resultadoAprendizaje : ResultadoAprendizaje): Observable<JSON>{
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.post<JSON>(`${this.url}/create`, resultadoAprendizaje , httpOptions);
   }
   deleteResultadoAprendizaje(id): Observable<JSON>{
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.delete<JSON>(`${this.url}/${id}`,  httpOptions);
   }
   updateResultadoAprendizaje(resultadoAprendizaje : ResultadoAprendizaje): Observable<JSON>{
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.put<JSON>(`${this.url}/update`, resultadoAprendizaje, httpOptions);
   }
 }

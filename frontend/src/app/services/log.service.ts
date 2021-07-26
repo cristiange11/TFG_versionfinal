@@ -12,7 +12,7 @@ export class LogService {
 
   constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { }
   getLogs(): Observable<JSON[] >{   
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),} 
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),} 
     return this.http.get<JSON[]>(`${this.url}`,  httpOptions); 
   }
 }

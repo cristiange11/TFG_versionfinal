@@ -4,7 +4,7 @@ const comprobarToken = require('../util/comprobarToken');
 const Profesor = require('../models/profesor');
 const bcrypt = require('bcryptjs');
 exports.getProfesores = async (req, res, next) => {
-    if (req.headers['content-type'] != "application/json") {
+    if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
       }
       else{
@@ -25,7 +25,7 @@ exports.getProfesores = async (req, res, next) => {
 }
 };
 exports.deleteProfesor = async (req, res, next) => {
-    if (req.headers['content-type'] != "application/json") {
+    if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
       }
       else{
@@ -48,7 +48,7 @@ exports.deleteProfesor = async (req, res, next) => {
 }
 };
 exports.updateProfesor = async (req, res, next) => {
-    if (req.headers['content-type'] != "application/json") {
+    if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
       }
       else{
@@ -96,7 +96,7 @@ exports.updateProfesor = async (req, res, next) => {
 }
 };
 exports.createProfesor = async (req, res, next) => {
-    if (req.headers['content-type'] != "application/json") {
+    if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
       }
       else{

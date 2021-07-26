@@ -2,7 +2,7 @@ const Roles = require('../models/roles');
 const jwt_decode = require('jwt-decode');
 const comprobarToken = require('../util/comprobarToken');
 exports.getRoles = async (req, res, next) => {
-  if (req.headers['content-type'] != "application/json") {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -23,7 +23,7 @@ exports.getRoles = async (req, res, next) => {
 }
 };
 exports.getRol = async (req, res, next) => {
-  if (req.headers['content-type'] != "application/json") {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{

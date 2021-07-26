@@ -4,7 +4,7 @@ const comprobarToken = require('../util/comprobarToken');
 const Modulo = require('../models/modulo');
 
 exports.getModulos = async (req, res, next) => {
-  if (req.headers['content-type'] != "application/json") {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -25,7 +25,7 @@ exports.getModulos = async (req, res, next) => {
   }
 };
 exports.deleteModulo = async (req, res, next) => {
-  if (req.headers['content-type'] != "application/json") {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -47,7 +47,7 @@ exports.deleteModulo = async (req, res, next) => {
 }
 };
 exports.updateModulo = async (req, res, next) => {
-  if (req.headers['content-type'] != "application/json") {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{
@@ -94,7 +94,7 @@ exports.updateModulo = async (req, res, next) => {
 }
 }
 exports.createModulo = async (req, res, next) => {
-  if (req.headers['content-type'] != "application/json") {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else{

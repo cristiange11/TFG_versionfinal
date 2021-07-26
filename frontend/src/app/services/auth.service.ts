@@ -40,13 +40,13 @@ export class AuthService {
       codigoCentro: userJson.codigoCentro == '' ? null : userJson.codigoCentro
     };
     console.log("Usuario => " + JSON.stringify(user))
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
 
     return this.http.post<JSON>(  `${this.url}/signup`, user , httpOptions);
     
   }
   login( dni: Pick<User, "dni">, password: Pick<User, "password">): Observable<JSON> {
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({  "Content-Type" : "application/json"}),}
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({  "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.post<JSON>(`${this.url}/login`, { dni, password }, httpOptions);   
   }
   updateUsuario(editForm , userJson): Observable<JSON>{
@@ -67,21 +67,21 @@ export class AuthService {
       codigoCentro: userJson.codigoCentro == '' ? null : userJson.codigoCentro
     };
     console.log("User => " + user.dni)
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
 
     return this.http.put<JSON>(`${this.url}/update`, user,httpOptions);
   }
   getUsersByCentro(codigoCentro): Observable<JSON[] >{    
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
 
     return this.http.get<JSON[]>(`${this.url}/${codigoCentro}`, httpOptions); 
   }
   getUsers(): Observable<JSON[] >{    
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.get<JSON[]>(this.url, httpOptions); 
   }
   deleteUser(dni: string): Observable<JSON>{
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
 
     return this.http.delete<JSON>(`${this.url}/${dni}`,  httpOptions);
   }

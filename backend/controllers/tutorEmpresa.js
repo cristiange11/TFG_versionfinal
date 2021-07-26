@@ -4,7 +4,7 @@ const comprobarToken = require('../util/comprobarToken');
 const TutorEmpresa = require('../models/tutorEmpresa');
 const bcrypt = require('bcryptjs');
 exports.getTutores = async (req, res, next) => {
-    if (req.headers['content-type'] != "application/json") {
+    if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
       }
       else{
@@ -26,7 +26,7 @@ exports.getTutores = async (req, res, next) => {
 }
 };
 exports.deleteTutor = async (req, res, next) => {
-    if (req.headers['content-type'] != "application/json") {
+    if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
       }
       else{
@@ -49,7 +49,7 @@ exports.deleteTutor = async (req, res, next) => {
 }
 };
 exports.updateTutor = async (req, res, next) => {
-    if (req.headers['content-type'] != "application/json") {
+    if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
       }
       else{
@@ -98,7 +98,7 @@ exports.updateTutor = async (req, res, next) => {
 }
 };
 exports.createTutor = async (req, res, next) => {
-    if (req.headers['content-type'] != "application/json") {
+    if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
       }
       else{

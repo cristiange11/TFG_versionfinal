@@ -39,12 +39,12 @@ export class TutorEmpresaService {
   }
   createTutor(sigunForm , userJson,  formulario2, modulo): Observable<JSON>{    
     var tutor = this.formarTutor(sigunForm , userJson,  formulario2, modulo);
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json","X-Frame-Options" : "deny"}),}
     return this.http.post<JSON>(`${this.url}/create`, tutor , httpOptions);   
   }
   updateTutor(sigunForm , userJson,  formulario2, modulo): Observable<JSON>{    
     var tutor = this.formarTutor(sigunForm , userJson,  formulario2, modulo);
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json"}),}
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.put<JSON>(`${this.url}/update`, tutor , httpOptions);   
   }
 }
