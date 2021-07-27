@@ -234,7 +234,7 @@ export class UsuarioUpdateComponent implements OnInit {
       rol: this.formInstance.value.rol,
       dni: this.formInstance.value.dni
     };
-    if (this.numero == 1 || this.numero == 2) {
+    if (this.numero == "Administrador" || this.numero == 'Administrador de Centro') {
       console.log(this.formInstance.value)
       this.authService.updateUsuario(this.formInstance.value, userJson).pipe(first())
         .subscribe(

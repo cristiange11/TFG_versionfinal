@@ -211,4 +211,9 @@
             [disabled]="!formInstance.valid || !this.formGroupTutor.valid || !this.modulo.valid">Yes</button>
         <button mat-raised-button mat-dialog-close>No</button>
     </div>
+    <div *ngIf="this.numero=='Administrador' || this.numero == 'Administrador de Centro'">
+        <button mat-raised-button color="primary" (click)="save()"
+            [disabled]="!formInstance.valid ">Yes</button>
+        <button mat-raised-button mat-dialog-close>No</button>
+    </div>
 </div>
