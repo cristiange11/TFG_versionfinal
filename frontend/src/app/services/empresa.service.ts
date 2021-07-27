@@ -20,6 +20,7 @@ export class EmpresaService {
     return this.http.get<JSON []>(this.url, httpOptions);
   }
   getEmpresasByCentro(codigoCentro): Observable<JSON[] >{
+    console.log(codigoCentro)
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.get<JSON []>(`${this.url}/${codigoCentro}`, httpOptions);
   }

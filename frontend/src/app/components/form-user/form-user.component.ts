@@ -7,7 +7,7 @@ import { CentroService } from 'src/app/services/centro.service';
 import { RolService } from 'src/app/services/rol.service';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import { FpdualesService } from 'src/app/services/fpduales.service';
-import {AlumnoService } from 'src/app/services/alumno.service';
+import { AlumnoService } from 'src/app/services/alumno.service';
 import { ProfesorService } from 'src/app/services/profesor.service';
 import { TutorEmpresaService } from 'src/app/services/tutor-empresa.service';
 import { User } from '../../models/User';
@@ -16,7 +16,7 @@ import { Rol } from 'src/app/models/Rol';
 import { Fpduales } from 'src/app/models/Fpduales';
 import { Empresa } from 'src/app/models/Empresa';
 import { AppComponent } from '../../app.component';
-import {AppRoutingModule} from '../../app-routing.module';
+import { AppRoutingModule } from '../../app-routing.module';
 import { RouterModule, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { ModuloService } from 'src/app/services/modulo.service';
@@ -36,73 +36,73 @@ export class FormUserComponent implements OnInit {
   numeroExpediente;
   formGroupProfesor;
   modulo;
-  passwordFormControl = new FormControl("", [
-    Validators.required,
-    Validators.pattern(
-      "^((?=\\S*?[A-Z])(?=\\S*?[a-z])(?=\\S*?[0-9]).{8,255})\\S$"
-    )
-  ]);
+  user;
+  passwordFormControl = new FormControl("", [Validators.required, Validators.pattern("^((?=\\S*?[A-Z])(?=\\S*?[a-z])(?=\\S*?[0-9]).{8,255})\\S$")]);
   codigoCentro = new FormControl("", [Validators.required]);
-  fpDual = new FormControl("", [Validators.required]);  
-
-  confirmPasswordFormControl = new FormControl("", [
-    Validators.required,
-    this.checkConfirmPassword()
-  ]);
+  fpDual = new FormControl("", [Validators.required]);
+  confirmPasswordFormControl = new FormControl("", [Validators.required, this.checkConfirmPassword()]);
   moduloList = new Map<number, string>();
   centroList = new Map<string, string>();
   rolesList = new Map<number, string>();
   fpList = new Map<number, string>();
   empresaList = new Map<string, string>();
-  constructor(private nagivationComponent: NavigationComponent, private moduloService: ModuloService, private cookieService: CookieService, private router:Router, private appRouting: AppRoutingModule, private authService: AuthService, private tutorService: TutorEmpresaService, private profesorService: ProfesorService, private alumnoService: AlumnoService, private empresaService: EmpresaService, private centroService: CentroService, private rolService: RolService, private fpdualesService: FpdualesService) {
+  constructor(private nagivationComponent: NavigationComponent, private moduloService: ModuloService, private cookieService: CookieService, private router: Router, private appRouting: AppRoutingModule, private authService: AuthService, private tutorService: TutorEmpresaService, private profesorService: ProfesorService, private alumnoService: AlumnoService, private empresaService: EmpresaService, private centroService: CentroService, private rolService: RolService, private fpdualesService: FpdualesService) {
     document.body.style.background = "linear-gradient(to right, #1dcd9b, #00d4ff)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
 
   ngOnInit(): void {
-    if(!this.cookieService.get('user')){
+    if (!this.cookieService.get('user')) {
       this.router.navigate(['home']);
     }
-    else{
-      var user =(JSON.parse(this.cookieService.get('user')));
-    if(Number(user.rol)!=1 && Number(user.rol)!=2){
-      this.router.navigate(['home']);
+    else {
+      this.user = (JSON.parse(this.cookieService.get('user')));
+      if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2) {
+        this.router.navigate(['home']);
+      }
     }
+    if (this.user.rol == 1) {
+      this.centroService.getCentros().pipe(first())
+        .subscribe(
+          data => {
+            this.centroList = new Map<string, string>();
+            let centros = data["centros"]
+
+            centros.forEach(centroInfo => {
+
+              this.centroList.set(centroInfo.codigoCentro, centroInfo.nombre)
+            });
+          },
+          error => {
+            if (error.status == 401 && error.error.errors == "Sesión expirada") {
+              AppComponent.myapp.openDialogSesion();
+            }
+            else if (error.status == 406) {
+              const res = new Array();
+              res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
+          });
     }
-    
-this.centroService.getCentros().pipe(first())
-.subscribe(
-  data => {
-    this.centroList = new Map<string, string>();
-    let centros = data["centros"]
-   
-    centros.forEach(centroInfo => {
-      
-      this.centroList.set(centroInfo.codigoCentro, centroInfo.nombre)
-    });
-  },
-  error => {
-    if(error.status == 401 && error.error.errors == "Sesión expirada"){
-      AppComponent.myapp.openDialogSesion();                             
-    }
-    else if (error.status == 406) {
-      const res = new Array();
-      res.push("Petición incorrecta.");
-      AppComponent.myapp.openDialog(res);
-    }
-  });
-  
     this.rolService.getRoles().pipe(first())
       .subscribe(
         data => {
           this.rolesList = new Map<number, string>();
           let rol = data["roles"]
           rol.forEach(rolInfo => {
-            this.rolesList.set(rolInfo.id, rolInfo.nombreRol)
+            if (this.user.rol == 2 && rolInfo.id != 1 && rolInfo.id != 2) {
+              this.rolesList.set(rolInfo.id, rolInfo.nombreRol);
+            }else if (this.user.rol == 1){
+              this.rolesList.set(rolInfo.id, rolInfo.nombreRol);
+            }
           });
         },
         error => {
-          if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            AppComponent.myapp.openDialogSesion();                             
+          if (error.status == 401 && error.error.errors == "Sesión expirada") {
+            AppComponent.myapp.openDialogSesion();
+          } else if (error.status == 406) {
+            const res = new Array();
+            res.push("Petición incorrecta.");
+            AppComponent.myapp.openDialog(res);
           }
         });
 
@@ -122,12 +122,18 @@ this.centroService.getCentros().pipe(first())
       correo: new FormControl("", [Validators.required, Validators.email]),
       fechaNacimiento: new FormControl("", [Validators.required]),
       rol: new FormControl("", [Validators.required]),
-      
+
       password: this.passwordFormControl,
       confirmPassword: this.confirmPasswordFormControl
     })
+    if (this.user.rol == 2) {
+      this.codigoCentro.setValue(this.user.codigoCentro);
+      this.obtenerFP(this.user.codigoCentro);
+    }
+    console.log(this.user)
     return res;
   }
+
 
   checkConfirmPassword(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null =>
@@ -141,70 +147,67 @@ this.centroService.getCentros().pipe(first())
 
   obtenerRol(rol): number {
     this.numero = rol;
-
-
-this.centroService.getCentros().pipe(first())
-      .subscribe(
-        data => {
-          this.centroList = new Map<string, string>();
-          let centros = data["centros"]
-          centros.forEach(centroInfo => {
-            
-            this.centroList.set(centroInfo.codigoCentro, centroInfo.nombre)
-          });
-        },
-        error => {
-          if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            AppComponent.myapp.openDialogSesion();                             
-          }
-          else if (error.status == 406) {
-            const res = new Array();
-            res.push("Petición incorrecta.");
-            AppComponent.myapp.openDialog(res);
-          }
-        });
-   
-
     if (rol == 5) {
-      this.numeroExpediente = new FormControl("", [
-        Validators.required,
-        Validators.minLength(6)
-      ]);
-    } 
-    else if(rol == 4){
+      this.numeroExpediente = new FormControl("", [Validators.required, Validators.minLength(6)]);
+    }
+    else if (rol == 4) {
       this.formGroupProfesor = new FormControl("", [Validators.required, Validators.minLength(6)]);
       this.modulo = new FormControl("", [Validators.required]);
-    }else if (rol == 3) {
+    } else if (rol == 3) {
+
       this.modulo = new FormControl("", [Validators.required]);
-      this.formGroupTutor = new FormGroup({
-        moduloEmpresa: new FormControl("", [Validators.required, Validators.minLength(6)]),
-        cifEmpresa: new FormControl("", [Validators.required]),
-      })
-      this.empresaService.getEmpresas().pipe(first())
-        .subscribe(
-          data => {
-            this.empresaList = new Map<string, string>();
-            let empresas = data["empresas"]
-            empresas.forEach(empresaInfo => {
-              var empresa = empresaInfo as Empresa
-              this.empresaList.set(empresa.cifEmpresa, empresa.nombre)
+      this.formGroupTutor = new FormGroup({ moduloEmpresa: new FormControl("", [Validators.required, Validators.minLength(6)]), cifEmpresa: new FormControl("", [Validators.required]) })
+      if (this.user.rol == 1) {
+        this.empresaService.getEmpresas().pipe(first())
+          .subscribe(
+            data => {
+              this.empresaList = new Map<string, string>();
+              let empresas = data["empresas"]
+              empresas.forEach(empresaInfo => {
+                var empresa = empresaInfo as Empresa
+                this.empresaList.set(empresa.cifEmpresa, empresa.nombre)
+              });
+            },
+            error => {
+
+              if (error.status == 401 && error.error.errors == "Sesión expirada") {
+                this.nagivationComponent.closeSession();
+              } else if (error.status == 406) {
+                const res = new Array();
+                res.push("Petición incorrecta.");
+                AppComponent.myapp.openDialog(res);
+              }
             });
-          },
-          error => {
-            
-            if(error.status == 401 && error.error.errors == "Sesión expirada"){
-              this.nagivationComponent.closeSession();         
-            } else if (error.status == 406) {
-              const res = new Array();
-              res.push("Petición incorrecta.");
-              AppComponent.myapp.openDialog(res);
-            }
-          });
+        
+      }
+    
+    else {
+      this.empresaService.getEmpresasByCentro(this.user.codigoCentro).pipe(first())
+          .subscribe(
+            data => {
+              this.empresaList = new Map<string, string>();
+              let empresas = data["empresas"]
+              empresas.forEach(empresaInfo => {
+                var empresa = empresaInfo as Empresa
+                this.empresaList.set(empresa.cifEmpresa, empresa.nombre)
+              });
+            },
+            error => {
+
+              if (error.status == 401 && error.error.errors == "Sesión expirada") {
+                this.nagivationComponent.closeSession();
+              } else if (error.status == 406) {
+                const res = new Array();
+                res.push("Petición incorrecta.");
+                AppComponent.myapp.openDialog(res);
+              }
+            });
     }
+  }
     return this.numero;
   }
   obtenerModulo(fp): void {
-  
+
     this.moduloService.getModulos(fp).pipe(first())
       .subscribe(
         data => {
@@ -212,15 +215,15 @@ this.centroService.getCentros().pipe(first())
           let modulos = data["modulos"]
           modulos.forEach(moduloInfo => {
             var modulo = moduloInfo as Modulo
-           
+
             this.moduloList.set(modulo.codigo, modulo.nombre)
           });
-          
+
         },
         error => {
-          
-          if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            AppComponent.myapp.openDialogSesion();                             
+
+          if (error.status == 401 && error.error.errors == "Sesión expirada") {
+            AppComponent.myapp.openDialogSesion();
           }
           else if (error.status == 406) {
             const res = new Array();
@@ -230,190 +233,191 @@ this.centroService.getCentros().pipe(first())
         });
   }
   obtenerFP(centro): void {
-    if(this.numero != 5){
-    this.fpdualesService.getFPdual(centro).pipe(first())
-      .subscribe(
-        data => {
-          this.fpList = new Map<number, string>();
-          let fps = data["fps"]
-          fps.forEach(fpInfo => {
-            var fp = fpInfo as Fpduales
-           
-            this.fpList.set(fp.id, fp.nombre)
+
+    if (this.numero != 5) {
+      this.fpdualesService.getFPdual(centro).pipe(first())
+        .subscribe(
+          data => {
+            this.fpList = new Map<number, string>();
+            let fps = data["fps"]
+            fps.forEach(fpInfo => {
+              var fp = fpInfo as Fpduales
+
+              this.fpList.set(fp.id, fp.nombre)
+            });
+          },
+
+          error => {
+            if (error.status == 401 && error.error.errors == "Sesión expirada") {
+              AppComponent.myapp.openDialogSesion();
+            }
+            else if (error.status == 406) {
+              const res = new Array();
+              res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
           });
-        },
-        
-        error => {
-          if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            AppComponent.myapp.openDialogSesion();                             
-          }
-          else if (error.status == 406) {
-            const res = new Array();
-            res.push("Petición incorrecta.");
-            AppComponent.myapp.openDialog(res);
-          }
-        });
-    }  else{
+    } else {
       this.fpdualesService.getFPdualByAlumno(centro).pipe(first())
-      .subscribe(
-        data => {
-          this.fpList = new Map<number, string>();
-          let fps = data["fps"]
-          fps.forEach(fpInfo => {
-            var fp = fpInfo as Fpduales
-           
-            this.fpList.set(fp.id, fp.nombre)
+        .subscribe(
+          data => {
+            this.fpList = new Map<number, string>();
+            let fps = data["fps"]
+            fps.forEach(fpInfo => {
+              var fp = fpInfo as Fpduales
+
+              this.fpList.set(fp.id, fp.nombre)
+            });
+          },
+          error => {
+            if (error.status == 401 && error.error.errors == "Sesión expirada") {
+              AppComponent.myapp.openDialogSesion();
+            } else if (error.status == 406) {
+              const res = new Array();
+              res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
           });
-        },
-        error => {
-          if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            AppComponent.myapp.openDialogSesion();                             
-          } else if (error.status == 406) {
-            const res = new Array();
-            res.push("Petición incorrecta.");
-            AppComponent.myapp.openDialog(res);
-          }
-        });
 
     }
   }
   signup(): void {
     var userJson = {
-      codigoCentro : this.codigoCentro.value,
-      fpDual : this.fpDual.value,
+      codigoCentro: this.codigoCentro.value,
+      fpDual: this.fpDual.value,
     };
-    
-    if(this.numero==1 || this.numero==2){
-    
-    this.authService.signup(this.signupForm.value, userJson).pipe(first())
-      .subscribe(
-        data => {
-          
-          var arrayRes= new Array();
-          arrayRes.push("Usuario registrado correctamente");
-          AppComponent.myapp.openDialog(arrayRes);
-        },
-        error => {
-          console.log(error)
-          if(error.status==409){
-            
-          error.error.errors.forEach(errorInfo => {
-           const formControl = this.signupForm.get(errorInfo.param);
-            if (formControl) {
-              formControl.setErrors({
-                serverError: errorInfo.message
-              });  
-            }          
-          });
-        } else if (error.status == 406) {
-          const res = new Array();
-          res.push("Petición incorrecta.");
-          AppComponent.myapp.openDialog(res);
-        }
-        else if(error.status == 401 && error.error.errors == "Sesión expirada"){
-          AppComponent.myapp.openDialogSesion();                             
-        }
-        });
-      }
 
-    else if(this.numero==5){
-    
-      this.alumnoService.createAlumno(this.signupForm.value,  userJson, this.numeroExpediente.value).pipe(first())
-      .subscribe(
-        data => {
-          
-          var arrayRes= new Array();
-          arrayRes.push("Usuario registrado correctamente");
-          AppComponent.myapp.openDialog(arrayRes);
-        },
-        error => {
-          if(error.status == 409){
-          error.error.errors.forEach(errorInfo => {
-            const formControl = this.signupForm.get(errorInfo.param);
-             if (formControl) {
-               formControl.setErrors({
-                 serverError: errorInfo.message
-               });  
-              
-             }
-             if (errorInfo.param == "numeroExpediente"){
-              this.numeroExpediente.setErrors({
-                serverError: errorInfo.message
-              });  
+    if (this.numero == 1 || this.numero == 2) {
+
+      this.authService.signup(this.signupForm.value, userJson).pipe(first())
+        .subscribe(
+          data => {
+
+            var arrayRes = new Array();
+            arrayRes.push("Usuario registrado correctamente");
+            AppComponent.myapp.openDialog(arrayRes);
+          },
+          error => {
+            console.log(error)
+            if (error.status == 409) {
+
+              error.error.errors.forEach(errorInfo => {
+                const formControl = this.signupForm.get(errorInfo.param);
+                if (formControl) {
+                  formControl.setErrors({
+                    serverError: errorInfo.message
+                  });
+                }
+              });
+            } else if (error.status == 406) {
+              const res = new Array();
+              res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
             }
-                
-           });
-          }
-          else if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            AppComponent.myapp.openDialogSesion();                             
-          }
-          else if (error.status == 406) {
-            const res = new Array();
-            res.push("Petición incorrecta.");
-            AppComponent.myapp.openDialog(res);
-          }
-        });
-    }else if(this.numero==4){
-      
-      this.profesorService.createProfesor(this.signupForm.value, userJson, this.formGroupProfesor.value, this.modulo.value).pipe(first())
-      .subscribe(
-        data => {
-          var arrayRes= new Array();
-          arrayRes.push("Usuario registrado correctamente");
-          AppComponent.myapp.openDialog(arrayRes);
-        },
-        error => {
-          
-        if(error.status==409){
-          console.log(error)
-          error.error.errors.forEach(errorInfo => {
-            const formControl = this.signupForm.get(errorInfo.param);
-             if (formControl) {
-               formControl.setErrors({
-                 serverError: errorInfo.message
-               });  
-             }          
-           });
-          } else if (error.status == 406) {
-            const res = new Array();
-            res.push("Petición incorrecta.");
-            AppComponent.myapp.openDialog(res);
-          }
-          else if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            AppComponent.myapp.openDialogSesion();                             
-          }
-        });
-    }else if(this.numero==3){
-     
-      this.tutorService.createTutor(this.signupForm.value, userJson, this.formGroupTutor.value, this.modulo.value).pipe(first())
-      .subscribe(
-        data => {
-          var arrayRes= new Array();
-          arrayRes.push("Usuario registrado correctamente");
-          AppComponent.myapp.openDialog(arrayRes);
-        },
-        error => {
-          if(error.status == 409){
-          error.error.errors.forEach(errorInfo => {
-            const formControl = this.signupForm.get(errorInfo.param);
-             if (formControl) {
-               formControl.setErrors({
-                 serverError: errorInfo.message
-               });  
-             }          
-           });
-          }
-          else if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            AppComponent.myapp.openDialogSesion();                             
-          }
-          else if (error.status == 406) {
-            const res = new Array();
-            res.push("Petición incorrecta.");
-            AppComponent.myapp.openDialog(res);
-          }
-        });
+            else if (error.status == 401 && error.error.errors == "Sesión expirada") {
+              AppComponent.myapp.openDialogSesion();
+            }
+          });
     }
-    
+
+    else if (this.numero == 5) {
+
+      this.alumnoService.createAlumno(this.signupForm.value, userJson, this.numeroExpediente.value).pipe(first())
+        .subscribe(
+          data => {
+
+            var arrayRes = new Array();
+            arrayRes.push("Usuario registrado correctamente");
+            AppComponent.myapp.openDialog(arrayRes);
+          },
+          error => {
+            if (error.status == 409) {
+              error.error.errors.forEach(errorInfo => {
+                const formControl = this.signupForm.get(errorInfo.param);
+                if (formControl) {
+                  formControl.setErrors({
+                    serverError: errorInfo.message
+                  });
+
+                }
+                if (errorInfo.param == "numeroExpediente") {
+                  this.numeroExpediente.setErrors({
+                    serverError: errorInfo.message
+                  });
+                }
+
+              });
+            }
+            else if (error.status == 401 && error.error.errors == "Sesión expirada") {
+              AppComponent.myapp.openDialogSesion();
+            }
+            else if (error.status == 406) {
+              const res = new Array();
+              res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
+          });
+    } else if (this.numero == 4) {
+
+      this.profesorService.createProfesor(this.signupForm.value, userJson, this.formGroupProfesor.value, this.modulo.value).pipe(first())
+        .subscribe(
+          data => {
+            var arrayRes = new Array();
+            arrayRes.push("Usuario registrado correctamente");
+            AppComponent.myapp.openDialog(arrayRes);
+          },
+          error => {
+
+            if (error.status == 409) {
+              console.log(error)
+              error.error.errors.forEach(errorInfo => {
+                const formControl = this.signupForm.get(errorInfo.param);
+                if (formControl) {
+                  formControl.setErrors({
+                    serverError: errorInfo.message
+                  });
+                }
+              });
+            } else if (error.status == 406) {
+              const res = new Array();
+              res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
+            else if (error.status == 401 && error.error.errors == "Sesión expirada") {
+              AppComponent.myapp.openDialogSesion();
+            }
+          });
+    } else if (this.numero == 3) {
+
+      this.tutorService.createTutor(this.signupForm.value, userJson, this.formGroupTutor.value, this.modulo.value).pipe(first())
+        .subscribe(
+          data => {
+            var arrayRes = new Array();
+            arrayRes.push("Usuario registrado correctamente");
+            AppComponent.myapp.openDialog(arrayRes);
+          },
+          error => {
+            if (error.status == 409) {
+              error.error.errors.forEach(errorInfo => {
+                const formControl = this.signupForm.get(errorInfo.param);
+                if (formControl) {
+                  formControl.setErrors({
+                    serverError: errorInfo.message
+                  });
+                }
+              });
+            }
+            else if (error.status == 401 && error.error.errors == "Sesión expirada") {
+              AppComponent.myapp.openDialogSesion();
+            }
+            else if (error.status == 406) {
+              const res = new Array();
+              res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
+          });
+    }
+
   }
   getErrorMessage(attribute: String) {
 
@@ -437,8 +441,8 @@ this.centroService.getCentros().pipe(first())
     } else if (attribute == "direccion") {
       let direccion = this.signupForm.get("direccion");
       return direccion.hasError('required') ? 'Introduce la dirección' :
-            direccion.hasError('minlength') ? 'Longitud mínima de 4' :
-        '';
+        direccion.hasError('minlength') ? 'Longitud mínima de 4' :
+          '';
     } else if (attribute == "cp") {
       let cp = this.signupForm.get("cp");
       return cp.hasError('required') ? 'Introduce CP' :
@@ -460,7 +464,7 @@ this.centroService.getCentros().pipe(first())
     } else if (attribute == "fechaNacimiento") {
       let fechaNacimiento = this.signupForm.get("fechaNacimiento");
       return fechaNacimiento.hasError('required') ? 'Introduce la fecha' :
-          '';
+        '';
     }
     else if (attribute == "password") {
 
@@ -493,16 +497,16 @@ this.centroService.getCentros().pipe(first())
       return err.hasError('required') ? 'Añade el campo' :
         err.hasError('minlength') ? 'Cadena mínima de 6 caracteres' :
           '';
-    } 
+    }
     else if (this.numero == 3 && attribute == "moduloEmpresa") {
       let err = this.formGroupTutor.get("moduloEmpresa")
       return err.hasError('required') ? 'Añade el campo' :
         err.hasError('minlength') ? 'Cadena mínima de 6 caracteres' :
           '';
-    }else if (this.numero == 3 && attribute == "cifEmpresa") {
+    } else if (this.numero == 3 && attribute == "cifEmpresa") {
       let err = this.formGroupTutor.get("cifEmpresa")
       return err.hasError('required') ? 'Añade el campo' :
-          '';
+        '';
     }
     return false;
   }

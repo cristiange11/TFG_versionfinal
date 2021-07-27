@@ -47,7 +47,7 @@ export class EmpresaCreateComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.fpdualesService.getFps().pipe(first())
+    this.fpdualesService.getFPsByCentro(this.user.codigoCentro).pipe(first())
       .subscribe(
         data => {
           this.fpList = new Map<number, string>();
