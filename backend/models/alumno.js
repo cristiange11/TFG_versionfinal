@@ -22,8 +22,9 @@ module.exports = class Alumno extends User {
         return rows;
     }
     static async getAlumno(dni) {
+        console.log (`SELECT U.*, A.numeroExpediente, M.nombre as nombreModulo FROM usuario U, alumno A, alumno_modulo AM, modulo M WHERE U.dni = A.dni AND A.dni=AM.dni AND M.codigo = AM.codigoModulo AND U.dni='${dni}'`)
         const [rows, fields] = await promisePool.query(
-            `SELECT * FROM alumno WHERE dni='${dni}'`
+            `SELECT U.*, A.numeroExpediente, M.nombre as nombreModulo, M.codigo as moduloCodigo FROM usuario U, alumno A, alumno_modulo AM, modulo M WHERE U.dni = A.dni AND A.dni=AM.dni AND M.codigo = AM.codigoModulo AND U.dni='${dni}'`
         );
         return rows;
     }
@@ -49,7 +50,7 @@ module.exports = class Alumno extends User {
     }
     static async createAlumno(alumno, password, user) {
         const connection = await promisePool.getConnection();
-
+        
         try {
             await connection.beginTransaction();
             let query = `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fechaNacimiento, fpDual, codigoCentro) VALUES ('${alumno.dni}','${alumno.nombre}','${alumno.apellidos}','${alumno.correo}','${alumno.movil}','${alumno.direccion}','${password}','${alumno.genero}',${alumno.cp},'${alumno.rol}',STR_TO_DATE('${alumno.fechaNacimiento}','%Y-%m-%d'),'${alumno.fpDual}','${alumno.codigoCentro}')`
@@ -70,20 +71,20 @@ module.exports = class Alumno extends User {
     }
     static async updateAlumno(alumno, password, user) {
         const connection = await promisePool.getConnection();
-        console.log(alumno)
+        console.log("entro a updatear alumno " + alumno)
         try {
             await connection.beginTransaction();
             let query = `UPDATE usuario SET nombre='${alumno.nombre}',apellidos='${alumno.apellidos}',correo='${alumno.correo}', movil='${alumno.movil}',direccion='${alumno.direccion}',password='${password}',genero='${alumno.genero}', cp='${alumno.cp}',rol='${alumno.rol}',fechaNacimiento=STR_TO_DATE('${alumno.fechaNacimiento}','%Y-%m-%d'),fpDual=${alumno.fpDual},codigoCentro='${alumno.codigoCentro}' WHERE dni='${alumno.dni}'`;
             await connection.query(query);
             await connection.query(`UPDATE alumno SET numeroExpediente='${alumno.numeroExpediente}' WHERE dni = '${alumno.dni}'`);            
             await connection.query(`DELETE  FROM alumno_modulo WHERE DNI = '${alumno.dni}'`);
-            const alumno = JSON.parse(JSON.stringify(alumno.modulo.modulo));
+            const alum = JSON.parse(JSON.stringify(alumno.modulo.modulo));
+            console.log(alumno.modulo.modulo)
+            for (var i = 0; i < alum.length; i++) {
 
-            for (var i = 0; i < alumno.length; i++) {
+                const moduloInser = alum[i];
 
-                const moduloInser = alumno[i];
-
-                await connection.query(`INSERT INTO alumno_modulo (codigoModulo, dni) SELECT modulo.codigo, tutor_empresa.dni FROM modulo, tutor_empresa WHERE modulo.codigo = ${moduloInser} AND tutor_empresa.dni='${alumno.dni}'`);
+                await connection.query(`INSERT INTO alumno_modulo (codigoModulo, dni) SELECT modulo.codigo, alumno.dni FROM modulo, alumno WHERE modulo.codigo = ${moduloInser} AND alumno.dni='${alumno.dni}'`);
             }
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha añadido alumno con DNI ${alumno.dni} ','${user}',sysdate(), 'alumno')`);            
             await connection.commit();

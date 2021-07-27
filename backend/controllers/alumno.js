@@ -34,14 +34,15 @@ exports.getAlumno = async (req, res, next) => {
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
-
-    const dni = req.params.dni;
-    try {
-        const alumno = await Alumno.getAlumno(dni);
         
-        res.status(200).json({ alumno: alumno });
+    try {
+       
+        const alumno = await Alumno.getAlumno(req.params.dni);
+        console.log("Alumno => " +alumno)
+        res.status(200).json({ alumno: JSON.stringify(alumno) });
 
     } catch (err) {
+       
         res.status(500).json({ error: err });
     }
     }
@@ -70,6 +71,7 @@ exports.deleteAlumno = async (req, res, next) => {
       }
 };
 exports.updateAlumno = async (req, res, next) => {
+    console.log("ENTRO A UPDATEAR ALUMNO")
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
       }
@@ -98,8 +100,10 @@ exports.updateAlumno = async (req, res, next) => {
     }
     else {
         try {
+            
             const user = jwt_decode(req.headers['authorization']).sub;
             const hashedPassword = await bcrypt.hash(req.body.password, 12);
+            console.log("Campos " + req.body.dni)
             Alumno.updateAlumno(req.body,hashedPassword, user).then(function (result) {
                 console.log("Promise Resolved");
 

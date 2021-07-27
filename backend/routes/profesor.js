@@ -8,7 +8,7 @@ const profesorController = require('../controllers/profesor');
 
 router.get('/', profesorController.getProfesores);
 
-
+router.get('/:dni' , profesorController.getProfesor);
 
 router.delete('/:dni', profesorController.deleteProfesor);
 

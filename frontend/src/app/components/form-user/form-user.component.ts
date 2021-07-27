@@ -68,6 +68,28 @@ export class FormUserComponent implements OnInit {
       this.router.navigate(['home']);
     }
     }
+    
+this.centroService.getCentros().pipe(first())
+.subscribe(
+  data => {
+    this.centroList = new Map<string, string>();
+    let centros = data["centros"]
+   
+    centros.forEach(centroInfo => {
+      
+      this.centroList.set(centroInfo.codigoCentro, centroInfo.nombre)
+    });
+  },
+  error => {
+    if(error.status == 401 && error.error.errors == "Sesión expirada"){
+      AppComponent.myapp.openDialogSesion();                             
+    }
+    else if (error.status == 406) {
+      const res = new Array();
+      res.push("Petición incorrecta.");
+      AppComponent.myapp.openDialog(res);
+    }
+  });
   
     this.rolService.getRoles().pipe(first())
       .subscribe(

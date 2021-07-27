@@ -25,6 +25,27 @@ exports.getTutores = async (req, res, next) => {
     }
 }
 };
+exports.getTutor = async (req, res, next) => {
+    if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
+        res.status(406).json({ "errors": "No aceptable" });
+      }
+      else{
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
+    console.log(expirado)
+    if (expirado) {
+        res.status(401).json({ "errors": "Sesión expirada" });
+    } else {
+        try {
+            
+            const tutor = await TutorEmpresa.getTutor(req.params.dni);
+            res.status(200).json({ tutor: JSON.stringify(tutor) });
+
+        } catch (err) {
+            res.status(500).json({ error: err });
+        }
+    }
+}
+};
 exports.deleteTutor = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
@@ -80,13 +101,14 @@ exports.updateTutor = async (req, res, next) => {
             try {
                 const user = jwt_decode(req.headers['authorization']).sub;
                 const hashedPassword = await bcrypt.hash(req.body.password, 12);
-
+                console.log(req.body.moduloEmpresa)
                 TutorEmpresa.updateTutor(req.body,hashedPassword,user).then(function (result) {
                     console.log("Promise Resolved");
 
-                    res.status(201).json({ message: "sucess" }); 
-                }).catch(function () {
+                    res.status(201).json({ profesor: "sucess" });
+                }).catch(function (err) {
                     console.log("Promise Rejected");
+                    res.status(401).json({ message: "no se ha podido actualizar el tutor:" + err });
                 });
 
 

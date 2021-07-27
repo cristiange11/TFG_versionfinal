@@ -44,7 +44,13 @@ export class TutorEmpresaService {
   }
   updateTutor(sigunForm , userJson,  formulario2, modulo): Observable<JSON>{    
     var tutor = this.formarTutor(sigunForm , userJson,  formulario2, modulo);
+  
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.put<JSON>(`${this.url}/update`, tutor , httpOptions);   
+  }
+  getTutor(dni): Observable<JSON>{    
+    console.log(`${this.url}/${dni}`)
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
+    return this.http.get<JSON>(`${this.url}/${dni}`,  httpOptions); 
   }
 }

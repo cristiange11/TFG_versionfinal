@@ -65,23 +65,7 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
           let usuarios = data["usuarios"];
 
           usuarios.forEach(usuarioInfo => {
-            
-            var user = {
-              dni: usuarioInfo.dni,
-              nombre: usuarioInfo.nombre,
-              apellidos: usuarioInfo.apellidos,
-              correo: usuarioInfo.correo,
-              movil: usuarioInfo.movil,
-              direccion: usuarioInfo.direccion,
-              password: usuarioInfo.password,
-              genero: usuarioInfo.genero,
-              cp: usuarioInfo.cp,
-              rol: usuarioInfo.nombreRol,
-              fechaNacimiento: this.datepipe.transform(usuarioInfo.fechaNacimiento, "dd/MM/YYYY"),
-              fpDual: usuarioInfo.nombreFP,
-              codigoCentro: usuarioInfo.nombreCentro,
-            }
-           
+            var user = this.getUserFila(usuarioInfo);
             this.userList.push(user);
 
           });
@@ -108,21 +92,7 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
 
           usuarios.forEach(usuarioInfo => {
             console.log(usuarioInfo);
-            var user = {
-              dni: usuarioInfo.dni,
-              nombre: usuarioInfo.nombre,
-              apellidos: usuarioInfo.apellidos,
-              correo: usuarioInfo.correo,
-              movil: usuarioInfo.movil,
-              direccion: usuarioInfo.direccion,
-              password: usuarioInfo.password,
-              genero: usuarioInfo.genero,
-              cp: usuarioInfo.cp,
-              rol: usuarioInfo.nombreRol,
-              fechaNacimiento: this.datepipe.transform(usuarioInfo.fechaNacimiento, "dd/MM/YYYY"),
-              fpDual: usuarioInfo.nombreFP,
-              codigoCentro: usuarioInfo.nombreCentro,
-            }
+            var user = this.getUserFila(usuarioInfo);
            
             this.userList.push(user);
 
@@ -143,6 +113,28 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
 
         });
       }
+  }
+  getUserFila(usuarioInfo){
+    console.log(usuarioInfo)
+    var user = {
+      dni: usuarioInfo.dni,
+      nombre: usuarioInfo.nombre,
+      apellidos: usuarioInfo.apellidos,
+      correo: usuarioInfo.correo,
+      movil: usuarioInfo.movil,
+      direccion: usuarioInfo.direccion,
+      password: usuarioInfo.password,
+      genero: usuarioInfo.genero,
+      cp: usuarioInfo.cp,
+      rol: usuarioInfo.nombreRol,
+      fechaNacimiento: this.datepipe.transform(usuarioInfo.fechaNacimiento, "dd/MM/YYYY"),
+      fpDual: usuarioInfo.nombreFP,
+      codigoCentro: usuarioInfo.nombreCentro,
+      fpId:usuarioInfo.fpDual,
+      codigoCent: usuarioInfo.codigoCentro,
+      rolId: usuarioInfo.rol
+    }
+    return user;
   }
   private filter() {
 
