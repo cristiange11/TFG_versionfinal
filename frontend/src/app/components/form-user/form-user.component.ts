@@ -387,6 +387,24 @@ export class FormUserComponent implements OnInit {
                     serverError: errorInfo.message
                   });
                 }
+                else if (errorInfo.param == "modulo"){
+                  this.modulo.setErrors({
+                    serverError: errorInfo.message
+                  });  
+                }else if (errorInfo.param == "fpDual"){
+                  this.fpDual.setErrors({
+                    serverError: errorInfo.message
+                  });  
+                }else if (errorInfo.param == "formGroupProfesor"){
+                  this.formGroupProfesor.setErrors({
+                    serverError: errorInfo.message
+                  });  
+                }
+                else if (errorInfo.param == "codigoCentro") {
+                  this.codigoCentro.setErrors({
+                    serverError: errorInfo.message
+                  });
+                }
               });
             } else if (error.status == 406) {
               const res = new Array();
@@ -412,6 +430,23 @@ export class FormUserComponent implements OnInit {
                 const formControl = this.signupForm.get(errorInfo.param);
                 if (formControl) {
                   formControl.setErrors({
+                    serverError: errorInfo.message
+                  });
+                }else if (errorInfo.param == "modulo"){
+                  this.modulo.setErrors({
+                    serverError: errorInfo.message
+                  });  
+                }else if (errorInfo.param == "fpDual"){
+                  this.fpDual.setErrors({
+                    serverError: errorInfo.message
+                  });  
+                }else if (errorInfo.param == "formGroupProfesor"){
+                  this.formGroupProfesor.setErrors({
+                    serverError: errorInfo.message
+                  });  
+                }
+                else if (errorInfo.param == "codigoCentro") {
+                  this.codigoCentro.setErrors({
                     serverError: errorInfo.message
                   });
                 }

@@ -53,6 +53,26 @@ module.exports = class User {
         
       
     }
+    static async deleteLogsByUser(dni,userLogado) {
+       
+        const connection = await promisePool.getConnection();
+         try {
+             await connection.beginTransaction();
+             let query = `DELETE FROM logs WHERE usuario = '${dni}'`;
+             await connection.query(query);
+             await connection.query(`DELETE FROM usuario WHERE dni = '${dni}'`);
+             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha borrado usuario con DNI ${dni} ','${userLogado}',sysdate(), 'user')`);            
+             await connection.commit();
+         } catch (err) {
+             await connection.query("ROLLBACK");
+             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_USER','No se ha borrado el usuario con DNI ${dni}','${userLogado}',sysdate(), 'user')`);            
+             console.log('ROLLBACK at querySignUp', err);
+             throw err;
+         } finally {
+             await connection.release();
+         }
+         
+     }
     static async deleteUser(dni,userLogado) {
        
        const connection = await promisePool.getConnection();

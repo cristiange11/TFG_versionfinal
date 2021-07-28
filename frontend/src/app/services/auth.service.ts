@@ -85,4 +85,9 @@ export class AuthService {
 
     return this.http.delete<JSON>(`${this.url}/${dni}`,  httpOptions);
   }
+  deleteLogByUser(dni: string): Observable<JSON>{
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
+
+    return this.http.delete<JSON>(`${this.url}/usuario/${dni}`,  httpOptions);
+  }
 }

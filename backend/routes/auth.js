@@ -4,7 +4,7 @@ const router = express.Router();
 
 
 const User = require('../models/user');
-
+const Rol = require('../models/roles');
 const authController = require('../controllers/auth');
 
 router.post(
@@ -26,7 +26,9 @@ router.post(
     body('apellidos').trim().not().isEmpty().withMessage("Apellidos vacío"),
     body('rol').trim().not().isEmpty().withMessage("Rol vacío")
     .custom(async (rol) => {
-      if(Number.isNaN(rol)){
+     
+      if(!isNaN(rol)){
+        console.log("entro al rol")
         const user = await Rol.getRol(rol);
       if (user[0].length == 0) {
         return Promise.reject('Error');
@@ -68,6 +70,10 @@ router.get('/', authController.getUsuarios);
 router.get('/:codigoCentro', authController.getUsersByCentro);
 
 router.delete('/:dni',authController.deleteUser);
+
+router.delete('/usuario/:dni',authController.deleteLogsByUser);
+
+
 
 router.put(
   '/update',

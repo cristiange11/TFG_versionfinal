@@ -152,12 +152,33 @@ exports.deleteUser = async (req, res, next) => {
 
     } catch (err) {
       console.log(err)
+      res.status(409).json({ error: err });
+    }
+  }
+}
+};
+exports.deleteLogsByUser = async (req, res, next) => {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
+  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
+  if (expirado) {
+    res.status(401).json({ "errors": "Sesión expirada" });
+  } else {
+    try {
+      const user = jwt_decode(req.headers['authorization']).sub;
+      console.log(req.params)
+      await User.deleteLogsByUser(req.params.dni, user);
+      res.status(200).json({ message: "sucesss" });
+
+    } catch (err) {
+      console.log(err)
       res.status(500).json({ error: err });
     }
   }
 }
 };
-
 exports.getUsuarios = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });

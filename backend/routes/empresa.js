@@ -49,14 +49,14 @@ router.post(
     .matches(/^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/).withMessage("Formato CIF incorrecto"),
     body('becas').trim().not().isEmpty().withMessage("Becas vacía")
     .custom(async (becas) => {    
-      if (Number.isNaN(becas) || (becas != 1 && becas!=2) ) {
+      if (isNaN(becas) || (becas != 1 && becas!=2) ) {
         return Promise.reject('Campo erróneo');
       }
     
   }),
     body('plazas').trim().not().isEmpty().withMessage("Plazas vacía")
     .custom(async (plazas) => {    
-      if (Number.isNaN(plazas) || plazas<=0)  {
+      if (isNaN(plazas) || plazas<=0)  {
         return Promise.reject('Mínimo 1 plaza');
       }
     
@@ -94,14 +94,14 @@ router.put(
     .matches(/^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/).withMessage("Formato URL incorrecto"),
     body('becas').trim().not().isEmpty().withMessage("Becas vacía")
     .custom(async (becas) => {    
-      if (Number.isNaN(becas) || (becas != 1 && becas!=2) ) {
+      if (isNaN(becas) || (becas != 1 && becas!=2) ) {
         return Promise.reject('Campo erróneo');
       }
     
   }),
     body('plazas').trim().not().isEmpty().withMessage("Plazas vacía")
     .custom(async (plazas) => {    
-      if (Number.isNaN(plazas) || plazas<=0)  {
+      if (isNaN(plazas) || plazas<=0)  {
         return Promise.reject('Mínimo 1 plaza');
       }
     

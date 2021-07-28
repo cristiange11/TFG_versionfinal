@@ -14,6 +14,7 @@ import { NavigationComponent } from '../navigation/navigation.component';
 import { DatePipe } from '@angular/common';
 import { UsuarioUpdateComponent } from '../modals/usuario/usuario-update/usuario-update.component';
 import { DeleteComponent } from '../modals/delete/delete.component';
+import { UsuarioDeleteConfirmationComponent } from '../modals/usuario/usuario-delete-confirmation/usuario-delete-confirmation.component';
 
 @Component({
   selector: 'app-usuario',
@@ -251,17 +252,38 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
             error => {
               if(error.status == 401 && error.error.errors == "Sesión expirada"){
                 AppComponent.myapp.openDialogSesion();                             
-              } else if (error.status == 406) {
+              }
+              else if (error.status == 406) {
                 const res = new Array();
                 res.push("Petición incorrecta.");
                 AppComponent.myapp.openDialog(res);
               }
-              else{
-              const res = new Array();
-              res.push("No se ha podido borrar.");
-              AppComponent.myapp.openDialog(res);
+              else if(error.status == 409){
+                const dialogRef2 = this.dialog.open(UsuarioDeleteConfirmationComponent);
+                dialogRef2.afterClosed().subscribe( result => {
+                    if(result){
+                      this.userService.deleteLogByUser(dni).pipe(first())
+                      .subscribe(
+                        data => {
+                            window.location.reload();
+                        },
+                        error => {
+                          console.log(error)
+                          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+                            AppComponent.myapp.openDialogSesion();                             
+                          }
+                          else{
+                          const res = new Array();
+                          res.push("No se ha podido borrar.");
+                          AppComponent.myapp.openDialog(res);
+                          }
+                        }
+                      )
+                    }
+                });
               }
             });
+            
       }
     });
 

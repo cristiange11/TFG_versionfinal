@@ -369,6 +369,10 @@ export class UsuarioUpdateComponent implements OnInit {
                   formControl.setErrors({
                     serverError: errorInfo.message
                   });
+                }else if (errorInfo.param == "modulo"){
+                  this.modulo.setErrors({
+                    serverError: errorInfo.message
+                  });  
                 }
               });
             }

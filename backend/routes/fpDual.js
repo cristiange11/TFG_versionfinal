@@ -26,9 +26,15 @@ router.post(
     body('nombre').trim().not().isEmpty().withMessage("Nombre vacío"),
     body('descripcion').trim().not().isEmpty().withMessage("Dirección vacía"),
     body('totalPlazas').trim().not().isEmpty().withMessage("Total de plazas vacías")
-    .custom(async (totalPlazas) => {    
-      if (Number.isNaN(totalPlazas) || (totalPlazas<=0) ) {
+    .custom(async (totalPlazas) => { 
+      
+      if (isNaN(totalPlazas))  {
+        return Promise.reject('Error total Plazas');
+      }
+      else if(totalPlazas <= 0){
+        
         return Promise.reject('Mínimo 1 plaza');
+
       }
     
   }),
@@ -50,14 +56,14 @@ router.post(
     }),
     body('plazasDisponibles').trim().not().isEmpty().withMessage("Plazas disponibles vacías")
       .custom(async (plazasDisponibles , {req}) => {
-        if(Number.isNaN(plazasDisponibles) || plazasDisponibles<=0){
-          return Promise.reject('Mínimo 1 plaza disponible');
+        if (isNaN(plazasDisponibles))  {
+          return Promise.reject('Error total Plazas');
         }
-        else{
-        if (plazasDisponibles > req.body.totalPlazas) {
-          return Promise.reject('Plazas disponibles mayor que total de plazas');
+        else if(plazasDisponibles <= 0){         
+          return Promise.reject('Mínimo 1 plaza');  
+        }else if(plazasDisponibles > req.body.totalPlazas){ 
+          return Promise.reject('Plazas disponibles < total plazas');  
         }
-      }
     })
   ],
   fpController.createFp
@@ -70,8 +76,13 @@ router.put(
     body('descripcion').trim().not().isEmpty().withMessage("Dirección vacía"),
     body('totalPlazas').trim().not().isEmpty().withMessage("Total de plazas vacías")
     .custom(async (totalPlazas) => {    
-      if (Number.isNaN(totalPlazas) || (totalPlazas<=0) ) {
+      if (isNaN(totalPlazas))  {
+        return Promise.reject('Error total Plazas');
+      }
+      else if(totalPlazas <= 0){
+        
         return Promise.reject('Mínimo 1 plaza');
+
       }
     
   }),
@@ -92,8 +103,13 @@ router.put(
     }),
     body('plazasDisponibles').trim().not().isEmpty().withMessage("Plazas disponibles vacías")
       .custom(async (plazasDisponibles , {req}) => {
-        if (plazasDisponibles > req.body.totalPlazas) {
-          return Promise.reject('Plazas disponibles mayor que total de plazas');
+        if (isNaN(plazasDisponibles))  {
+          return Promise.reject('Error total Plazas');
+        }
+        else if(plazasDisponibles <= 0){         
+          return Promise.reject('Mínimo 1 plaza');  
+        }else if(plazasDisponibles > req.body.totalPlazas){ 
+          return Promise.reject('Plazas disponibles < total plazas');  
         }
     })
 

@@ -65,7 +65,7 @@ exports.deleteAlumno = async (req, res, next) => {
         res.status(200).json({ alumno: alumno });
 
     } catch (err) {
-        res.status(500).json({ error: err });
+        res.status(409).json({ error: err });
     }
 }
       }

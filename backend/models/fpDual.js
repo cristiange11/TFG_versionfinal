@@ -41,8 +41,9 @@ module.exports = class FP_dual {
         }
     }
     static async getFp(id) {
+        console.log( `SELECT * FROM fp_duales id = ${id}`)
         const [rows, fields] = await promisePool.query(
-            `SELECT * FROM fp_duales id = '${id}'`);
+            `SELECT * FROM fp_duales where id = ${id}`);
         return rows;
     }
     static async getFpsByAdminCentro(codigoCentro) {
