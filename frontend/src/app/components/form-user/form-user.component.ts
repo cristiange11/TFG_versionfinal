@@ -331,6 +331,7 @@ export class FormUserComponent implements OnInit {
             AppComponent.myapp.openDialog(arrayRes);
           },
           error => {
+            
             if (error.status == 409) {
               error.error.errors.forEach(errorInfo => {
                 const formControl = this.signupForm.get(errorInfo.param);

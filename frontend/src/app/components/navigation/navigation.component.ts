@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { icon } from '@fortawesome/fontawesome-svg-core';
 
 import { CookieService } from 'ngx-cookie-service';
 import { MenuItem } from 'primeng/api';
@@ -31,7 +32,7 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
     this.router.navigate(['home']);
   }
   obtenerItems() {
-
+    const editarPerfil = {label: 'Editar Perfil', routerLink: '/editprofile', icon: "far fa-user"};
     if (!this.cookieService.get('user')) {
       this.items = [
         {
@@ -51,11 +52,9 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
             routerLink: '/fpdual',
             icon: "fas fa-graduation-cap"
           },
-          {
-            label: 'Editar Perfil',
-            routerLink: '/editprofile',
-            icon: "far fa-user"
-          },
+          
+           editarPerfil,
+           
           {
             label: 'Usuarios',
             routerLink: '/usuario',
@@ -81,6 +80,16 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
             
           });
         }
+      }
+      else {
+        this.items = [
+          {
+            label: 'Módulos',
+            routerLink: '/modulo',
+            icon: 'fa fa-book'
+          },
+          editarPerfil,         
+        ]
       }
       this.items.push({
         label: 'Cerrar Sesión',

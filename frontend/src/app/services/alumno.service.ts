@@ -31,8 +31,8 @@ export class AlumnoService {
       fpDual: userJson.fpDual,
       codigoCentro: userJson.codigoCentro
     };
-    
-    var alumno = new Alumno(user, formulario2);
+   
+    var alumno = new Alumno(user, formulario2)
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
 
     return this.http.post<JSON>(`${this.url}/create`, alumno , httpOptions);   

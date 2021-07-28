@@ -46,7 +46,7 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
     }
     else {
       var user = (JSON.parse(this.cookieService.get('user')));
-      if (Number(user.rol) != 1) {
+      if (Number(user.rol) != 1 && Number(user.rol) != 2) {
         this.router.navigate(['home']);
       }
 
