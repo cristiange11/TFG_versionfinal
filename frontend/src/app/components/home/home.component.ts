@@ -31,8 +31,10 @@ export class HomeComponent implements OnInit {
       var user =(JSON.parse(this.cookieService.get('user')));
     if(Number(user.rol)==1){
       this.router.navigate(['adminpage']);
-    } if(Number(user.rol)==2){
+    }else if(Number(user.rol)==2){
       this.router.navigate(['fpdual']);
+    }else if(Number(user.rol) == 4){
+      this.router.navigate(['modulo']);
     }
     
     }

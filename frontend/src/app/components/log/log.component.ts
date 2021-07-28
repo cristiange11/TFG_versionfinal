@@ -34,7 +34,7 @@ export class LogComponent implements OnInit , OnDestroy, AfterViewInit {
   private serviceSubscribe: Subscription;
   constructor( private datepipe : DatePipe, private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private logService: LogService, public dialog: MatDialog) {
     this.dataSource = new MatTableDataSource<Log>();
-    document.body.style.background = "linear-gradient(to right, #3ab4a2, #1d69fd)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    document.body.style.background = "linear-gradient(to right, #d2eeae, #b170ad)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
    }
 

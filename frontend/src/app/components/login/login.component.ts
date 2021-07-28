@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
 
           this.cookieService.set('user', JSON.stringify(user));
           var userCookie = (JSON.parse(this.cookieService.get('user')));
-         
+          
           if (Number(userCookie.rol) == 1) {
             this.router.navigate(['adminpage']);
           }
@@ -62,7 +62,9 @@ export class LoginComponent implements OnInit {
           else if(Number(userCookie.rol) == 2) {
             this.router.navigate(['fpdual']);
           }
-
+          else if(Number(userCookie.rol) == 4) {
+            this.router.navigate(['modulo']);
+          }
         },
         error => {
           if (error.status == 406) {

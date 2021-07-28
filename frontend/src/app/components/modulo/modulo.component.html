@@ -5,7 +5,7 @@
           <input matInput type="text" (keyup)="doFilter($any($event))" placeholder="Buscar">
         </mat-form-field>
       </div>
-      <div class="col-md-1"><button mat-raised-button id="dch" align="right" color="primary" (click)="add()">Crear</button></div>
+      <div class="col-md-1" *ngIf = "this.user.rol == 1 || this.user.rol == 2"><button mat-raised-button id="dch" align="right" color="primary" (click)="add()">Crear</button></div>
     </div>
     
   <div class="example-container mat-elevation-z8" >

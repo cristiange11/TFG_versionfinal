@@ -30,7 +30,7 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
 
   public displayedColumns: string[] = ['nombre', 'provincia', 'direccion', 'CP', 'telefono', 'correo'];
-  public columnsToDisplay: string[] = [...this.displayedColumns, 'actions'];
+  public columnsToDisplay: string[] = [...this.displayedColumns, 'actions', 'fps'];
 
   public columnsFilters = {};
 
@@ -85,6 +85,10 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
 
         
         });
+  }
+  getFps(codigoCentro){
+    sessionStorage.setItem('codigoCentro', codigoCentro);   
+    this.router.navigate(['fpdual']);
   }
   private filter() {
 

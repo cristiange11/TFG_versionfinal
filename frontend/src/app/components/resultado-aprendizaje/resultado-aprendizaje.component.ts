@@ -34,7 +34,7 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
   private serviceSubscribe: Subscription;
   constructor(private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private resultadoAprendizajeService: ResultadoAprendizajeService, public dialog: MatDialog) {
     this.dataSource = new MatTableDataSource<ResultadoAprendizaje>();
-    document.body.style.background = "linear-gradient(to right, #3ab4a2, #1d69fd)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    document.body.style.background = "linear-gradient(to right,#d2eeae, #73cbc2, #6e68a0,#7a70b1)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
   }
 
@@ -46,7 +46,7 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
     }
     else {
       var user = (JSON.parse(this.cookieService.get('user')));
-      if (Number(user.rol) != 1 && Number(user.rol) != 2) {
+      if (Number(user.rol) != 1 && Number(user.rol) != 2 && Number(user.rol) !=4) {
         this.router.navigate(['home']);
       }
 

@@ -54,11 +54,34 @@ export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
       this.router.navigate(['home']);
     }
     
-    }
+    }  
     this.getAll();
   }
+  obtenerFps(codigoCentro){
+    this.serviceSubscribe = this.fpService.getFPsByCentro(codigoCentro).pipe(first())
+      .subscribe(
+        data => {
+          let fps = data["fps"];
+          fps.forEach(fpInfo => {          
+            this.fpList.push(fpInfo);
+          });
+            
+            this.dataSource.data = this.fpList;
+        },
+        error => {
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            AppComponent.myapp.openDialogSesion();                             
+          }
+          else if (error.status == 406) {
+            const res = new Array();
+            res.push("Petición incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }
+         
+        });  
+  }
   getAll() {
-    console.log("Usuario => " + this.user.codigoCentro)
+    if(sessionStorage.getItem('codigoCentro') == null){
     if(Number(this.user.rol)==1){
     this.serviceSubscribe = this.fpService.getFps().pipe(first())
       .subscribe(
@@ -84,28 +107,10 @@ export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
         });     
   }
   else{
-    this.serviceSubscribe = this.fpService.getFPsByCentro(this.user.codigoCentro).pipe(first())
-      .subscribe(
-        data => {
-          let fps = data["fps"];
-          fps.forEach(fpInfo => {          
-            this.fpList.push(fpInfo);
-            console.log(fps)
-          });
-            
-            this.dataSource.data = this.fpList;
-        },
-        error => {
-          if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            AppComponent.myapp.openDialogSesion();                             
-          }
-          else if (error.status == 406) {
-            const res = new Array();
-            res.push("Petición incorrecta.");
-            AppComponent.myapp.openDialog(res);
-          }
-         
-        });    
+      this.obtenerFps(this.user.codigoCentro);
+  }}
+  else{
+      this.obtenerFps(sessionStorage.getItem('codigoCentro'));
   }
 }
   private filter() {

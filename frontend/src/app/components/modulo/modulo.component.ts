@@ -37,27 +37,27 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
   private serviceSubscribe: Subscription;
   constructor( private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private moduloService: ModuloService, public dialog: MatDialog) {
     this.dataSource = new MatTableDataSource<Modulo>();
-    document.body.style.background = "linear-gradient(to right, #3ab4a2, #1d69fd)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    document.body.style.background = "linear-gradient(to right, #aeeecd, #8433cf)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
    }
 
   ngOnInit(): void {
     this.nagivationComponent.obtenerItems();
-    this.getAll();
+   
     if(!this.cookieService.get('user')){
       this.router.navigate(['home']);
     }
     else{
       this.user =(JSON.parse(this.cookieService.get('user')));
+      console.log("Usuario => " + this.user.rol)
     if(Number(this.user.rol)!=1 && Number(this.user.rol)!=2 && Number(this.user.rol) != 4){
       this.router.navigate(['home']);
     }
     
-    }
+    } this.getAll();
   }
-  getAll() {
-    
-    this.serviceSubscribe = this.moduloService.getModulos(Number(sessionStorage.getItem('fpDual'))).pipe(first())
+  obtenerModulos(fpDual){
+    this.serviceSubscribe = this.moduloService.getModulos(fpDual).pipe(first())
       .subscribe(
         data => {
           let modulos = data["modulos"];
@@ -79,6 +79,15 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
           }
          
         });
+  }
+  getAll() {
+    console.log("Usuario => " + this.user.rol)
+    if(Number(this.user.rol) == 1 || Number(this.user.rol) == 2){
+    this.obtenerModulos(Number(sessionStorage.getItem('fpDual')));
+      
+      }else{
+        this.obtenerModulos(Number(this.user.fpDual));
+      }
   }
   private filter() {
 

@@ -51,7 +51,7 @@ export class EditProfileComponent implements OnInit {
     else {
       this.user = (JSON.parse(this.cookieService.get('user')));
       
-      if (Number(this.user.rol) != 1 && Number(this.user.rol)!=2)  {
+      if (Number(this.user.rol) != 1 && Number(this.user.rol)!=2 && Number(this.user.rol)!=4)  {
         this.router.navigate(['home']);
       }
 

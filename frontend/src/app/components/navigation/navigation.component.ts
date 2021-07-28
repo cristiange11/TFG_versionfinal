@@ -31,6 +31,9 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
     this.cookieService.deleteAll();
     this.router.navigate(['home']);
   }
+  deleteSessionFp(){
+    sessionStorage.removeItem('codigoCentro');
+  }
   obtenerItems() {
     const editarPerfil = {label: 'Editar Perfil', routerLink: '/editprofile', icon: "far fa-user"};
     if (!this.cookieService.get('user')) {
@@ -50,7 +53,8 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
           {
             label: 'FP duales',
             routerLink: '/fpdual',
-            icon: "fas fa-graduation-cap"
+            icon: "fas fa-graduation-cap",
+            command: () => this.deleteSessionFp(),
           },
           
            editarPerfil,
