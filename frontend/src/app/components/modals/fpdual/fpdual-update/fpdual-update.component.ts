@@ -37,6 +37,7 @@ export class FpdualUpdateComponent implements OnInit {
         plazasDisponibles : this.plazasDisponiblesControl,
         codigoCentro: new FormControl("", [Validators.required]),
         id: new FormControl("", []),
+        nombreCentro : new FormControl("", [])
       }, )
       
       this.formInstance.setValue(data); 

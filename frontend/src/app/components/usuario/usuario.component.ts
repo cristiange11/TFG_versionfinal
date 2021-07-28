@@ -116,7 +116,6 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
       }
   }
   getUserFila(usuarioInfo){
-    console.log(usuarioInfo)
     var user = {
       dni: usuarioInfo.dni,
       nombre: usuarioInfo.nombre,

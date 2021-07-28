@@ -24,12 +24,12 @@ import { NavigationComponent } from '../navigation/navigation.component';
 })
 export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
   myApp = AppComponent.myapp;
-  fpList: Array<Fpduales> = [];
+  fpList = [];;
   user;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   
-  public displayedColumns: string[] = ['nombre', 'descripcion', 'totalPlazas', 'plazasDisponibles', 'codigoCentro', 'anio'];
+  public displayedColumns: string[] = ['nombre', 'descripcion', 'totalPlazas', 'plazasDisponibles', 'nombreCentro', 'anio'];
   public columnsToDisplay: string[] = [...this.displayedColumns, 'actions', 'modulos'];
 
   public columnsFilters = {};
@@ -57,13 +57,16 @@ export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
     }  
     this.getAll();
   }
+ 
   obtenerFps(codigoCentro){
     this.serviceSubscribe = this.fpService.getFPsByCentro(codigoCentro).pipe(first())
       .subscribe(
         data => {
           let fps = data["fps"];
-          fps.forEach(fpInfo => {          
-            this.fpList.push(fpInfo);
+          fps.forEach(fpInfo => {   
+            var fp = this.getFpFila(fpInfo);       
+            console.log(fp.codigoCentro)
+            this.fpList.push(fp);
           });
             
             this.dataSource.data = this.fpList;
@@ -87,8 +90,9 @@ export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
       .subscribe(
         data => {
           let fps = data["fps"];
-          fps.forEach(fpInfo => {          
-            this.fpList.push(fpInfo);
+          fps.forEach(fpInfo => {    
+            console.log(fpInfo)        
+            this.fpList.push(this.getFpFila(fpInfo));
             
           });
           
@@ -112,6 +116,22 @@ export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
   else{
       this.obtenerFps(sessionStorage.getItem('codigoCentro'));
   }
+}
+getFpFila(fpInfo){
+  console.log(fpInfo)
+  var fp = {
+    nombre: fpInfo.nombre,
+    descripcion: fpInfo.descripcion,
+    totalPlazas: fpInfo.totalPlazas,
+    anio: fpInfo.anio,
+    codigoCentro: fpInfo.codigoCentro,
+    plazasDisponibles: fpInfo.plazasDisponibles,
+    id: fpInfo.id,
+    nombreCentro: fpInfo.nombreCentro,
+    
+  }
+  
+  return fp;
 }
   private filter() {
 

@@ -49,12 +49,12 @@ module.exports = class FP_dual {
     static async getFpsByAdminCentro(codigoCentro) {
        
         const [rows, fields] = await promisePool.query(
-            `SELECT * FROM fp_duales where codigoCentro = '${codigoCentro}'`);
+            `SELECT F.*,C.nombre as nombreCentro FROM fp_duales as F, centro_educativo as C WHERE C.codigoCentro = F.codigoCentro AND F.codigoCentro='${codigoCentro}'`);
         return rows;
     }
     static async getFps() {
         const [rows, fields] = await promisePool.query(
-            `SELECT * FROM fp_duales `);
+            `SELECT F.*,C.nombre as nombreCentro FROM fp_duales as F, centro_educativo as C WHERE C.codigoCentro = F.codigoCentro `);
         return rows;
     }
     static async getFpsConPlazasDisponibles(codigoCentro) {
