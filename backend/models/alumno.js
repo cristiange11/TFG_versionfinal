@@ -74,7 +74,7 @@ module.exports = class Alumno extends User {
         console.log("entro a updatear alumno " + alumno)
         try {
             await connection.beginTransaction();
-            let query = `UPDATE usuario SET nombre='${alumno.nombre}',apellidos='${alumno.apellidos}',correo='${alumno.correo}', movil='${alumno.movil}',direccion='${alumno.direccion}',password='${password}',genero='${alumno.genero}', cp='${alumno.cp}',rol='${alumno.rol}',fechaNacimiento=STR_TO_DATE('${alumno.fechaNacimiento}','%Y-%m-%d'),fpDual=${alumno.fpDual},codigoCentro='${alumno.codigoCentro}' WHERE dni='${alumno.dni}'`;
+            let query = `UPDATE usuario SET nombre='${alumno.nombre}',apellidos='${alumno.apellidos}',correo='${alumno.correo}', movil='${alumno.movil}',direccion='${alumno.direccion}',password='${password}',genero='${alumno.genero}', cp='${alumno.cp}',fechaNacimiento=STR_TO_DATE('${alumno.fechaNacimiento}','%Y-%m-%d') WHERE dni='${alumno.dni}'`;
             await connection.query(query);
             await connection.query(`UPDATE alumno SET numeroExpediente='${alumno.numeroExpediente}' WHERE dni = '${alumno.dni}'`);            
             await connection.query(`DELETE  FROM alumno_modulo WHERE DNI = '${alumno.dni}'`);

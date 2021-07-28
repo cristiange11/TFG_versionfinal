@@ -25,7 +25,7 @@ module.exports = class Empresa {
     }
     static async getEmpresas() {
         const [rows, fields] = await promisePool.query(
-            `SELECT * FROM empresa `);
+            `SELECT E.*, EF.becas AS becas, EF.plazas AS plazas FROM empresa E, empresa_fpdual EF where E.cifEmpresa = EF.CifEmpresa  `);
         return rows;
     }
     static async getEmpresasByCentro(codigoCentro) {
@@ -101,6 +101,7 @@ module.exports = class Empresa {
             await connection.beginTransaction();
             let query = `UPDATE empresa SET direccion='${empresa.direccion}',nombre='${empresa.nombre}', correo='${empresa.correo}',telefono='${empresa.telefono}',url='${empresa.url}' WHERE cifEmpresa = '${empresa.cifEmpresa}'`;
             await connection.query(query)
+            await connection.query(`UPDATE empresa_fpdual SET becas=${empresa.becas} ,plazas=${empresa.plazas} WHERE CifEmpresa = '${empresa.cifEmpresa}' `);
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha actualizado empresa con CIF ${empresa.cifEmpresa} ','${user}',sysdate(), 'empresa')`);            
             await connection.commit();
         } catch (err) {

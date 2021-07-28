@@ -74,7 +74,7 @@ module.exports = class Profesor extends User {
     static async updateProfesor(profesor, password, user) {
         console.log("entro")
         const connection = await promisePool.getConnection();
-        console.log(`UPDATE usuario SET nombre='${profesor.nombre}',apellidos='${profesor.apellidos}',correo='${profesor.correo}', movil='${profesor.movil}',direccion='${profesor.direccion}',password='${password}',genero='${profesor.genero}', cp='${profesor.cp}',rol='${profesor.rol}',fechaNacimiento=STR_TO_DATE('${profesor.fechaNacimiento}','%Y-%m-%d'),fpDual=${profesor.fpDual},codigoCentro='${profesor.codigoCentro}' WHERE dni='${profesor.dni}'`)
+        console.log(`UPDATE usuario SET nombre='${profesor.nombre}',apellidos='${profesor.apellidos}',correo='${profesor.correo}', movil='${profesor.movil}',direccion='${profesor.direccion}',password='${password}',genero='${profesor.genero}', cp='${profesor.cp}',fechaNacimiento=STR_TO_DATE('${profesor.fechaNacimiento}','%Y-%m-%d') WHERE dni='${profesor.dni}'`)
         try {
             await connection.beginTransaction();
             let query = `UPDATE usuario SET nombre='${profesor.nombre}',apellidos='${profesor.apellidos}',correo='${profesor.correo}', movil='${profesor.movil}',direccion='${profesor.direccion}',password='${password}',genero='${profesor.genero}', cp='${profesor.cp}',rol='${profesor.rol}',fechaNacimiento=STR_TO_DATE('${profesor.fechaNacimiento}','%Y-%m-%d'),fpDual=${profesor.fpDual},codigoCentro='${profesor.codigoCentro}' WHERE dni='${profesor.dni}'`;

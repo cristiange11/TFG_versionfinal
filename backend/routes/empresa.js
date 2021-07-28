@@ -47,8 +47,20 @@ router.post(
       .normalizeEmail(),
     body('url').trim().not().isEmpty().withMessage("URL vacía")
     .matches(/^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/).withMessage("Formato CIF incorrecto"),
-    body('becas').trim().not().isEmpty().withMessage("Becas vacía"),
+    body('becas').trim().not().isEmpty().withMessage("Becas vacía")
+    .custom(async (becas) => {    
+      if (Number.isNaN(becas) || (becas != 1 && becas!=2) ) {
+        return Promise.reject('Campo erróneo');
+      }
+    
+  }),
     body('plazas').trim().not().isEmpty().withMessage("Plazas vacía")
+    .custom(async (plazas) => {    
+      if (Number.isNaN(plazas) || plazas<=0)  {
+        return Promise.reject('Mínimo 1 plaza');
+      }
+    
+  }),
   ],
   empresaController.createEmpresa
 );
@@ -79,7 +91,21 @@ router.put(
     })
       .normalizeEmail(),
     body('url').trim().not().isEmpty().withMessage("URL vacía")
-    .matches(/^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/).withMessage("Formato CIF incorrecto"),
+    .matches(/^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/).withMessage("Formato URL incorrecto"),
+    body('becas').trim().not().isEmpty().withMessage("Becas vacía")
+    .custom(async (becas) => {    
+      if (Number.isNaN(becas) || (becas != 1 && becas!=2) ) {
+        return Promise.reject('Campo erróneo');
+      }
+    
+  }),
+    body('plazas').trim().not().isEmpty().withMessage("Plazas vacía")
+    .custom(async (plazas) => {    
+      if (Number.isNaN(plazas) || plazas<=0)  {
+        return Promise.reject('Mínimo 1 plaza');
+      }
+    
+  }),
 
   ],
   empresaController.updateEmpresa

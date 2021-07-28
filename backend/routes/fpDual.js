@@ -25,7 +25,13 @@ router.post(
   [
     body('nombre').trim().not().isEmpty().withMessage("Nombre vacío"),
     body('descripcion').trim().not().isEmpty().withMessage("Dirección vacía"),
-    body('totalPlazas').trim().not().isEmpty().withMessage("Total de plazas vacías"),
+    body('totalPlazas').trim().not().isEmpty().withMessage("Total de plazas vacías")
+    .custom(async (totalPlazas) => {    
+      if (Number.isNaN(totalPlazas) || (totalPlazas<=0) ) {
+        return Promise.reject('Mínimo 1 plaza');
+      }
+    
+  }),
     body('anio').trim().not().isEmpty().withMessage("Año vacío")
     .custom(async (anio) => {
       let fecha = new Date();
@@ -44,9 +50,14 @@ router.post(
     }),
     body('plazasDisponibles').trim().not().isEmpty().withMessage("Plazas disponibles vacías")
       .custom(async (plazasDisponibles , {req}) => {
+        if(Number.isNaN(plazasDisponibles) || plazasDisponibles<=0){
+          return Promise.reject('Mínimo 1 plaza disponible');
+        }
+        else{
         if (plazasDisponibles > req.body.totalPlazas) {
           return Promise.reject('Plazas disponibles mayor que total de plazas');
         }
+      }
     })
   ],
   fpController.createFp
@@ -57,7 +68,13 @@ router.put(
   [
     body('nombre').trim().not().isEmpty().withMessage("Nombre vacío"),
     body('descripcion').trim().not().isEmpty().withMessage("Dirección vacía"),
-    body('totalPlazas').trim().not().isEmpty().withMessage("Total de plazas vacías"),
+    body('totalPlazas').trim().not().isEmpty().withMessage("Total de plazas vacías")
+    .custom(async (totalPlazas) => {    
+      if (Number.isNaN(totalPlazas) || (totalPlazas<=0) ) {
+        return Promise.reject('Mínimo 1 plaza');
+      }
+    
+  }),
     body('anio').trim().not().isEmpty().withMessage("Año vacío")
     .custom(async (anio) => {
       let fecha = new Date();

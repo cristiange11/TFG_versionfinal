@@ -72,7 +72,13 @@ router.put(
       }
     }),
     body('descripcion').trim().not().isEmpty().withMessage("Descripción vacía"),
-    body('resultado').trim().not().isEmpty().withMessage("Resultado vacío"),
+    body('resultado').trim().not().isEmpty().withMessage("Resultado vacío")
+    .custom(async (resultado) => {    
+      if (Number.isNaN(resultado) || (resultado < 0 || resultado >10) ) {
+        return Promise.reject('Campo erróneo');
+      }
+    
+  }),
   ],
   encuestaController.updateEncuesta
 );

@@ -15,9 +15,13 @@ router.post(
   [
     body('fpDual').trim().not().isEmpty().withMessage("FP Dual vacío")
     .custom(async (fpDual) => {
-      const user = await FP.find(fpDual);
+      if(Number.isNaN(fpDual)){
+        const user = await FP.find(fpDual);
       if (user[0].length == 0) {
         return Promise.reject('FP Dual no existente');
+      }
+      }else{
+        return Promise.reject('Campo erróneo');
       }
     }),
     body('nombre').trim().not().isEmpty().withMessage("Nombre vacío"),
@@ -37,13 +41,21 @@ router.put(
   [
     body('fpDual').trim().not().isEmpty().withMessage("FP Dual vacío")
     .custom(async (fpDual) => {
-      const user = await FP.find(fpDual);
+      if(Number.isNaN(fpDual)){
+        const user = await FP.find(fpDual);
       if (user[0].length == 0) {
         return Promise.reject('FP Dual no existente');
       }
+      }else{
+        return Promise.reject('Campo erróneo');
+      }
     }),
     body('nombre').trim().not().isEmpty().withMessage("Nombre vacío"),
-    body('curso').trim().not().isEmpty().withMessage("Curso vacío"),
+    body('curso').trim().not().isEmpty().withMessage("Curso vacío").custom(async (curso) => {
+      if(curso != "1" && curso != "2"){
+        return Promise.reject('Introduce un curso válido');
+      }
+    }),
     body('descripcion').trim().not().isEmpty().withMessage("Descripción vacía")
   ],
   moduloController.updateModulo

@@ -33,7 +33,8 @@ export class EmpresaService {
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.delete<JSON>(`${this.url}/${cifEmpresa}`,  httpOptions);
   }
-  updateEmpresa(empresa : Empresa): Observable<JSON>{
+  updateEmpresa(empresa): Observable<JSON>{
+    empresa.becas == 'si' ? empresa.becas=1 : empresa.becas=0;
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.put<JSON>(`${this.url}/update`, empresa, httpOptions);
   }

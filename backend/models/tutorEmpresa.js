@@ -71,7 +71,7 @@ module.exports = class TutorEmpresa {
         const connection = await promisePool.getConnection();
         try {
             await connection.beginTransaction();
-            let query = `UPDATE usuario SET nombre='${tutor.nombre}',apellidos='${tutor.apellidos}',correo='${tutor.correo}', movil='${tutor.movil}',direccion='${tutor.direccion}',password='${password}',genero='${tutor.genero}', cp='${tutor.cp}',rol='${tutor.rol}',fechaNacimiento=STR_TO_DATE('${tutor.fechaNacimiento}','%Y-%m-%d'),fpDual=${tutor.fpDual},codigoCentro='${tutor.codigoCentro}' WHERE dni='${tutor.dni}'`;
+            let query = `UPDATE usuario SET nombre='${tutor.nombre}',apellidos='${tutor.apellidos}',correo='${tutor.correo}', movil='${tutor.movil}',direccion='${tutor.direccion}',password='${password}',genero='${tutor.genero}', cp='${tutor.cp}',fechaNacimiento=STR_TO_DATE('${tutor.fechaNacimiento}','%Y-%m-%d') WHERE dni='${tutor.dni}'`;
             await connection.query(query);
             await connection.query(`UPDATE tutor_empresa SET moduloEmpresa='${tutor.moduloEmpresa}' WHERE dni = '${tutor.dni}'`);
             await connection.query(`DELETE  FROM tutor_modulo WHERE DNI = '${tutor.dni}'`);

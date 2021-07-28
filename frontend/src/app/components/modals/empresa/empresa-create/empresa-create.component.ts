@@ -47,6 +47,7 @@ export class EmpresaCreateComponent implements OnInit {
 
 
   ngOnInit(): void {
+    if(this.user.rol == 2){
     this.fpdualesService.getFPsByCentro(this.user.codigoCentro).pipe(first())
       .subscribe(
         data => {
@@ -69,6 +70,32 @@ export class EmpresaCreateComponent implements OnInit {
             AppComponent.myapp.openDialog(res);
           }
         });
+      }
+      else if(this.user.rol == 1){
+        this.fpdualesService.getFps().pipe(first())
+      .subscribe(
+        data => {
+          this.fpList = new Map<number, string>();
+          let fps = data["fps"]
+          fps.forEach(fpInfo => {
+            var fp = fpInfo as Fpduales
+
+            this.fpList.set(fp.id, fp.nombre)
+          });
+        },
+
+        error => {
+          console.log(error)
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            this.dialogRef.close();
+            AppComponent.myapp.openDialogSesion();                             
+          }else if (error.status == 406) {
+            const res = new Array();
+            res.push("Petición incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }
+        });
+      }
   }
   save() {
     console.log(this.formInstance.value);

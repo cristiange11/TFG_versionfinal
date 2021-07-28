@@ -73,12 +73,12 @@ module.exports = class User {
         
     }
     static async updateUser(user, password,userLogado) {
-        let codigoCentro = user.codigoCentro == null ? null : `'${user.codigoCentro}'`;
+       
        const connection = await promisePool.getConnection();
 
         try {
             await connection.beginTransaction();
-            let query = `UPDATE usuario SET nombre='${user.nombre}',apellidos='${user.apellidos}',correo='${user.correo}', movil='${user.movil}',direccion='${user.direccion}',password='${password}',genero='${user.genero}', cp='${user.cp}',rol='${user.rol}',fechaNacimiento=STR_TO_DATE('${user.fechaNacimiento}','%Y-%m-%d'),fpDual=${user.fpDual},codigoCentro=${codigoCentro} WHERE dni='${user.dni}'`;
+            let query = `UPDATE usuario SET nombre='${user.nombre}',apellidos='${user.apellidos}',correo='${user.correo}', movil='${user.movil}',direccion='${user.direccion}',password='${password}',genero='${user.genero}', cp='${user.cp}',fechaNacimiento=STR_TO_DATE('${user.fechaNacimiento}','%Y-%m-%d') WHERE dni='${user.dni}'`;
             await connection.query(query)
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha actualizado usuario con DNI ${user.dni} ','${userLogado}',sysdate(), 'user')`);            
             await connection.commit();

@@ -22,6 +22,9 @@ export class EmpresaUpdateComponent implements OnInit {
       telefono: new FormControl("", [Validators.required, Validators.pattern(/^(\+34|0034|34)?[ -]*(8|9)[ -]*([0-9][ -]*){8}$/)]),
       correo: new FormControl("", [Validators.required, Validators.email]),
       url: new FormControl("", [Validators.required, Validators.pattern(/^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/)]),
+      plazas: new FormControl("", [Validators.required, /*Validators.min(1)*/]),
+      becas: new FormControl("", [Validators.required]),
+
     });
     this.formInstance.setValue(data);
   }

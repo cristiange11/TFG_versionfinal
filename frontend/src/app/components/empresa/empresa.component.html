@@ -20,7 +20,17 @@
              
             </div>
           </th>
-          <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+          <td mat-cell *matCellDef="let element"> 
+            <div *ngIf="column=='becas' && element[column]==0">
+              No
+            </div>
+            <div *ngIf="column=='becas' && element[column]==1">
+              S&iacute;
+            </div>
+            <div *ngIf="column=='url'" ><a href="{{element[column]}}" style='text-decoration:none;color:black;'>{{element[column]}}</a></div>
+            <div *ngIf="column!='becas' && column != 'url'" >{{element[column]}}</div>
+             
+          </td>
         </ng-container>
         <ng-container [matColumnDef]="'actions'">
           <th mat-header-cell *matHeaderCellDef> actions </th>

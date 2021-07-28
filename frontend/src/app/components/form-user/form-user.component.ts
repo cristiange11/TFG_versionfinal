@@ -331,7 +331,7 @@ export class FormUserComponent implements OnInit {
             AppComponent.myapp.openDialog(arrayRes);
           },
           error => {
-            
+            console.log(error)
             if (error.status == 409) {
               error.error.errors.forEach(errorInfo => {
                 const formControl = this.signupForm.get(errorInfo.param);
@@ -346,7 +346,16 @@ export class FormUserComponent implements OnInit {
                     serverError: errorInfo.message
                   });
                 }
-
+                else if (errorInfo.param == "fpDual") {
+                  this.fpDual.setErrors({
+                    serverError: errorInfo.message
+                  });
+                }
+                else if (errorInfo.param == "codigoCentro") {
+                  this.codigoCentro.setErrors({
+                    serverError: errorInfo.message
+                  });
+                }
               });
             }
             else if (error.status == 401 && error.error.errors == "Sesión expirada") {

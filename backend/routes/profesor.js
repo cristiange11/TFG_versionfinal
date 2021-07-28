@@ -29,15 +29,34 @@ router.post(
     body('cp').trim().not().isEmpty()
       .matches(/^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/),
     body('apellidos').trim().not().isEmpty().withMessage("Apellidos vacío"),
-    body('rol').trim().not().isEmpty().withMessage("Rol vacío"),
+    body('rol').trim().not().isEmpty().withMessage("Rol vacío")
+    .custom(async (rol) => {
+      if(Number.isNaN(rol)){
+        const user = await Rol.getRol(rol);
+      if (user[0].length == 0) {
+        return Promise.reject('Error');
+      }
+      }else{
+        return Promise.reject('Campo erróneo');
+      }
+      
+    }),
     body('fechaNacimiento').trim().not().isEmpty().withMessage("Fecha de nacimiento vacía")
     .matches(/^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/).withMessage("Formato fecha incorrecto: yyyy-mm-dd"),
-    body('fpDual').trim().not().isEmpty().withMessage("FP vacío").custom(async (fpDual) => {
-      const user = await Fpdual.find(fpDual);
+    body('fpDual').trim().not().isEmpty().withMessage("FP vacío")
+      .custom(async (fpDual) => {
+        if(Number.isNaN(fpDual)){
+          const user = await Fpdual.find(fpDual);
       if (user[0].length == 0) {
         return Promise.reject('FP Dual no existente');
       }
-    }),
+    }
+        else{
+          return Promise.reject('Campo erróneo');
+        }
+        
+      }),
+    
     body('codigoCentro').trim().not().isEmpty().withMessage("Código del centro vacío")
     .custom(async (codigoCentro) => {
       const user = await Centro.find(codigoCentro);
@@ -80,22 +99,10 @@ router.put(
     body('cp').trim().not().isEmpty()
       .matches(/^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/),
     body('apellidos').trim().not().isEmpty().withMessage("Apellidos vacío"),
-    body('rol').trim().not().isEmpty().withMessage("Rol vacío"),
     body('fechaNacimiento').trim().not().isEmpty().withMessage("Fecha de nacimiento vacía")
     .matches(/^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/).withMessage("Formato fecha incorrecto: yyyy-mm-dd"),
-    body('fpDual').trim().not().isEmpty().withMessage("FP vacío").custom(async (fpDual) => {
-      const user = await Fpdual.find(fpDual);
-      if (user[0].length == 0) {
-        return Promise.reject('FP Dual no existente');
-      }
-    }),
-    body('codigoCentro').trim().not().isEmpty().withMessage("Código del centro vacío")
-    .custom(async (codigoCentro) => {
-      const user = await Centro.find(codigoCentro);
-      if (user[0].length == 0) {
-        return Promise.reject('Centro no existente');
-      }
-    }),
+    
+    
     body('movil').trim().not().isEmpty().withMessage("Móvil vacío")
       .matches(/^(\+34|0034|34)?[ -]*(6|7)[ -]*([0-9][ -]*){8}$/).withMessage("Formato del móvil incorrecto")
       .custom(async (movil, {req}) => {
