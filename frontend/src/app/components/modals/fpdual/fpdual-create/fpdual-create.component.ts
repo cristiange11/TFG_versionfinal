@@ -47,7 +47,11 @@ export class FpdualCreateComponent implements OnInit {
     }
     
   }
-    this.formInstance.setValue({nombre : "", descripcion : "", totalPlazas: "" , anio : "", plazasDisponibles : "", codigoCentro : this.user.codigoCentro}); 
+  if(sessionStorage.getItem('codigoCentro') == null){
+    this.formInstance.setValue({nombre : "", descripcion : "", totalPlazas: "" , anio : "", plazasDisponibles : "", codigoCentro : this.user.codigoCentro}); }
+    else{
+      this.formInstance.setValue({nombre : "", descripcion : "", totalPlazas: "" , anio : "", plazasDisponibles : "", codigoCentro : sessionStorage.getItem('codigoCentro')});
+    }
       
   }
 

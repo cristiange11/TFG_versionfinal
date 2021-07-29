@@ -25,7 +25,7 @@ module.exports = class Empresa {
     }
     static async getEmpresas() {
         const [rows, fields] = await promisePool.query(
-            `SELECT E.*, EF.becas AS becas, EF.plazas AS plazas FROM empresa E, empresa_fpdual EF where E.cifEmpresa = EF.CifEmpresa  `);
+            `SELECT E.*, EF.dineroBeca AS dineroBeca,EF.becas as beca, EF.plazas AS plazas, F.nombre as nombreFp, F.id as idFp FROM empresa E, empresa_fpdual EF, fp_duales F where E.cifEmpresa = EF.CifEmpresa and EF.idFp=F.id `);
         return rows;
     }
     static async getEmpresasByCentro(codigoCentro) {
@@ -76,12 +76,12 @@ module.exports = class Empresa {
     }
     static async createEmpresa(empresa, user) {
         const connection = await promisePool.getConnection();
-        console.log(`INSERT INTO empresa_fpdual(idFp, CifEmpresa, becas, plazas) VALUES (${empresa.fpDual},'${empresa.cifEmpresa}','${empresa.becas}','${empresa.plazas}')`)
+        console.log(`INSERT INTO empresa_fpdual(idFp, CifEmpresa, becas, plazas, dineroBeca) VALUES (${empresa.fpDual},'${empresa.cifEmpresa}','${empresa.becas}','${empresa.plazas}', '${empresa.dineroBeca})'`)
         try {
             await connection.beginTransaction();
             let query = `INSERT INTO empresa(cifEmpresa, direccion, nombre, correo, telefono, url) VALUES ('${empresa.cifEmpresa}','${empresa.direccion}','${empresa.nombre}','${empresa.correo}','${empresa.telefono}','${empresa.url}') `;
             await connection.query(query)
-            await connection.query(`INSERT INTO empresa_fpdual(idFp, CifEmpresa, becas, plazas) VALUES (${empresa.fpDual},'${empresa.cifEmpresa}','${empresa.becas}','${empresa.plazas}')`)
+            await connection.query(`INSERT INTO empresa_fpdual(idFp, CifEmpresa, becas, plazas, dineroBeca) VALUES (${empresa.fpDual},'${empresa.cifEmpresa}','${empresa.becas}','${empresa.plazas}', '${empresa.dineroBeca}')`);
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha añadido empresa con CIF ${empresa.cifEmpresa} ','${user}',sysdate(), 'empresa')`);            
             await connection.commit();
         } catch (err) {
@@ -96,12 +96,12 @@ module.exports = class Empresa {
     }
     static async updateEmpresa(empresa, user) {
         const connection = await promisePool.getConnection();
-
+        console.log(`UPDATE empresa_fpdual SET becas=${empresa.becas} ,plazas=${empresa.plazas} dineroBeca = '${empresa.dineroBeca}' WHERE CifEmpresa = '${empresa.cifEmpresa}' `)
         try {
             await connection.beginTransaction();
             let query = `UPDATE empresa SET direccion='${empresa.direccion}',nombre='${empresa.nombre}', correo='${empresa.correo}',telefono='${empresa.telefono}',url='${empresa.url}' WHERE cifEmpresa = '${empresa.cifEmpresa}'`;
             await connection.query(query)
-            await connection.query(`UPDATE empresa_fpdual SET becas=${empresa.becas} ,plazas=${empresa.plazas} WHERE CifEmpresa = '${empresa.cifEmpresa}' `);
+            await connection.query(`UPDATE empresa_fpdual SET becas=${empresa.becas} ,plazas=${empresa.plazas}, dineroBeca = '${empresa.dineroBeca}' WHERE CifEmpresa = '${empresa.cifEmpresa}' `);
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha actualizado empresa con CIF ${empresa.cifEmpresa} ','${user}',sysdate(), 'empresa')`);            
             await connection.commit();
         } catch (err) {

@@ -24,7 +24,7 @@ import { NavigationComponent } from '../navigation/navigation.component';
 })
 export class FpdualComponent implements OnInit , OnDestroy, AfterViewInit {
   myApp = AppComponent.myapp;
-  fpList = [];;
+  fpList = [];
   user;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;

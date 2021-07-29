@@ -22,11 +22,11 @@ import { EmpresaDeleteConfirmationComponent } from '../modals/empresa/empresa-de
 })
 export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
   myApp = AppComponent.myapp;
-  empresaList: Array<Empresa> = [];
+  empresaList = [];
   user;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  public displayedColumns: string[] = ['cifEmpresa', 'nombre', 'direccion', 'telefono', 'correo', 'url', 'becas' , 'plazas'];
+  public displayedColumns: string[] = ['cifEmpresa', 'nombre', 'direccion', 'telefono', 'correo', 'url', 'dineroBeca' , 'plazas'];
   public columnsToDisplay: string[] = [...this.displayedColumns, 'actions'];
 
   public columnsFilters = {};
@@ -54,6 +54,22 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.getAll();
   }
+  getFps(empresaInfo){
+    var empresa = {
+      becas: empresaInfo.beca,
+      cifEmpresa: empresaInfo.cifEmpresa,
+      correo: empresaInfo.correo,
+      dineroBeca: empresaInfo.dineroBeca,
+      direccion: empresaInfo.direccion,
+      //idFp: empresaInfo.idFp,
+      nombre: empresaInfo.nombre,
+      //nombreFP: empresaInfo.nombreFP,
+      plazas: empresaInfo.plazas,
+      telefono: empresaInfo.telefono,
+      url: empresaInfo.url,
+    }
+    return empresa;
+  }
   getAll() {
     console.log(Number(this.user.rol))
     if (Number(this.user.rol) == 1) {
@@ -64,7 +80,7 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
             let empresas = data["empresas"];
 
             empresas.forEach(empresaInfo => {
-              this.empresaList.push(empresaInfo);
+              this.empresaList.push(this.getFps(empresaInfo));
 
             });
             console.log(this.empresaList)
@@ -203,8 +219,8 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
       width: '400px'
     });
   }
-  edit(data: Empresa) {
-
+  edit(data) {
+    sessionStorage.setItem("dineroBeca", data.dineroBeca);
     this.dialog.open(EmpresaUpdateComponent, {
       width: '400px',
       data: data

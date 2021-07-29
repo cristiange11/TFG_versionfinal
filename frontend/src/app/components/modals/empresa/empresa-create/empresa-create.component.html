@@ -74,10 +74,25 @@
       <mat-error *ngIf="formInstance.controls['becas']?.errors?.required">Becas requerida</mat-error>
       <mat-error *ngIf="formInstance.controls['becas']?.errors?.serverError">{{ formInstance.controls['becas']?.errors?.serverError }}</mat-error>
     </mat-form-field>
+    <mat-form-field appearance="fill" *ngIf="formInstance.controls['becas'].value == 'si' ">
+      <mat-label>Cuant&iacute;a beca</mat-label>
+      <input matInput type="text" name="direccion" [formControl]="dineroBeca" placeholder="cuantía beca" required />
+     
+      <mat-error *ngIf="this.dineroBeca.errors?.required">Dinero requerido</mat-error>
+      <mat-error *ngIf="this.dineroBeca.errors?.min">M&iacute;nimo 1 €</mat-error>
+      <mat-error *ngIf="this.dineroBeca.errors?.serverError">{{ this.dineroBeca.errors?.serverError }}</mat-error>
+    </mat-form-field>
    
   </form>
 </div>
 <div class="mt-5" mat-dialog-actions>
-  <button mat-raised-button color="primary"  (click)="save()" [disabled]="!formInstance.valid">Yes</button>
+  <div *ngIf="formInstance.controls['becas'].value == 'si'; else no">
+    <button mat-raised-button color="primary"  (click)="save()" [disabled]="!formInstance.valid || !dineroBeca.valid">Yes</button>
   <button mat-raised-button mat-dialog-close>No</button>
-</div>
+  </div>
+  <ng-template  #no>
+    <button mat-raised-button color="primary"  (click)="save()" [disabled]="!formInstance.valid">Yes</button>
+  <button mat-raised-button mat-dialog-close>No</button>
+  </ng-template>
+  
+

@@ -49,7 +49,7 @@ router.post(
     .matches(/^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/).withMessage("Formato CIF incorrecto"),
     body('becas').trim().not().isEmpty().withMessage("Becas vacía")
     .custom(async (becas) => {    
-      if (isNaN(becas) || (becas != 1 && becas!=2) ) {
+      if (isNaN(becas) || (becas != 1 && becas!=0) ) {
         return Promise.reject('Campo erróneo');
       }
     
@@ -61,6 +61,16 @@ router.post(
       }
     
   }),
+  body('dineroBeca').trim().not().isEmpty().withMessage("Dinero de beca vacío")
+    .custom(async (dineroBeca, {req}) => {    
+      console.log("DINERO BECA => " + dineroBeca);
+      console.log("BECA => " + req.body.becas)
+      if (isNaN(dineroBeca) || req.body.becas==1  && dineroBeca<=100)  {
+        return Promise.reject('La beca mínima tiene que ser 100 euros');
+      }
+    
+  }),
+
   ],
   empresaController.createEmpresa
 );
@@ -94,7 +104,7 @@ router.put(
     .matches(/^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/).withMessage("Formato URL incorrecto"),
     body('becas').trim().not().isEmpty().withMessage("Becas vacía")
     .custom(async (becas) => {    
-      if (isNaN(becas) || (becas != 1 && becas!=2) ) {
+      if (isNaN(becas) || (becas != 1 && becas!=0) ) {
         return Promise.reject('Campo erróneo');
       }
     
@@ -103,6 +113,15 @@ router.put(
     .custom(async (plazas) => {    
       if (isNaN(plazas) || plazas<=0)  {
         return Promise.reject('Mínimo 1 plaza');
+      }
+    
+  }),
+  body('dineroBeca').trim().not().isEmpty().withMessage("Dinero de beca vacío")
+    .custom(async (dineroBeca, {req}) => {    
+      console.log("DINERO BECA => " + dineroBeca);
+      console.log("BECA => " + req.body.becas)
+      if (isNaN(dineroBeca) || req.body.becas==1  && dineroBeca<=100)  {
+        return Promise.reject('La beca mínima tiene que ser 100 euros');
       }
     
   }),

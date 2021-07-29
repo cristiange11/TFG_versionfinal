@@ -19,6 +19,7 @@ export class EmpresaCreateComponent implements OnInit {
   formInstance: FormGroup;
   fpList = new Map<number, string>();
   user;
+  dineroBeca = new FormControl("", [Validators.required, Validators.min(1)]);
   constructor(private router: Router, private cookieService: CookieService, public dialogRef: MatDialogRef<EmpresaCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: Empresa, private nagivationComponent: NavigationComponent, public empresaService: EmpresaService, private fpdualesService: FpdualesService) {
     
     this.formInstance = new FormGroup({
@@ -45,6 +46,7 @@ export class EmpresaCreateComponent implements OnInit {
   }
   }
 
+  
 
   ngOnInit(): void {
     if(this.user.rol == 2){
@@ -98,20 +100,23 @@ export class EmpresaCreateComponent implements OnInit {
       }
   }
   save() {
-    console.log(this.formInstance.value);
-    this.empresaService.addEmpresa(this.formInstance.value).pipe(first())
+    this.empresaService.addEmpresa(this.formInstance.value, this.dineroBeca.value).pipe(first())
       .subscribe(
         data => {
           window.location.reload();
         },
         error => {
-          
+          console.log(error)
           if (error.status == 409) {
            
             error.error.errors.forEach(errorInfo => {
               const formControl = this.formInstance.get(errorInfo.param);
               if (formControl) {
                 formControl.setErrors({
+                  serverError: errorInfo.message
+                });
+              }if (errorInfo.param == "dineroBeca") {
+                this.dineroBeca.setErrors({
                   serverError: errorInfo.message
                 });
               }

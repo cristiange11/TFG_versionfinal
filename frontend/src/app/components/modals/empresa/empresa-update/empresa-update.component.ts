@@ -13,6 +13,8 @@ import { EmpresaService } from 'src/app/services/empresa.service';
 })
 export class EmpresaUpdateComponent implements OnInit {
   formInstance: FormGroup;
+  dineroBeca = new FormControl("", [Validators.required, Validators.min(1)]);
+
   constructor(public dialogRef: MatDialogRef<EmpresaUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Empresa, public empresaService: EmpresaService) {
     this.formInstance = new FormGroup({
@@ -24,16 +26,21 @@ export class EmpresaUpdateComponent implements OnInit {
       url: new FormControl("", [Validators.required, Validators.pattern(/^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/)]),
       plazas: new FormControl("", [Validators.required, /*Validators.min(1)*/]),
       becas: new FormControl("", [Validators.required]),
+      dineroBeca: new FormControl("", []),
 
     });
     this.formInstance.setValue(data);
+    if(this.formInstance.value.becas != "0"){
+      this.dineroBeca.setValue(sessionStorage.getItem('dineroBeca'));
+    }
   }
 
 
   ngOnInit(): void {
   }
   edit() {
-    this.empresaService.updateEmpresa(this.formInstance.value).pipe(first())
+    console.log(this.formInstance.value.becas)
+    this.empresaService.updateEmpresa(this.formInstance.value, this.dineroBeca.value).pipe(first())
       .subscribe(
         data => {
          

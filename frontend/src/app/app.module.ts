@@ -182,6 +182,7 @@ import { UsuarioDeleteConfirmationComponent } from './components/modals/usuario/
     EncuestaUpdateComponent,
     LogComponent,
     UsuarioDeleteConfirmationComponent,
+    
    
     
   ],
