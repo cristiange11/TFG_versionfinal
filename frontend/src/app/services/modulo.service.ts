@@ -15,6 +15,10 @@ export class ModuloService {
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),} 
     return this.http.get<JSON[]>(`${this.url}/${fpDual}`,  httpOptions); 
   }
+  getModulosProfAlumnTutor(dni : string): Observable<JSON[] >{   
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),} 
+    return this.http.get<JSON[]>(`${this.url}/usuario/${dni}`,  httpOptions); 
+  }
   addModulo(modulo : Modulo): Observable<JSON>{
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.post<JSON>(`${this.url}/create`, modulo , httpOptions);

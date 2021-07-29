@@ -33,6 +33,12 @@ module.exports = class Empresa {
             `SELECT E.* FROM empresa E, fp_duales F, empresa_fpdual FE WHERE E.cifEmpresa = FE.CifEmpresa AND FE.idFp = F.id AND F.codigoCentro = "${codigoCentro}"`);
         return rows;
     }
+    static async getEmpresasByFp(fpDual) {
+        console.log(`SELECT E.* FROM empresa E, fp_duales F, empresa_fpdual FE WHERE E.cifEmpresa = FE.CifEmpresa AND FE.idFp = F.id AND F.id = ${fpDual}`)
+        const [rows, fields] = await promisePool.query(
+            `SELECT E.* FROM empresa E, fp_duales F, empresa_fpdual FE WHERE E.cifEmpresa = FE.CifEmpresa AND FE.idFp = F.id AND F.id = ${fpDual}`);
+        return rows;
+    }
     static async deleteEmpresa(cifEmpresa, user) {
         const connection = await promisePool.getConnection();
         

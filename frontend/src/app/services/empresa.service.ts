@@ -24,6 +24,10 @@ export class EmpresaService {
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.get<JSON []>(`${this.url}/${codigoCentro}`, httpOptions);
   }
+  getEmpresasByFp(fpDual): Observable<JSON[] >{
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
+    return this.http.get<JSON []>(`${this.url}/fp/${fpDual}`, httpOptions);
+  }
   formarEmpresa(empresa, dineroBeca){
     var res= {
       dineroBeca: empresa.becas == 1 || empresa.becas=="si" ? dineroBeca : 0,

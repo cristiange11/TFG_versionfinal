@@ -144,9 +144,10 @@ export class FormUserComponent implements OnInit {
   get passwordValue() {
     return this.passwordFormControl.value;
   }
-
+  
   obtenerRol(rol): number {
     this.numero = rol;
+    console.log("Rol => " + this.numero)
     if (rol == 5) {
       this.numeroExpediente = new FormControl("", [Validators.required, Validators.minLength(6)]);
     }
@@ -157,8 +158,8 @@ export class FormUserComponent implements OnInit {
 
       this.modulo = new FormControl("", [Validators.required]);
       this.formGroupTutor = new FormGroup({ moduloEmpresa: new FormControl("", [Validators.required, Validators.minLength(6)]), cifEmpresa: new FormControl("", [Validators.required]) })
-      if (this.user.rol == 1) {
-        this.empresaService.getEmpresas().pipe(first())
+      console.log(this.user)
+        this.empresaService.getEmpresasByFp(this.user.fpDual).pipe(first())
           .subscribe(
             data => {
               this.empresaList = new Map<string, string>();
@@ -179,32 +180,37 @@ export class FormUserComponent implements OnInit {
               }
             });
         
-      }
-    
-    else {
-      this.empresaService.getEmpresasByCentro(this.user.codigoCentro).pipe(first())
-          .subscribe(
-            data => {
-              this.empresaList = new Map<string, string>();
-              let empresas = data["empresas"]
-              empresas.forEach(empresaInfo => {
-                var empresa = empresaInfo as Empresa
-                this.empresaList.set(empresa.cifEmpresa, empresa.nombre)
-              });
-            },
-            error => {
-
-              if (error.status == 401 && error.error.errors == "Sesión expirada") {
-                this.nagivationComponent.closeSession();
-              } else if (error.status == 406) {
-                const res = new Array();
-                res.push("Petición incorrecta.");
-                AppComponent.myapp.openDialog(res);
-              }
-            });
-    }
+      
+  
   }
     return this.numero;
+  }
+  obtenerModuloAndEmpresa(fp): void{
+    console.log("entro " + fp)
+    this.empresaService.getEmpresasByFp(fp).pipe(first())
+      .subscribe(
+        data => {
+          this.empresaList = new Map<string, string>();
+          let empresas = data["empresas"]
+          empresas.forEach(empresaInfo => {
+            var empresa = empresaInfo  
+
+            this.empresaList.set(empresa.cifEmpresa, empresa.nombre)
+          });
+
+        },
+        error => {
+
+          if (error.status == 401 && error.error.errors == "Sesión expirada") {
+            AppComponent.myapp.openDialogSesion();
+          }
+          else if (error.status == 406) {
+            const res = new Array();
+            res.push("Petición incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }
+        });
+      this.obtenerModulo(fp);
   }
   obtenerModulo(fp): void {
 

@@ -27,11 +27,12 @@ import { NavigationComponent } from '../navigation/navigation.component';
 export class EncuestaComponent implements OnInit , OnDestroy, AfterViewInit {
   myApp = AppComponent.myapp;
   encuestaList: Array<Encuesta> = [];
+  user;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   
   public displayedColumns: string[] = ['titulo', 'descripcion', 'dniTutorEmpresa', 'dniAlumno', 'resultado'];
-  public columnsToDisplay: string[] = [...this.displayedColumns, 'actions'];
+  public columnsToDisplay: string[] ;
 
   public columnsFilters = {};
 
@@ -50,11 +51,17 @@ export class EncuestaComponent implements OnInit , OnDestroy, AfterViewInit {
       this.router.navigate(['home']);
     }
     else{
-      var user =(JSON.parse(this.cookieService.get('user')));
-    if(Number(user.rol)!=1 && Number(user.rol) != 2 && Number(user.rol) !=4 ){
+      this.user =(JSON.parse(this.cookieService.get('user')));
+    if(Number(this.user.rol)!=1 && Number(this.user.rol) != 2 && Number(this.user.rol) !=4 ){
       this.router.navigate(['home']);
     }
     
+    }
+    if(Number(this.user.rol)==1 || Number(this.user.rol) == 2 ){
+      this.columnsToDisplay = [...this.displayedColumns, 'actions'];
+    }
+    else{
+      this.columnsToDisplay = [...this.displayedColumns];
     }
   }
   getAll() {

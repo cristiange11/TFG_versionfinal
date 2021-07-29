@@ -18,6 +18,12 @@ module.exports = class Modulo {
             `SELECT * FROM modulo where fpDual = ${fpDual}`);
         return rows;
     }
+    static async getModulosProfAlumnTutor(dni) {
+        console.log(`SELECT M.* FROM modulo M, profesor_modulo PM, profesor P WHERE P.dni = PM.dni AND PM.codigoModulo = M.codigo AND P.dni = "${dni}"`)
+        const [rows, fields] = await promisePool.query(
+            `SELECT M.* FROM modulo M, profesor_modulo PM, profesor P WHERE P.dni = PM.dni AND PM.codigoModulo = M.codigo AND P.dni = "${dni}"`);
+        return rows;
+    }
     static async deleteModulo(codigo, user) {
         const connection = await promisePool.getConnection();
         
@@ -65,11 +71,11 @@ module.exports = class Modulo {
             await connection.beginTransaction();
             let query = `INSERT INTO modulo(nombre, descripcion, curso, fpDual) VALUES ('${modulo.nombre}','${modulo.descripcion}','${modulo.curso}', ${modulo.fpDual}) `;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha creado el modulo con id ${modulo.id} ','${user}',sysdate(), 'modulo')`);            
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha creado el modulo con id ${modulo.codigo} ','${user}',sysdate(), 'modulo')`);            
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_MODULO','No se ha añadido modulo con id ${modulo.id}','${user}',sysdate(), 'modulo')`);            
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_MODULO','No se ha añadido modulo con id ${modulo.codigo}','${user}',sysdate(), 'modulo')`);            
             console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {

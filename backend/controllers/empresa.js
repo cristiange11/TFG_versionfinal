@@ -45,6 +45,27 @@ exports.getEmpresasByCentro = async (req, res, next) => {
   }
 }
 };
+exports.getEmpresasByFp = async (req, res, next) => {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
+  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
+  if (expirado) {
+    res.status(401).json({ "errors": "Sesión expirada" });
+  } else {
+    try {
+
+      const empresas = await Empresa.getEmpresasByFp(req.params.fpDual);
+
+      res.status(200).json({ empresas: empresas });
+
+    } catch (err) {
+      res.status(500).json({ error: err });
+    }
+  }
+}
+};
 exports.deleteTutorEmpresaByEmpresa = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });

@@ -29,7 +29,8 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   public displayedColumns: string[] = ['nombre', 'descripcion', 'curso'];
-  public columnsToDisplay: string[] = [...this.displayedColumns, 'actions', 'resultadoAprendizaje', 'encuesta'];
+  
+  public columnsToDisplay: string[];
 
   public columnsFilters = {};
 
@@ -56,7 +57,7 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
     
     } this.getAll();
   }
-  obtenerModulos(fpDual){
+  obtenerModulosAdmin(fpDual){
     this.serviceSubscribe = this.moduloService.getModulos(fpDual).pipe(first())
       .subscribe(
         data => {
@@ -80,13 +81,37 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
          
         });
   }
+  
   getAll() {
     console.log("Usuario => " + this.user.rol)
     if(Number(this.user.rol) == 1 || Number(this.user.rol) == 2){
-    this.obtenerModulos(Number(sessionStorage.getItem('fpDual')));
+      this.columnsToDisplay  = [...this.displayedColumns, 'actions', 'resultadoAprendizaje', 'encuesta'];
+    this.obtenerModulosAdmin(Number(sessionStorage.getItem('fpDual')));
       
       }else{
-        this.obtenerModulos(Number(this.user.fpDual));
+        this.columnsToDisplay  = [...this.displayedColumns,  'resultadoAprendizaje', 'encuesta'];
+        this.serviceSubscribe = this.moduloService.getModulosProfAlumnTutor(this.user.dni).pipe(first())
+      .subscribe(
+        data => {
+          let modulos = data["modulos"];
+          modulos.forEach(moduloInfo => {          
+            this.moduloList.push(moduloInfo);
+            
+          });
+          
+            this.dataSource.data = this.moduloList;
+        },
+        error => {
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            AppComponent.myapp.openDialogSesion();                             
+          }
+          else if (error.status == 406) {
+            const res = new Array();
+            res.push("Petición incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }
+         
+        });
       }
   }
   private filter() {

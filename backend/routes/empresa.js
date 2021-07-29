@@ -10,6 +10,8 @@ router.get('/', empresaController.getEmpresas);
 
 router.get('/:codigoCentro', empresaController.getEmpresasByCentro);
 
+router.get('/fp/:fpDual', empresaController.getEmpresasByFp);
+
 router.delete('/delete/:CIF', empresaController.deleteTutorEmpresaByEmpresa);
 
 router.delete('/:CIF', empresaController.deleteEmpresa);
