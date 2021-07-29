@@ -1,12 +1,8 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Router } from "@angular/router";
 import { CookieService } from 'ngx-cookie-service';
 import { Observable, BehaviorSubject } from "rxjs";
-import { first, catchError, tap, map } from "rxjs/operators";
-
 import { User } from "../models/User";
-import { ErrorHandlerService } from "./error-handler.service";
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +14,7 @@ export class AuthService {
   userDni: Pick<User, "dni">;
 
   
-  constructor(private cookieService: CookieService, private http: HttpClient, private errorHandlerService: ErrorHandlerService, private router: Router ) { 
+  constructor(private cookieService: CookieService, private http: HttpClient ) { 
     
   }
 

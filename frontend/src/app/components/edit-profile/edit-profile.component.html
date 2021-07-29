@@ -48,7 +48,7 @@
       </button>     
     </mat-form-field>
     <mat-form-field >
-      <input matInput  [type]="hide ? 'password' : 'text'" [formControl]="passwordFormControl" placeholder="Contraseña" required (change)="this.confirmPasswordFormControl.setValue('')" >
+      <input matInput  [type]="hide ? 'password' : 'text'" [formControl]="passwordFormControl" placeholder="Contraseña nueva" required (change)="this.confirmPasswordFormControl.setValue('')" >
       <mat-error *ngIf=" passwordFormControl.errors?.required">{{ getErrorMessage("password") }}</mat-error>
       <mat-error *ngIf=" passwordFormControl.errors?.pattern">{{ getErrorMessage("password") }}</mat-error>
       <button class="fondo" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
@@ -56,7 +56,7 @@
       </button>     
     </mat-form-field>
     <mat-form-field >
-      <input matInput  [type]="hide2 ? 'password' : 'text'" [formControl]="confirmPasswordFormControl" required placeholder="Repita contraseña" >
+      <input matInput  [type]="hide2 ? 'password' : 'text'" [formControl]="confirmPasswordFormControl" required placeholder="Repita contraseña nueva" >
       <mat-error *ngIf="this.confirmPasswordFormControl.dirty && this.confirmPasswordFormControl.errors?.noMatch"> {{getErrorMessage("confirmPassword")}} </mat-error>   
       <button class="fondo" mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide2">
         <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>

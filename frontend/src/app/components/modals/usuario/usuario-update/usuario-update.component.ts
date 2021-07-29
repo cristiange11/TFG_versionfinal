@@ -173,7 +173,7 @@ export class UsuarioUpdateComponent implements OnInit {
             this.moduloList = new Map<number, string>();
             let modulos = data["modulos"]
             modulos.forEach(moduloInfo => {
-              var modulo = moduloInfo as Modulo
+              var modulo = moduloInfo 
   
               this.moduloList.set(modulo.codigo, modulo.nombre)
             });

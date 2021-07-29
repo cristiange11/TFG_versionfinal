@@ -85,6 +85,7 @@ import { EncuestaCreateComponent } from './components/modals/encuesta/encuesta-c
 import { EncuestaUpdateComponent } from './components/modals/encuesta/encuesta-update/encuesta-update.component';
 import { LogComponent } from './components/log/log.component';
 import { UsuarioDeleteConfirmationComponent } from './components/modals/usuario/usuario-delete-confirmation/usuario-delete-confirmation.component';
+import { CalificacionComponent } from './components/calificacion/calificacion.component';
 
 @NgModule({
   imports: [
@@ -182,6 +183,7 @@ import { UsuarioDeleteConfirmationComponent } from './components/modals/usuario/
     EncuestaUpdateComponent,
     LogComponent,
     UsuarioDeleteConfirmationComponent,
+    CalificacionComponent,
     
    
     

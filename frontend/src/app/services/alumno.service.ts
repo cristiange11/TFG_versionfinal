@@ -1,19 +1,15 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { Router } from "@angular/router";
-
-import { Observable, BehaviorSubject } from "rxjs";
-import { first, catchError, tap, map } from "rxjs/operators";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable } from "rxjs";
 import { CookieService } from 'ngx-cookie-service';
 import { Alumno } from "../models/Alumno";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
 @Injectable({
   providedIn: 'root'
 })
 export class AlumnoService {
   private url = "http://localhost:3000/alumno";
 
-  constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { }
+  constructor(private cookieService: CookieService, private http: HttpClient) { }
  
   createAlumno(sigunForm , userJson,  formulario2): Observable<JSON>{ 
     var user = {

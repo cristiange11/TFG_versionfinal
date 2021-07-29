@@ -36,11 +36,11 @@ module.exports = class Alumno extends User {
             await connection.beginTransaction();
             let query = `DELETE FROM alumno WHERE dni = '${dni}' `;
             await connection.query(query);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha borrado alumno con DNI ${alumno.dni} ','${user}',sysdate(), 'alumno')`);            
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha borrado alumno con DNI ${dni} ','${user}',sysdate(), 'alumno')`);            
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_ALUMNO','No se ha borrado el alumno con DNI ${alumno.dni}','${user}',sysdate(), 'alumno')`);            
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_ALUMNO','No se ha borrado el alumno con DNI ${dni}','${user}',sysdate(), 'alumno')`);            
             console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {

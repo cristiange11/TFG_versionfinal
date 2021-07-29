@@ -50,12 +50,12 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     else{
       this.user =(JSON.parse(this.cookieService.get('user')));
-      console.log("Usuario => " + this.user.rol)
     if(Number(this.user.rol)!=1 && Number(this.user.rol)!=2 && Number(this.user.rol) != 4){
       this.router.navigate(['home']);
     }
     
-    } this.getAll();
+    }
+    this.getAll();
   }
   obtenerModulosAdmin(fpDual){
     this.serviceSubscribe = this.moduloService.getModulos(fpDual).pipe(first())
@@ -68,6 +68,7 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
           });
           
             this.dataSource.data = this.moduloList;
+            console.log(this.dataSource.data)
         },
         error => {
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
@@ -81,25 +82,33 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
          
         });
   }
-  
+  getCalificacion(codigoModulo){
+    
+    
+    sessionStorage.setItem('codigoModulo', codigoModulo.toString());
+    this.router.navigate(['calificacion']);
+  }
   getAll() {
     console.log("Usuario => " + this.user.rol)
     if(Number(this.user.rol) == 1 || Number(this.user.rol) == 2){
       this.columnsToDisplay  = [...this.displayedColumns, 'actions', 'resultadoAprendizaje', 'encuesta'];
     this.obtenerModulosAdmin(Number(sessionStorage.getItem('fpDual')));
       
-      }else{
-        this.columnsToDisplay  = [...this.displayedColumns,  'resultadoAprendizaje', 'encuesta'];
+      }else if (Number(this.user.rol) == 4 ){
+        this.columnsToDisplay  = [...this.displayedColumns,  'resultadoAprendizaje', 'encuesta', 'calificacion'];
         this.serviceSubscribe = this.moduloService.getModulosProfAlumnTutor(this.user.dni).pipe(first())
       .subscribe(
         data => {
           let modulos = data["modulos"];
-          modulos.forEach(moduloInfo => {          
+          modulos.forEach(moduloInfo => {      
+                
             this.moduloList.push(moduloInfo);
-            
+            console.log(moduloInfo)
           });
           
             this.dataSource.data = this.moduloList;
+            
+           
         },
         error => {
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
@@ -115,16 +124,17 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
       }
   }
   private filter() {
-
-    this.dataSource.filterPredicate = (data: Modulo, filter: string) => {
+    
+    this.dataSource.filterPredicate = (data, filter: string) => {
+      
       let find = true;
-
+      
       for (var columnName in this.columnsFilters) {
-
+        
         let currentData = "" + data[columnName];
 
         //if there is no filter, jump to next loop, otherwise do the filter.
-        if (!this.columnsFilters[columnName]) {
+        if (!this.columnsFilters[columnName] ) {
           return find;
         }
 
@@ -174,7 +184,7 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
       }
-
+    
       return find;
     };
 
@@ -190,9 +200,11 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
    * Create a filter for the column name and operate the filter action.
    */
   applyFilter(columnName: string, operationType: string, searchValue: string) {
+    if(columnName != 'codigo' && columnName != "fpDual"){
     this.columnsFilters[columnName] = {};
     this.columnsFilters[columnName][operationType] = searchValue;
     this.filter();
+    }
   }
 
   /**

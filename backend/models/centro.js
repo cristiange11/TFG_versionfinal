@@ -39,7 +39,7 @@ module.exports = class Centro {
             await connection.beginTransaction();
             let query =  `DELETE FROM centro_educativo WHERE codigoCentro = '${codigoCentro}' `;
             await connection.query(query);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha eliminado el centro','${user}',sysdate(), 'centro educativo')`);            
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha eliminado el centro con codigoCentro ${codigoCentro}','${user}',sysdate(), 'centro educativo')`);            
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");

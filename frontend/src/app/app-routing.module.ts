@@ -14,6 +14,7 @@ import { ModuloComponent } from './components/modulo/modulo.component';
 import { ResultadoAprendizajeComponent } from './components/resultado-aprendizaje/resultado-aprendizaje.component';
 import { EncuestaComponent } from './components/encuesta/encuesta.component';
 import { LogComponent } from './components/log/log.component';
+import { CalificacionComponent } from './components/calificacion/calificacion.component';
 const routes: Routes = [
   {path: "", component: HomeComponent},
   {path: "navigation", component: NavigationComponent},
@@ -28,6 +29,7 @@ const routes: Routes = [
   {path: "resultadoaprendizaje", component: ResultadoAprendizajeComponent},
   {path: "encuesta", component: EncuestaComponent},
   {path: "log", component: LogComponent},
+  {path: "calificacion", component: CalificacionComponent},
   {path: "**", redirectTo: ""}
 ];
 
