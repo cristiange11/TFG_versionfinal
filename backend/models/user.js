@@ -1,5 +1,5 @@
 const promisePool = require('../util/database');
-
+const bcrypt = require('bcryptjs');
 module.exports = class User {
     constructor(json) {
         this.dni = json.dni;
@@ -20,6 +20,11 @@ module.exports = class User {
         return await promisePool.query(
             `SELECT * FROM usuario where dni = '${dni}'`);
     }
+   
+    static async comparePassword(password,password2) {
+        return await bcrypt.compare(password, password2);
+    }
+    
 
   
     static async findMovil(movil,dni) {

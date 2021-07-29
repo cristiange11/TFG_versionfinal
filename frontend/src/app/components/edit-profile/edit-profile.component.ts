@@ -16,23 +16,16 @@ export class EditProfileComponent implements OnInit {
   editForm: FormGroup;
   hide = true;
   hide2 = true;
+  hide3 = true;
   numero;
   user;
   formGroupTutor;
   numeroExpediente;
   formGroupProfesor;
 
-  passwordFormControl = new FormControl("", [
-    Validators.required,
-    Validators.pattern(
-      "^((?=\\S*?[A-Z])(?=\\S*?[a-z])(?=\\S*?[0-9]).{8,255})\\S$"
-    )
-  ]);
-
-  confirmPasswordFormControl = new FormControl("", [
-    Validators.required,
-    this.checkConfirmPassword()
-  ]);
+  passwordFormControl = new FormControl("", [Validators.required, Validators.pattern("^((?=\\S*?[A-Z])(?=\\S*?[a-z])(?=\\S*?[0-9]).{8,255})\\S$")]);
+  passwordActualFormControl= new FormControl("", [Validators.required]);
+  confirmPasswordFormControl = new FormControl("", [Validators.required, this.checkConfirmPassword()]);
 
   centroList = new Map<string, string>();
   rolesList = new Map<number, string>();
@@ -89,7 +82,8 @@ export class EditProfileComponent implements OnInit {
       correo: new FormControl("", [Validators.required, Validators.email]),
       fechaNacimiento: new FormControl("", [Validators.required]),
       password: this.passwordFormControl,
-      confirmPassword: this.confirmPasswordFormControl
+      confirmPassword: this.confirmPasswordFormControl,
+      actualPassword: this.passwordActualFormControl,
     })
     return res;
   }
@@ -161,6 +155,7 @@ export class EditProfileComponent implements OnInit {
           AppComponent.myapp.openDialog(arrayRes);
         },
         error => {
+          console.log(error)
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
             AppComponent.myapp.openDialogSesion();    
            
@@ -182,7 +177,12 @@ export class EditProfileComponent implements OnInit {
                 formControl.setErrors({
                   serverError: errorInfo.message
                 });
+              }if (errorInfo.param == "passwordActualFormControl"){
+                this.passwordActualFormControl.setErrors({
+                  serverError: errorInfo.message
+                });  
               }
+              
             });
           }
 

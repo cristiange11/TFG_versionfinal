@@ -88,7 +88,21 @@ router.put(
     body('apellidos').trim().not().isEmpty().withMessage("Apellidos vacío"),
     body('fechaNacimiento').trim().not().isEmpty().withMessage("Fecha de nacimiento vacía")
       .matches(/^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/).withMessage("Formato fecha incorrecto: yyyy-mm-dd"),
-    
+      body('actualPassword')
+      .custom(async (actualPassword , {req}) => {
+        if(actualPassword != null){
+          await User.find(req.body.dni).then(async function (usuario){
+              console.log(usuario[0][0]);
+              await User.comparePassword(actualPassword, usuario[0][0].password).then(function (resultado){
+                if(!resultado){
+                  console.log("entro en error")
+                  return Promise.reject('Contraseña incorrecta');
+                }
+              })
+          })
+  
+        }
+      }),
     body('movil').trim().not().isEmpty().withMessage("Móvil vacío")
       .matches(/^(\+34|0034|34)?[ -]*(6|7)[ -]*([0-9][ -]*){8}$/).withMessage("Formato del móvil incorrecto")
       .custom(async (movil, {req}) => {
@@ -98,6 +112,7 @@ router.put(
             return Promise.reject('Móvil introducido ya existe!');
           }
       }),
+      
     body('correo')
       .isEmail().withMessage("Formato correo incorrecto")
       .custom(async (correo, {req}) => {

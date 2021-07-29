@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const jwt_decode = require('jwt-decode');
 const comprobarToken = require('../util/comprobarToken');
-var datetime = require('node-datetime');
+
 const RSA_PRIVATE_KEY = fs.readFileSync(__dirname + '/OPENSSL/private.pem');
 exports.signup = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
