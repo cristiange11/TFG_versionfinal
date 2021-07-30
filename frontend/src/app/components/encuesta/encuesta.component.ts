@@ -61,7 +61,9 @@ export class EncuestaComponent implements OnInit , OnDestroy, AfterViewInit {
       this.columnsToDisplay = [...this.displayedColumns, 'actions'];
     }
     else{
-      this.columnsToDisplay = [...this.displayedColumns];
+      if(Number(this.user.rol)==4)
+      this.columnsToDisplay = [...this.displayedColumns, 'observaciones'];
+      
     }
   }
   getAll() {
@@ -224,7 +226,10 @@ export class EncuestaComponent implements OnInit , OnDestroy, AfterViewInit {
 
   }
 
-  
+  getObservaciones(id){
+    AppComponent.myapp.openDialogEncuesta(id);
+   
+  }
   ngAfterViewInit(): void {
     
     this.dataSource.paginator = this.paginator;

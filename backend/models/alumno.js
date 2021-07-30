@@ -22,10 +22,10 @@ module.exports = class Alumno extends User {
         return rows;
     }
     static async getAlumnosByModulo(codigoModulo) {
-        console.log(            `SELECT U.nombre, U.dni FROM usuario as U, alumno as A, alumno_modulo as AM, calificacion C, modulo M  where U.dni=A.dni AND A.dni = AM.dni AND M.codigo = AM.codigoModulo AND AM.codigoModulo =${codigoModulo} AND NOT (C.dni = A.dni AND C.codigoModulo = M.codigo) `);
+        console.log(  `SELECT U.nombre, U.dni FROM usuario as U, alumno as A, alumno_modulo as AM where U.dni=A.dni AND A.dni = AM.dni AND AM.codigoModulo =${codigoModulo} `);
 
         const [rows, fields] = await promisePool.query(
-            `SELECT U.nombre, U.dni FROM usuario as U, alumno as A, alumno_modulo as AM, calificacion C, modulo M  where U.dni=A.dni AND A.dni = AM.dni AND M.codigo = AM.codigoModulo AND AM.codigoModulo =${codigoModulo} AND NOT (C.dni = A.dni AND C.codigoModulo = M.codigo) `);
+            `SELECT U.nombre, U.dni, U.apellidos FROM usuario as U, alumno as A, alumno_modulo as AM where U.dni=A.dni AND A.dni = AM.dni AND AM.codigoModulo =${codigoModulo} `);
         return rows;
     }
     static async getAlumno(dni) {

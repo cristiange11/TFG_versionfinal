@@ -102,17 +102,17 @@
   <mat-form-field *ngIf="this.numero!=1 && this.numero!=2" appearance="fill">
     <mat-label>FP</mat-label>
     <div *ngIf="this.numero == 3 else modulos;">
-      <mat-select matNativeControl required [formControl]="fpDual" (selectionChange)="obtenerModuloAndEmpresa($event.value)" >
+      <mat-select matNativeControl required name="fpDual" [formControl]="fpDual" (selectionChange)="obtenerModuloAndEmpresa($event.value)" >
         <mat-option *ngFor="let fp of fpList | keyvalue" [value]="fp.key">{{ fp.value }}</mat-option>
       </mat-select>
-      <mat-error *ngIf="this.fpDual.errors?.required"> {{ getErrorMessage("fpDual") }}</mat-error>
+      <mat-error *ngIf="this.fpDual.errors?.required && this.codigoCentro.value != '' && (this.fpDual.dirty || this.fpDual.touched)"> {{ getErrorMessage("fpDual") }}</mat-error>
       <mat-error *ngIf="this.fpDual.errors?.serverError">{{ this.fpDual.errors?.serverError }}</mat-error>
     </div>
     <ng-template  #modulos>
       <mat-select matNativeControl required [formControl]="fpDual" (selectionChange)="obtenerModulo($event.value)" >
         <mat-option *ngFor="let fp of fpList | keyvalue" [value]="fp.key">{{ fp.value }}</mat-option>
       </mat-select>
-      <mat-error *ngIf="this.fpDual.errors?.required"> {{ getErrorMessage("fpDual") }}</mat-error>
+      <mat-error *ngIf="this.fpDual.errors?.required && this.codigoCentro.value != '' && (this.fpDual.dirty || this.fpDual.touched) "> {{ getErrorMessage("fpDual") }}</mat-error>
       <mat-error *ngIf="this.fpDual.errors?.serverError">{{ this.fpDual.errors?.serverError }}</mat-error>
     </ng-template>
 
@@ -186,11 +186,7 @@
 <div *ngIf="this.numero!=5 && this.numero!=4 && this.numero!=3 && this.numero!=2">
   <button class="boton-envio" type="submit" [disabled]="!signupForm.valid "> <span>Registrar Usuario</span></button>
 </div>
-<!--
-  <button class="boton-envio" [disabled]="!signupForm.valid" type="submit">
-    <span>Registrar Usuario</span>
-  </button>
--->
+
   <mat-label></mat-label>
 </form>
 

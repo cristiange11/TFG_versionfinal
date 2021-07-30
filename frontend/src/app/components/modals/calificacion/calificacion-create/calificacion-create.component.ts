@@ -13,12 +13,12 @@ import { CalificacionService } from 'src/app/services/calificacion.service';
   styleUrls: ['./calificacion-create.component.css']
 })
 export class CalificacionCreateComponent implements OnInit {
-  alumnoList = [];
+  alumnoList = new Map<string, string>();
   formInstance: FormGroup;
   constructor(public dialogRef: MatDialogRef< CalificacionCreateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Calificacion, public calificacionService: CalificacionService, public alumnoService: AlumnoService) { 
       this.formInstance = new FormGroup({
-        alumnos: new FormControl("", [Validators.required]),
+        dni: new FormControl("", [Validators.required]),
         nota: new FormControl("", [Validators.required, Validators.min(0), Validators.max(10)]),
         descripcion: new FormControl("", [Validators.required, Validators.minLength(4)]),
         codigoModulo: new FormControl(sessionStorage.getItem('codigoModulo'), [Validators.required]),
@@ -32,7 +32,13 @@ export class CalificacionCreateComponent implements OnInit {
     this.alumnoService.getAlumnoByModulo(this.formInstance.value.codigoModulo).pipe(first())
     .subscribe(
       data => {
-        console.log(data)
+          let alumnos = JSON.parse(data["alumnos"])
+          console.log(alumnos)
+          alumnos.forEach(alumnoInfo => {
+            var nombreApellidos = alumnoInfo.nombre + " " + alumnoInfo.apellidos;
+            this.alumnoList.set(alumnoInfo.dni , nombreApellidos );
+          })
+          
       },
       error => {
         

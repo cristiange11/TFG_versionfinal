@@ -16,6 +16,12 @@ module.exports = class ResultadoAprendizaje {
             `SELECT * FROM encuesta where codigoModulo = ${codigoModulo}`);
         return rows;
     }
+    static async getEncuesta(id) {
+        
+        const [rows, fields] = await promisePool.query(
+            `SELECT observaciones FROM encuesta where id = ${id}`);
+        return rows;
+    }
     static async deleteEncuesta(id, user) {
         const connection = await promisePool.getConnection();
         console.log(`DELETE FROM encuesta WHERE id =  ${id}`)

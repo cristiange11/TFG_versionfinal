@@ -115,10 +115,10 @@ exports.createCalifcacion = async (req, res, next) => {
             else {
                 try {
                     const user = jwt_decode(req.headers['authorization']).sub;
-                    Calificacion.createCalifcacion(req.body, user).then(function (){
+                    Calificacion.createCalificacion(req.body, user).then(function (){
                         res.status(201).json({ message: "success" });
                     }).catch(function () {
-                        res.status(401).json({ message: "no se ha podido crear el centro:" + err });
+                        res.status(401).json({ message: "no se ha podido crear la calificación:" + err });
                     });
                 } catch (err) {
                     res.status(500).json({ error: err });

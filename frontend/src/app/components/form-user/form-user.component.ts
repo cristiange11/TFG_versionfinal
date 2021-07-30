@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, Form, FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms";
-import { MatSelect } from '@angular/material/select';
 import { first } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { CentroService } from 'src/app/services/centro.service';
@@ -10,9 +9,6 @@ import { FpdualesService } from 'src/app/services/fpduales.service';
 import { AlumnoService } from 'src/app/services/alumno.service';
 import { ProfesorService } from 'src/app/services/profesor.service';
 import { TutorEmpresaService } from 'src/app/services/tutor-empresa.service';
-import { User } from '../../models/User';
-import { Centro } from '../../models/Centro';
-import { Rol } from 'src/app/models/Rol';
 import { Fpduales } from 'src/app/models/Fpduales';
 import { Empresa } from 'src/app/models/Empresa';
 import { AppComponent } from '../../app.component';
@@ -20,7 +16,6 @@ import { AppRoutingModule } from '../../app-routing.module';
 import { RouterModule, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { ModuloService } from 'src/app/services/modulo.service';
-import { Modulo } from 'src/app/models/Modulo';
 import { NavigationComponent } from '../navigation/navigation.component';
 @Component({
   selector: 'app-form-user',

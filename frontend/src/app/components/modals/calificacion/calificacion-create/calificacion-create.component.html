@@ -3,11 +3,11 @@
   <form [formGroup]="formInstance" novalidate >
     <mat-form-field class="fullWidth" appearance="outline">
       <mat-label>Alumno</mat-label>
-       <mat-select matNativeControl required formControlName="alumnos" >
+       <mat-select matNativeControl required formControlName="dni" >
         <mat-option *ngFor="let alumno of alumnoList | keyvalue" [value]="alumno.key">{{ alumno.value }}</mat-option>
       </mat-select>
-      <mat-error *ngIf="formInstance.controls['alumnos']?.errors?.required">Alumno requerido</mat-error>
-      <mat-error *ngIf="formInstance.controls['alumnos']?.errors?.serverError">{{ formInstance.controls['alumnos']?.errors?.serverError }}</mat-error>
+      <mat-error *ngIf="formInstance.controls['dni']?.errors?.required">Alumno requerido</mat-error>
+      <mat-error *ngIf="formInstance.controls['dni']?.errors?.serverError">{{ formInstance.controls['alumnos']?.errors?.serverError }}</mat-error>
 
       </mat-form-field>
       <mat-form-field class="fullWidth" appearance="outline">

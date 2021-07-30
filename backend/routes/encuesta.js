@@ -9,6 +9,8 @@ const encuestaController = require('../controllers/encuesta');
 
 router.get('/:codigoModulo', encuestaController.getEncuestas);
 
+router.get('/encuesta/:id', encuestaController.getEncuesta);
+
 router.delete('/:id', encuestaController.deleteEncuesta);
 
 router.post(
