@@ -86,6 +86,8 @@ import { EncuestaUpdateComponent } from './components/modals/encuesta/encuesta-u
 import { LogComponent } from './components/log/log.component';
 import { UsuarioDeleteConfirmationComponent } from './components/modals/usuario/usuario-delete-confirmation/usuario-delete-confirmation.component';
 import { CalificacionComponent } from './components/calificacion/calificacion.component';
+import { CalificacionCreateComponent } from './components/modals/calificacion/calificacion-create/calificacion-create.component';
+import { CalificacionUpdateComponent } from './components/modals/calificacion/calificacion-update/calificacion-update.component';
 
 @NgModule({
   imports: [
@@ -184,6 +186,8 @@ import { CalificacionComponent } from './components/calificacion/calificacion.co
     LogComponent,
     UsuarioDeleteConfirmationComponent,
     CalificacionComponent,
+    CalificacionCreateComponent,
+    CalificacionUpdateComponent,
     
    
     

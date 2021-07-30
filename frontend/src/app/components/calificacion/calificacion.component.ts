@@ -10,6 +10,9 @@ import { first } from 'rxjs/operators';
 import { AppComponent } from 'src/app/app.component';
 import { Calificacion } from 'src/app/models/Calificacion';
 import { CalificacionService } from 'src/app/services/calificacion.service';
+import { CalificacionCreateComponent } from '../modals/calificacion/calificacion-create/calificacion-create.component';
+import { CalificacionUpdateComponent } from '../modals/calificacion/calificacion-update/calificacion-update.component';
+import { DeleteComponent } from '../modals/delete/delete.component';
 import { NavigationComponent } from '../navigation/navigation.component';
 
 @Component({
@@ -37,14 +40,14 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.nagivationComponent.obtenerItems();
-    
+
     if (!this.cookieService.get('user')) {
       this.router.navigate(['home']);
     }
     else {
       this.user = (JSON.parse(this.cookieService.get('user')));
       console.log(this.user.rol)
-      if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2 && Number(this.user.rol ) != 4) {
+      if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2 && Number(this.user.rol) != 4) {
         this.router.navigate(['home']);
       }
 
@@ -52,7 +55,7 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getAll();
   }
   getAll() {
-    if(Number(this.user.rol != 5)){
+    if (Number(this.user.rol != 5)) {
       console.log("Modulo => " + Number(sessionStorage.getItem('codigoModulo')))
       this.serviceSubscribe = this.calificacionService.getCalificaciones(Number(sessionStorage.getItem('codigoModulo'))).pipe(first())
         .subscribe(
@@ -79,7 +82,7 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
               AppComponent.myapp.openDialog(res);
             }
           });
-        }
+    }
   }
   private filter() {
 
@@ -175,28 +178,35 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
     this.dataSource.filter = value.target.value.trim().toLocaleLowerCase();
   }
   add() {
-    /*
-    this.dialog.open(EmpresaCreateComponent, {
+
+    this.dialog.open(CalificacionCreateComponent, {
       width: '400px'
     });
-    */
+
   }
   edit(data) {
-    /*
-    this.dialog.open(EmpresaUpdateComponent, {
+    
+    this.dialog.open(CalificacionUpdateComponent, {
       width: '400px',
-      data: data
-    });*/
+      data: {
+        dni: data.dni, 
+        nombre : data.nombreUsuario,
+        nota: data.nota, 
+        descripcion: data.descripcion,
+        id: data.id, 
+        codigoModulo: sessionStorage.getItem('codigoModulo')
+      }
+    });
 
   }
 
-  delete(CIF: string) {
-    /*
+  delete(id: number) {
+
     const dialogRef = this.dialog.open(DeleteComponent);
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.empresaService.deleteEmpresa(CIF).pipe(first())
+        this.calificacionService.deleteCalificacion(id).pipe(first())
           .subscribe(
             data => {
               window.location.reload();
@@ -211,32 +221,12 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
                 res.push("Petición incorrecta.");
                 AppComponent.myapp.openDialog(res);
               }
-              else if (error.status == 409) {
-                const dialogRef2 = this.dialog.open(EmpresaDeleteConfirmationComponent);
-                dialogRef2.afterClosed().subscribe(result => {
-                  if (result) {
-                    this.empresaService.deleteTutorEmpresaByEmpresa(CIF).pipe(first())
-                      .subscribe(
-                        data => {
-                          window.location.reload();
-                        },
-                        error => {
-                          if (error.status == 401 && error.error.errors == "Sesión expirada") {
-                            AppComponent.myapp.openDialogSesion();
-                          } else {
-                            const res = new Array();
-                            res.push("No se ha podido borrar.");
-                            AppComponent.myapp.openDialog(res);
-                          }
-                        }
-                      )
-                  }
-                });
-              }
-            });
+
+            }
+          );
       }
     });
-    */
+
   }
   ngAfterViewInit(): void {
 

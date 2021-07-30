@@ -8,10 +8,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { AppComponent } from 'src/app/app.component';
-import { Fpduales } from 'src/app/models/Fpduales';
 import { Modulo } from 'src/app/models/Modulo';
 import { ModuloService } from 'src/app/services/modulo.service';
-import { FpdualComponent } from '../fpdual/fpdual.component';
 import { DeleteComponent } from '../modals/delete/delete.component';
 import { ModuloCreateComponent } from '../modals/modulo/modulo-create/modulo-create.component';
 import { ModuloUpdateComponent } from '../modals/modulo/modulo-update/modulo-update.component';
@@ -217,7 +215,7 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   public doFilter = (value: { target: HTMLInputElement }) => {
-    this.dataSource.filter = value.target.value.trim().toLocaleLowerCase();
+    this.dataSource.filter = value.target.value.trim().toLocaleLowerCase();  
   }
   add() {
     const dialogRef = this.dialog.open(ModuloCreateComponent, {

@@ -10,10 +10,10 @@ export class AlumnoService {
   private url = "http://localhost:3000/alumno";
 
   constructor(private cookieService: CookieService, private http: HttpClient) { }
- 
-  createAlumno(sigunForm , userJson,  formulario2): Observable<JSON>{ 
+
+  createAlumno(sigunForm, userJson, formulario2): Observable<JSON> {
     var user = {
-      dni : sigunForm.dni,
+      dni: sigunForm.dni,
       nombre: sigunForm.nombre,
       apellidos: sigunForm.apellidos,
       correo: sigunForm.correo,
@@ -27,15 +27,15 @@ export class AlumnoService {
       fpDual: userJson.fpDual,
       codigoCentro: userJson.codigoCentro
     };
-   
-    var alumno = new Alumno(user, formulario2)
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
 
-    return this.http.post<JSON>(`${this.url}/create`, alumno , httpOptions);   
+    var alumno = new Alumno(user, formulario2)
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization": this.cookieService.get('token'), "Content-Type": "application/json", "X-Frame-Options": "deny" }), }
+
+    return this.http.post<JSON>(`${this.url}/create`, alumno, httpOptions);
   }
-  updateAlumno(sigunForm , userJson,  formulario2, modulo): Observable<JSON>{ 
+  updateAlumno(sigunForm, userJson, formulario2, modulo): Observable<JSON> {
     var alumno = {
-      dni : sigunForm.dni,
+      dni: sigunForm.dni,
       nombre: sigunForm.nombre,
       apellidos: sigunForm.apellidos,
       correo: sigunForm.correo,
@@ -47,17 +47,21 @@ export class AlumnoService {
       rol: sigunForm.rol,
       fechaNacimiento: sigunForm.fechaNacimiento,
       fpDual: userJson.fpDual,
-      codigoCentro: userJson.codigoCentro, 
+      codigoCentro: userJson.codigoCentro,
       numeroExpediente: formulario2,
-      modulo : {modulo : modulo}
-    };  
-    
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
-    return this.http.put<JSON>(`${this.url}/update`, alumno , httpOptions);   
+      modulo: { modulo: modulo }
+    };
+
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization": this.cookieService.get('token'), "Content-Type": "application/json", "X-Frame-Options": "deny" }), }
+    return this.http.put<JSON>(`${this.url}/update`, alumno, httpOptions);
   }
-  getAlumno(dni): Observable<JSON >{    
-    console.log(`${this.url}/${dni}`)
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
-    return this.http.get<JSON>(`${this.url}/${dni}`,  httpOptions); 
+  getAlumno(dni): Observable<JSON> {
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization": this.cookieService.get('token'), "Content-Type": "application/json", "X-Frame-Options": "deny" }), }
+    return this.http.get<JSON>(`${this.url}/${dni}`, httpOptions);
+  }
+  getAlumnoByModulo(codigoModulo): Observable<JSON> {
+    console.log(codigoModulo);
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization": this.cookieService.get('token'), "Content-Type": "application/json", "X-Frame-Options": "deny" }), }
+    return this.http.get<JSON>(`${this.url}/modulo/${codigoModulo}`, httpOptions);
   }
 }

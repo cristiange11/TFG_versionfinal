@@ -11,7 +11,7 @@ module.exports = class Calificacion  {
     
     static async getCalificaciones(codigoModulo) {
       
-        const [rows, fields] = await promisePool.query(`SELECT C.*, U.nombre as nombreUsuario, U.apellidos as apellidoUsuario FROM calificacion as C, alumno_modulo as AM, usuario as U where U.dni = AM.dni and U.dni = C.dni and C.codigoModulo = 24 and C.codigoModulo = AM.codigoModulo`);
+        const [rows, fields] = await promisePool.query(`SELECT C.*, U.nombre as nombreUsuario, U.apellidos as apellidoUsuario FROM calificacion as C, alumno_modulo as AM, usuario as U where U.dni = AM.dni and U.dni = C.dni and C.codigoModulo = ${codigoModulo} AND C.codigoModulo = AM.codigoModulo`);
         return rows;
     }
     
@@ -56,13 +56,13 @@ module.exports = class Calificacion  {
         const connection = await promisePool.getConnection();
         try {
             await connection.beginTransaction();
-            let query = `UPDATE calificacion SET dni='${calificacion.dni}',nota='${calificacion.nota}',descripcion='${calificacion.descripcion}', codigoModulo='${calificacion.codigoModulo}' where id = ${calificacion.id}`;
+            let query = `UPDATE calificacion SET nota='${calificacion.nota}',descripcion='${calificacion.descripcion}'  where id = ${calificacion.id}`;
             await connection.query(query);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha añadido la calificación al alumno con DNI ${alumno.dni} ','${user}',sysdate(), 'calificacion')`);            
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha actualizado la calificación al alumno con DNI ${calificacion.dni} ','${user}',sysdate(), 'calificacion')`);            
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_CALIFICACION','No se ha añadido la calificación al alumno con DNI ${alumno.dni}','${user}',sysdate(), 'calificacion')`);            
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_CALIFICACION','No se ha actualizado la calificación al alumno con DNI ${calificacion.dni}','${user}',sysdate(), 'calificacion')`);            
             console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {

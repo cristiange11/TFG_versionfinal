@@ -11,6 +11,8 @@ const alumnoController = require('../controllers/alumno');
 
 router.get('/', alumnoController.getAlumnos);
 
+router.get('/modulo/:codigoModulo', alumnoController.getAlumnosByModulo);
+
 router.get('/:dni', alumnoController.getAlumno);
 
 router.delete('/:dni', alumnoController.deleteAlumno);
