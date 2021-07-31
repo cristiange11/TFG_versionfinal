@@ -14,9 +14,6 @@ import { EncuestaService } from 'src/app/services/encuesta.service';
 import { DeleteComponent } from '../modals/delete/delete.component';
 import { EncuestaCreateComponent } from '../modals/encuesta/encuesta-create/encuesta-create.component';
 import { EncuestaUpdateComponent } from '../modals/encuesta/encuesta-update/encuesta-update.component';
-import { FpdualCreateComponent } from '../modals/fpdual/fpdual-create/fpdual-create.component';
-import { FpdualDeleteConfirmationComponent } from '../modals/fpdual/fpdual-delete-confirmation/fpdual-delete-confirmation.component';
-import { FpdualUpdateComponent } from '../modals/fpdual/fpdual-update/fpdual-update.component';
 import { NavigationComponent } from '../navigation/navigation.component';
 
 @Component({
@@ -26,12 +23,12 @@ import { NavigationComponent } from '../navigation/navigation.component';
 })
 export class EncuestaComponent implements OnInit , OnDestroy, AfterViewInit {
   myApp = AppComponent.myapp;
-  encuestaList: Array<Encuesta> = [];
+  encuestaList = [];
   user;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   
-  public displayedColumns: string[] = ['titulo', 'descripcion', 'dniTutorEmpresa', 'dniAlumno', 'resultado'];
+  public displayedColumns: string[] = ['titulo', 'descripcion', 'nombreApellidoTutor', 'nombreApellidoAlumno', 'resultado'];
   public columnsToDisplay: string[] ;
 
   public columnsFilters = {};
@@ -52,19 +49,26 @@ export class EncuestaComponent implements OnInit , OnDestroy, AfterViewInit {
     }
     else{
       this.user =(JSON.parse(this.cookieService.get('user')));
-    if(Number(this.user.rol)!=1 && Number(this.user.rol) != 2 && Number(this.user.rol) !=4 ){
+    if(Number(this.user.rol)!=1 && Number(this.user.rol) != 2 && Number(this.user.rol) !=4 && Number(this.user.rol) !=3 && Number(this.user.rol) !=5){
       this.router.navigate(['home']);
     }
     
     }
-    if(Number(this.user.rol)==1 || Number(this.user.rol) == 2 ){
+    if( Number(this.user.rol) ==3){
       this.columnsToDisplay = [...this.displayedColumns, 'actions'];
     }
+   
     else{
-      if(Number(this.user.rol)==4)
+      if(Number(this.user.rol)==4){
       this.columnsToDisplay = [...this.displayedColumns, 'observaciones'];
-      
+      }else if(Number(this.user.rol)==1 || Number(this.user.rol) == 2){
+        this.columnsToDisplay = [...this.displayedColumns, 'actions', 'observaciones'];
+      }
     }
+    this.dataSource.filterPredicate = function(data, filter: string): boolean {
+   
+      return data.titulo.toLowerCase().includes(filter) || data.descripcion.toLowerCase().includes(filter) || data.resultado.toString().includes(filter) || data.nombreApellidoAlumno.toLowerCase().includes(filter) || data.nombreApellidoTutor.toLowerCase().includes(filter);
+    };
   }
   getAll() {
     console.log(Number(sessionStorage.getItem('codigoModulo')))
@@ -72,12 +76,23 @@ export class EncuestaComponent implements OnInit , OnDestroy, AfterViewInit {
       .subscribe(
         data => {
           let encuestas = data["encuestas"];
-          encuestas.forEach(encuestaInfo => {          
-            this.encuestaList.push(encuestaInfo);
-            
-          });
+          console.log(encuestas)
           
-            this.dataSource.data = this.encuestaList;
+          encuestas.forEach(encuestaInfo => {    
+            var encuesta = {
+              titulo : encuestaInfo.titulo,
+              descripcion : encuestaInfo.descripcion,
+              nombreApellidoTutor : encuestaInfo.nombreTutor + " " + encuestaInfo.apellidoTutor,
+              nombreApellidoAlumno : encuestaInfo.nombreAlumno + " " + encuestaInfo.apellidoAlumno,
+              resultado: encuestaInfo.resultado,
+              codigoModulo : encuestaInfo.codigoModulo,
+              observaciones : encuestaInfo.observaciones,
+              id : encuestaInfo.id
+            }
+            this.encuestaList.push(encuesta);
+          });
+         
+          this.dataSource.data = this.encuestaList;
         },
         error => {
           if(error.status == 401 && error.error.errors == "Sesión expirada"){
@@ -90,98 +105,9 @@ export class EncuestaComponent implements OnInit , OnDestroy, AfterViewInit {
          
         });
   }
-  private filter() {
-
-    this.dataSource.filterPredicate = (data: Encuesta, filter: string) => {
-      let find = true;
-
-      for (var columnName in this.columnsFilters) {
-
-        let currentData = "" + data[columnName];
-
-        //if there is no filter, jump to next loop, otherwise do the filter.
-        if (!this.columnsFilters[columnName]) {
-          return find;
-        }
-
-
-        let searchValue = this.columnsFilters[columnName]["contains"];
-
-        if (!!searchValue && currentData.indexOf("" + searchValue) < 0) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-        searchValue = this.columnsFilters[columnName]["equals"];
-        if (!!searchValue && currentData != searchValue) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-        searchValue = this.columnsFilters[columnName]["greaterThan"];
-        if (!!searchValue && currentData <= searchValue) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-        searchValue = this.columnsFilters[columnName]["lessThan"];
-        if (!!searchValue && currentData >= searchValue) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-        searchValue = this.columnsFilters[columnName]["startWith"];
-
-        if (!!searchValue && !currentData.startsWith("" + searchValue)) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-        searchValue = this.columnsFilters[columnName]["endWith"];
-        if (!!searchValue && !currentData.endsWith("" + searchValue)) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-      }
-
-      return find;
-    };
-
-    this.dataSource.filter = null;
-    this.dataSource.filter = 'activate';
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
-  /**
-   * Create a filter for the column name and operate the filter action.
-   */
-  applyFilter(columnName: string, operationType: string, searchValue: string) {
-    this.columnsFilters[columnName] = {};
-    this.columnsFilters[columnName][operationType] = searchValue;
-    this.filter();
-  }
-
-  /**
-   * clear all associated filters for column name.
-   */
-  clearFilter(columnName: string) {
-    if (this.columnsFilters[columnName]) {
-      delete this.columnsFilters[columnName];
-      this.filter();
-    }
-  }
   public doFilter = (value: { target: HTMLInputElement }) => {
-    this.dataSource.filter = value.target.value.trim().toLocaleLowerCase();
+    const filterValue =  value.target.value.trim().toLocaleLowerCase(); 
+    this.dataSource.filter = filterValue;
   }
   add() {
      this.dialog.open(EncuestaCreateComponent, {

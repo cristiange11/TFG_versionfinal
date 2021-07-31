@@ -22,11 +22,12 @@ import { NavigationComponent } from '../navigation/navigation.component';
 })
 export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterViewInit {
   myApp = AppComponent.myapp;
+  user;
   resultadoAprendizajeList: Array<ResultadoAprendizaje> = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   public displayedColumns: string[] = ['titulo', 'descripcion'];
-  public columnsToDisplay: string[] = [...this.displayedColumns, 'actions'];
+  public columnsToDisplay: string[];
 
   public columnsFilters = {};
 
@@ -41,15 +42,23 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
   ngOnInit(): void {
     this.nagivationComponent.obtenerItems();
     this.getAll();
+    this.dataSource.filterPredicate = function(data, filter: string): boolean {
+      return data.titulo.toLowerCase().includes(filter) || data.descripcion.toLowerCase().includes(filter);
+    };
     if (!this.cookieService.get('user')) {
       this.router.navigate(['home']);
     }
     else {
-      var user = (JSON.parse(this.cookieService.get('user')));
-      if (Number(user.rol) != 1 && Number(user.rol) != 2 && Number(user.rol) !=4) {
+      this.user = (JSON.parse(this.cookieService.get('user')));
+      if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2 && Number(this.user.rol) !=4 && Number(this.user.rol != 3) && Number(this.user.rol != 5)) {
         this.router.navigate(['home']);
       }
-
+      else if(Number(this.user.rol) == 1 || Number(this.user.rol) == 2 || Number(this.user.rol) ==4){
+        this.columnsToDisplay  = [...this.displayedColumns, 'actions'];
+      }
+      else{
+        this.columnsToDisplay  = [...this.displayedColumns];
+      }
     }
   }
   getAll() {
@@ -76,98 +85,9 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
 
         });
   }
-  private filter() {
-
-    this.dataSource.filterPredicate = (data: ResultadoAprendizaje, filter: string) => {
-      let find = true;
-
-      for (var columnName in this.columnsFilters) {
-
-        let currentData = "" + data[columnName];
-
-        //if there is no filter, jump to next loop, otherwise do the filter.
-        if (!this.columnsFilters[columnName]) {
-          return find;
-        }
-
-
-        let searchValue = this.columnsFilters[columnName]["contains"];
-
-        if (!!searchValue && currentData.indexOf("" + searchValue) < 0) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-        searchValue = this.columnsFilters[columnName]["equals"];
-        if (!!searchValue && currentData != searchValue) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-        searchValue = this.columnsFilters[columnName]["greaterThan"];
-        if (!!searchValue && currentData <= searchValue) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-        searchValue = this.columnsFilters[columnName]["lessThan"];
-        if (!!searchValue && currentData >= searchValue) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-        searchValue = this.columnsFilters[columnName]["startWith"];
-
-        if (!!searchValue && !currentData.startsWith("" + searchValue)) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-        searchValue = this.columnsFilters[columnName]["endWith"];
-        if (!!searchValue && !currentData.endsWith("" + searchValue)) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-      }
-
-      return find;
-    };
-
-    this.dataSource.filter = null;
-    this.dataSource.filter = 'activate';
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
-  /**
-   * Create a filter for the column name and operate the filter action.
-   */
-  applyFilter(columnName: string, operationType: string, searchValue: string) {
-    this.columnsFilters[columnName] = {};
-    this.columnsFilters[columnName][operationType] = searchValue;
-    this.filter();
-  }
-
-  /**
-   * clear all associated filters for column name.
-   */
-  clearFilter(columnName: string) {
-    if (this.columnsFilters[columnName]) {
-      delete this.columnsFilters[columnName];
-      this.filter();
-    }
-  }
   public doFilter = (value: { target: HTMLInputElement }) => {
-    this.dataSource.filter = value.target.value.trim().toLocaleLowerCase();
+    const filterValue =  value.target.value.trim().toLocaleLowerCase(); 
+    this.dataSource.filter = filterValue;
   }
   add() {
     const dialogRef = this.dialog.open(ResultadoAprendizajeCreateComponent, {

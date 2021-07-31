@@ -24,7 +24,7 @@ exports.getModulos = async (req, res, next) => {
   }
   }
 };
-exports.getModulosProfAlumnTutor = async (req, res, next) => {
+exports.getModulosProf = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
@@ -36,7 +36,28 @@ exports.getModulosProfAlumnTutor = async (req, res, next) => {
   } else {
     try {
       console.log("DNI =>  " + req.params.dni)
-      const modulos = await Modulo.getModulosProfAlumnTutor(req.params.dni);
+      const modulos = await Modulo.getModulosProf(req.params.dni);
+
+      res.status(200).json({ modulos: modulos });
+    } catch (err) {
+      res.status(500).json({ error: err });
+    }
+  }
+  }
+};
+exports.getModulosTut = async (req, res, next) => {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
+  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
+  console.log(expirado)
+  if (expirado) {
+    res.status(401).json({ "errors": "Sesión expirada" });
+  } else {
+    try {
+      console.log("DNI =>  " + req.params.dni)
+      const modulos = await Modulo.getModulosTut(req.params.dni);
 
       res.status(200).json({ modulos: modulos });
     } catch (err) {

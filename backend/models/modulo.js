@@ -18,10 +18,14 @@ module.exports = class Modulo {
             `SELECT * FROM modulo where fpDual = ${fpDual}`);
         return rows;
     }
-    static async getModulosProfAlumnTutor(dni) {
-        console.log(`SELECT M.* FROM modulo M, profesor_modulo PM, profesor P WHERE P.dni = PM.dni AND PM.codigoModulo = M.codigo AND P.dni = "${dni}"`)
+    static async getModulosProf(dni) {
         const [rows, fields] = await promisePool.query(
             `SELECT M.* FROM modulo M, profesor_modulo PM, profesor P WHERE P.dni = PM.dni AND PM.codigoModulo = M.codigo AND P.dni = "${dni}"`);
+        return rows;
+    }
+    static async getModulosTut(dni) {        
+        const [rows, fields] = await promisePool.query(
+            `SELECT M.* FROM modulo M, tutor_modulo TM, tutor_empresa T WHERE T.dni = TM.dni AND TM.codigoModulo = M.codigo AND T.dni = "${dni}"`);
         return rows;
     }
     static async deleteModulo(codigo, user) {

@@ -22,11 +22,11 @@ export class EncuestaUpdateComponent implements OnInit {
         titulo: new FormControl("", [Validators.required, Validators.minLength(4)]),
         descripcion: new FormControl("", [Validators.required, Validators.minLength(4)]),
         codigoModulo : new FormControl("",[]),
+        observaciones : new FormControl("",[]),
         resultado : new FormControl("",[Validators.required, Validators.max(10), Validators.min(0)]),
-        dniAlumno: new FormControl("", [Validators.required, Validators.pattern(/^\d{8}[a-zA-Z]$/)]),
-        dniTutorEmpresa: new FormControl("", [Validators.required, Validators.pattern(/^\d{8}[a-zA-Z]$/)]),
+        
       });
-      this.formInstance.setValue({id: data.id, titulo : data.titulo, descripcion : data.descripcion , codigoModulo : Number(sessionStorage.getItem('codigoModulo')), resultado : "", dniAlumno: data.dniAlumno, dniTutorEmpresa: data.dniTutorEmpresa })
+      this.formInstance.setValue({id: data.id,observaciones: data.observaciones , titulo : data.titulo, descripcion : data.descripcion , codigoModulo : Number(sessionStorage.getItem('codigoModulo')), resultado : data.resultado })
 
     }
     

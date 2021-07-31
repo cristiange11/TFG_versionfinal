@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit {
       this.router.navigate(['adminpage']);
     }else if(Number(user.rol)==2){
       this.router.navigate(['fpdual']);
-    }else if(Number(user.rol) == 4){
+    }else if(Number(user.rol) == 4 || Number(user.rol) == 3){
       this.router.navigate(['modulo']);
     }
     

@@ -59,8 +59,12 @@ export class AlumnoService {
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization": this.cookieService.get('token'), "Content-Type": "application/json", "X-Frame-Options": "deny" }), }
     return this.http.get<JSON>(`${this.url}/${dni}`, httpOptions);
   }
-  getAlumnoByModulo(codigoModulo): Observable<JSON> {
+  /*getAlumnoByModulo(codigoModulo): Observable<JSON> {
     console.log(codigoModulo);
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization": this.cookieService.get('token'), "Content-Type": "application/json", "X-Frame-Options": "deny" }), }
+    return this.http.get<JSON>(`${this.url}/modulo/${codigoModulo}`, httpOptions);
+  }*/
+  getAlumnoByModuloWithoutMark(codigoModulo): Observable<JSON> {
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization": this.cookieService.get('token'), "Content-Type": "application/json", "X-Frame-Options": "deny" }), }
     return this.http.get<JSON>(`${this.url}/modulo/${codigoModulo}`, httpOptions);
   }

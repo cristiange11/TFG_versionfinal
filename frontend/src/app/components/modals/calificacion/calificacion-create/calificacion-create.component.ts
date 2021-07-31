@@ -29,7 +29,7 @@ export class CalificacionCreateComponent implements OnInit {
     
 
   ngOnInit(): void {
-    this.alumnoService.getAlumnoByModulo(this.formInstance.value.codigoModulo).pipe(first())
+    this.alumnoService.getAlumnoByModuloWithoutMark(this.formInstance.value.codigoModulo).pipe(first())
     .subscribe(
       data => {
           let alumnos = JSON.parse(data["alumnos"])

@@ -6,5 +6,7 @@ export class Encuesta {
     resultado: string;
     dniAlumno: string;
     dniTutorEmpresa: string;
- 
+    observaciones : string;
+    nombreApellidoAlumno: string;
+    nombreApellidoTutor: string;
 }

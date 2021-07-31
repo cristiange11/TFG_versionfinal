@@ -8,7 +8,9 @@ const moduloController = require('../controllers/modulo');
 
 router.get('/:fpDual', moduloController.getModulos);
 
-router.get('/usuario/:dni', moduloController.getModulosProfAlumnTutor);
+router.get('/profesor/:dni', moduloController.getModulosProf);
+
+router.get('/tutor/:dni', moduloController.getModulosTut);
 
 router.delete('/:codigo', moduloController.deleteModulo);
 

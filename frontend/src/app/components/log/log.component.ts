@@ -41,6 +41,14 @@ export class LogComponent implements OnInit , OnDestroy, AfterViewInit {
   ngOnInit(): void {
     this.nagivationComponent.obtenerItems();
     this.getAll();
+    this.dataSource.filterPredicate = function(data, filter: string): boolean {
+      if(data.codigoError != null){
+      return data.usuario.toLowerCase().includes(filter) || data.fechaHoraLog.toLowerCase().includes(filter) || data.mensaje.toLowerCase().includes(filter) || data.codigoError.toLowerCase().includes(filter) || data.tipo.toLowerCase().includes(filter);
+      }
+      else{
+        return data.usuario.toLowerCase().includes(filter) || data.fechaHoraLog.toLowerCase().includes(filter) || data.mensaje.toLowerCase().includes(filter) ||  data.tipo.toLowerCase().includes(filter);
+      }
+    };
     if(!this.cookieService.get('user')){
       this.router.navigate(['home']);
     }
@@ -84,101 +92,10 @@ export class LogComponent implements OnInit , OnDestroy, AfterViewInit {
           }
         });
   }
-  private filter() {
-
-    this.dataSource.filterPredicate = (data: Log, filter: string) => {
-      let find = true;
-
-      for (var columnName in this.columnsFilters) {
-
-        let currentData = "" + data[columnName];
-
-        //if there is no filter, jump to next loop, otherwise do the filter.
-        if (!this.columnsFilters[columnName]) {
-          return find;
-        }
-
-
-        let searchValue = this.columnsFilters[columnName]["contains"];
-
-        if (!!searchValue && currentData.indexOf("" + searchValue) < 0) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-        searchValue = this.columnsFilters[columnName]["equals"];
-        if (!!searchValue && currentData != searchValue) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-        searchValue = this.columnsFilters[columnName]["greaterThan"];
-        if (!!searchValue && currentData <= searchValue) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-        searchValue = this.columnsFilters[columnName]["lessThan"];
-        if (!!searchValue && currentData >= searchValue) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-        searchValue = this.columnsFilters[columnName]["startWith"];
-
-        if (!!searchValue && !currentData.startsWith("" + searchValue)) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-        searchValue = this.columnsFilters[columnName]["endWith"];
-        if (!!searchValue && !currentData.endsWith("" + searchValue)) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-      }
-
-      return find;
-    };
-
-    this.dataSource.filter = null;
-    this.dataSource.filter = 'activate';
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
-  /**
-   * Create a filter for the column name and operate the filter action.
-   */
-  applyFilter(columnName: string, operationType: string, searchValue: string) {
-    this.columnsFilters[columnName] = {};
-    this.columnsFilters[columnName][operationType] = searchValue;
-    this.filter();
-  }
-
-  /**
-   * clear all associated filters for column name.
-   */
-  clearFilter(columnName: string) {
-    if (this.columnsFilters[columnName]) {
-      delete this.columnsFilters[columnName];
-      this.filter();
-    }
-  }
   public doFilter = (value: { target: HTMLInputElement }) => {
-    this.dataSource.filter = value.target.value.trim().toLocaleLowerCase();
+    const filterValue =  value.target.value.trim().toLocaleLowerCase(); 
+    this.dataSource.filter = filterValue;
   }
-  
-  
   
   ngAfterViewInit(): void {
     

@@ -12,8 +12,9 @@ module.exports = class ResultadoAprendizaje {
     }
     
     static async getEncuestas(codigoModulo) {
+        console.log(`SELECT E.*, U.nombre, U.apellidos FROM encuesta E, usuario U where codigoModulo = ${codigoModulo} and E.dniAlumno= U.dni AND e.dniTutorEmpresa = U.dni`)
         const [rows, fields] = await promisePool.query(
-            `SELECT * FROM encuesta where codigoModulo = ${codigoModulo}`);
+            `SELECT encuesta.*, A.nombre as nombreAlumno, A.apellidos as apellidoAlumno, T.nombre as nombreTutor, T.apellidos as apellidoTutor FROM encuesta left JOIN usuario as A on encuesta.dniAlumno= A.dni left JOIN usuario as T on encuesta.dniTutorEmpresa = T.dni where encuesta.codigoModulo= ${codigoModulo}`);
         return rows;
     }
     static async getEncuesta(id) {
@@ -61,10 +62,11 @@ module.exports = class ResultadoAprendizaje {
     }
     static async updateEncuesta(encuesta, user) {
         const connection = await promisePool.getConnection();
+        console.log()
         console.log( `UPDATE encuesta SET codigoModulo='${encuesta.codigoModulo}', titulo='${encuesta.titulo}',descripcion='${encuesta.descripcion}', resultado = '${encuesta.resultado}', dniAlumno= '${encuesta.dniAlumno}' , dniTutorEmpresa = '${encuesta.dniTutorEmpresa}' WHERE id = '${encuesta.id}'`)
         try {
             await connection.beginTransaction();
-            let query = `UPDATE encuesta SET codigoModulo='${encuesta.codigoModulo}', titulo='${encuesta.titulo}',descripcion='${encuesta.descripcion}', resultado = '${encuesta.resultado}', dniAlumno= '${encuesta.dniAlumno}' , dniTutorEmpresa = '${encuesta.dniTutorEmpresa}' WHERE id = '${encuesta.id}'`;
+            let query = `UPDATE encuesta SET codigoModulo='${encuesta.codigoModulo}', observaciones = '${encuesta.observaciones}' , titulo='${encuesta.titulo}',descripcion='${encuesta.descripcion}', resultado = '${encuesta.resultado}' WHERE id = '${encuesta.id}'`;
             await connection.query(query)
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha actualizado la encuesta con id ${encuesta.id} ','${user}',sysdate(), 'encuesta')`);            
             await connection.commit();

@@ -20,7 +20,14 @@
              
             </div>
           </th>
-          <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+          <td mat-cell *matCellDef="let element">
+            <div *ngIf="column == 'totalPlazas' || column == 'plazasDisponibles'">
+                <div style="text-align: center;">{{element[column]}}</div>
+            </div>
+            <div *ngIf="column != 'totalPlazas' && column != 'plazasDisponibles'">
+              {{element[column]}}
+          </div>
+             </td>
         </ng-container>
         <ng-container [matColumnDef]="'actions'">
           <th mat-header-cell *matHeaderCellDef> actions </th>

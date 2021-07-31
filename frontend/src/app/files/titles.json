@@ -18,6 +18,10 @@
     "dniAlumno" : "DNI alumno",
     "codigoCentro" : "Nombre Centro",
     "Tutor_empresa" : "Tutor empresa",
-    "codigoError" : "Error"
-
+    "codigoError" : "Error",
+    "nombreApellidoAlumno": "Nombre y apellidos del alumno",
+    "nombreApellidoTutor" : "Nombre y apellidos del tutor",
+    "nombreUsuario" : "Nombre",
+    "apellidoUsuario" : "Apellido",
+    "nombreCentro" : "Nombre del Centro"
 }

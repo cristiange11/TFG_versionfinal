@@ -57,22 +57,7 @@ router.put(
           return Promise.reject('Módulo no existente');
         }
       }),
-    body('dniAlumno').trim().not().isEmpty().withMessage("DNI del alumno vacío")
-    .matches(/^\d{8}[a-zA-Z]$/).withMessage("Formato DNI alumno incorrecto")
-    .custom(async (dni) => {
-      const user = await User.find(dni);
-      if (user[0].length == 0) {
-        return Promise.reject('Alumno no existente en la aplicación');
-      }
-    }),
-    body('dniTutorEmpresa').trim().not().isEmpty().withMessage("DNI del tutor vacío")
-    .matches(/^\d{8}[a-zA-Z]$/).withMessage("Formato DNI tutor incorrecto")
-    .custom(async (dni) => {
-      const user = await User.find(dni);
-      if (user[0].length == 0) {
-        return Promise.reject('Tutor no existente en la aplicación');
-      }
-    }),
+    
     body('descripcion').trim().not().isEmpty().withMessage("Descripción vacía"),
     body('resultado').trim().not().isEmpty().withMessage("Resultado vacío")
     .custom(async (resultado) => {    

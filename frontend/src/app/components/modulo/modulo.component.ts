@@ -41,6 +41,9 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
    }
 
   ngOnInit(): void {
+    this.dataSource.filterPredicate = function(data, filter: string): boolean {
+      return data.nombre.toLowerCase().includes(filter) || data.descripcion.toLowerCase().includes(filter) || data.curso.toString() === filter;
+    };
     this.nagivationComponent.obtenerItems();
    
     if(!this.cookieService.get('user')){
@@ -48,7 +51,7 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     else{
       this.user =(JSON.parse(this.cookieService.get('user')));
-    if(Number(this.user.rol)!=1 && Number(this.user.rol)!=2 && Number(this.user.rol) != 4 && Number(this.user.rol) != 3){
+    if(Number(this.user.rol)!=1 && Number(this.user.rol)!=2 && Number(this.user.rol) != 4 && Number(this.user.rol) != 3 ){
       this.router.navigate(['home']);
     }
     
@@ -80,21 +83,12 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
          
         });
   }
-  getCalificacion(codigoModulo){
-    
-    
+  getCalificacion(codigoModulo){    
     sessionStorage.setItem('codigoModulo', codigoModulo.toString());
     this.router.navigate(['calificacion']);
   }
-  getAll() {
-    console.log("Usuario => " + this.user.rol)
-    if(Number(this.user.rol) == 1 || Number(this.user.rol) == 2){
-      this.columnsToDisplay  = [...this.displayedColumns, 'actions', 'resultadoAprendizaje', 'encuesta'];
-    this.obtenerModulosAdmin(Number(sessionStorage.getItem('fpDual')));
-      
-      }else if (Number(this.user.rol) == 4 ){
-        this.columnsToDisplay  = [...this.displayedColumns,  'resultadoAprendizaje', 'encuesta', 'calificacion'];
-        this.serviceSubscribe = this.moduloService.getModulosProfAlumnTutor(this.user.dni).pipe(first())
+  obtenerModulosProf(dni){
+    this.serviceSubscribe = this.moduloService.getModulosProf(dni).pipe(first())
       .subscribe(
         data => {
           let modulos = data["modulos"];
@@ -119,104 +113,54 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
           }
          
         });
-      }
   }
-  private filter() {
-    
-    this.dataSource.filterPredicate = (data, filter: string) => {
-      
-      let find = true;
-      
-      for (var columnName in this.columnsFilters) {
-        
-        let currentData = "" + data[columnName];
-
-        //if there is no filter, jump to next loop, otherwise do the filter.
-        if (!this.columnsFilters[columnName] ) {
-          return find;
-        }
-
-
-        let searchValue = this.columnsFilters[columnName]["contains"];
-
-        if (!!searchValue && currentData.indexOf("" + searchValue) < 0) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-        searchValue = this.columnsFilters[columnName]["equals"];
-        if (!!searchValue && currentData != searchValue) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-        searchValue = this.columnsFilters[columnName]["greaterThan"];
-        if (!!searchValue && currentData <= searchValue) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-        searchValue = this.columnsFilters[columnName]["lessThan"];
-        if (!!searchValue && currentData >= searchValue) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-        searchValue = this.columnsFilters[columnName]["startWith"];
-
-        if (!!searchValue && !currentData.startsWith("" + searchValue)) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-        searchValue = this.columnsFilters[columnName]["endWith"];
-        if (!!searchValue && !currentData.endsWith("" + searchValue)) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-      }
-    
-      return find;
-    };
-
-    this.dataSource.filter = null;
-    this.dataSource.filter = 'activate';
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+  obtenerModulosTut(dni){
+    this.serviceSubscribe = this.moduloService.getModulosTut(dni).pipe(first())
+      .subscribe(
+        data => {
+          let modulos = data["modulos"];
+          modulos.forEach(moduloInfo => {      
+                
+            this.moduloList.push(moduloInfo);
+            console.log(moduloInfo)
+          });
+          
+            this.dataSource.data = this.moduloList;
+            
+           
+        },
+        error => {
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            AppComponent.myapp.openDialogSesion();                             
+          }
+          else if (error.status == 406) {
+            const res = new Array();
+            res.push("Petición incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }
+         
+        });
   }
-
-  /**
-   * Create a filter for the column name and operate the filter action.
-   */
-  applyFilter(columnName: string, operationType: string, searchValue: string) {
-    if(columnName != 'codigo' && columnName != "fpDual"){
-    this.columnsFilters[columnName] = {};
-    this.columnsFilters[columnName][operationType] = searchValue;
-    this.filter();
-    }
-  }
-
-  /**
-   * clear all associated filters for column name.
-   */
-  clearFilter(columnName: string) {
-    if (this.columnsFilters[columnName]) {
-      delete this.columnsFilters[columnName];
-      this.filter();
-    }
-  }
+  
   public doFilter = (value: { target: HTMLInputElement }) => {
-    this.dataSource.filter = value.target.value.trim().toLocaleLowerCase();  
+    const filterValue =  value.target.value.trim().toLocaleLowerCase(); 
+    this.dataSource.filter = filterValue;
   }
+  getAll() {
+    console.log("Usuario => " + this.user.rol)
+    if(Number(this.user.rol) == 1 || Number(this.user.rol) == 2){
+      this.columnsToDisplay  = [...this.displayedColumns, 'actions', 'resultadoAprendizaje', 'encuesta'];
+    this.obtenerModulosAdmin(Number(sessionStorage.getItem('fpDual')));
+      
+      }else if (Number(this.user.rol) == 4){
+        this.columnsToDisplay  = [...this.displayedColumns,  'resultadoAprendizaje', 'encuesta', 'calificacion'];
+        this.obtenerModulosProf(this.user.dni);
+      }else if (Number(this.user.rol) == 3){
+        this.columnsToDisplay  = [...this.displayedColumns,  'resultadoAprendizaje', 'encuesta'];
+        this.obtenerModulosTut(this.user.dni);
+      }
+  }
+  
   add() {
     const dialogRef = this.dialog.open(ModuloCreateComponent, {
       width: '400px'
