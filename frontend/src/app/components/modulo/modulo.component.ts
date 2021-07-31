@@ -149,7 +149,7 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
   getAll() {
     console.log("Usuario => " + this.user.rol)
     if(Number(this.user.rol) == 1 || Number(this.user.rol) == 2){
-      this.columnsToDisplay  = [...this.displayedColumns, 'actions', 'resultadoAprendizaje', 'encuesta'];
+      this.columnsToDisplay  = [...this.displayedColumns, 'actions', 'resultadoAprendizaje', 'encuesta', 'calificacion'];
     this.obtenerModulosAdmin(Number(sessionStorage.getItem('fpDual')));
       
       }else if (Number(this.user.rol) == 4){

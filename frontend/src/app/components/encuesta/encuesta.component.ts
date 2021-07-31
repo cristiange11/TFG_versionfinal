@@ -85,7 +85,6 @@ export class EncuestaComponent implements OnInit , OnDestroy, AfterViewInit {
               nombreApellidoTutor : encuestaInfo.nombreTutor + " " + encuestaInfo.apellidoTutor,
               nombreApellidoAlumno : encuestaInfo.nombreAlumno + " " + encuestaInfo.apellidoAlumno,
               resultado: encuestaInfo.resultado,
-              codigoModulo : encuestaInfo.codigoModulo,
               observaciones : encuestaInfo.observaciones,
               id : encuestaInfo.id
             }

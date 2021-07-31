@@ -6,5 +6,6 @@ export class Empresa {
     correo: string;
     telefono: string;
     url: string;
- 
+    dineroBeca: string;
+    plazas: string;
 }

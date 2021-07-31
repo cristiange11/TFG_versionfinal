@@ -53,6 +53,10 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
 
     }
     this.getAll();
+    this.dataSource.filterPredicate = function(data, filter: string): boolean {
+   
+      return data.cifEmpresa.toLowerCase().includes(filter) || data.nombre.toLowerCase().includes(filter) || data.direccion.toLowerCase().includes(filter) || data.telefono.toLowerCase().includes(filter) || data.correo.toLowerCase().includes(filter) || data.url.toLowerCase().includes(filter) || data.plazas.toLowerCase().includes(filter) || data.dineroBeca.toLowerCase().includes(filter);
+    };
   }
   getFps(empresaInfo){
     var empresa = {
@@ -121,98 +125,9 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
           });
     }
   }
-  private filter() {
-
-    this.dataSource.filterPredicate = (data: Empresa, filter: string) => {
-      let find = true;
-
-      for (var columnName in this.columnsFilters) {
-
-        let currentData = "" + data[columnName];
-
-        //if there is no filter, jump to next loop, otherwise do the filter.
-        if (!this.columnsFilters[columnName]) {
-          return find;
-        }
-
-
-        let searchValue = this.columnsFilters[columnName]["contains"];
-
-        if (!!searchValue && currentData.indexOf("" + searchValue) < 0) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-        searchValue = this.columnsFilters[columnName]["equals"];
-        if (!!searchValue && currentData != searchValue) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-        searchValue = this.columnsFilters[columnName]["greaterThan"];
-        if (!!searchValue && currentData <= searchValue) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-        searchValue = this.columnsFilters[columnName]["lessThan"];
-        if (!!searchValue && currentData >= searchValue) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-        searchValue = this.columnsFilters[columnName]["startWith"];
-
-        if (!!searchValue && !currentData.startsWith("" + searchValue)) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-        searchValue = this.columnsFilters[columnName]["endWith"];
-        if (!!searchValue && !currentData.endsWith("" + searchValue)) {
-          find = false;
-          //exit loop
-          return find;
-        }
-
-      }
-
-      return find;
-    };
-
-    this.dataSource.filter = null;
-    this.dataSource.filter = 'activate';
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
-  /**
-   * Create a filter for the column name and operate the filter action.
-   */
-  applyFilter(columnName: string, operationType: string, searchValue: string) {
-    this.columnsFilters[columnName] = {};
-    this.columnsFilters[columnName][operationType] = searchValue;
-    this.filter();
-  }
-
-  /**
-   * clear all associated filters for column name.
-   */
-  clearFilter(columnName: string) {
-    if (this.columnsFilters[columnName]) {
-      delete this.columnsFilters[columnName];
-      this.filter();
-    }
-  }
   public doFilter = (value: { target: HTMLInputElement }) => {
-    this.dataSource.filter = value.target.value.trim().toLocaleLowerCase();
+    const filterValue =  value.target.value.trim().toLocaleLowerCase(); 
+    this.dataSource.filter = filterValue;
   }
   add() {
     this.dialog.open(EmpresaCreateComponent, {

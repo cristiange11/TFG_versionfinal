@@ -166,16 +166,18 @@ export class UsuarioUpdateComponent implements OnInit {
   }
   
   ngOnInit(): void {
-    
-      this.moduloService.getModulos(this.formInstance.value.fpDual).pipe(first())
+      
+      this.moduloService.getModulosAlum(this.data.dni).pipe(first())
         .subscribe(
           data => {
             this.moduloList = new Map<number, string>();
             let modulos = data["modulos"]
+            console.log("MODULOS => " + modulos)
             modulos.forEach(moduloInfo => {
+              
               var modulo = moduloInfo 
   
-              this.moduloList.set(modulo.codigo, modulo.nombre)
+              this.moduloList.set(modulo.codigoModulo, modulo.nombreModulo);
             });
   
           },

@@ -4,7 +4,7 @@ export class Centro {
     telefono: string;
     provincia: string;
     nombre: string;
-    cp: string;
+    CP: string;
     direccion: string;
  
 }

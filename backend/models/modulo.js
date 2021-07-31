@@ -28,6 +28,12 @@ module.exports = class Modulo {
             `SELECT M.* FROM modulo M, tutor_modulo TM, tutor_empresa T WHERE T.dni = TM.dni AND TM.codigoModulo = M.codigo AND T.dni = "${dni}"`);
         return rows;
     }
+    static async getModulosAlum(dni) { 
+        console.log(`SELECT U.*, M.nombre as nombreModulo, A.numeroExpediente FROM alumno as A, usuario as U, modulo as M,calificacion as C where U.rol=5 AND U.dni='${dni}' AND A.dni = U.dni AND (not EXISTS(SELECT * from calificacion as E where E.codigoModulo = M.codigo ) OR (C.dni = U.dni AND C.nota<5))`)
+        const [rows, fields] = await promisePool.query(`SELECT U.*, M.nombre as nombreModulo, M.codigo as codigoModulo, A.numeroExpediente FROM alumno as A, usuario as U, modulo as M,calificacion as C where U.rol=5 AND U.dni='${dni}' AND A.dni = U.dni AND (not EXISTS(SELECT * from calificacion as E where E.codigoModulo = M.codigo ) OR (C.dni = U.dni AND C.nota<5))`);
+        return rows;
+    }
+    
     static async deleteModulo(codigo, user) {
         const connection = await promisePool.getConnection();
         
