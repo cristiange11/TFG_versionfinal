@@ -25,6 +25,27 @@ exports.getTutores = async (req, res, next) => {
     }
 }
 };
+exports.getTutorByModuloEncuesta = async (req, res, next) => {
+    if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
+        res.status(406).json({ "errors": "No aceptable" });
+    }
+    else {
+        var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
+        console.log(expirado)
+        if (expirado) {
+            res.status(401).json({ "errors": "Sesión expirada" });
+        } else {
+            try {
+                const tutores = await TutorEmpresa.getTutorByModuloEncuesta(req.params.codigoModulo);
+                
+                res.status(200).json({ tutores: JSON.stringify(tutores) });
+
+            } catch (err) {
+                res.status(500).json({ error: err });
+            }
+        }
+    }
+};
 exports.getTutor = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });

@@ -20,6 +20,10 @@ module.exports = class TutorEmpresa {
         const [rows, fields] = await promisePool.query(`SELECT U.*, T.cifEmpresa AS CIF, T.moduloEmpresa, M.nombre as nombreModulo, M.codigo as moduloCodigo FROM usuario U, tutor_empresa T, tutor_modulo TM, modulo M WHERE U.dni = T.dni AND T.dni=TM.dni AND M.codigo = TM.codigoModulo AND U.dni='${dni}'`);
         return rows;
     }
+    static async getTutorByModuloEncuesta(codigoModulo) {
+        const [rows, fields] = await promisePool.query(`SELECT U.* FROM usuario as U, modulo as M, encuesta as E where U.rol=3 AND M.codigo = ${codigoModulo} AND E.dniTutorEmpresa = U.dni  `);
+        return rows;
+    }
     static async deleteTutor(dni,user) {
         const connection = await promisePool.getConnection();
         try {

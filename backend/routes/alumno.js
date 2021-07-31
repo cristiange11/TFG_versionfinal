@@ -13,6 +13,8 @@ router.get('/', alumnoController.getAlumnos);
 
 router.get('/modulo/:codigoModulo', alumnoController.getAlumnosByModulo);
 
+router.get('/alumno/:codigoModulo', alumnoController.getAlumnosByModuloEncuesta);
+
 router.get('/:dni', alumnoController.getAlumno);
 
 router.delete('/:dni', alumnoController.deleteAlumno);

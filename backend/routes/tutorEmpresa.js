@@ -11,6 +11,8 @@ const tutorController = require('../controllers/tutorEmpresa');
 
 router.get('/', tutorController.getTutores);
 
+router.get('/tutor/:codigoModulo', tutorController.getTutorByModuloEncuesta);
+
 router.get('/:dni', tutorController.getTutor);
 
 router.delete('/:dni', tutorController.deleteTutor);

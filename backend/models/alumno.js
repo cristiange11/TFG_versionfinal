@@ -29,10 +29,11 @@ module.exports = class Alumno extends User {
         return rows;
     }*/
     static async getAlumnosByModulo(codigoModulo) {
-        console.log(  `SELECT U.nombre, U.dni FROM usuario as U, alumno as A, alumno_modulo as AM where U.dni=A.dni AND A.dni = AM.dni AND AM.codigoModulo =${codigoModulo} `);
-
-        const [rows, fields] = await promisePool.query(
-            `SELECT U.* FROM usuario as U, modulo as M where U.rol=5 AND M.codigo = ${codigoModulo} AND not EXISTS(SELECT * from calificacion as C where C.dni = U.dni ) `);
+        const [rows, fields] = await promisePool.query(`SELECT U.* FROM usuario as U, modulo as M where U.rol=5 AND M.codigo = ${codigoModulo} AND not EXISTS(SELECT * from calificacion as C where C.dni = U.dni ) `);
+        return rows;
+    }
+    static async getAlumnosByModuloEncuesta(codigoModulo) {
+        const [rows, fields] = await promisePool.query(`SELECT U.* FROM usuario as U, modulo as M where U.rol=5 AND M.codigo = ${codigoModulo} AND not EXISTS(SELECT * from encuesta as E where E.dniAlumno = U.dni ) `);
         return rows;
     }
     static async getAlumno(dni) {
