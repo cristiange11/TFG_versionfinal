@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
           else if(Number(userCookie.rol) == 2) {
             this.router.navigate(['fpdual']);
           }
-          else if(Number(userCookie.rol) == 4 || Number(userCookie.rol) == 3) {
+          else if(Number(userCookie.rol) == 4 || Number(userCookie.rol) == 3 || Number(userCookie.rol) == 5) {
             this.router.navigate(['modulo']);
           }
         },

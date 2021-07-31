@@ -87,6 +87,27 @@ exports.getModulosAlum = async (req, res, next) => {
   }
   }
 };
+exports.getModulosAlumUpdate = async (req, res, next) => {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else{
+  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
+  console.log(expirado)
+  if (expirado) {
+    res.status(401).json({ "errors": "Sesión expirada" });
+  } else {
+    try {
+      console.log("DNI =>  " + req.params.dni)
+      const modulos = await Modulo.getModulosAlumUpdate(req.params.dni);
+
+      res.status(200).json({ modulos: modulos });
+    } catch (err) {
+      res.status(500).json({ error: err });
+    }
+  }
+  }
+};
 exports.deleteModulo = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });

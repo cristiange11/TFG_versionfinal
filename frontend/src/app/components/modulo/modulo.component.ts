@@ -51,7 +51,7 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     else{
       this.user =(JSON.parse(this.cookieService.get('user')));
-    if(Number(this.user.rol)!=1 && Number(this.user.rol)!=2 && Number(this.user.rol) != 4 && Number(this.user.rol) != 3 ){
+    if(Number(this.user.rol)!=1 && Number(this.user.rol)!=2 && Number(this.user.rol) != 4 && Number(this.user.rol) != 3 && Number(this.user.rol) != 5 ){
       this.router.navigate(['home']);
     }
     
@@ -141,13 +141,38 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
          
         });
   }
-  
+  obtenerModulosAlum(dni){
+    this.serviceSubscribe = this.moduloService.getModulosAlum(dni).pipe(first())
+      .subscribe(
+        data => {
+          let modulos = data["modulos"];
+          modulos.forEach(moduloInfo => {      
+                
+            this.moduloList.push(moduloInfo);
+            console.log(moduloInfo)
+          });
+          
+            this.dataSource.data = this.moduloList;
+            
+           
+        },
+        error => {
+          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+            AppComponent.myapp.openDialogSesion();                             
+          }
+          else if (error.status == 406) {
+            const res = new Array();
+            res.push("Petición incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }
+         
+        });
+  }
   public doFilter = (value: { target: HTMLInputElement }) => {
     const filterValue =  value.target.value.trim().toLocaleLowerCase(); 
     this.dataSource.filter = filterValue;
   }
   getAll() {
-    console.log("Usuario => " + this.user.rol)
     if(Number(this.user.rol) == 1 || Number(this.user.rol) == 2){
       this.columnsToDisplay  = [...this.displayedColumns, 'actions', 'resultadoAprendizaje', 'encuesta', 'calificacion'];
     this.obtenerModulosAdmin(Number(sessionStorage.getItem('fpDual')));
@@ -158,7 +183,11 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
       }else if (Number(this.user.rol) == 3){
         this.columnsToDisplay  = [...this.displayedColumns,  'resultadoAprendizaje', 'encuesta'];
         this.obtenerModulosTut(this.user.dni);
+      }else if (Number(this.user.rol) == 5){
+        this.columnsToDisplay  = [...this.displayedColumns,  'resultadoAprendizaje'];
+        this.obtenerModulosAlum(this.user.dni);
       }
+      
   }
   
   add() {

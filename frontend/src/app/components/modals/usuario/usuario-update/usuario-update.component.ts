@@ -167,7 +167,7 @@ export class UsuarioUpdateComponent implements OnInit {
   
   ngOnInit(): void {
       
-      this.moduloService.getModulosAlum(this.data.dni).pipe(first())
+      this.moduloService.getModulosAlumUpdate(this.data.dni).pipe(first())
         .subscribe(
           data => {
             this.moduloList = new Map<number, string>();

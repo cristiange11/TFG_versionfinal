@@ -55,7 +55,7 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getAll();
     this.dataSource.filterPredicate = function(data, filter: string): boolean {
    
-      return data.cifEmpresa.toLowerCase().includes(filter) || data.nombre.toLowerCase().includes(filter) || data.direccion.toLowerCase().includes(filter) || data.telefono.toLowerCase().includes(filter) || data.correo.toLowerCase().includes(filter) || data.url.toLowerCase().includes(filter) || data.plazas.toLowerCase().includes(filter) || data.dineroBeca.toLowerCase().includes(filter);
+      return data.cifEmpresa.toLowerCase().includes(filter) || data.nombre.toLowerCase().includes(filter) || data.direccion.toLowerCase().includes(filter) || data.telefono.toLowerCase().includes(filter) || data.correo.toLowerCase().includes(filter) || data.url.toLowerCase().includes(filter) || data.plazas.toString().includes(filter) || data.dineroBeca.toLowerCase().includes(filter);
     };
   }
   getFps(empresaInfo){
@@ -127,6 +127,7 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   public doFilter = (value: { target: HTMLInputElement }) => {
     const filterValue =  value.target.value.trim().toLocaleLowerCase(); 
+    
     this.dataSource.filter = filterValue;
   }
   add() {

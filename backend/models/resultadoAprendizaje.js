@@ -38,11 +38,11 @@ module.exports = class ResultadoAprendizaje {
             await connection.beginTransaction();
             let query = `INSERT INTO resultado_aprendizaje(codigoModulo, titulo, descripcion) VALUES ('${resultadoAprendizaje.codigoModulo}','${resultadoAprendizaje.titulo}','${resultadoAprendizaje.descripcion}' ) `;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha creado el resultado aprendizaje con id ${resultadoAprendizaje.id} ','${user}',sysdate(), 'resultado aprendizaje')`);            
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha creado el resultado aprendizaje  ','${user}',sysdate(), 'resultado aprendizaje')`);            
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_RESULTADOAPRENDIZAJE','No se ha añadido el resultado aprendizaje con id ${resultadoAprendizaje.id}','${user}',sysdate(), 'resultado aprendizaje')`);            
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_RESULTADOAPRENDIZAJE','No se ha añadido el resultado aprendizaje con ','${user}',sysdate(), 'resultado aprendizaje')`);            
             console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {

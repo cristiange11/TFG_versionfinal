@@ -28,7 +28,12 @@ module.exports = class Modulo {
             `SELECT M.* FROM modulo M, tutor_modulo TM, tutor_empresa T WHERE T.dni = TM.dni AND TM.codigoModulo = M.codigo AND T.dni = "${dni}"`);
         return rows;
     }
-    static async getModulosAlum(dni) { 
+    static async getModulosAlum(dni) {        
+        const [rows, fields] = await promisePool.query(
+            `SELECT M.* FROM modulo as M, alumno_modulo as AM, alumno as A WHERE A.dni = AM.dni AND AM.codigoModulo = M.codigo AND A.dni = "${dni}"`);
+        return rows;
+    }
+    static async getModulosAlumUpdate(dni) { 
         console.log(`SELECT U.*, M.nombre as nombreModulo, A.numeroExpediente FROM alumno as A, usuario as U, modulo as M,calificacion as C where U.rol=5 AND U.dni='${dni}' AND A.dni = U.dni AND (not EXISTS(SELECT * from calificacion as E where E.codigoModulo = M.codigo ) OR (C.dni = U.dni AND C.nota<5))`)
         const [rows, fields] = await promisePool.query(`SELECT U.*, M.nombre as nombreModulo, M.codigo as codigoModulo, A.numeroExpediente FROM alumno as A, usuario as U, modulo as M,calificacion as C where U.rol=5 AND U.dni='${dni}' AND A.dni = U.dni AND (not EXISTS(SELECT * from calificacion as E where E.codigoModulo = M.codigo ) OR (C.dni = U.dni AND C.nota<5))`);
         return rows;
@@ -81,11 +86,11 @@ module.exports = class Modulo {
             await connection.beginTransaction();
             let query = `INSERT INTO modulo(nombre, descripcion, curso, fpDual) VALUES ('${modulo.nombre}','${modulo.descripcion}','${modulo.curso}', ${modulo.fpDual}) `;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha creado el modulo con id ${modulo.codigo} ','${user}',sysdate(), 'modulo')`);            
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha creado el modulo con nombre ${modulo.nombre} ','${user}',sysdate(), 'modulo')`);            
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_MODULO','No se ha añadido modulo con id ${modulo.codigo}','${user}',sysdate(), 'modulo')`);            
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_MODULO','No se ha añadido modulo con el nombre ${modulo.nombre}','${user}',sysdate(), 'modulo')`);            
             console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {

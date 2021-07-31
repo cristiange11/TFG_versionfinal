@@ -48,11 +48,11 @@ module.exports = class ResultadoAprendizaje {
             await connection.beginTransaction();
             let query = `INSERT INTO encuesta(codigoModulo, titulo, descripcion, dniAlumno, dniTutorEmpresa) VALUES (${encuesta.codigoModulo},'${encuesta.titulo}','${encuesta.descripcion}', '${encuesta.dniAlumno}' , '${encuesta.dniTutorEmpresa}' ) `;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha creado la encuesta con id ${encuesta.nombre} ','${user}',sysdate(), 'encuesta')`);            
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha creado la encuesta con título ${encuesta.titulo} ','${user}',sysdate(), 'encuesta')`);            
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_ENCUESTA','No se ha añadido la encuesta con id ${encuesta.id}','${user}',sysdate(), 'encuesta')`);            
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_ENCUESTA','No se ha añadido la encuesta con título ${encuesta.titulo}','${user}',sysdate(), 'encuesta')`);            
             console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {

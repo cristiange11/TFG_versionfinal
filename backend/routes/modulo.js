@@ -12,6 +12,8 @@ router.get('/profesor/:dni', moduloController.getModulosProf);
 
 router.get('/alumno/:dni', moduloController.getModulosAlum);
 
+router.get('/alumno/modulo/:dni', moduloController.getModulosAlumUpdate);
+
 router.get('/tutor/:dni', moduloController.getModulosTut);
 
 router.delete('/:codigo', moduloController.deleteModulo);
