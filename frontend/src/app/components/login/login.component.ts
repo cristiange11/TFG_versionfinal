@@ -40,7 +40,9 @@ export class LoginComponent implements OnInit {
     );
     return res;
   }
-
+  getNewPassword(){
+    this.router.navigate(['reset']);
+  }
   login() {
     this.authService.login(this.loginForm.value.dni, this.loginForm.value.password).pipe(first())
       .subscribe(

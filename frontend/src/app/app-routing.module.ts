@@ -15,6 +15,7 @@ import { ResultadoAprendizajeComponent } from './components/resultado-aprendizaj
 import { EncuestaComponent } from './components/encuesta/encuesta.component';
 import { LogComponent } from './components/log/log.component';
 import { CalificacionComponent } from './components/calificacion/calificacion.component';
+import { ResetContrasenaComponent } from './components/reset-contrasena/reset-contrasena.component';
 const routes: Routes = [
   {path: "", component: HomeComponent},
   {path: "navigation", component: NavigationComponent},
@@ -30,6 +31,7 @@ const routes: Routes = [
   {path: "encuesta", component: EncuestaComponent},
   {path: "log", component: LogComponent},
   {path: "calificacion", component: CalificacionComponent},
+  {path: "reset", component: ResetContrasenaComponent},
   {path: "**", redirectTo: ""}
 ];
 

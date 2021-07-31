@@ -88,6 +88,7 @@ import { UsuarioDeleteConfirmationComponent } from './components/modals/usuario/
 import { CalificacionComponent } from './components/calificacion/calificacion.component';
 import { CalificacionCreateComponent } from './components/modals/calificacion/calificacion-create/calificacion-create.component';
 import { CalificacionUpdateComponent } from './components/modals/calificacion/calificacion-update/calificacion-update.component';
+import { ResetContrasenaComponent } from './components/reset-contrasena/reset-contrasena.component';
 
 @NgModule({
   imports: [
@@ -188,6 +189,7 @@ import { CalificacionUpdateComponent } from './components/modals/calificacion/ca
     CalificacionComponent,
     CalificacionCreateComponent,
     CalificacionUpdateComponent,
+    ResetContrasenaComponent,
     
    
     
