@@ -43,6 +43,12 @@
     .boton-envio span{
       width:100%;
     }
+    .parent {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
     h1{
        font-size: 1.7rem;
        margin-bottom: 4%;
@@ -57,7 +63,9 @@
         h1{
             font-size: 3rem;
         }
-       
+        h2{
+            font-size: 1.3rem;
+        }
     }  
    
     

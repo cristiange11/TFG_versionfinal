@@ -1,16 +1,77 @@
+import { AuthService } from 'src/app/services/auth.service';
 import { Component, OnInit } from '@angular/core';
-
+import { FormControl, Validators, ValidatorFn, AbstractControl, FormGroup } from '@angular/forms';
+import { NavigationComponent } from '../navigation/navigation.component';
+import { first } from 'rxjs/operators';
+import { AppComponent } from 'src/app/app.component';
+import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-reset-contrasena',
   templateUrl: './reset-contrasena.component.html',
   styleUrls: ['./reset-contrasena.component.css']
 })
 export class ResetContrasenaComponent implements OnInit {
-
-  constructor() { }
+  formInstance: FormGroup;
+  hide = true;
+  hide2 = true;
+  passwordFormControl = new FormControl("", [Validators.required, Validators.pattern("^((?=\\S*?[A-Z])(?=\\S*?[a-z])(?=\\S*?[0-9]).{8,255})\\S$")]);
+  confirmPasswordFormControl = new FormControl("", [Validators.required, this.checkConfirmPassword()]);
+  constructor(public route:ActivatedRoute, public cookieService: CookieService, public authService:AuthService, public router: Router, public nagivationComponent: NavigationComponent) {
+    this.formInstance = new FormGroup({
+      password: this.passwordFormControl,
+      confirmPassword: this.confirmPasswordFormControl
+    })
+   }
 
   ngOnInit(): void {
-    console.log("entro")
+    this.route.queryParams
+    .subscribe(params => {
+      this.cookieService.set('token',params['token']); 
+      this.cookieService.set('correo',params['user']); 
+    }
+  );
+}
+  
+  checkConfirmPassword(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null =>
+    (control.value?.toString() === this.passwordValue.toString()
+      ? null : { noMatch: true })
   }
 
+  get passwordValue() {
+    return this.passwordFormControl.value;
+  }
+  recoveryPassword(){
+    this.authService.updatePassword(this.formInstance.value).pipe(first())
+      .subscribe(
+        data => {
+          AppComponent.myapp.openDialogUpdatePassword();
+        },
+        error => {
+          console.log(error)
+          if (error.status == 401 && error.error.errors == "Sesión expirada") {
+            const res = new Array();
+            res.push("El enlace ha caducado.");
+            AppComponent.myapp.openDialog(res);
+          } else if (error.status == 406) {
+            const res = new Array();
+            res.push("Petición incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }
+          else if (error.status == 409) {
+            error.error.errors.forEach(errorInfo => {
+              const formControl = this.formInstance.get(errorInfo.param);
+              if (formControl) {
+                formControl.setErrors({
+                  serverError: errorInfo.message
+                });
+
+              }
+            });
+          }
+        });
+  }
+  
 }

@@ -22,6 +22,7 @@
     "mysql2": "^2.2.5",
     "node-datetime": "^2.1.2",
     "node-openssl-cert": "0.0.59",
+    "nodemailer": "^6.6.3",
     "openssl-nodejs": "^1.0.5"
   },
   "devDependencies": {

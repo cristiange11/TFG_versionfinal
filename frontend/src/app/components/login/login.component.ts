@@ -40,9 +40,7 @@ export class LoginComponent implements OnInit {
     );
     return res;
   }
-  getNewPassword(){
-    this.router.navigate(['reset']);
-  }
+  
   login() {
     this.authService.login(this.loginForm.value.dni, this.loginForm.value.password).pipe(first())
       .subscribe(
@@ -56,7 +54,7 @@ export class LoginComponent implements OnInit {
 
           this.cookieService.set('user', JSON.stringify(user));
           var userCookie = (JSON.parse(this.cookieService.get('user')));
-          
+          this.cookieService.delete('correo');
           if (Number(userCookie.rol) == 1) {
             this.router.navigate(['adminpage']);
           }

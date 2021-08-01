@@ -1,3 +1,4 @@
+import { RecoveryComponent } from './components/recovery/recovery.component';
 import { NgModule } from '@angular/core';
 
 import { RouterModule, Routes } from '@angular/router';
@@ -32,6 +33,7 @@ const routes: Routes = [
   {path: "log", component: LogComponent},
   {path: "calificacion", component: CalificacionComponent},
   {path: "reset", component: ResetContrasenaComponent},
+  {path: "recovery", component: RecoveryComponent},
   {path: "**", redirectTo: ""}
 ];
 

@@ -87,4 +87,12 @@ export class AuthService {
 
     return this.http.delete<JSON>(`${this.url}/usuario/${dni}`,  httpOptions);
   }
+  recoveryPassword(correo: string): Observable<JSON> {
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({  "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
+    return this.http.post<JSON>(`${this.url}/recovery`, correo, httpOptions);   
+  }
+  updatePassword(password : string): Observable<JSON> {
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token') , "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
+    return this.http.put<JSON>(`${this.url}/updatePassword`,  password, httpOptions);   
+  }
 }

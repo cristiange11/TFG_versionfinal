@@ -2,10 +2,10 @@
 <form [formGroup]="loginForm" (ngSubmit)="login()" novalidate class="custom-form" >
     <h1 align="center">Iniciar sesión</h1>
     <div class ="row">
-    <div class ="col-md-11"><a (click) = "getNewPassword()">¿Olvidaste la contrase&ntilde;a?</a></div>
+    <div class ="col-md-11"><a routerLink ="/recovery">¿Olvidaste la contrase&ntilde;a?</a></div>
   </div>
     <div class ="row">
-    <mat-form-field >W
+    <mat-form-field >
       <input matInput type="text" formControlName="dni" placeholder="DNI" class="tamanio">
       <mat-error *ngIf="this.loginForm.get('dni').errors?.required">{{ getErrorMessage("dni") }}</mat-error>
       <mat-error *ngIf="this.loginForm.get('dni').errors?.pattern">{{ getErrorMessage("dni") }}</mat-error>

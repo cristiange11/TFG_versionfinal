@@ -5,6 +5,7 @@ import { ModalComponent } from './components/modals/modal/modal.component';
 import { SesionComponent } from './components/modals/sesion/sesion.component';
 import titles from './files/titles.json';
 import { first } from 'rxjs/operators';
+import { PasswordComponent } from './components/modals/password/password.component';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -30,6 +31,19 @@ export class AppComponent {
       width: '300px',
       disableClose : true
       
+    });
+  }
+  openDialogUpdatePassword(): void{
+    this.dialog.open(PasswordComponent, {
+      width: '300px',
+      disableClose : true
+      
+    });
+  }
+  opencorreoDialogSesion(texto : string): void{
+    this.dialog.open(ModalComponent, {
+      width: '500px',
+      data: { texto: texto }
     });
   }
   openDialogEncuesta(id): void{

@@ -167,7 +167,7 @@ export class FormUserComponent implements OnInit {
             error => {
 
               if (error.status == 401 && error.error.errors == "Sesión expirada") {
-                this.nagivationComponent.closeSession();
+                AppComponent.myapp.openDialogSesion(); 
               } else if (error.status == 406) {
                 const res = new Array();
                 res.push("Petición incorrecta.");

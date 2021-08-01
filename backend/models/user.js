@@ -25,7 +25,9 @@ module.exports = class User {
         return await bcrypt.compare(password, password2);
     }
     
-
+    static async getUser(correo) {        
+        return await promisePool.query(`SELECT * FROM usuario where correo ='${correo}'`);
+    }
   
     static async findMovil(movil,dni) {
         return await promisePool.query(
@@ -35,6 +37,30 @@ module.exports = class User {
         
         return await promisePool.query(
             `SELECT * FROM usuario where correo ='${correo}' AND dni !='${dni}'`);
+    }
+    static async updatePassword(correo, password) {
+        this.getUser(correo).then(async function (resultado){
+            var cadena = JSON.stringify(resultado[0])
+            var resJSON = JSON.parse(cadena)
+            var dni =resJSON[0]['dni'];
+            const connection = await promisePool.getConnection();
+            
+        try {
+            await connection.beginTransaction();
+            let query = `UPDATE usuario SET password = '${password}' WHERE correo='${correo}'`;
+            await connection.query(query)
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'El usuario con DNI ${dni} ha actualizado su contraseña ','${dni}',sysdate(), 'user')`);            
+            await connection.commit();
+        } catch (err) {
+            await connection.query("ROLLBACK");
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_USER','El usuario con DNI ${resultado.dni} no ha actualizado su contraseña','${resultado.dni}',sysdate(), 'user')`);            
+            console.log('ROLLBACK at querySignUp', err);
+            throw err;
+        } finally {
+            await connection.release();
+        }
+        })
+        
     }
     static async save(user,userLogado) {
 

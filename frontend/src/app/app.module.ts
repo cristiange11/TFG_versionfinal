@@ -89,6 +89,8 @@ import { CalificacionComponent } from './components/calificacion/calificacion.co
 import { CalificacionCreateComponent } from './components/modals/calificacion/calificacion-create/calificacion-create.component';
 import { CalificacionUpdateComponent } from './components/modals/calificacion/calificacion-update/calificacion-update.component';
 import { ResetContrasenaComponent } from './components/reset-contrasena/reset-contrasena.component';
+import { RecoveryComponent } from './components/recovery/recovery.component';
+import { PasswordComponent } from './components/modals/password/password.component';
 
 @NgModule({
   imports: [
@@ -190,6 +192,8 @@ import { ResetContrasenaComponent } from './components/reset-contrasena/reset-co
     CalificacionCreateComponent,
     CalificacionUpdateComponent,
     ResetContrasenaComponent,
+    RecoveryComponent,
+    PasswordComponent,
     
    
     

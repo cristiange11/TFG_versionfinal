@@ -128,5 +128,32 @@ router.put(
   ],
   authController.updateUsuario
 );
-
+router.post(
+  '/recovery',
+  [
+    body('correo')
+      .isEmail().withMessage("Formato correo incorrecto")
+      .custom(async (correo) => {
+        await User.getUser(correo).then(function (res){
+          var cadena = JSON.stringify(res[0]);
+          var cadenaJSON = JSON.parse(cadena)
+          if(cadenaJSON.length == 0 ){
+            return Promise.reject('Correo introducido no existe');
+          }
+        })
+        
+      })
+      .normalizeEmail(),
+    
+  ],
+  authController.RecoveryPassword
+);
+router.put(
+  '/updatePassword',
+  [
+    
+    body('password').trim().isLength({ min: 6 }).withMessage("Contraseña con una longitud menor a 6"),
+  ],
+  authController.updatePassword
+);
 module.exports = router;
