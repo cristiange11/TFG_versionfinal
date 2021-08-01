@@ -316,12 +316,7 @@ exports.RecoveryPassword = async (req, res, next) => {
       if (error) {
         res.status(400).json({ error: "Algo ha ido mal" });
       } else {
-        /*
-        emailMessage = "Message sent: " + info.response;
-        console.log('Email enviado: ' + info.response);
-        const resJSON = { "result": { "user": correo, "token": token } }
-          res.status(200).json(resJSON);
-        */
+        
           res.status(200).json({"message" : "success"});
       }
       
