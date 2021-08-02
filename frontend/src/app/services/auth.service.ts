@@ -63,7 +63,6 @@ export class AuthService {
       codigoCentro: userJson.codigoCentro == '' ? null : userJson.codigoCentro,
       actualPassword : editForm.actualPassword != '' ? editForm.actualPassword : null,
     };
-    console.log("User => " + user.dni)
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
 
     return this.http.put<JSON>(`${this.url}/update`, user,httpOptions);

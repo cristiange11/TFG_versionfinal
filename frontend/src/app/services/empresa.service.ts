@@ -1,12 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Router } from "@angular/router";
-
-import { Observable, BehaviorSubject } from "rxjs";
-import { first, catchError, tap, map } from "rxjs/operators";
-
-import { Empresa } from "../models/Empresa";
-import { ErrorHandlerService } from "./error-handler.service";
+import { Observable } from "rxjs";
 import { CookieService } from "ngx-cookie-service";
 @Injectable({
   providedIn: 'root'
@@ -14,7 +9,7 @@ import { CookieService } from "ngx-cookie-service";
 export class EmpresaService {
   private url = "http://localhost:3000/empresa";
 
-  constructor(private cookieService: CookieService, private http: HttpClient, private errorHandlerService: ErrorHandlerService, private router: Router ) { }
+  constructor(private cookieService: CookieService, private http: HttpClient,  private router: Router ) { }
   getEmpresas(): Observable<JSON[] >{
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.get<JSON []>(this.url, httpOptions);

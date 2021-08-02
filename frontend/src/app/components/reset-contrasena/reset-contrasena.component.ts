@@ -19,6 +19,7 @@ export class ResetContrasenaComponent implements OnInit {
   passwordFormControl = new FormControl("", [Validators.required, Validators.pattern("^((?=\\S*?[A-Z])(?=\\S*?[a-z])(?=\\S*?[0-9]).{8,255})\\S$")]);
   confirmPasswordFormControl = new FormControl("", [Validators.required, this.checkConfirmPassword()]);
   constructor(public route:ActivatedRoute, public cookieService: CookieService, public authService:AuthService, public router: Router, public nagivationComponent: NavigationComponent) {
+    document.body.style.background = "linear-gradient(to right, #f1e70a, #00ffe7)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     this.formInstance = new FormGroup({
       password: this.passwordFormControl,
       confirmPassword: this.confirmPasswordFormControl
