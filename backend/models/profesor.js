@@ -15,7 +15,7 @@ module.exports = class Profesor extends User {
         return rows;
     }
     static async getProfesor(dni) {
-        console.log( `SELECT * FROM profesor WHERE dni='${dni}'`)
+        console.log(`SELECT * FROM profesor WHERE dni='${dni}'`)
         const [rows, fields] = await promisePool.query(
             `SELECT U.*, P.departamento, M.nombre as nombreModulo, M.codigo as moduloCodigo FROM usuario U, profesor P, profesor_modulo PM, modulo M WHERE U.dni = P.dni AND P.dni=PM.dni AND M.codigo = PM.codigoModulo AND U.dni='${dni}'`
         );

@@ -77,6 +77,7 @@ export class EncuestaCreateComponent implements OnInit {
     .subscribe(
       data => {
           let tutores = JSON.parse(data["tutores"])
+          console.log("TUTORES => " + tutores);
           tutores.forEach(tutorInfo => {
             var nombreApellidos = tutorInfo.nombre + " " + tutorInfo.apellidos;
             this.tutorList.set(tutorInfo.dni , nombreApellidos );

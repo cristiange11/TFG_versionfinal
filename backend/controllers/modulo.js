@@ -7,219 +7,219 @@ exports.getModulos = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
-  else{
-  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-  console.log(expirado)
-  if (expirado) {
-    res.status(401).json({ "errors": "Sesión expirada" });
-  } else {
-    try {
-      console.log("entro a obtener los modulos")
-      const modulos = await Modulo.getModulos(req.params.fpDual);
+  else {
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
+    console.log(expirado)
+    if (expirado) {
+      res.status(401).json({ "errors": "Sesión expirada" });
+    } else {
+      try {
+        console.log("entro a obtener los modulos")
+        const modulos = await Modulo.getModulos(req.params.fpDual);
 
-      res.status(200).json({ modulos: modulos });
-    } catch (err) {
-      res.status(500).json({ error: err });
+        res.status(200).json({ modulos: modulos });
+      } catch (err) {
+        res.status(500).json({ error: err });
+      }
     }
-  }
   }
 };
 exports.getModulosProf = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
-  else{
-  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-  console.log(expirado)
-  if (expirado) {
-    res.status(401).json({ "errors": "Sesión expirada" });
-  } else {
-    try {
-      console.log("DNI =>  " + req.params.dni)
-      const modulos = await Modulo.getModulosProf(req.params.dni);
+  else {
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
+    console.log(expirado)
+    if (expirado) {
+      res.status(401).json({ "errors": "Sesión expirada" });
+    } else {
+      try {
+        console.log("DNI =>  " + req.params.dni)
+        const modulos = await Modulo.getModulosProf(req.params.dni);
 
-      res.status(200).json({ modulos: modulos });
-    } catch (err) {
-      res.status(500).json({ error: err });
+        res.status(200).json({ modulos: modulos });
+      } catch (err) {
+        res.status(500).json({ error: err });
+      }
     }
-  }
   }
 };
 exports.getModulosTut = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
-  else{
-  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-  console.log(expirado)
-  if (expirado) {
-    res.status(401).json({ "errors": "Sesión expirada" });
-  } else {
-    try {
-      console.log("DNI =>  " + req.params.dni)
-      const modulos = await Modulo.getModulosTut(req.params.dni);
+  else {
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
+    console.log(expirado)
+    if (expirado) {
+      res.status(401).json({ "errors": "Sesión expirada" });
+    } else {
+      try {
+        console.log("DNI =>  " + req.params.dni)
+        const modulos = await Modulo.getModulosTut(req.params.dni);
 
-      res.status(200).json({ modulos: modulos });
-    } catch (err) {
-      res.status(500).json({ error: err });
+        res.status(200).json({ modulos: modulos });
+      } catch (err) {
+        res.status(500).json({ error: err });
+      }
     }
-  }
   }
 };
 exports.getModulosAlum = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
-  else{
-  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-  console.log(expirado)
-  if (expirado) {
-    res.status(401).json({ "errors": "Sesión expirada" });
-  } else {
-    try {
-      console.log("DNI =>  " + req.params.dni)
-      const modulos = await Modulo.getModulosAlum(req.params.dni);
+  else {
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
+    console.log(expirado)
+    if (expirado) {
+      res.status(401).json({ "errors": "Sesión expirada" });
+    } else {
+      try {
+        console.log("DNI =>  " + req.params.dni)
+        const modulos = await Modulo.getModulosAlum(req.params.dni);
 
-      res.status(200).json({ modulos: modulos });
-    } catch (err) {
-      res.status(500).json({ error: err });
+        res.status(200).json({ modulos: modulos });
+      } catch (err) {
+        res.status(500).json({ error: err });
+      }
     }
-  }
   }
 };
 exports.getModulosAlumUpdate = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
-  else{
-  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-  console.log(expirado)
-  if (expirado) {
-    res.status(401).json({ "errors": "Sesión expirada" });
-  } else {
-    try {
-      console.log("DNI =>  " + req.params.dni)
-      const modulos = await Modulo.getModulosAlumUpdate(req.params.dni);
+  else {
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
+    console.log(expirado)
+    if (expirado) {
+      res.status(401).json({ "errors": "Sesión expirada" });
+    } else {
+      try {
+        console.log("DNI =>  " + req.params.dni)
+        const modulos = await Modulo.getModulosAlumUpdate(req.params.dni);
 
-      res.status(200).json({ modulos: modulos });
-    } catch (err) {
-      res.status(500).json({ error: err });
+        res.status(200).json({ modulos: modulos });
+      } catch (err) {
+        res.status(500).json({ error: err });
+      }
     }
-  }
   }
 };
 exports.deleteModulo = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
-  else{
-  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
-  if (expirado) {
-    res.status(401).json({ "errors": "Sesión expirada" });
-  } else {
-    try {
-     
-      const user = jwt_decode(req.headers['authorization']).sub;
-      await Modulo.deleteModulo(req.params.codigo, user);
+  else {
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
+    if (expirado) {
+      res.status(401).json({ "errors": "Sesión expirada" });
+    } else {
+      try {
 
-      res.status(201).json({ message: "success" });
+        const user = jwt_decode(req.headers['authorization']).sub;
+        await Modulo.deleteModulo(req.params.codigo, user);
 
-    } catch (err) {
-      res.status(409).json({ error: err });
+        res.status(201).json({ message: "success" });
+
+      } catch (err) {
+        res.status(409).json({ error: err });
+      }
     }
   }
-}
 };
 exports.updateModulo = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
-  else{
-  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
-  if (expirado) {
-    res.status(401).json({ "errors": "Sesión expirada" });
-  } else {
-    const errors = validationResult(req);
-    const resu = errors.array();
-    const resJSON = [{
-      param: String,
-      message: String,
-    }]
-    resu.forEach(element => {
-      resJSON.push({
-        param: element.param,
-        message: element.msg
-      })
-    });
+  else {
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
+    if (expirado) {
+      res.status(401).json({ "errors": "Sesión expirada" });
+    } else {
+      const errors = validationResult(req);
+      const resu = errors.array();
+      const resJSON = [{
+        param: String,
+        message: String,
+      }]
+      resu.forEach(element => {
+        resJSON.push({
+          param: element.param,
+          message: element.msg
+        })
+      });
 
-    if (!errors.isEmpty()) {
-      res.status(409).json({ "errors": resJSON });
-    }
-    else {
-      try {
-        const user = jwt_decode(req.headers['authorization']).sub;
-        console.log(req.body)
-        Modulo.updateModulo(req.body,user).then(function (result) {
-          console.log("Promise Resolved");
+      if (!errors.isEmpty()) {
+        res.status(409).json({ "errors": resJSON });
+      }
+      else {
+        try {
+          const user = jwt_decode(req.headers['authorization']).sub;
+          console.log(req.body)
+          Modulo.updateModulo(req.body, user).then(function (result) {
+            console.log("Promise Resolved");
 
-          res.status(201).json({ message: "sucess" });
-        }).catch(function () {
-          res.status(401).json({  "errors": "no se ha podido actualizar el módulo"  });
+            res.status(201).json({ message: "sucess" });
+          }).catch(function () {
+            res.status(401).json({ "errors": "no se ha podido actualizar el módulo" });
 
-        });
+          });
 
 
-      } catch (err) {
+        } catch (err) {
 
-        res.status(500).json({ error: err });
+          res.status(500).json({ error: err });
+        }
       }
     }
   }
-}
 }
 exports.createModulo = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
-  else{
-  var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
-  if (expirado) {
-    res.status(401).json({ "errors": "Sesión expirada" });
-  } else {
-    const errors = validationResult(req);
-    const resu = errors.array();
-    const resJSON = [{
-      param: String,
-      message: String,
-    }]
-    resu.forEach(element => {
-      resJSON.push({
-        param: element.param,
-        message: element.msg
-      })
-    });
+  else {
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
+    if (expirado) {
+      res.status(401).json({ "errors": "Sesión expirada" });
+    } else {
+      const errors = validationResult(req);
+      const resu = errors.array();
+      const resJSON = [{
+        param: String,
+        message: String,
+      }]
+      resu.forEach(element => {
+        resJSON.push({
+          param: element.param,
+          message: element.msg
+        })
+      });
 
-    if (!errors.isEmpty()) {
-      res.status(409).json({ "errors": resJSON });
-    }
-    else {
-      try {
-        const user = jwt_decode(req.headers['authorization']).sub;
-        Modulo.createModulo(req.body, user).then(function (result) {
-          console.log("Promise Resolved");
+      if (!errors.isEmpty()) {
+        res.status(409).json({ "errors": resJSON });
+      }
+      else {
+        try {
+          const user = jwt_decode(req.headers['authorization']).sub;
+          Modulo.createModulo(req.body, user).then(function (result) {
+            console.log("Promise Resolved");
 
-          res.status(201).json({ message: "success" });
-        }).catch(function () {
-          res.status(401).json({ message: "no se ha podido crear el centro:" + err });
+            res.status(201).json({ message: "success" });
+          }).catch(function () {
+            res.status(401).json({ message: "no se ha podido crear el centro:" + err });
 
-        });
+          });
 
 
-      } catch (err) {
+        } catch (err) {
 
-        res.status(500).json({ error: err });
+          res.status(500).json({ error: err });
+        }
       }
     }
   }
-}
 };

@@ -36,7 +36,7 @@ exports.getAlumnosByModulo = async (req, res, next) => {
         } else {
             try {
                 const alumnos = await Alumno.getAlumnosByModulo(req.params.codigoModulo);
-                console.log("Alumnos =>  " +JSON.stringify(alumnos))
+                console.log("Alumnos =>  " + JSON.stringify(alumnos))
                 res.status(200).json({ alumnos: JSON.stringify(alumnos) });
 
             } catch (err) {
@@ -57,7 +57,7 @@ exports.getAlumnosByModuloEncuesta = async (req, res, next) => {
         } else {
             try {
                 const alumnos = await Alumno.getAlumnosByModuloEncuesta(req.params.codigoModulo);
-                
+
                 res.status(200).json({ alumnos: JSON.stringify(alumnos) });
 
             } catch (err) {

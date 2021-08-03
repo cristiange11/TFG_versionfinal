@@ -89,7 +89,6 @@ export class UsuarioUpdateComponent implements OnInit {
       direccion: data.direccion, cp: data.cp, genero: data.genero, movil: data.movil, correo: data.correo,
       fechaNacimiento: this.datepipe.transform(data.fechaNacimiento, "YYYY-dd-MM"), rol: data.rolId, password: "", confirmPassword: "", codigoCentro: data.codigoCent, fpDual: data.fpId,
     })
-    console.log("ROL => " + data.rol)
     if (data.rol == "Alumno") {
       
       this.alumnoService.getAlumno(data.dni).pipe(first())
@@ -117,6 +116,7 @@ export class UsuarioUpdateComponent implements OnInit {
       this.profesorService.getProfesor(data.dni).pipe(first())
     .subscribe(
       data => {
+        
         var profesor =   JSON.parse(data['profesor']);
         Array.prototype.forEach.call(profesor, moduloInfo => {
           this.moduloUserList.set(moduloInfo.moduloCodigo, moduloInfo.nombreModulo);
@@ -147,7 +147,7 @@ export class UsuarioUpdateComponent implements OnInit {
         });
         this.modulo.setValue(Array.from( this.moduloUserList.keys() ))
         this.formGroupTutor.setValue(tutor[0].moduloEmpresa); 
-        console.log(tutor[0])
+        
         this.cifEmpresa = tutor[0].CIF;
       },
      
@@ -166,13 +166,12 @@ export class UsuarioUpdateComponent implements OnInit {
   }
   
   ngOnInit(): void {
-      
+      if(this.data.rol == "Alumno"){
       this.moduloService.getModulosAlumUpdate(this.data.dni).pipe(first())
         .subscribe(
           data => {
             this.moduloList = new Map<number, string>();
             let modulos = data["modulos"]
-            console.log("MODULOS => " + modulos)
             modulos.forEach(moduloInfo => {
               
               var modulo = moduloInfo 
@@ -191,7 +190,32 @@ export class UsuarioUpdateComponent implements OnInit {
               AppComponent.myapp.openDialog(res);
             }
           });
-    
+        }else if(this.data.rol == "Profesor" || this.data.rol == "Tutor_empresa"){
+          
+          this.moduloService.getModulos(this.data.fpId).pipe(first())
+        .subscribe(
+          data => {
+            this.moduloList = new Map<number, string>();
+            let modulos = data["modulos"]
+            modulos.forEach(moduloInfo => {
+              
+              var modulo = moduloInfo 
+  
+              this.moduloList.set(modulo.codigo, modulo.nombre);
+            });
+  
+          },
+          error => {
+            if (error.status == 401 && error.error.errors == "Sesión expirada") {
+              AppComponent.myapp.openDialogSesion();
+            }
+            else if (error.status == 406) {
+              const res = new Array();
+              res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
+          });
+        }
   }
 
   checkConfirmPassword(): ValidatorFn {
@@ -237,14 +261,14 @@ export class UsuarioUpdateComponent implements OnInit {
       dni: this.formInstance.value.dni
     };
     if (this.numero == "Administrador" || this.numero == 'Administrador de Centro') {
-      console.log(this.formInstance.value)
+     
       this.authService.updateUsuario(this.formInstance.value, userJson).pipe(first())
         .subscribe(
           data => {
             window.location.reload();
           },
           error => {
-            console.log(error)
+            
             if (error.status == 409) {
 
               error.error.errors.forEach(errorInfo => {
@@ -275,7 +299,7 @@ export class UsuarioUpdateComponent implements OnInit {
             window.location.reload();
           },
           error => {
-            console.log(error)
+            
             if (error.status == 409) {
               error.error.errors.forEach(errorInfo => {
                 const formControl = this.formInstance.get(errorInfo.param);
@@ -314,7 +338,6 @@ export class UsuarioUpdateComponent implements OnInit {
             window.location.reload();
           },
           error => {
-            console.log(error)
             if (error.status == 409) {
 
               error.error.errors.forEach(errorInfo => {
@@ -355,7 +378,6 @@ export class UsuarioUpdateComponent implements OnInit {
             window.location.reload();
           },
           error => {
-            console.log(error)
             if (error.status == 401 && error.error.errors == "Sesión expirada") {
               AppComponent.myapp.openDialogSesion();
             }

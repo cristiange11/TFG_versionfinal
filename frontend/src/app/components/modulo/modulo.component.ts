@@ -24,12 +24,13 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
   myApp = AppComponent.myapp;
   user;
   moduloList: Array<Modulo> = [];
+  private selectedFile: File;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   public displayedColumns: string[] = ['nombre', 'descripcion', 'curso'];
   
   public columnsToDisplay: string[];
-
+  
   public columnsFilters = {};
 
   public dataSource: MatTableDataSource<Modulo>;
@@ -239,7 +240,10 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
   }
-
+  onFileSelect(event) {
+    this.selectedFile = event.target.files[0];
+    console.log(this.selectedFile.name);
+  }
   
   ngAfterViewInit(): void {
     

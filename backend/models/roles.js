@@ -7,14 +7,11 @@ module.exports = class FP_dual {
         this.nombreRol = nombreRol;
     }
     static async getRoles() {
-        const [rows, fields] = await promisePool.query(
-            `SELECT * FROM rol`);
+        const [rows, fields] = await promisePool.query(`SELECT * FROM rol`);
         return rows;
     }
     static async getRol(id) {
-        console.log(`SELECT * FROM rol WHERE id = ${id}`)
-        const [rows, fields] = await promisePool.query(
-            `SELECT * FROM rol WHERE id = ${id}`);
+        const [rows, fields] = await promisePool.query(`SELECT * FROM rol WHERE id = ${id}`);
         return rows;
     }
 
