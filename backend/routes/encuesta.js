@@ -5,6 +5,7 @@ const router = express.Router();
 const Encuesta = require('../models/encuesta');
 const User=require('../models/user');
 const Modulo=require('../models/modulo'); 
+const Resultado = require('../models/resultadoEncuesta');
 const encuestaController = require('../controllers/encuesta');
 
 router.get('/:codigoModulo', encuestaController.getEncuestas);
@@ -61,7 +62,12 @@ router.put(
     body('descripcion').trim().not().isEmpty().withMessage("Descripción vacía"),
     body('resultado').trim().not().isEmpty().withMessage("Resultado vacío")
     .custom(async (resultado) => {    
-      if (Number.isNaN(resultado) || (resultado < 0 || resultado >10) ) {
+      if(!isNaN(resultado)){
+        const user = await Resultado.getResultado(resultado);
+      if (user[0].length == 0) {
+        return Promise.reject('Error');
+      }
+      }else{
         return Promise.reject('Campo erróneo');
       }
     

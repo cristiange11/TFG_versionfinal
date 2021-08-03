@@ -15,13 +15,14 @@
         <mat-error *ngIf="formInstance.controls['descripcion']?.errors?.minlength">Cadena m&iacute;nima de 4 caracteres</mat-error>
         <mat-error *ngIf="this.formInstance.get('descripcion').errors?.serverError">{{ this.formInstance.get('descripcion').errors?.serverError }}</mat-error>
     </mat-form-field>  
-      <mat-form-field class="fullWidth" appearance="outline">
-        <mat-label>Resultado</mat-label>
-          <input matInput type="text" name="resultado" formControlName="resultado" placeholder="resultado" required />
-          <mat-error *ngIf="formInstance.controls['resultado']?.errors?.required">Descripci&oacute;n requerida</mat-error>
-          <mat-error *ngIf="formInstance.controls['resultado']?.errors?.min || formInstance.controls['resultado']?.errors?.max ">La nota tiene que estar entre 0 y 10</mat-error>
-          <mat-error *ngIf="this.formInstance.get('resultado').errors?.serverError">{{ this.formInstance.get('resultado').errors?.serverError }}</mat-error>
-      </mat-form-field> 
+    <mat-form-field class="fullWidth" appearance="outline">
+    <mat-label>Resultado</mat-label>
+    <mat-select matNativeControl required formControlName="resultado">
+      <mat-option *ngFor="let resultado of resultadoList | keyvalue" [value]="resultado.key" >{{ resultado.value }}</mat-option>
+    </mat-select>
+    <mat-error *ngIf="this.formInstance.get('resultado').errors?.required">Resultado requerido</mat-error>
+    <mat-error *ngIf="this.formInstance.get('resultado').errors?.serverError">{{ this.formInstance.get('resultado').errors?.serverError }}</mat-error>
+  </mat-form-field>
       
       <mat-form-field class="fullWidth" appearance="outline">
         <mat-label>Observaciones</mat-label>

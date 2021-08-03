@@ -1,3 +1,4 @@
+import { ResultadoEncuestaService } from './../../../../services/resultado-encuesta.service';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -13,9 +14,9 @@ import { EncuestaCreateComponent } from '../encuesta-create/encuesta-create.comp
   styleUrls: ['./encuesta-update.component.css']
 })
 export class EncuestaUpdateComponent implements OnInit {
-
+  resultadoList;
   formInstance: FormGroup;
-  constructor(public dialogRef: MatDialogRef< EncuestaCreateComponent>,
+  constructor(public resultadoService: ResultadoEncuestaService, public dialogRef: MatDialogRef< EncuestaCreateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Encuesta, public encuestaService: EncuestaService) { 
       this.formInstance = new FormGroup({
         id: new FormControl("", []),
@@ -23,7 +24,7 @@ export class EncuestaUpdateComponent implements OnInit {
         descripcion: new FormControl("", [Validators.required, Validators.minLength(4)]),
         codigoModulo : new FormControl("",[]),
         observaciones : new FormControl("",[]),
-        resultado : new FormControl("",[Validators.required, Validators.max(10), Validators.min(0)]),
+        resultado : new FormControl("",[Validators.required]),
         
       });
       this.formInstance.setValue({id: data.id,observaciones: data.observaciones , titulo : data.titulo, descripcion : data.descripcion , codigoModulo : Number(sessionStorage.getItem('codigoModulo')), resultado : data.resultado })
@@ -32,6 +33,29 @@ export class EncuestaUpdateComponent implements OnInit {
     
 
   ngOnInit(): void {
+    this.resultadoService.getResultados().pipe(first())
+      .subscribe(
+        data => {
+          this.resultadoList = new Map<number, string>();
+          let resultado = data["resultados"]
+          console.log(JSON.stringify(data))
+          resultado.forEach(resultadoInfo => {
+            
+            this.resultadoList.set(resultadoInfo.id, resultadoInfo.resultado);
+            
+          });
+          console.log(this.resultadoList)
+        },
+        error => {
+          if (error.status == 401 && error.error.errors == "Sesión expirada") {
+            AppComponent.myapp.openDialogSesion();
+          } else if (error.status == 406) {
+            const res = new Array();
+            res.push("Petición incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }
+        });
+  
   }
   save(){
     console.log(this.formInstance.value);

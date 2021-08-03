@@ -12,9 +12,8 @@ module.exports = class ResultadoAprendizaje {
     }
 
     static async getEncuestas(codigoModulo) {
-        console.log(`SELECT E.*, U.nombre, U.apellidos FROM encuesta E, usuario U where codigoModulo = ${codigoModulo} and E.dniAlumno= U.dni AND e.dniTutorEmpresa = U.dni`)
         const [rows, fields] = await promisePool.query(
-            `SELECT encuesta.*, A.nombre as nombreAlumno, A.apellidos as apellidoAlumno, T.nombre as nombreTutor, T.apellidos as apellidoTutor FROM encuesta left JOIN usuario as A on encuesta.dniAlumno= A.dni left JOIN usuario as T on encuesta.dniTutorEmpresa = T.dni where encuesta.codigoModulo= ${codigoModulo}`);
+            `SELECT encuesta.*, A.nombre as nombreAlumno, A.apellidos as apellidoAlumno, T.nombre as nombreTutor, T.apellidos as apellidoTutor, R.resultado as resultado FROM encuesta left JOIN usuario as A on encuesta.dniAlumno= A.dni left JOIN usuario as T on encuesta.dniTutorEmpresa = T.dni left join resultado_encuesta as R on (R.id = encuesta.resultado ) where encuesta.codigoModulo= ${codigoModulo}`);
         return rows;
     }
     static async getEncuesta(id) {

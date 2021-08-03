@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
-import { catchError, first } from 'rxjs/operators';
 import { Rol } from '../models/Rol';
 
 
@@ -13,7 +12,7 @@ import { Rol } from '../models/Rol';
 export class RolService {
   private url = "http://localhost:3000/roles";
  
-  constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { 
+  constructor(private cookieService: CookieService, private http: HttpClient) { 
   }
   getRoles(): Observable<Rol[] >{
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json","X-Frame-Options" : "deny"}),}
