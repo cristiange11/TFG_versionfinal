@@ -26,7 +26,7 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
   user;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  public displayedColumns: string[] = ['cifEmpresa', 'nombre', 'direccion', 'telefono', 'correo', 'url', 'dineroBeca' , 'plazas'];
+  public displayedColumns: string[] = ['cifEmpresa', 'nombre', 'direccion', 'telefono', 'correo', 'url', 'dineroBeca', 'plazas'];
   public columnsToDisplay: string[] = [...this.displayedColumns, 'actions'];
 
   public columnsFilters = {};
@@ -40,7 +40,7 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.nagivationComponent.obtenerItems();
-    
+
     if (!this.cookieService.get('user')) {
       this.router.navigate(['home']);
     }
@@ -53,12 +53,12 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
 
     }
     this.getAll();
-    this.dataSource.filterPredicate = function(data, filter: string): boolean {
-   
+    this.dataSource.filterPredicate = function (data, filter: string): boolean {
+
       return data.cifEmpresa.toLowerCase().includes(filter) || data.nombre.toLowerCase().includes(filter) || data.direccion.toLowerCase().includes(filter) || data.telefono.toLowerCase().includes(filter) || data.correo.toLowerCase().includes(filter) || data.url.toLowerCase().includes(filter) || data.plazas.toString().includes(filter) || data.dineroBeca.toLowerCase().includes(filter);
     };
   }
-  getFps(empresaInfo){
+  getFps(empresaInfo) {
     var empresa = {
       becas: empresaInfo.beca,
       cifEmpresa: empresaInfo.cifEmpresa,
@@ -126,8 +126,8 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   public doFilter = (value: { target: HTMLInputElement }) => {
-    const filterValue =  value.target.value.trim().toLocaleLowerCase(); 
-    
+    const filterValue = value.target.value.trim().toLocaleLowerCase();
+
     this.dataSource.filter = filterValue;
   }
   add() {

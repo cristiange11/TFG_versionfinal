@@ -57,9 +57,9 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
     }
-    this.dataSource.filterPredicate = function(data, filter: string): boolean {
-   
-      return data.nombre.toLowerCase().includes(filter) || data.provincia.toLowerCase().includes(filter) || data.direccion.toLowerCase().includes(filter) ||  data.telefono.toLowerCase().includes(filter) || data.correo.toLowerCase().includes(filter) || data.CP.toLowerCase().includes(filter);
+    this.dataSource.filterPredicate = function (data, filter: string): boolean {
+
+      return data.nombre.toLowerCase().includes(filter) || data.provincia.toLowerCase().includes(filter) || data.direccion.toLowerCase().includes(filter) || data.telefono.toLowerCase().includes(filter) || data.correo.toLowerCase().includes(filter) || data.CP.toLowerCase().includes(filter);
     };
 
   }
@@ -87,17 +87,17 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
             AppComponent.myapp.openDialog(res);
           }
 
-        
+
         });
   }
-  getFps(codigoCentro){
-    sessionStorage.setItem('codigoCentro', codigoCentro);   
+  getFps(codigoCentro) {
+    sessionStorage.setItem('codigoCentro', codigoCentro);
     this.router.navigate(['fpdual']);
   }
   public doFilter = (value: { target: HTMLInputElement }) => {
-    const filterValue =  value.target.value.trim().toLocaleLowerCase(); 
+    const filterValue = value.target.value.trim().toLocaleLowerCase();
     this.dataSource.filter = filterValue;
-    
+
   }
 
   add() {

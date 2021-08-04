@@ -21,110 +21,141 @@ import { NavigationComponent } from '../navigation/navigation.component';
   templateUrl: './encuesta.component.html',
   styleUrls: ['./encuesta.component.css']
 })
-export class EncuestaComponent implements OnInit , OnDestroy, AfterViewInit {
+export class EncuestaComponent implements OnInit, OnDestroy, AfterViewInit {
   myApp = AppComponent.myapp;
   encuestaList = [];
   user;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  
+
   public displayedColumns: string[] = ['titulo', 'descripcion', 'nombreApellidoTutor', 'nombreApellidoAlumno', 'resultado'];
-  public columnsToDisplay: string[] ;
+  public columnsToDisplay: string[];
 
   public columnsFilters = {};
 
   public dataSource: MatTableDataSource<Encuesta>;
   private serviceSubscribe: Subscription;
-  constructor( private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private encuestaService: EncuestaService, public dialog: MatDialog) {
+  constructor(private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private encuestaService: EncuestaService, public dialog: MatDialog) {
     this.dataSource = new MatTableDataSource<Encuesta>();
     document.body.style.background = "linear-gradient(to right, #3ab4a2, #1d69fd)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
-   }
+  }
 
   ngOnInit(): void {
     this.nagivationComponent.obtenerItems();
-    this.getAll();
-    if(!this.cookieService.get('user')){
+
+    if (!this.cookieService.get('user')) {
       this.router.navigate(['home']);
     }
-    else{
-      this.user =(JSON.parse(this.cookieService.get('user')));
-    if(Number(this.user.rol)!=1 && Number(this.user.rol) != 2 && Number(this.user.rol) !=4 && Number(this.user.rol) !=3 && Number(this.user.rol) !=5){
-      this.router.navigate(['home']);
+    else {
+      this.user = (JSON.parse(this.cookieService.get('user')));
+      if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2 && Number(this.user.rol) != 4 && Number(this.user.rol) != 3 && Number(this.user.rol) != 5) {
+        this.router.navigate(['home']);
+      }
+
     }
-    
-    }
-    if( Number(this.user.rol) ==3){
+    if (Number(this.user.rol) == 3) {
       this.columnsToDisplay = [...this.displayedColumns, 'actions'];
     }
-   
-    else{
-      if(Number(this.user.rol)==4){
-      this.columnsToDisplay = [...this.displayedColumns, 'observaciones'];
-      }else if(Number(this.user.rol)==1 || Number(this.user.rol) == 2){
+
+    else {
+      if (Number(this.user.rol) == 4) {
+        this.columnsToDisplay = [...this.displayedColumns, 'observaciones'];
+      } else if (Number(this.user.rol) == 1 || Number(this.user.rol) == 2) {
         this.columnsToDisplay = [...this.displayedColumns, 'actions', 'observaciones'];
       }
     }
-    this.dataSource.filterPredicate = function(data, filter: string): boolean {
-   
+    this.dataSource.filterPredicate = function (data, filter: string): boolean {
+
       return data.titulo.toLowerCase().includes(filter) || data.descripcion.toLowerCase().includes(filter) || data.resultado.toString().includes(filter) || data.nombreApellidoAlumno.toLowerCase().includes(filter) || data.nombreApellidoTutor.toLowerCase().includes(filter);
     };
+    this.getAll();
   }
   getAll() {
-    console.log(Number(sessionStorage.getItem('codigoModulo')))
-    this.serviceSubscribe = this.encuestaService.getEncuestas(Number(sessionStorage.getItem('codigoModulo'))).pipe(first())
-      .subscribe(
-        data => {
-          let encuestas = data["encuestas"];
-          console.log(encuestas)
-          
-          encuestas.forEach(encuestaInfo => {    
-            var encuesta = {
-              titulo : encuestaInfo.titulo,
-              descripcion : encuestaInfo.descripcion,
-              nombreApellidoTutor : encuestaInfo.nombreTutor + " " + encuestaInfo.apellidoTutor,
-              nombreApellidoAlumno : encuestaInfo.nombreAlumno + " " + encuestaInfo.apellidoAlumno,
-              resultado: encuestaInfo.resultado,
-              observaciones : encuestaInfo.observaciones,
-              id : encuestaInfo.id
+    if (Number(this.user.rol) != 3) {
+      this.serviceSubscribe = this.encuestaService.getEncuestas(Number(sessionStorage.getItem('codigoModulo'))).pipe(first())
+        .subscribe(
+          data => {
+            let encuestas = data["encuestas"];
+            console.log(encuestas)
+
+            encuestas.forEach(encuestaInfo => {
+              var encuesta = this.transformJSON(encuestaInfo);
+              this.encuestaList.push(encuesta);
+            });
+
+            this.dataSource.data = this.encuestaList;
+          },
+          error => {
+            if (error.status == 401 && error.error.errors == "Sesión expirada") {
+              AppComponent.myapp.openDialogSesion();
+            } else if (error.status == 406) {
+              const res = new Array();
+              res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
             }
-            this.encuestaList.push(encuesta);
+
           });
-         
-          this.dataSource.data = this.encuestaList;
-        },
-        error => {
-          if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            AppComponent.myapp.openDialogSesion();                             
-          } else if (error.status == 406) {
-            const res = new Array();
-            res.push("Petición incorrecta.");
-            AppComponent.myapp.openDialog(res);
-          }
-         
-        });
+    } else {
+      this.serviceSubscribe = this.encuestaService.getEncuestasByTutor(this.user.dni).pipe(first())
+        .subscribe(
+          data => {
+            let encuestas = data["encuestas"];
+            console.log(encuestas)
+
+            encuestas.forEach(encuestaInfo => {
+              var encuesta = this.transformJSON(encuestaInfo);
+              this.encuestaList.push(encuesta);
+            });
+
+            this.dataSource.data = this.encuestaList;
+          },
+          error => {
+            console.log(error)
+            if (error.status == 401 && error.error.errors == "Sesión expirada") {
+              AppComponent.myapp.openDialogSesion();
+            } else if (error.status == 406) {
+              const res = new Array();
+              res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
+
+          });
+    }
+  }
+  transformJSON(encuestaInfo) {
+    var encuesta = {
+      titulo: encuestaInfo.titulo,
+      descripcion: encuestaInfo.descripcion,
+      nombreApellidoTutor: encuestaInfo.nombreTutor + " " + encuestaInfo.apellidoTutor,
+      nombreApellidoAlumno: encuestaInfo.nombreAlumno + " " + encuestaInfo.apellidoAlumno,
+      resultado: encuestaInfo.resultado,
+      observaciones: encuestaInfo.observaciones,
+      id: encuestaInfo.id
+    }
+    return encuesta;
   }
   public doFilter = (value: { target: HTMLInputElement }) => {
-    const filterValue =  value.target.value.trim().toLocaleLowerCase(); 
+    const filterValue = value.target.value.trim().toLocaleLowerCase();
     this.dataSource.filter = filterValue;
   }
   add() {
-     this.dialog.open(EncuestaCreateComponent, {
+    this.dialog.open(EncuestaCreateComponent, {
       width: '400px'
     });
   }
   edit(data: Fpduales) {
-    
-     this.dialog.open(EncuestaUpdateComponent, {
+
+    this.dialog.open(EncuestaUpdateComponent, {
       width: '400px',
       data: data
     });
-    
+
   }
-  
+
   delete(id: any) {
     const dialogRef = this.dialog.open(DeleteComponent);
-    
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.encuestaService.deleteEncuesta(id).pipe(first())
@@ -133,14 +164,14 @@ export class EncuestaComponent implements OnInit , OnDestroy, AfterViewInit {
               window.location.reload();
             },
             error => {
-              if(error.status == 401 && error.error.errors == "Sesión expirada"){
-                AppComponent.myapp.openDialogSesion();                             
+              if (error.status == 401 && error.error.errors == "Sesión expirada") {
+                AppComponent.myapp.openDialogSesion();
               }
               else if (error.status == 406) {
                 const res = new Array();
                 res.push("Petición incorrecta.");
                 AppComponent.myapp.openDialog(res);
-              }else{
+              } else {
                 const res = new Array();
                 res.push("No se ha podido borrar.");
                 AppComponent.myapp.openDialog(res);
@@ -151,15 +182,15 @@ export class EncuestaComponent implements OnInit , OnDestroy, AfterViewInit {
 
   }
 
-  getObservaciones(id){
+  getObservaciones(id) {
     AppComponent.myapp.openDialogEncuesta(id);
-   
+
   }
   ngAfterViewInit(): void {
-    
+
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    
+
   }
   ngOnDestroy(): void {
     this.serviceSubscribe.unsubscribe();

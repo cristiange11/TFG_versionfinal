@@ -171,7 +171,7 @@
         <ng-template #rolTutorEmpresa>
             <mat-form-field *ngIf="this.numero=='Tutor_empresa'">
                 <mat-label>M&oacute;dulo de empresa</mat-label>
-                <input matInput type="text" required  [formControl]="formGroupTutor">
+                <input matInput type="text" required [formControl]="formGroupTutor">
                 <mat-error *ngIf=" formGroupTutor.errors?.required">M&oacute;dulo requerido
                 </mat-error>
                 <mat-error *ngIf=" formGroupTutor.errors?.minlength">Cadena m&iacute;nima de 4
@@ -212,8 +212,7 @@
         <button mat-raised-button mat-dialog-close>No</button>
     </div>
     <div *ngIf="this.numero=='Administrador' || this.numero == 'Administrador de Centro'">
-        <button mat-raised-button color="primary" (click)="save()"
-            [disabled]="!formInstance.valid ">Yes</button>
+        <button mat-raised-button color="primary" (click)="save()" [disabled]="!formInstance.valid ">Yes</button>
         <button mat-raised-button mat-dialog-close>No</button>
     </div>
 </div>

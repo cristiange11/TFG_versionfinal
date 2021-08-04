@@ -18,23 +18,23 @@ export class ResetContrasenaComponent implements OnInit {
   hide2 = true;
   passwordFormControl = new FormControl("", [Validators.required, Validators.pattern("^((?=\\S*?[A-Z])(?=\\S*?[a-z])(?=\\S*?[0-9]).{8,255})\\S$")]);
   confirmPasswordFormControl = new FormControl("", [Validators.required, this.checkConfirmPassword()]);
-  constructor(public route:ActivatedRoute, public cookieService: CookieService, public authService:AuthService, public router: Router, public nagivationComponent: NavigationComponent) {
+  constructor(public route: ActivatedRoute, public cookieService: CookieService, public authService: AuthService, public router: Router, public nagivationComponent: NavigationComponent) {
     document.body.style.background = "linear-gradient(to right, #f1e70a, #00ffe7)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     this.formInstance = new FormGroup({
       password: this.passwordFormControl,
       confirmPassword: this.confirmPasswordFormControl
     })
-   }
+  }
 
   ngOnInit(): void {
     this.route.queryParams
-    .subscribe(params => {
-      this.cookieService.set('token',params['token']); 
-      this.cookieService.set('correo',params['user']); 
-    }
-  );
-}
-  
+      .subscribe(params => {
+        this.cookieService.set('token', params['token']);
+        this.cookieService.set('correo', params['user']);
+      }
+      );
+  }
+
   checkConfirmPassword(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null =>
     (control.value?.toString() === this.passwordValue.toString()
@@ -44,7 +44,7 @@ export class ResetContrasenaComponent implements OnInit {
   get passwordValue() {
     return this.passwordFormControl.value;
   }
-  recoveryPassword(){
+  recoveryPassword() {
     this.authService.updatePassword(this.formInstance.value).pipe(first())
       .subscribe(
         data => {
@@ -74,5 +74,5 @@ export class ResetContrasenaComponent implements OnInit {
           }
         });
   }
-  
+
 }

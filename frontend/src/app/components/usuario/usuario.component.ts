@@ -44,27 +44,27 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.nagivationComponent.obtenerItems();
-    this.dataSource.filterPredicate = function(data, filter: string): boolean {
-      if(data.codigoCentro == null && data.fpDual == null){
+    this.dataSource.filterPredicate = function (data, filter: string): boolean {
+      if (data.codigoCentro == null && data.fpDual == null) {
         return data.nombre.toLowerCase().includes(filter) || data.apellidos.toLowerCase().includes(filter) || data.correo.toLowerCase() === filter || data.movil.toLowerCase().includes(filter) || data.direccion.toLowerCase().includes(filter) || data.genero.toLowerCase().includes(filter) || data.fechaNacimiento.toLowerCase().includes(filter) || data.rol.toLowerCase().includes(filter);
       }
-      else if(data.codigoCentro != null && data.fpDual ==null){
-      return data.nombre.toLowerCase().includes(filter) || data.apellidos.toLowerCase().includes(filter) || data.correo.toLowerCase() === filter || data.movil.toLowerCase().includes(filter) || data.direccion.toLowerCase().includes(filter) || data.genero.toLowerCase().includes(filter) || data.fechaNacimiento.toLowerCase().includes(filter) || data.rol.toLowerCase().includes(filter) ||  data.codigoCentro.toLowerCase().includes(filter) ;
+      else if (data.codigoCentro != null && data.fpDual == null) {
+        return data.nombre.toLowerCase().includes(filter) || data.apellidos.toLowerCase().includes(filter) || data.correo.toLowerCase() === filter || data.movil.toLowerCase().includes(filter) || data.direccion.toLowerCase().includes(filter) || data.genero.toLowerCase().includes(filter) || data.fechaNacimiento.toLowerCase().includes(filter) || data.rol.toLowerCase().includes(filter) || data.codigoCentro.toLowerCase().includes(filter);
       }
-      else if(data.codigoCentro == null && data.fpDual !=null){
-        return data.nombre.toLowerCase().includes(filter) || data.apellidos.toLowerCase().includes(filter) || data.correo.toLowerCase() === filter || data.movil.toLowerCase().includes(filter) || data.direccion.toLowerCase().includes(filter) || data.genero.toLowerCase().includes(filter) || data.fechaNacimiento.toLowerCase().includes(filter) || data.rol.toLowerCase().includes(filter) ||  data.fpDual.toLowerCase().includes(filter) ;
-        }
-        else{
-          return data.nombre.toLowerCase().includes(filter) || data.apellidos.toLowerCase().includes(filter) || data.correo.toLowerCase() === filter || data.movil.toLowerCase().includes(filter) || data.direccion.toLowerCase().includes(filter) || data.genero.toLowerCase().includes(filter) || data.fechaNacimiento.toLowerCase().includes(filter) || data.rol.toLowerCase().includes(filter) ||  data.fpDual.toLowerCase().includes(filter) ||  data.codigoCentro.toLowerCase().includes(filter);
+      else if (data.codigoCentro == null && data.fpDual != null) {
+        return data.nombre.toLowerCase().includes(filter) || data.apellidos.toLowerCase().includes(filter) || data.correo.toLowerCase() === filter || data.movil.toLowerCase().includes(filter) || data.direccion.toLowerCase().includes(filter) || data.genero.toLowerCase().includes(filter) || data.fechaNacimiento.toLowerCase().includes(filter) || data.rol.toLowerCase().includes(filter) || data.fpDual.toLowerCase().includes(filter);
+      }
+      else {
+        return data.nombre.toLowerCase().includes(filter) || data.apellidos.toLowerCase().includes(filter) || data.correo.toLowerCase() === filter || data.movil.toLowerCase().includes(filter) || data.direccion.toLowerCase().includes(filter) || data.genero.toLowerCase().includes(filter) || data.fechaNacimiento.toLowerCase().includes(filter) || data.rol.toLowerCase().includes(filter) || data.fpDual.toLowerCase().includes(filter) || data.codigoCentro.toLowerCase().includes(filter);
 
-        }
+      }
     };
     if (!this.cookieService.get('user')) {
       this.router.navigate(['home']);
     }
     else {
-       this.user = (JSON.parse(this.cookieService.get('user')));
-      if (Number(this.user.rol) != 1 && Number(this.user.rol)!=2) {
+      this.user = (JSON.parse(this.cookieService.get('user')));
+      if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2) {
         this.router.navigate(['home']);
       }
 
@@ -72,64 +72,64 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getAll();
   }
   getAll() {
-    console.log(Number(this.user.rol) )
-    if(Number(this.user.rol) == 1){
-    this.serviceSubscribe = this.userService.getUsers().pipe(first())
-      .subscribe(
-        data => {
-          let usuarios = data["usuarios"];
+    console.log(Number(this.user.rol))
+    if (Number(this.user.rol) == 1) {
+      this.serviceSubscribe = this.userService.getUsers().pipe(first())
+        .subscribe(
+          data => {
+            let usuarios = data["usuarios"];
 
-          usuarios.forEach(usuarioInfo => {
-            var user = this.getUserFila(usuarioInfo);
-            this.userList.push(user);
+            usuarios.forEach(usuarioInfo => {
+              var user = this.getUserFila(usuarioInfo);
+              this.userList.push(user);
+
+            });
+            this.dataSource.data = this.userList;
+            console.log(this.dataSource.data)
+          },
+          error => {
+            if (error.status == 401 && error.error.errors == "Sesión expirada") {
+              AppComponent.myapp.openDialogSesion();
+            }
+            else if (error.status == 406) {
+              const res = new Array();
+              res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
+
 
           });
-          this.dataSource.data = this.userList;
-          console.log(this.dataSource.data)
-        },
-        error => {
-          if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            AppComponent.myapp.openDialogSesion();                             
-          }
-          else if (error.status == 406) {
-            const res = new Array();
-            res.push("Petición incorrecta.");
-            AppComponent.myapp.openDialog(res);
-          }
+    } else {
+      this.serviceSubscribe = this.userService.getUsersByCentro(this.user.codigoCentro).pipe(first())
+        .subscribe(
+          data => {
+            let usuarios = data["usuarios"];
 
+            usuarios.forEach(usuarioInfo => {
+              console.log(usuarioInfo);
+              var user = this.getUserFila(usuarioInfo);
 
-        });
-      }else{
-        this.serviceSubscribe = this.userService.getUsersByCentro(this.user.codigoCentro).pipe(first())
-      .subscribe(
-        data => {
-          let usuarios = data["usuarios"];
+              this.userList.push(user);
 
-          usuarios.forEach(usuarioInfo => {
-            console.log(usuarioInfo);
-            var user = this.getUserFila(usuarioInfo);
-           
-            this.userList.push(user);
+            });
+            this.dataSource.data = this.userList;
+            console.log(this.dataSource.data)
+          },
+          error => {
+            if (error.status == 401 && error.error.errors == "Sesión expirada") {
+              AppComponent.myapp.openDialogSesion();
+            }
+            else if (error.status == 406) {
+              const res = new Array();
+              res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
+
 
           });
-          this.dataSource.data = this.userList;
-          console.log(this.dataSource.data)
-        },
-        error => {
-          if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            AppComponent.myapp.openDialogSesion();                             
-          }
-          else if (error.status == 406) {
-            const res = new Array();
-            res.push("Petición incorrecta.");
-            AppComponent.myapp.openDialog(res);
-          }
-
-
-        });
-      }
+    }
   }
-  getUserFila(usuarioInfo){
+  getUserFila(usuarioInfo) {
     var user = {
       dni: usuarioInfo.dni,
       nombre: usuarioInfo.nombre,
@@ -144,14 +144,14 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
       fechaNacimiento: this.datepipe.transform(usuarioInfo.fechaNacimiento, "dd/MM/YYYY"),
       fpDual: usuarioInfo.nombreFP,
       codigoCentro: usuarioInfo.nombreCentro,
-      fpId:usuarioInfo.fpDual,
+      fpId: usuarioInfo.fpDual,
       codigoCent: usuarioInfo.codigoCentro,
       rolId: usuarioInfo.rol
     }
     return user;
   }
   public doFilter = (value: { target: HTMLInputElement }) => {
-    const filterValue =  value.target.value.trim().toLocaleLowerCase(); 
+    const filterValue = value.target.value.trim().toLocaleLowerCase();
     this.dataSource.filter = filterValue;
   }
 
@@ -161,7 +161,7 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
       width: '400px',
       data: data
     });
-  
+
   }
 
   delete(dni: string) {
@@ -174,40 +174,40 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
               window.location.reload();
             },
             error => {
-              if(error.status == 401 && error.error.errors == "Sesión expirada"){
-                AppComponent.myapp.openDialogSesion();                             
+              if (error.status == 401 && error.error.errors == "Sesión expirada") {
+                AppComponent.myapp.openDialogSesion();
               }
               else if (error.status == 406) {
                 const res = new Array();
                 res.push("Petición incorrecta.");
                 AppComponent.myapp.openDialog(res);
               }
-              else if(error.status == 409){
+              else if (error.status == 409) {
                 const dialogRef2 = this.dialog.open(UsuarioDeleteConfirmationComponent);
-                dialogRef2.afterClosed().subscribe( result => {
-                    if(result){
-                      this.userService.deleteLogByUser(dni).pipe(first())
+                dialogRef2.afterClosed().subscribe(result => {
+                  if (result) {
+                    this.userService.deleteLogByUser(dni).pipe(first())
                       .subscribe(
                         data => {
-                            window.location.reload();
+                          window.location.reload();
                         },
                         error => {
                           console.log(error)
-                          if(error.status == 401 && error.error.errors == "Sesión expirada"){
-                            AppComponent.myapp.openDialogSesion();                             
+                          if (error.status == 401 && error.error.errors == "Sesión expirada") {
+                            AppComponent.myapp.openDialogSesion();
                           }
-                          else{
-                          const res = new Array();
-                          res.push("No se ha podido borrar.");
-                          AppComponent.myapp.openDialog(res);
+                          else {
+                            const res = new Array();
+                            res.push("No se ha podido borrar.");
+                            AppComponent.myapp.openDialog(res);
                           }
                         }
                       )
-                    }
+                  }
                 });
               }
             });
-            
+
       }
     });
 

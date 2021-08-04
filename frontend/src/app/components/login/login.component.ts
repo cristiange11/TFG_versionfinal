@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
     );
     return res;
   }
-  
+
   login() {
     this.authService.login(this.loginForm.value.dni, this.loginForm.value.password).pipe(first())
       .subscribe(
@@ -58,11 +58,11 @@ export class LoginComponent implements OnInit {
           if (Number(userCookie.rol) == 1) {
             this.router.navigate(['adminpage']);
           }
-          
-          else if(Number(userCookie.rol) == 2) {
+
+          else if (Number(userCookie.rol) == 2) {
             this.router.navigate(['fpdual']);
           }
-          else if(Number(userCookie.rol) == 4 || Number(userCookie.rol) == 3 || Number(userCookie.rol) == 5) {
+          else if (Number(userCookie.rol) == 4 || Number(userCookie.rol) == 3 || Number(userCookie.rol) == 5) {
             this.router.navigate(['modulo']);
           }
         },
@@ -71,10 +71,11 @@ export class LoginComponent implements OnInit {
             const res = new Array();
             res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
-          }else{
-          var arrayRes = new Array();
-          arrayRes.push(error.error.message);
-          AppComponent.myapp.openDialog(arrayRes);}
+          } else {
+            var arrayRes = new Array();
+            arrayRes.push(error.error.message);
+            AppComponent.myapp.openDialog(arrayRes);
+          }
         });
   }
   getErrorMessage(attribute: String) {

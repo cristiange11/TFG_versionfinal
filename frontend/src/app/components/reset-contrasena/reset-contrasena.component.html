@@ -1,31 +1,31 @@
 <form [formGroup]="formInstance" novalidate (ngSubmit)="recoveryPassword()" class="custom-form">
     <h1 align="center">Cambio de contrase&ntilde;a</h1>
-    
-        <mat-form-field>
-            <mat-label>Contrase&ntilde;a</mat-label>
-            <input matInput [type]="hide ? 'password' : 'text'" [formControl]="passwordFormControl"
-                placeholder="Contraseña" required (change)="this.confirmPasswordFormControl.setValue('')">
-            <mat-error *ngIf=" passwordFormControl.errors?.required">Contrase&ntilde;a requerida</mat-error>
-            <mat-error *ngIf=" passwordFormControl.errors?.pattern">Formato contrase&ntilde;a incorrecto</mat-error>
-            <mat-error *ngIf="this.formInstance.get('password').errors?.serverError">{{
-                this.formInstance.get('password').errors?.serverError }}</mat-error>
-            <button class="fondo" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-                [attr.aria-pressed]="hide">
-                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Repita contrase&ntilde;a</mat-label>
-            <input matInput [type]="hide2 ? 'password' : 'text'" [formControl]="confirmPasswordFormControl" required
-                placeholder="Repita contraseña">
-            <mat-error *ngIf="this.confirmPasswordFormControl.dirty && this.confirmPasswordFormControl.errors?.noMatch">
-                Contrase&ntilde;as no coinciden </mat-error>
-            <button class="fondo" mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'"
-                [attr.aria-pressed]="hide2">
-                <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
-        </mat-form-field>
-    
+
+    <mat-form-field>
+        <mat-label>Contrase&ntilde;a</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" [formControl]="passwordFormControl" placeholder="Contraseña"
+            required (change)="this.confirmPasswordFormControl.setValue('')">
+        <mat-error *ngIf=" passwordFormControl.errors?.required">Contrase&ntilde;a requerida</mat-error>
+        <mat-error *ngIf=" passwordFormControl.errors?.pattern">Formato contrase&ntilde;a incorrecto</mat-error>
+        <mat-error *ngIf="this.formInstance.get('password').errors?.serverError">{{
+            this.formInstance.get('password').errors?.serverError }}</mat-error>
+        <button class="fondo" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Repita contrase&ntilde;a</mat-label>
+        <input matInput [type]="hide2 ? 'password' : 'text'" [formControl]="confirmPasswordFormControl" required
+            placeholder="Repita contraseña">
+        <mat-error *ngIf="this.confirmPasswordFormControl.dirty && this.confirmPasswordFormControl.errors?.noMatch">
+            Contrase&ntilde;as no coinciden </mat-error>
+        <button class="fondo" mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide2">
+            <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+    </mat-form-field>
+
     <button class="boton-envio" type="submit" [disabled]="!formInstance.valid "> <span>Recuperar cuenta</span></button>
 
 </form>

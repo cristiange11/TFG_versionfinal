@@ -24,7 +24,7 @@ export class EditProfileComponent implements OnInit {
   formGroupProfesor;
 
   passwordFormControl = new FormControl("", [Validators.required, Validators.pattern("^((?=\\S*?[A-Z])(?=\\S*?[a-z])(?=\\S*?[0-9]).{8,255})\\S$")]);
-  passwordActualFormControl= new FormControl("", [Validators.required]);
+  passwordActualFormControl = new FormControl("", [Validators.required]);
   confirmPasswordFormControl = new FormControl("", [Validators.required, this.checkConfirmPassword()]);
 
   centroList = new Map<string, string>();
@@ -43,8 +43,8 @@ export class EditProfileComponent implements OnInit {
     }
     else {
       this.user = (JSON.parse(this.cookieService.get('user')));
-      
-      if (Number(this.user.rol) != 1 && Number(this.user.rol)!=2 && Number(this.user.rol)!=4 &&  Number(this.user.rol) != 3 &&  Number(this.user.rol) != 5)  {
+
+      if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2 && Number(this.user.rol) != 4 && Number(this.user.rol) != 3 && Number(this.user.rol) != 5) {
         this.router.navigate(['home']);
       }
 
@@ -125,7 +125,7 @@ export class EditProfileComponent implements OnInit {
     } else if (attribute == "fechaNacimiento") {
       let fechaNacimiento = this.editForm.get("fechaNacimiento");
       return fechaNacimiento.hasError('required') ? 'Introduce la fecha' :
-          '';
+        '';
     }
     else if (attribute == "password") {
 
@@ -156,9 +156,9 @@ export class EditProfileComponent implements OnInit {
         },
         error => {
           console.log(error)
-          if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            AppComponent.myapp.openDialogSesion();    
-           
+          if (error.status == 401 && error.error.errors == "Sesión expirada") {
+            AppComponent.myapp.openDialogSesion();
+
           }
           else if (error.status == 401) {
             var arrayRes = new Array();
@@ -177,12 +177,12 @@ export class EditProfileComponent implements OnInit {
                 formControl.setErrors({
                   serverError: errorInfo.message
                 });
-              }if (errorInfo.param == "passwordActualFormControl"){
+              } if (errorInfo.param == "passwordActualFormControl") {
                 this.passwordActualFormControl.setErrors({
                   serverError: errorInfo.message
-                });  
+                });
               }
-              
+
             });
           }
 

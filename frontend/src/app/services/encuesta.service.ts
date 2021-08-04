@@ -17,6 +17,10 @@ export class EncuestaService {
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.get<JSON[]>(`${this.url}/${codigoModulo}`,  httpOptions); 
   }
+  getEncuestasByTutor(dni : string): Observable<JSON[] >{    
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
+    return this.http.get<JSON[]>(`${this.url}/tutor/${dni}`,  httpOptions); 
+  }
   getEncuesta(id : number): Observable<JSON>{    
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.get<JSON>(`${this.url}/encuesta/${id}`,  httpOptions); 

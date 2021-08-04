@@ -9,13 +9,13 @@ import { NavigationComponent } from '../../navigation/navigation.component';
 })
 export class SesionComponent implements OnInit {
 
-  constructor(private  nagivationComponent: NavigationComponent,public dialogRef: MatDialogRef<SesionComponent>) { }
+  constructor(private nagivationComponent: NavigationComponent, public dialogRef: MatDialogRef<SesionComponent>) { }
 
   ngOnInit(): void {
   }
   onOKClick(): void {
     this.dialogRef.close();
-    this.nagivationComponent.closeSession(); 
+    this.nagivationComponent.closeSession();
   }
 
 }

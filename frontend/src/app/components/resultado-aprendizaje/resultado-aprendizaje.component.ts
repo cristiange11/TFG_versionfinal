@@ -42,7 +42,7 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
   ngOnInit(): void {
     this.nagivationComponent.obtenerItems();
     this.getAll();
-    this.dataSource.filterPredicate = function(data, filter: string): boolean {
+    this.dataSource.filterPredicate = function (data, filter: string): boolean {
       return data.titulo.toLowerCase().includes(filter) || data.descripcion.toLowerCase().includes(filter);
     };
     if (!this.cookieService.get('user')) {
@@ -50,14 +50,14 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
     }
     else {
       this.user = (JSON.parse(this.cookieService.get('user')));
-      if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2 && Number(this.user.rol) !=4 && Number(this.user.rol != 3) && Number(this.user.rol != 5)) {
+      if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2 && Number(this.user.rol) != 4 && Number(this.user.rol != 3) && Number(this.user.rol != 5)) {
         this.router.navigate(['home']);
       }
-      else if(Number(this.user.rol) == 1 || Number(this.user.rol) == 2 || Number(this.user.rol) ==4){
-        this.columnsToDisplay  = [...this.displayedColumns, 'actions'];
+      else if (Number(this.user.rol) == 1 || Number(this.user.rol) == 2 || Number(this.user.rol) == 4) {
+        this.columnsToDisplay = [...this.displayedColumns, 'actions'];
       }
-      else{
-        this.columnsToDisplay  = [...this.displayedColumns];
+      else {
+        this.columnsToDisplay = [...this.displayedColumns];
       }
     }
   }
@@ -75,8 +75,8 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
           this.dataSource.data = this.resultadoAprendizajeList;
         },
         error => {
-          if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            AppComponent.myapp.openDialogSesion();                             
+          if (error.status == 401 && error.error.errors == "Sesión expirada") {
+            AppComponent.myapp.openDialogSesion();
           } else if (error.status == 406) {
             const res = new Array();
             res.push("Petición incorrecta.");
@@ -86,7 +86,7 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
         });
   }
   public doFilter = (value: { target: HTMLInputElement }) => {
-    const filterValue =  value.target.value.trim().toLocaleLowerCase(); 
+    const filterValue = value.target.value.trim().toLocaleLowerCase();
     this.dataSource.filter = filterValue;
   }
   add() {
@@ -113,14 +113,14 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
               window.location.reload();
             },
             error => {
-              if(error.status == 401 && error.error.errors == "Sesión expirada"){
-                AppComponent.myapp.openDialogSesion();                             
+              if (error.status == 401 && error.error.errors == "Sesión expirada") {
+                AppComponent.myapp.openDialogSesion();
               } else if (error.status == 406) {
                 const res = new Array();
                 res.push("Petición incorrecta.");
                 AppComponent.myapp.openDialog(res);
               }
-              else{
+              else {
                 const res = new Array();
                 res.push("No se ha podido borrar.");
                 AppComponent.myapp.openDialog(res);

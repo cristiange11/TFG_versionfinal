@@ -1,71 +1,68 @@
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
+}
+.custom-form {
+  min-width: 300px;
+  max-width: 80%;
+  margin: 0px auto;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 2rem 3rem;
+  margin: auto;
+  border-radius: 2.5rem;
+  background-color: #ecf0f3;
+
+  color: black;
+  margin-top: 5rem;
+}
+.mat-form-field {
+  margin-right: 3%;
+  margin-left: 3%;
+  margin-bottom: 1%;
+}
+.mat-form-field-has-label {
+  width: 40%;
+}
+
+.boton-envio {
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  border: none;
+  font-size: 0.875rem;
+  color: #ffffff;
+  font-weight: bold;
+  background-color: cadetblue;
+  width: 100%;
+  display: inline-flex;
+  padding: 0.875rem 1rem;
+  border-radius: 1.5rem;
+  box-shadow: 3px 3px 8px #b1b1b1, -3px -3px 8px #ffffff;
+  cursor: pointer;
+  margin: auto;
+  margin-left: 2%;
+}
+.boton-envio span {
+  width: 100%;
+}
+.parent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+h1 {
+  font-size: 1.7rem;
+  margin-bottom: 4%;
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+@media only screen and (min-width: 1200px) {
+  h1 {
+    font-size: 3rem;
   }
-  .custom-form {
-      min-width: 300px;
-      max-width: 80%;
-      margin: 0px auto;
-      background: rgba(255, 255, 255, 0.15);
-      padding: 2rem 3rem;
-      margin: auto;
-      border-radius: 2.5rem;
-      background-color: #ecf0f3;
-      
-      color: black;
-      margin-top: 5rem;
-    }
-    .mat-form-field{
-      margin-right:3%;
-      margin-left:3%;
-      margin-bottom: 1%;
-    }
-    .mat-form-field-has-label{
-      width:40%;
-    }
-  
-    .boton-envio{
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      border: none;
-      font-size: 0.875rem;
-      color: #ffffff;
-      font-weight: bold;
-      background-color: cadetblue;
-      width: 100%;
-      display: inline-flex;
-      padding: 0.875rem 1rem;
-      border-radius: 1.5rem;
-      box-shadow: 3px 3px 8px #b1b1b1, -3px -3px 8px #ffffff;
-      cursor: pointer;
-      margin: auto;
-      margin-left:2%;
-    }
-    .boton-envio span{
-      width:100%;
-    }
-    .parent {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-      }
-    h1{
-       font-size: 1.7rem;
-       margin-bottom: 4%;
-       display: block;
-       margin-block-start: 1em;
-       margin-block-end: 1em;
-       margin-inline-start: 0px;
-       margin-inline-end: 0px;
-   
-    }
-    @media only screen and  (min-width: 1200px) {  
-        h1{
-            font-size: 3rem;
-        }
-        h2{
-            font-size: 1.3rem;
-        }
-    }  
-   
-    
+  h2 {
+    font-size: 1.3rem;
+  }
+}

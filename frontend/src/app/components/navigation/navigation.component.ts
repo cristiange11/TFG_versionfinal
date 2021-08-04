@@ -23,19 +23,19 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
   }
   ngOnInit(): void {
     this.obtenerItems();
-    
+
 
   }
   closeSession() {
-    
+
     this.cookieService.deleteAll();
     this.router.navigate(['home']);
   }
-  deleteSessionFp(){
+  deleteSessionFp() {
     sessionStorage.removeItem('codigoCentro');
   }
   obtenerItems() {
-    const editarPerfil = {label: 'Editar Perfil', routerLink: '/editprofile', icon: "far fa-user"};
+    const editarPerfil = { label: 'Editar Perfil', routerLink: '/editprofile', icon: "far fa-user" };
     if (!this.cookieService.get('user')) {
       this.items = [
         {
@@ -49,16 +49,16 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
       var user = JSON.parse(this.cookieService.get('user'));
       if (Number(user.rol) == 1 || Number(user.rol) == 2) {
         this.items = [
-          
+
           {
             label: 'FP duales',
             routerLink: '/fpdual',
             icon: "fas fa-graduation-cap",
             command: () => this.deleteSessionFp(),
           },
-          
-           editarPerfil,
-           
+
+          editarPerfil,
+
           {
             label: 'Usuarios',
             routerLink: '/usuario',
@@ -74,14 +74,14 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
             routerLink: '/formuser',
             icon: "fas fa-user-plus"
           },
-          
+
         ]
-        if(Number(user.rol) == 1){
+        if (Number(user.rol) == 1) {
           this.items.push({
             label: 'Logs',
             icon: 'pi pi-fw pi-file',
             routerLink: '/log'
-            
+
           });
         }
       }
@@ -92,7 +92,7 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
             routerLink: '/modulo',
             icon: 'fa fa-book'
           },
-          editarPerfil,         
+          editarPerfil,
         ]
       }
       this.items.push({

@@ -1,17 +1,16 @@
-
 <form [formGroup]="formInstance" novalidate (ngSubmit)="recoveryPassword()" class="custom-form">
     <h1 align="center">¿NO PUEDES INICIAR SESIÓN?</h1>
     <h2 align="center">Introduce tu correo el&eacute;ctronico</h2>
     <div class="parent">
-    <mat-form-field class="fullWidth" appearance="outline">        
-        <mat-label>Correo</mat-label>
-        <input matInput type="text" name="correo" formControlName="correo" placeholder="correo" required />
-        <mat-error *ngIf="formInstance.controls['correo']?.errors?.required">Correo requerido</mat-error>
-        <mat-error *ngIf="formInstance.controls['correo']?.errors?.email">Formato correo incorrecto</mat-error>
-        <mat-error *ngIf="formInstance.controls['correo']?.errors?.serverError">{{formInstance.controls['correo']?.errors?.serverError }}</mat-error>
-    </mat-form-field>
-</div>
+        <mat-form-field class="fullWidth" appearance="outline">
+            <mat-label>Correo</mat-label>
+            <input matInput type="text" name="correo" formControlName="correo" placeholder="correo" required />
+            <mat-error *ngIf="formInstance.controls['correo']?.errors?.required">Correo requerido</mat-error>
+            <mat-error *ngIf="formInstance.controls['correo']?.errors?.email">Formato correo incorrecto</mat-error>
+            <mat-error *ngIf="formInstance.controls['correo']?.errors?.serverError">
+                {{formInstance.controls['correo']?.errors?.serverError }}</mat-error>
+        </mat-form-field>
+    </div>
     <button class="boton-envio" type="submit" [disabled]="!formInstance.valid "> <span>Recuperar cuenta</span></button>
 
 </form>
-

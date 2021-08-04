@@ -12,19 +12,19 @@ module.exports = class ResultadoAprendizaje {
     }
 
     static async getEncuestas(codigoModulo) {
-        const [rows, fields] = await promisePool.query(
-            `SELECT encuesta.*, A.nombre as nombreAlumno, A.apellidos as apellidoAlumno, T.nombre as nombreTutor, T.apellidos as apellidoTutor, R.resultado as resultado FROM encuesta left JOIN usuario as A on encuesta.dniAlumno= A.dni left JOIN usuario as T on encuesta.dniTutorEmpresa = T.dni left join resultado_encuesta as R on (R.id = encuesta.resultado ) where encuesta.codigoModulo= ${codigoModulo}`);
+        const [rows, fields] = await promisePool.query(`SELECT encuesta.*, A.nombre as nombreAlumno, A.apellidos as apellidoAlumno, T.nombre as nombreTutor, T.apellidos as apellidoTutor, R.resultado as resultado FROM encuesta left JOIN usuario as A on encuesta.dniAlumno= A.dni left JOIN usuario as T on encuesta.dniTutorEmpresa = T.dni left join resultado_encuesta as R on (R.id = encuesta.resultado ) where encuesta.codigoModulo= ${codigoModulo}`);
+        return rows;
+    }
+    static async getEncuestaByTutor(dni) {
+        const [rows, fields] = await promisePool.query(`SELECT encuesta.*, A.nombre as nombreAlumno, A.apellidos as apellidoAlumno, T.nombre as nombreTutor, T.apellidos as apellidoTutor, R.resultado as resultado FROM encuesta left JOIN usuario as A on encuesta.dniAlumno= A.dni left JOIN usuario as T on encuesta.dniTutorEmpresa = T.dni left join resultado_encuesta as R on (R.id = encuesta.resultado ) where encuesta.dniTutorEmpresa= '${dni}'`);
         return rows;
     }
     static async getEncuesta(id) {
-
-        const [rows, fields] = await promisePool.query(
-            `SELECT observaciones FROM encuesta where id = ${id}`);
+        const [rows, fields] = await promisePool.query(`SELECT observaciones FROM encuesta where id = ${id}`);
         return rows;
     }
     static async deleteEncuesta(id, user) {
         const connection = await promisePool.getConnection();
-        console.log(`DELETE FROM encuesta WHERE id =  ${id}`)
         try {
             await connection.beginTransaction();
             let query = `DELETE FROM encuesta WHERE id =  ${id}`;
@@ -61,8 +61,6 @@ module.exports = class ResultadoAprendizaje {
     }
     static async updateEncuesta(encuesta, user) {
         const connection = await promisePool.getConnection();
-        console.log()
-        console.log(`UPDATE encuesta SET codigoModulo='${encuesta.codigoModulo}', titulo='${encuesta.titulo}',descripcion='${encuesta.descripcion}', resultado = '${encuesta.resultado}', dniAlumno= '${encuesta.dniAlumno}' , dniTutorEmpresa = '${encuesta.dniTutorEmpresa}' WHERE id = '${encuesta.id}'`)
         try {
             await connection.beginTransaction();
             let query = `UPDATE encuesta SET codigoModulo='${encuesta.codigoModulo}', observaciones = '${encuesta.observaciones}' , titulo='${encuesta.titulo}',descripcion='${encuesta.descripcion}', resultado = '${encuesta.resultado}' WHERE id = '${encuesta.id}'`;

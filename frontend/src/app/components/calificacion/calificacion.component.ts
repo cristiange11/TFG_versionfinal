@@ -53,8 +53,8 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
 
     }
     this.getAll();
-    this.dataSource.filterPredicate = function(data, filter: string): boolean {
-   
+    this.dataSource.filterPredicate = function (data, filter: string): boolean {
+
       return data.nombreUsuario.toLowerCase().includes(filter) || data.descripcion.toLowerCase().includes(filter) || data.apellidoUsuario.toLowerCase().includes(filter) || data.nota.toString().includes(filter);
     };
   }
@@ -89,7 +89,7 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   public doFilter = (value: { target: HTMLInputElement }) => {
-    const filterValue =  value.target.value.trim().toLocaleLowerCase(); 
+    const filterValue = value.target.value.trim().toLocaleLowerCase();
     this.dataSource.filter = filterValue;
   }
   add() {
@@ -100,15 +100,15 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
   edit(data) {
-    
+
     this.dialog.open(CalificacionUpdateComponent, {
       width: '400px',
       data: {
-        dni: data.dni, 
-        nombre : data.nombreUsuario,
-        nota: data.nota, 
+        dni: data.dni,
+        nombre: data.nombreUsuario,
+        nota: data.nota,
         descripcion: data.descripcion,
-        id: data.id, 
+        id: data.id,
         codigoModulo: sessionStorage.getItem('codigoModulo')
       }
     });

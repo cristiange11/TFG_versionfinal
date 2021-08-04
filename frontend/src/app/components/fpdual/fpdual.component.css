@@ -1,7 +1,9 @@
-::ng-deep th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
+::ng-deep th.mat-header-cell,
+td.mat-cell,
+td.mat-footer-cell {
   font-size: 1 rem;
 }
-.row{
+.row {
   width: 100%;
 }
 .mat-row {
@@ -16,16 +18,16 @@
   text-transform: capitalize;
   color: black;
 }
-::ng-deep .mat-elevation-z8{
-  width:100%;
+::ng-deep .mat-elevation-z8 {
+  width: 100%;
 }
 .example-container {
   overflow: auto;
 }
-#tableWrapper{
-  margin-top:6%;
+#tableWrapper {
+  margin-top: 6%;
 }
-#tableWrapper #dch{
-  float:right;
+#tableWrapper #dch {
+  float: right;
   margin-bottom: 0.5%;
 }

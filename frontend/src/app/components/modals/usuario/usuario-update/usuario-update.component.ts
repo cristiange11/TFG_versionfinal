@@ -33,7 +33,7 @@ export class UsuarioUpdateComponent implements OnInit {
   hide2 = true;
   numero;
   user;
-  modulo  = new FormControl("", [Validators.required]) ;
+  modulo = new FormControl("", [Validators.required]);
   formGroupTutor = new FormControl("", [Validators.required, Validators.minLength(6)]);
   numeroExpediente = new FormControl("", [Validators.required, Validators.minLength(6)]);
   formGroupProfesor = new FormControl("", [Validators.required, Validators.minLength(6)]);
@@ -51,7 +51,7 @@ export class UsuarioUpdateComponent implements OnInit {
   empresaList = new Map<string, string>();
   constructor(public datepipe: DatePipe, private nagivationComponent: NavigationComponent, private moduloService: ModuloService, private fpdualesService: FpdualesService, private centroService: CentroService, private empresaService: EmpresaService, private tutorService: TutorEmpresaService, private alumnoService: AlumnoService, private profesorService: ProfesorService, private router: Router, private rolService: RolService, private cookieService: CookieService, public dialogRef: MatDialogRef<UsuarioUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: User, public authService: AuthService) {
-    this.numero=data.rol;
+    this.numero = data.rol;
     this.formInstance = new FormGroup({
       dni: new FormControl("", []),
       nombre: new FormControl("", [Validators.required, Validators.minLength(4)]),
@@ -69,7 +69,7 @@ export class UsuarioUpdateComponent implements OnInit {
       confirmPassword: this.confirmPasswordFormControl
     })
     this.rellenarFormulario(data);
-        
+
     this.user = data;
     if (!this.cookieService.get('user')) {
       this.router.navigate(['home']);
@@ -90,95 +90,95 @@ export class UsuarioUpdateComponent implements OnInit {
       fechaNacimiento: this.datepipe.transform(data.fechaNacimiento, "YYYY-dd-MM"), rol: data.rolId, password: "", confirmPassword: "", codigoCentro: data.codigoCent, fpDual: data.fpId,
     })
     if (data.rol == "Alumno") {
-      
+
       this.alumnoService.getAlumno(data.dni).pipe(first())
-    .subscribe(
-      data => {        
-        var alumno =  JSON.parse(data['alumno']);
-        Array.prototype.forEach.call(alumno, moduloInfo => {
-          this.moduloUserList.set(moduloInfo.moduloCodigo, moduloInfo.nombreModulo);
-        });
-        this.modulo.setValue(Array.from( this.moduloUserList.keys() ))
-        this.numeroExpediente.setValue(alumno[0].numeroExpediente);
-      },     
-      error => {
-        if (error.status == 401 && error.error.errors == "Sesión expirada") {
-          AppComponent.myapp.openDialogSesion();
-        }
-        else if (error.status == 406) {
-          const res = new Array();
-          res.push("Petición incorrecta.");
-          AppComponent.myapp.openDialog(res);
-        }
-      });
+        .subscribe(
+          data => {
+            var alumno = JSON.parse(data['alumno']);
+            Array.prototype.forEach.call(alumno, moduloInfo => {
+              this.moduloUserList.set(moduloInfo.moduloCodigo, moduloInfo.nombreModulo);
+            });
+            this.modulo.setValue(Array.from(this.moduloUserList.keys()))
+            this.numeroExpediente.setValue(alumno[0].numeroExpediente);
+          },
+          error => {
+            if (error.status == 401 && error.error.errors == "Sesión expirada") {
+              AppComponent.myapp.openDialogSesion();
+            }
+            else if (error.status == 406) {
+              const res = new Array();
+              res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
+          });
     }
-    else if( data.rol == "Profesor"){
+    else if (data.rol == "Profesor") {
       this.profesorService.getProfesor(data.dni).pipe(first())
-    .subscribe(
-      data => {
-        
-        var profesor =   JSON.parse(data['profesor']);
-        Array.prototype.forEach.call(profesor, moduloInfo => {
-          this.moduloUserList.set(moduloInfo.moduloCodigo, moduloInfo.nombreModulo);
-        });
-        this.modulo.setValue(Array.from( this.moduloUserList.keys() ))
-        this.formGroupProfesor.setValue(profesor[0].departamento); 
-      },
-     
-      error => {
-        if (error.status == 401 && error.error.errors == "Sesión expirada") {
-          AppComponent.myapp.openDialogSesion();
-        }
-        else if (error.status == 406) {
-          const res = new Array();
-          res.push("Petición incorrecta.");
-          AppComponent.myapp.openDialog(res);
-        }
-      });
+        .subscribe(
+          data => {
+
+            var profesor = JSON.parse(data['profesor']);
+            Array.prototype.forEach.call(profesor, moduloInfo => {
+              this.moduloUserList.set(moduloInfo.moduloCodigo, moduloInfo.nombreModulo);
+            });
+            this.modulo.setValue(Array.from(this.moduloUserList.keys()))
+            this.formGroupProfesor.setValue(profesor[0].departamento);
+          },
+
+          error => {
+            if (error.status == 401 && error.error.errors == "Sesión expirada") {
+              AppComponent.myapp.openDialogSesion();
+            }
+            else if (error.status == 406) {
+              const res = new Array();
+              res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
+          });
     }
-    else if(data.rol == "Tutor_empresa"){
-     this.tutorService.getTutor(data.dni).pipe(first())
-     .subscribe(
-      data => {
-        
-        var tutor =   JSON.parse(data['tutor']);
-        Array.prototype.forEach.call(tutor, moduloInfo => {
-          this.moduloUserList.set(moduloInfo.moduloCodigo, moduloInfo.nombreModulo);
-        });
-        this.modulo.setValue(Array.from( this.moduloUserList.keys() ))
-        this.formGroupTutor.setValue(tutor[0].moduloEmpresa); 
-        
-        this.cifEmpresa = tutor[0].CIF;
-      },
-     
-      error => {
-        if (error.status == 401 && error.error.errors == "Sesión expirada") {
-          AppComponent.myapp.openDialogSesion();
-        }
-        else if (error.status == 406) {
-          const res = new Array();
-          res.push("Petición incorrecta.");
-          AppComponent.myapp.openDialog(res);
-        }
-      });
+    else if (data.rol == "Tutor_empresa") {
+      this.tutorService.getTutor(data.dni).pipe(first())
+        .subscribe(
+          data => {
+
+            var tutor = JSON.parse(data['tutor']);
+            Array.prototype.forEach.call(tutor, moduloInfo => {
+              this.moduloUserList.set(moduloInfo.moduloCodigo, moduloInfo.nombreModulo);
+            });
+            this.modulo.setValue(Array.from(this.moduloUserList.keys()))
+            this.formGroupTutor.setValue(tutor[0].moduloEmpresa);
+
+            this.cifEmpresa = tutor[0].CIF;
+          },
+
+          error => {
+            if (error.status == 401 && error.error.errors == "Sesión expirada") {
+              AppComponent.myapp.openDialogSesion();
+            }
+            else if (error.status == 406) {
+              const res = new Array();
+              res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
+          });
     }
-    
+
   }
-  
+
   ngOnInit(): void {
-      if(this.data.rol == "Alumno"){
+    if (this.data.rol == "Alumno") {
       this.moduloService.getModulosAlumUpdate(this.data.dni).pipe(first())
         .subscribe(
           data => {
             this.moduloList = new Map<number, string>();
             let modulos = data["modulos"]
             modulos.forEach(moduloInfo => {
-              
-              var modulo = moduloInfo 
-  
+
+              var modulo = moduloInfo
+
               this.moduloList.set(modulo.codigoModulo, modulo.nombreModulo);
             });
-  
+
           },
           error => {
             if (error.status == 401 && error.error.errors == "Sesión expirada") {
@@ -190,20 +190,20 @@ export class UsuarioUpdateComponent implements OnInit {
               AppComponent.myapp.openDialog(res);
             }
           });
-        }else if(this.data.rol == "Profesor" || this.data.rol == "Tutor_empresa"){
-          
-          this.moduloService.getModulos(this.data.fpId).pipe(first())
+    } else if (this.data.rol == "Profesor" || this.data.rol == "Tutor_empresa") {
+
+      this.moduloService.getModulos(this.data.fpId).pipe(first())
         .subscribe(
           data => {
             this.moduloList = new Map<number, string>();
             let modulos = data["modulos"]
             modulos.forEach(moduloInfo => {
-              
-              var modulo = moduloInfo 
-  
+
+              var modulo = moduloInfo
+
               this.moduloList.set(modulo.codigo, modulo.nombre);
             });
-  
+
           },
           error => {
             if (error.status == 401 && error.error.errors == "Sesión expirada") {
@@ -215,7 +215,7 @@ export class UsuarioUpdateComponent implements OnInit {
               AppComponent.myapp.openDialog(res);
             }
           });
-        }
+    }
   }
 
   checkConfirmPassword(): ValidatorFn {
@@ -227,8 +227,8 @@ export class UsuarioUpdateComponent implements OnInit {
   get passwordValue() {
     return this.passwordFormControl.value;
   }
-  
-  
+
+
   obtenerFP(centro): void {
 
     this.fpdualesService.getFPdual(centro).pipe(first())
@@ -261,14 +261,14 @@ export class UsuarioUpdateComponent implements OnInit {
       dni: this.formInstance.value.dni
     };
     if (this.numero == "Administrador" || this.numero == 'Administrador de Centro') {
-     
+
       this.authService.updateUsuario(this.formInstance.value, userJson).pipe(first())
         .subscribe(
           data => {
             window.location.reload();
           },
           error => {
-            
+
             if (error.status == 409) {
 
               error.error.errors.forEach(errorInfo => {
@@ -292,14 +292,14 @@ export class UsuarioUpdateComponent implements OnInit {
     }
 
     else if (this.numero == 'Alumno') {
-      
+
       this.alumnoService.updateAlumno(this.formInstance.value, userJson, this.numeroExpediente.value, this.modulo.value).pipe(first())
         .subscribe(
           data => {
             window.location.reload();
           },
           error => {
-            
+
             if (error.status == 409) {
               error.error.errors.forEach(errorInfo => {
                 const formControl = this.formInstance.get(errorInfo.param);
@@ -309,15 +309,15 @@ export class UsuarioUpdateComponent implements OnInit {
                   });
 
                 }
-               if (errorInfo.param == "numeroExpediente"){
-              this.numeroExpediente.setErrors({
-                serverError: errorInfo.message
-              });  
-            }else if (errorInfo.param == "modulo"){
-              this.modulo.setErrors({
-                serverError: errorInfo.message
-              });  
-            }
+                if (errorInfo.param == "numeroExpediente") {
+                  this.numeroExpediente.setErrors({
+                    serverError: errorInfo.message
+                  });
+                } else if (errorInfo.param == "modulo") {
+                  this.modulo.setErrors({
+                    serverError: errorInfo.message
+                  });
+                }
 
               });
             }
@@ -347,14 +347,14 @@ export class UsuarioUpdateComponent implements OnInit {
                     serverError: errorInfo.message
                   });
                 }
-                if (errorInfo.param == "departamento"){
+                if (errorInfo.param == "departamento") {
                   this.formGroupProfesor.setErrors({
                     serverError: errorInfo.message
-                  });  
-                }else if (errorInfo.param == "modulo"){
+                  });
+                } else if (errorInfo.param == "modulo") {
                   this.modulo.setErrors({
                     serverError: errorInfo.message
-                  });  
+                  });
                 }
               });
             } else if (error.status == 401 && error.error.errors == "Sesión expirada") {
@@ -367,9 +367,9 @@ export class UsuarioUpdateComponent implements OnInit {
             }
           });
     } else if (this.numero == 'Tutor_empresa') {
-      
+
       var formGroupTutorJSON = {
-        moduloEmpresa: this.formGroupTutor.value, 
+        moduloEmpresa: this.formGroupTutor.value,
         cifEmpresa: this.cifEmpresa
       }
       this.tutorService.updateTutor(this.formInstance.value, userJson, formGroupTutorJSON, this.modulo.value).pipe(first())
@@ -393,10 +393,10 @@ export class UsuarioUpdateComponent implements OnInit {
                   formControl.setErrors({
                     serverError: errorInfo.message
                   });
-                }else if (errorInfo.param == "modulo"){
+                } else if (errorInfo.param == "modulo") {
                   this.modulo.setErrors({
                     serverError: errorInfo.message
-                  });  
+                  });
                 }
               });
             }

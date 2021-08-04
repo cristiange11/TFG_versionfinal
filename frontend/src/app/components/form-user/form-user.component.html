@@ -1,11 +1,12 @@
-<form [formGroup]="signupForm" (ngSubmit)="signup()" novalidate class="custom-form" >
+<form [formGroup]="signupForm" (ngSubmit)="signup()" novalidate class="custom-form">
   <h1 align="center">Registro de usuario</h1>
   <mat-form-field>
     <mat-label>DNI</mat-label>
-    <input matInput type="text"  formControlName="dni" placeholder="DNI" required  >
+    <input matInput type="text" formControlName="dni" placeholder="DNI" required>
     <mat-error *ngIf="this.signupForm.get('dni').errors?.required">{{ getErrorMessage("dni") }}</mat-error>
     <mat-error *ngIf="this.signupForm.get('dni').errors?.pattern">{{ getErrorMessage("dni") }}</mat-error>
-    <mat-error *ngIf="this.signupForm.get('dni').errors?.serverError">{{ this.signupForm.get('dni').errors?.serverError }}</mat-error>
+    <mat-error *ngIf="this.signupForm.get('dni').errors?.serverError">{{ this.signupForm.get('dni').errors?.serverError
+      }}</mat-error>
   </mat-form-field>
   <mat-form-field>
     <mat-label>Nombre</mat-label>
@@ -31,70 +32,82 @@
     <input matInput type="text" formControlName="cp" placeholder="CP" required>
     <mat-error *ngIf="this.signupForm.get('cp').errors?.required">{{ getErrorMessage("cp") }}</mat-error>
     <mat-error *ngIf="this.signupForm.get('cp').errors?.pattern">{{ getErrorMessage("cp") }}</mat-error>
-    <mat-error *ngIf="this.signupForm.get('cp').errors?.serverError">{{ this.signupForm.get('cp').errors?.serverError }}</mat-error>
+    <mat-error *ngIf="this.signupForm.get('cp').errors?.serverError">{{ this.signupForm.get('cp').errors?.serverError }}
+    </mat-error>
   </mat-form-field>
   <mat-form-field>
     <mat-label>M&oacute;vil</mat-label>
     <input matInput type="text" formControlName="movil" placeholder="M&oacute;vil" required>
     <mat-error *ngIf="this.signupForm.get('movil').errors?.required">{{ getErrorMessage("movil") }}</mat-error>
-    <mat-error *ngIf="this.signupForm.get('movil').dirty && this.signupForm.get('movil').errors?.pattern">{{ getErrorMessage("movil") }}</mat-error>
-    <mat-error *ngIf="this.signupForm.get('movil').errors?.serverError">{{ this.signupForm.get('movil').errors?.serverError }}</mat-error>
+    <mat-error *ngIf="this.signupForm.get('movil').dirty && this.signupForm.get('movil').errors?.pattern">{{
+      getErrorMessage("movil") }}</mat-error>
+    <mat-error *ngIf="this.signupForm.get('movil').errors?.serverError">{{
+      this.signupForm.get('movil').errors?.serverError }}</mat-error>
   </mat-form-field>
   <mat-form-field>
     <mat-label>Correo</mat-label>
     <input matInput type="text" formControlName="correo" placeholder="Correo" required>
     <mat-error *ngIf=" this.signupForm.get('correo').errors?.required">{{ getErrorMessage("correo") }}</mat-error>
-    <mat-error *ngIf="this.signupForm.get('correo').dirty && this.signupForm.get('correo').errors?.email">{{ getErrorMessage("correo") }}</mat-error>
-    <mat-error *ngIf="this.signupForm.get('correo').errors?.serverError ">{{ this.signupForm.get('correo').errors?.serverError }}</mat-error>
+    <mat-error *ngIf="this.signupForm.get('correo').dirty && this.signupForm.get('correo').errors?.email">{{
+      getErrorMessage("correo") }}</mat-error>
+    <mat-error *ngIf="this.signupForm.get('correo').errors?.serverError ">{{
+      this.signupForm.get('correo').errors?.serverError }}</mat-error>
 
   </mat-form-field>
   <mat-form-field>
     <mat-label>Fecha de nacimiento</mat-label>
     <input matInput type="date" formControlName="fechaNacimiento" placeholder="Fecha de nacimiento" required>
-    <mat-error *ngIf="this.signupForm.get('fechaNacimiento').errors?.required">{{ getErrorMessage("fechaNacimiento") }}</mat-error>
-    <mat-error *ngIf="this.signupForm.get('fechaNacimiento').errors?.serverError">{{ this.signupForm.get('fechaNacimiento').errors?.serverError }}</mat-error>
+    <mat-error *ngIf="this.signupForm.get('fechaNacimiento').errors?.required">{{ getErrorMessage("fechaNacimiento") }}
+    </mat-error>
+    <mat-error *ngIf="this.signupForm.get('fechaNacimiento').errors?.serverError">{{
+      this.signupForm.get('fechaNacimiento').errors?.serverError }}</mat-error>
   </mat-form-field>
-  <mat-form-field >
-    <input matInput  [type]="hide ? 'password' : 'text'" [formControl]="passwordFormControl" placeholder="Contraseña" required (change)="this.confirmPasswordFormControl.setValue('')" >
+  <mat-form-field>
+    <input matInput [type]="hide ? 'password' : 'text'" [formControl]="passwordFormControl" placeholder="Contraseña"
+      required (change)="this.confirmPasswordFormControl.setValue('')">
     <mat-error *ngIf=" passwordFormControl.errors?.required">{{ getErrorMessage("password") }}</mat-error>
     <mat-error *ngIf=" passwordFormControl.errors?.pattern">{{ getErrorMessage("password") }}</mat-error>
-    <mat-error *ngIf="this.signupForm.get('password').errors?.serverError">{{ this.signupForm.get('password').errors?.serverError }}</mat-error>
-    <button class="fondo" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+    <mat-error *ngIf="this.signupForm.get('password').errors?.serverError">{{
+      this.signupForm.get('password').errors?.serverError }}</mat-error>
+    <button class="fondo" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+      [attr.aria-pressed]="hide">
       <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
     </button>
-    
+
   </mat-form-field>
-  <mat-form-field >
-    <input matInput  [type]="hide2 ? 'password' : 'text'" [formControl]="confirmPasswordFormControl" required placeholder="Repita contraseña" >
-    <mat-error *ngIf="this.confirmPasswordFormControl.dirty && this.confirmPasswordFormControl.errors?.noMatch"> {{getErrorMessage("confirmPassword")}} </mat-error>   
-    <button class="fondo" mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide2">
+  <mat-form-field>
+    <input matInput [type]="hide2 ? 'password' : 'text'" [formControl]="confirmPasswordFormControl" required
+      placeholder="Repita contraseña">
+    <mat-error *ngIf="this.confirmPasswordFormControl.dirty && this.confirmPasswordFormControl.errors?.noMatch">
+      {{getErrorMessage("confirmPassword")}} </mat-error>
+    <button class="fondo" mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'"
+      [attr.aria-pressed]="hide2">
       <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
     </button>
   </mat-form-field>
-  
   <mat-form-field appearance="fill">
     <mat-label>Rol</mat-label>
     <mat-select matNativeControl required formControlName="rol" (selectionChange)="obtenerRol($event.value)">
       <mat-option *ngFor="let rol of rolesList | keyvalue" [value]="rol.key" value="admin">{{ rol.value }}</mat-option>
     </mat-select>
     <mat-error *ngIf="this.signupForm.get('rol').errors?.required"> {{ getErrorMessage("rol") }}</mat-error>
-    <mat-error *ngIf="this.signupForm.get('rol').errors?.serverError">{{ this.signupForm.get('rol').errors?.serverError }}</mat-error>
+    <mat-error *ngIf="this.signupForm.get('rol').errors?.serverError">{{ this.signupForm.get('rol').errors?.serverError
+      }}</mat-error>
   </mat-form-field>
-  
-  
   <mat-form-field appearance="fill">
     <mat-label>G&eacute;nero</mat-label>
     <mat-select matNativeControl required formControlName="genero">
-      <mat-option  value="masculino">Masculino</mat-option>
-      <mat-option  value="femenino" >Femenino</mat-option>
+      <mat-option value="masculino">Masculino</mat-option>
+      <mat-option value="femenino">Femenino</mat-option>
     </mat-select>
     <mat-error *ngIf="this.signupForm.get('genero').errors?.required">{{ getErrorMessage("genero") }}</mat-error>
-    <mat-error *ngIf="this.signupForm.get('genero').errors?.serverError">{{ this.signupForm.get('genero').errors?.serverError }}</mat-error>
+    <mat-error *ngIf="this.signupForm.get('genero').errors?.serverError">{{
+      this.signupForm.get('genero').errors?.serverError }}</mat-error>
   </mat-form-field>
   <mat-form-field *ngIf="this.numero!=1 && this.user.rol==1" appearance="fill">
     <mat-label>Centro educativo</mat-label>
-    <mat-select matNativeControl required [formControl]="codigoCentro" (selectionChange)="obtenerFP($event.value)" > 
-      <mat-option *ngFor="let centro of centroList | keyvalue" [value]="centro.key" >{{ centro.value }}</mat-option>
+    <mat-select matNativeControl required [formControl]="codigoCentro" (selectionChange)="obtenerFP($event.value)">
+      <mat-option *ngFor="let centro of centroList | keyvalue" [value]="centro.key">{{ centro.value }}</mat-option>
     </mat-select>
     <mat-error *ngIf="this.codigoCentro.errors?.required"> {{ getErrorMessage("codigoCentro") }}</mat-error>
     <mat-error *ngIf="this.codigoCentro.errors?.serverError">{{ this.codigoCentro.errors?.serverError }}</mat-error>
@@ -102,31 +115,37 @@
   <mat-form-field *ngIf="this.numero!=1 && this.numero!=2" appearance="fill">
     <mat-label>FP</mat-label>
     <div *ngIf="this.numero == 3 else modulos;">
-      <mat-select matNativeControl required name="fpDual" [formControl]="fpDual" (selectionChange)="obtenerModuloAndEmpresa($event.value)" >
+      <mat-select matNativeControl required name="fpDual" [formControl]="fpDual"
+        (selectionChange)="obtenerModuloAndEmpresa($event.value)">
         <mat-option *ngFor="let fp of fpList | keyvalue" [value]="fp.key">{{ fp.value }}</mat-option>
       </mat-select>
-      <mat-error *ngIf="this.fpDual.errors?.required && this.codigoCentro.value != '' && (this.fpDual.dirty || this.fpDual.touched)"> {{ getErrorMessage("fpDual") }}</mat-error>
+      <mat-error
+        *ngIf="this.fpDual.errors?.required && this.codigoCentro.value != '' && (this.fpDual.dirty || this.fpDual.touched)">
+        {{ getErrorMessage("fpDual") }}</mat-error>
       <mat-error *ngIf="this.fpDual.errors?.serverError">{{ this.fpDual.errors?.serverError }}</mat-error>
     </div>
-    <ng-template  #modulos>
-      <mat-select matNativeControl required [formControl]="fpDual" (selectionChange)="obtenerModulo($event.value)" >
+    <ng-template #modulos>
+      <mat-select matNativeControl required [formControl]="fpDual" (selectionChange)="obtenerModulo($event.value)">
         <mat-option *ngFor="let fp of fpList | keyvalue" [value]="fp.key">{{ fp.value }}</mat-option>
       </mat-select>
-      <mat-error *ngIf="this.fpDual.errors?.required && this.codigoCentro.value != '' && (this.fpDual.dirty || this.fpDual.touched) "> {{ getErrorMessage("fpDual") }}</mat-error>
+      <mat-error
+        *ngIf="this.fpDual.errors?.required && this.codigoCentro.value != '' && (this.fpDual.dirty || this.fpDual.touched) ">
+        {{ getErrorMessage("fpDual") }}</mat-error>
       <mat-error *ngIf="this.fpDual.errors?.serverError">{{ this.fpDual.errors?.serverError }}</mat-error>
     </ng-template>
 
   </mat-form-field>
 
-  
-  <mat-form-field  *ngIf="this.numero==4; else anotherRol">
-    <input matInput type="text" [formControl]="formGroupProfesor" placeholder="Departamento" >
+
+  <mat-form-field *ngIf="this.numero==4; else anotherRol">
+    <input matInput type="text" [formControl]="formGroupProfesor" placeholder="Departamento">
     <mat-error *ngIf="formGroupProfesor.errors?.required ">{{ getErrorMessage("formGroupProfesor") }}</mat-error>
     <mat-error *ngIf="formGroupProfesor.errors?.minlength">{{ getErrorMessage("formGroupProfesor") }}</mat-error>
-    <mat-error *ngIf="this.formGroupProfesor.errors?.serverError">{{ this.formGroupProfesor.errors?.serverError }}</mat-error>
+    <mat-error *ngIf="this.formGroupProfesor.errors?.serverError">{{ this.formGroupProfesor.errors?.serverError }}
+    </mat-error>
   </mat-form-field>
-  
-  <mat-form-field appearance="fill"   *ngIf="this.numero==4; ">
+
+  <mat-form-field appearance="fill" *ngIf="this.numero==4; ">
     <mat-label>M&oacute;dulos</mat-label>
     <mat-select [formControl]="modulo" multiple>
       <mat-option *ngFor="let modulo of moduloList | keyvalue" [value]="modulo.key">{{modulo.value}}</mat-option>
@@ -134,59 +153,71 @@
     <mat-error *ngIf="modulo.errors?.required ">M&oacute;dulo requerido</mat-error>
     <mat-error *ngIf="this.modulo.errors?.serverError">M&oacute;dulo requerido</mat-error>
 
-  </mat-form-field> 
-  
-  <ng-template  #anotherRol>
+  </mat-form-field>
+
+  <ng-template #anotherRol>
     <mat-form-field *ngIf="this.numero==5; else rolTutorEmpresa" required>
-      <input matInput type="text" [formControl]="numeroExpediente" placeholder="Número de expediente" >
+      <input matInput type="text" [formControl]="numeroExpediente" placeholder="Número de expediente">
       <mat-error *ngIf=" numeroExpediente.errors?.required">{{ getErrorMessage("numeroExpediente") }}</mat-error>
       <mat-error *ngIf=" numeroExpediente.errors?.minlength">{{ getErrorMessage("numeroExpediente") }}</mat-error>
       <mat-error *ngIf=" numeroExpediente.errors?.serverError">{{ numeroExpediente.errors?.serverError }}</mat-error>
 
     </mat-form-field>
   </ng-template>
-  <ng-template  #rolTutorEmpresa>
-    <mat-form-field appearance="fill"   *ngIf="this.numero==3">
+  <ng-template #rolTutorEmpresa>
+    <mat-form-field appearance="fill" *ngIf="this.numero==3">
       <mat-label>M&oacute;dulos</mat-label>
       <mat-select [formControl]="modulo" multiple>
         <mat-option *ngFor="let modulo of moduloList | keyvalue" [value]="modulo.key">{{modulo.value}}</mat-option>
       </mat-select>
       <mat-error *ngIf="modulo.errors?.required ">M&oacute;dulo requerido</mat-error>
       <mat-error *ngIf="this.modulo.errors?.serverError">M&oacute;dulo requerido</mat-error>
-  
-    </mat-form-field> 
-    <mat-form-field [formGroup]="formGroupTutor" *ngIf="this.numero==3">
-        <input  matInput type="text" required formControlName="moduloEmpresa"  placeholder="Modulo de la empresa" >
-        <mat-error *ngIf=" this.formGroupTutor.get('moduloEmpresa').errors?.required">{{ getErrorMessage("moduloEmpresa") }}</mat-error>
-        <mat-error *ngIf=" this.formGroupTutor.get('moduloEmpresa').errors?.minlength">{{ getErrorMessage("moduloEmpresa") }}</mat-error>
-        <mat-error *ngIf="this.formGroupTutor.get('moduloEmpresa').errors?.serverError">{{ this.formGroupTutor.get('moduloEmpresa').errors?.serverError }}</mat-error>
 
-      </mat-form-field >
-      <mat-form-field [formGroup]="formGroupTutor" *ngIf="this.numero==3" appearance="fill">
-        <mat-label>Empresas</mat-label>
-        <mat-select matNativeControl required formControlName="cifEmpresa">
-          <mat-option *ngFor="let empresa of empresaList | keyvalue" [value]="empresa.key">{{ empresa.value }}</mat-option>
-        </mat-select>
-        <mat-error *ngIf="this.formGroupTutor.get('cifEmpresa').errors?.required"> {{ getErrorMessage("cifEmpresa") }}</mat-error>
-        <mat-error *ngIf="this.formGroupTutor.get('cifEmpresa').errors?.serverError">{{ this.formGroupTutor.get('cifEmpresa').errors?.serverError }}</mat-error>
-      </mat-form-field>
+    </mat-form-field>
+    <mat-form-field [formGroup]="formGroupTutor" *ngIf="this.numero==3">
+      <input matInput type="text" required formControlName="moduloEmpresa" placeholder="Modulo de la empresa">
+      <mat-error *ngIf=" this.formGroupTutor.get('moduloEmpresa').errors?.required">{{ getErrorMessage("moduloEmpresa")
+        }}</mat-error>
+      <mat-error *ngIf=" this.formGroupTutor.get('moduloEmpresa').errors?.minlength">{{ getErrorMessage("moduloEmpresa")
+        }}</mat-error>
+      <mat-error *ngIf="this.formGroupTutor.get('moduloEmpresa').errors?.serverError">{{
+        this.formGroupTutor.get('moduloEmpresa').errors?.serverError }}</mat-error>
+
+    </mat-form-field>
+    <mat-form-field [formGroup]="formGroupTutor" *ngIf="this.numero==3" appearance="fill">
+      <mat-label>Empresas</mat-label>
+      <mat-select matNativeControl required formControlName="cifEmpresa">
+        <mat-option *ngFor="let empresa of empresaList | keyvalue" [value]="empresa.key">{{ empresa.value }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="this.formGroupTutor.get('cifEmpresa').errors?.required"> {{ getErrorMessage("cifEmpresa") }}
+      </mat-error>
+      <mat-error *ngIf="this.formGroupTutor.get('cifEmpresa').errors?.serverError">{{
+        this.formGroupTutor.get('cifEmpresa').errors?.serverError }}</mat-error>
+    </mat-form-field>
   </ng-template>
   <div *ngIf="this.numero==5">
-    <button class="boton-envio" type="submit" [disabled]="!signupForm.valid || !this.numeroExpediente.valid || !this.fpDual.valid || !this.codigoCentro.valid"> <span>Registrar Usuario</span></button>
-</div>
-<div *ngIf="this.numero==4">
-  <button class="boton-envio" type="submit" [disabled]="!signupForm.valid || !this.formGroupProfesor.valid || !this.modulo.valid || !this.fpDual.valid || !this.codigoCentro.valid"> <span>Registrar Usuario</span></button>
-</div>
-<div *ngIf="this.numero==3">
-  <button class="boton-envio" type="submit" [disabled]="!signupForm.valid || !this.formGroupTutor.valid || !this.modulo.valid || !this.fpDual.valid || !this.codigoCentro.valid"> <span>Registrar Usuario</span></button>
-</div>
-<div *ngIf="this.numero==2">
-  <button class="boton-envio" type="submit" [disabled]="!signupForm.valid || !this.codigoCentro.valid"> <span>Registrar Usuario</span></button>
-</div>
-<div *ngIf="this.numero!=5 && this.numero!=4 && this.numero!=3 && this.numero!=2">
-  <button class="boton-envio" type="submit" [disabled]="!signupForm.valid "> <span>Registrar Usuario</span></button>
-</div>
+    <button class="boton-envio" type="submit"
+      [disabled]="!signupForm.valid || !this.numeroExpediente.valid || !this.fpDual.valid || !this.codigoCentro.valid">
+      <span>Registrar Usuario</span></button>
+  </div>
+  <div *ngIf="this.numero==4">
+    <button class="boton-envio" type="submit"
+      [disabled]="!signupForm.valid || !this.formGroupProfesor.valid || !this.modulo.valid || !this.fpDual.valid || !this.codigoCentro.valid">
+      <span>Registrar Usuario</span></button>
+  </div>
+  <div *ngIf="this.numero==3">
+    <button class="boton-envio" type="submit"
+      [disabled]="!signupForm.valid || !this.formGroupTutor.valid || !this.modulo.valid || !this.fpDual.valid || !this.codigoCentro.valid">
+      <span>Registrar Usuario</span></button>
+  </div>
+  <div *ngIf="this.numero==2">
+    <button class="boton-envio" type="submit" [disabled]="!signupForm.valid || !this.codigoCentro.valid">
+      <span>Registrar Usuario</span></button>
+  </div>
+  <div *ngIf="this.numero!=5 && this.numero!=4 && this.numero!=3 && this.numero!=2">
+    <button class="boton-envio" type="submit" [disabled]="!signupForm.valid "> <span>Registrar Usuario</span></button>
+  </div>
 
-  
+
 </form>
-

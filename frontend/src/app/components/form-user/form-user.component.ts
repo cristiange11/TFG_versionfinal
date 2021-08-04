@@ -86,7 +86,7 @@ export class FormUserComponent implements OnInit {
           rol.forEach(rolInfo => {
             if (this.user.rol == 2 && rolInfo.id != 1 && rolInfo.id != 2) {
               this.rolesList.set(rolInfo.id, rolInfo.nombreRol);
-            }else if (this.user.rol == 1){
+            } else if (this.user.rol == 1) {
               this.rolesList.set(rolInfo.id, rolInfo.nombreRol);
             }
           });
@@ -139,7 +139,7 @@ export class FormUserComponent implements OnInit {
   get passwordValue() {
     return this.passwordFormControl.value;
   }
-  
+
   obtenerRol(rol): number {
     this.numero = rol;
     console.log("Rol => " + this.numero)
@@ -154,33 +154,33 @@ export class FormUserComponent implements OnInit {
       this.modulo = new FormControl("", [Validators.required]);
       this.formGroupTutor = new FormGroup({ moduloEmpresa: new FormControl("", [Validators.required, Validators.minLength(6)]), cifEmpresa: new FormControl("", [Validators.required]) })
       console.log(this.user)
-        this.empresaService.getEmpresasByFp(this.user.fpDual).pipe(first())
-          .subscribe(
-            data => {
-              this.empresaList = new Map<string, string>();
-              let empresas = data["empresas"]
-              empresas.forEach(empresaInfo => {
-                var empresa = empresaInfo as Empresa
-                this.empresaList.set(empresa.cifEmpresa, empresa.nombre)
-              });
-            },
-            error => {
-
-              if (error.status == 401 && error.error.errors == "Sesión expirada") {
-                AppComponent.myapp.openDialogSesion(); 
-              } else if (error.status == 406) {
-                const res = new Array();
-                res.push("Petición incorrecta.");
-                AppComponent.myapp.openDialog(res);
-              }
+      this.empresaService.getEmpresasByFp(this.user.fpDual).pipe(first())
+        .subscribe(
+          data => {
+            this.empresaList = new Map<string, string>();
+            let empresas = data["empresas"]
+            empresas.forEach(empresaInfo => {
+              var empresa = empresaInfo as Empresa
+              this.empresaList.set(empresa.cifEmpresa, empresa.nombre)
             });
-        
-      
-  
-  }
+          },
+          error => {
+
+            if (error.status == 401 && error.error.errors == "Sesión expirada") {
+              AppComponent.myapp.openDialogSesion();
+            } else if (error.status == 406) {
+              const res = new Array();
+              res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
+          });
+
+
+
+    }
     return this.numero;
   }
-  obtenerModuloAndEmpresa(fp): void{
+  obtenerModuloAndEmpresa(fp): void {
     console.log("entro " + fp)
     this.empresaService.getEmpresasByFp(fp).pipe(first())
       .subscribe(
@@ -188,7 +188,7 @@ export class FormUserComponent implements OnInit {
           this.empresaList = new Map<string, string>();
           let empresas = data["empresas"]
           empresas.forEach(empresaInfo => {
-            var empresa = empresaInfo  
+            var empresa = empresaInfo
 
             this.empresaList.set(empresa.cifEmpresa, empresa.nombre)
           });
@@ -205,7 +205,7 @@ export class FormUserComponent implements OnInit {
             AppComponent.myapp.openDialog(res);
           }
         });
-      this.obtenerModulo(fp);
+    this.obtenerModulo(fp);
   }
   obtenerModulo(fp): void {
 
@@ -215,7 +215,7 @@ export class FormUserComponent implements OnInit {
           this.moduloList = new Map<number, string>();
           let modulos = data["modulos"]
           modulos.forEach(moduloInfo => {
-            var modulo = moduloInfo 
+            var modulo = moduloInfo
 
             this.moduloList.set(modulo.codigo, modulo.nombre)
           });
@@ -388,18 +388,18 @@ export class FormUserComponent implements OnInit {
                     serverError: errorInfo.message
                   });
                 }
-                else if (errorInfo.param == "modulo"){
+                else if (errorInfo.param == "modulo") {
                   this.modulo.setErrors({
                     serverError: errorInfo.message
-                  });  
-                }else if (errorInfo.param == "fpDual"){
+                  });
+                } else if (errorInfo.param == "fpDual") {
                   this.fpDual.setErrors({
                     serverError: errorInfo.message
-                  });  
-                }else if (errorInfo.param == "formGroupProfesor"){
+                  });
+                } else if (errorInfo.param == "formGroupProfesor") {
                   this.formGroupProfesor.setErrors({
                     serverError: errorInfo.message
-                  });  
+                  });
                 }
                 else if (errorInfo.param == "codigoCentro") {
                   this.codigoCentro.setErrors({
@@ -433,18 +433,18 @@ export class FormUserComponent implements OnInit {
                   formControl.setErrors({
                     serverError: errorInfo.message
                   });
-                }else if (errorInfo.param == "modulo"){
+                } else if (errorInfo.param == "modulo") {
                   this.modulo.setErrors({
                     serverError: errorInfo.message
-                  });  
-                }else if (errorInfo.param == "fpDual"){
+                  });
+                } else if (errorInfo.param == "fpDual") {
                   this.fpDual.setErrors({
                     serverError: errorInfo.message
-                  });  
-                }else if (errorInfo.param == "formGroupProfesor"){
+                  });
+                } else if (errorInfo.param == "formGroupProfesor") {
                   this.formGroupProfesor.setErrors({
                     serverError: errorInfo.message
-                  });  
+                  });
                 }
                 else if (errorInfo.param == "codigoCentro") {
                   this.codigoCentro.setErrors({
