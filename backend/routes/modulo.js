@@ -52,16 +52,14 @@ router.put(
   [
     body('fpDual').trim().not().isEmpty().withMessage("FP Dual vacío")
     .custom(async (fpDual) => {
-      if(!isNaN(fpDual)){
-       
+      if(!isNaN(fpDual)){       
         const user = await FP.getFp(fpDual);
       if (user[0].length == 0) {
         return Promise.reject('Error');
       }
       }else{
         return Promise.reject('Campo erróneo');
-      }
-      
+      }     
     }),
     body('nombre').trim().not().isEmpty().withMessage("Nombre vacío"),
     body('curso').trim().not().isEmpty().withMessage("Curso vacío").custom(async (curso) => {

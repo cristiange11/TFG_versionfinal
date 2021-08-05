@@ -7,7 +7,6 @@ module.exports = class Modulo {
         this.descripcion = descripcion;
         this.curso = curso;
     }
-
     static async find(codigo) {
         const [rows, fields] = await promisePool.query(
             `SELECT * FROM modulo where codigo = ${codigo}`);

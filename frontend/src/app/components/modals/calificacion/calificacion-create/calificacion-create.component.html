@@ -12,7 +12,7 @@
       </mat-form-field>
       <mat-form-field class="fullWidth" appearance="outline">
         <mat-label>Nota</mat-label>
-        <input matInput type="text" name="nota" formControlName="nota" placeholder="nota" required>
+        <input matInput type="text"  name="nota" formControlName="nota" placeholder="nota" required>
         <mat-error *ngIf="formInstance.controls['nota']?.errors?.required">Nota requerida</mat-error>
         <mat-error *ngIf="formInstance.controls['nota']?.errors?.min || formInstance.controls['nota']?.errors?.max">Nota entre 0 y 10</mat-error>
         <mat-error *ngIf="formInstance.controls['nota']?.errors?.serverError">{{ formInstance.controls['nota']?.errors?.serverError }}</mat-error>
@@ -21,7 +21,7 @@
 
       <mat-form-field class="fullWidth" appearance="outline">
         <mat-label>Descripci&oacute;n</mat-label>
-        <input matInput type="text" name="descripcion" formControlName="descripcion" placeholder="descripcion" required />
+        <input matInput type="text"  name="descripcion" formControlName="descripcion" placeholder="descripcion" required />
         <mat-error *ngIf="formInstance.controls['descripcion']?.errors?.required">Descripci&oacute;n requerida</mat-error>
         <mat-error *ngIf="formInstance.controls['descripcion']?.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
         <mat-error *ngIf="formInstance.controls['descripcion']?.errors?.serverError">{{ formInstance.controls['descripcion']?.errors?.serverError }}</mat-error>

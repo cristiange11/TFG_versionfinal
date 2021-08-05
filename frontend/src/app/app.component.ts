@@ -6,6 +6,7 @@ import { SesionComponent } from './components/modals/sesion/sesion.component';
 import titles from './files/titles.json';
 import { first } from 'rxjs/operators';
 import { PasswordComponent } from './components/modals/password/password.component';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

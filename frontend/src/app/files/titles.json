@@ -1,5 +1,4 @@
-{
-    
+{   
     "direccion" : "Dirección",
     "telefono" : "Teléfono",
     "cifEmpresa" : "CIF",
@@ -23,5 +22,6 @@
     "nombreApellidoTutor" : "Nombre y apellidos del tutor",
     "nombreUsuario" : "Nombre",
     "apellidoUsuario" : "Apellido",
-    "nombreCentro" : "Nombre del Centro"
+    "nombreCentro" : "Nombre del Centro",
+    "nota": "Nota"
 }

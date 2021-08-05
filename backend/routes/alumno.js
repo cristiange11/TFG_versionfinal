@@ -17,6 +17,8 @@ router.get('/alumno/:codigoModulo', alumnoController.getAlumnosByModuloEncuesta)
 
 router.get('/:dni', alumnoController.getAlumno);
 
+router.get('/calificaciones/:dni', alumnoController.getCalificacionesAlumno);
+
 router.delete('/:dni', alumnoController.deleteAlumno);
 
 router.post(

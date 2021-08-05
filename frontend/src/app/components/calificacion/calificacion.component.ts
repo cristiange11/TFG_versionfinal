@@ -14,7 +14,9 @@ import { CalificacionCreateComponent } from '../modals/calificacion/calificacion
 import { CalificacionUpdateComponent } from '../modals/calificacion/calificacion-update/calificacion-update.component';
 import { DeleteComponent } from '../modals/delete/delete.component';
 import { NavigationComponent } from '../navigation/navigation.component';
-
+import {jsPDF} from 'jspdf';
+import html2canvas from 'html2canvas';
+import 'jspdf-autotable';
 @Component({
   selector: 'app-calificacion',
   templateUrl: './calificacion.component.html',
@@ -52,13 +54,16 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
     }
-    this.getAll();
+    var aux=this.getAll();
+    
     this.dataSource.filterPredicate = function (data, filter: string): boolean {
 
       return data.nombreUsuario.toLowerCase().includes(filter) || data.descripcion.toLowerCase().includes(filter) || data.apellidoUsuario.toLowerCase().includes(filter) || data.nota.toString().includes(filter);
     };
+    
   }
   getAll() {
+    var res = [];
     if (Number(this.user.rol != 5)) {
       console.log("Modulo => " + Number(sessionStorage.getItem('codigoModulo')))
       this.serviceSubscribe = this.calificacionService.getCalificaciones(Number(sessionStorage.getItem('codigoModulo'))).pipe(first())
@@ -73,6 +78,10 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
 
             });
             this.dataSource.data = this.calificacionList
+            this.calificacionList.forEach(calif =>{
+              res.push(calif)
+            })
+            
           },
           error => {
             console.log(error)
@@ -86,7 +95,8 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
               AppComponent.myapp.openDialog(res);
             }
           });
-    }
+    }console.log(res)
+    return res;
   }
   public doFilter = (value: { target: HTMLInputElement }) => {
     const filterValue = value.target.value.trim().toLocaleLowerCase();

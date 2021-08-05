@@ -24,6 +24,7 @@ exports.getModulos = async (req, res, next) => {
     }
   }
 };
+
 exports.getModulosProf = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });

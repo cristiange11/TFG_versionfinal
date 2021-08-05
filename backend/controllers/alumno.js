@@ -24,6 +24,27 @@ exports.getAlumnos = async (req, res, next) => {
         }
     }
 };
+exports.getCalificacionesAlumno = async (req, res, next) => {
+    if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
+        res.status(406).json({ "errors": "No aceptable" });
+    }
+    else {
+        var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
+        console.log(expirado)
+        if (expirado) {
+            res.status(401).json({ "errors": "Sesión expirada" });
+        } else {
+            try {
+                const alumnos = await Alumno.getCalificacionesAlumno(req.params.dni);
+
+                res.status(200).json({ alumnos: alumnos });
+
+            } catch (err) {
+                res.status(500).json({ error: err });
+            }
+        }
+    }
+};
 exports.getAlumnosByModulo = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });

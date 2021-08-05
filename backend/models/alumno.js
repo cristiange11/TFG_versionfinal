@@ -21,15 +21,15 @@ module.exports = class Alumno extends User {
             `SELECT * FROM alumno `);
         return rows;
     }
-    /*static async getAlumnosByModulo(codigoModulo) {
-        console.log(  `SELECT U.nombre, U.dni FROM usuario as U, alumno as A, alumno_modulo as AM where U.dni=A.dni AND A.dni = AM.dni AND AM.codigoModulo =${codigoModulo} `);
-
-        const [rows, fields] = await promisePool.query(
-            `SELECT U.nombre, U.dni, U.apellidos FROM usuario as U, alumno as A, alumno_modulo as AM where U.dni=A.dni AND A.dni = AM.dni AND AM.codigoModulo =${codigoModulo} `);
+    static async getCalificacionesAlumno(dni) {
+        console.log(`SELECT AM.dni, AM.codigoModulo, C.nota,M.nombre as nombreModulo FROM modulo as M, alumno_modulo as AM LEFT JOIN calificacion as C ON AM.codigoModulo = C.codigoModulo where M.codigo = AM.codigoModulo and AM.dni ="${dni}"`)
+        const [rows, fields] = await promisePool.query(`SELECT AM.dni, AM.codigoModulo, C.nota,M.nombre as nombreModulo FROM modulo as M, alumno_modulo as AM LEFT JOIN calificacion as C ON AM.codigoModulo = C.codigoModulo where M.codigo = AM.codigoModulo and AM.dni ="${dni}"`);
         return rows;
-    }*/
+    }
     static async getAlumnosByModulo(codigoModulo) {
-        const [rows, fields] = await promisePool.query(`SELECT U.* FROM usuario as U, modulo as M where U.rol=5 AND M.codigo = ${codigoModulo} AND not EXISTS(SELECT * from calificacion as C where C.dni = U.dni ) `);
+        console.log(`SELECT AM.dni, AM.codigoModulo, U.*, C.nota as nota FROM usuario U, alumno_modulo as AM LEFT join calificacion as C on C.dni = AM.dni where U.dni = AM.dni and AM.codigoModulo =${codigoModulo} and C.nota is NULL`)
+        const [rows, fields] = await promisePool.query(`SELECT AM.dni, AM.codigoModulo, C.nota,M.nombre as nombreModulo, U.* FROM usuario as U,modulo as M, alumno_modulo as AM LEFT JOIN calificacion as C ON AM.codigoModulo = C.codigoModulo where M.codigo = AM.codigoModulo and AM.codigoModulo =${codigoModulo} and C.nota is null and AM.dni = U.dni
+        `);
         return rows;
     }
     static async getAlumnosByModuloEncuesta(codigoModulo) {

@@ -1,7 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const fileupload = require('express-fileupload');
 const app = express();
 const cors = require('cors');
+const busboy = require("connect-busboy");
 const ports = process.env.PORT || 3000;
 const authRoutes = require('./routes/auth');
 const centroRoutes = require('./routes/centro');
@@ -20,7 +22,11 @@ const resultadoRoutes= require('./routes/resultadoEncuesta');
 
 app.use(cors());
 
+app.use(fileupload());
+
 app.use(bodyParser.json());
+
+app.use(busboy());
 
 app.use('/auth', authRoutes);
 

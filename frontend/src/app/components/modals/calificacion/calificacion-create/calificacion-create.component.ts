@@ -71,11 +71,11 @@ export class CalificacionCreateComponent implements OnInit {
       });
   }
   save(){
-    console.log(this.formInstance.value);
+    
     this.calificacionService.addCalificacion(this.formInstance.value).pipe(first())
       .subscribe(
         data => {
-         window.location.reload();
+          window.location.reload();
         },
         error => {
           

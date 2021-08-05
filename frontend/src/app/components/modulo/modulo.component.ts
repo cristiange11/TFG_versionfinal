@@ -1,3 +1,4 @@
+import { AlumnoService } from 'src/app/services/alumno.service';
 import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -14,7 +15,10 @@ import { DeleteComponent } from '../modals/delete/delete.component';
 import { ModuloCreateComponent } from '../modals/modulo/modulo-create/modulo-create.component';
 import { ModuloUpdateComponent } from '../modals/modulo/modulo-update/modulo-update.component';
 import { NavigationComponent } from '../navigation/navigation.component';
-
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
+import 'jspdf-autotable';
+import autoTable from 'jspdf-autotable'
 @Component({
   selector: 'app-modulo',
   templateUrl: './modulo.component.html',
@@ -35,7 +39,7 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public dataSource: MatTableDataSource<Modulo>;
   private serviceSubscribe: Subscription;
-  constructor(private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private moduloService: ModuloService, public dialog: MatDialog) {
+  constructor(private alumnoService: AlumnoService, private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private moduloService: ModuloService, public dialog: MatDialog) {
     this.dataSource = new MatTableDataSource<Modulo>();
     document.body.style.background = "linear-gradient(to right, #aeeecd, #8433cf)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
@@ -58,6 +62,50 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
 
     }
     this.getAll();
+  }
+  descargarPDF() {
+    console.log(this.user.dni);
+    this.alumnoService.getCalificacionAlumno(this.user.dni).pipe(first())
+      .subscribe(
+        data => {
+          let calificaciones = data["alumnos"];
+          var header = [];
+          header.push('Módulo', 'Calificación');
+          var rowTable = [];
+          calificaciones.forEach(moduloInfo => {
+            var nota;
+            if (moduloInfo.nota == null) {
+              nota = "No calificado";
+            }
+            else { nota = moduloInfo.nota; }
+            const row = [moduloInfo.nombreModulo, nota];
+            rowTable.push(row);
+          });
+          var doc = new jsPDF('p', 'pt');
+
+          doc.setFontSize(18);
+          doc.setFontSize(11);
+          doc.setTextColor(100);
+
+          autoTable(doc, {
+            head: [header], 
+            body: rowTable
+          }) 
+          // below line for Download PDF document  
+          doc.save('calificaciones.pdf');
+
+        },
+        error => {
+          if (error.status == 401 && error.error.errors == "Sesión expirada") {
+            AppComponent.myapp.openDialogSesion();
+          }
+          else if (error.status == 406) {
+            const res = new Array();
+            res.push("Petición incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }
+
+        });
   }
   obtenerModulosAdmin(fpDual) {
     this.serviceSubscribe = this.moduloService.getModulos(fpDual).pipe(first())
