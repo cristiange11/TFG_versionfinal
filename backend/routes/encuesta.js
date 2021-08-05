@@ -12,7 +12,7 @@ router.get('/:codigoModulo', encuestaController.getEncuestas);
 
 router.get('/encuesta/:id', encuestaController.getEncuesta);
 
-router.get('/tutor/:dni', encuestaController.getEncuestasByTutor);
+router.get('/tutor/:dni/:codigoModulo', encuestaController.getEncuestasByTutor);
 
 router.delete('/:id', encuestaController.deleteEncuesta);
 

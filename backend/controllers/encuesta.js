@@ -14,7 +14,7 @@ exports.getEncuestas = async (req, res, next) => {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
       try {
-
+        console.log("entro")
         const encuestas = await Encuesta.getEncuestas(req.params.codigoModulo);
 
         res.status(200).json({ encuestas: encuestas });
@@ -36,7 +36,7 @@ exports.getEncuestasByTutor = async (req, res, next) => {
     } else {
       try {
         
-        const encuestas = await Encuesta.getEncuestaByTutor(req.params.dni);
+        const encuestas = await Encuesta.getEncuestaByTutor(req.params.dni, req.params.codigoModulo);
         res.status(200).json({ encuestas: encuestas });
       } catch (err) {
         res.status(500).json({ error: err });

@@ -97,7 +97,7 @@ export class EncuestaComponent implements OnInit, OnDestroy, AfterViewInit {
 
           });
     } else {
-      this.serviceSubscribe = this.encuestaService.getEncuestasByTutor(this.user.dni).pipe(first())
+      this.serviceSubscribe = this.encuestaService.getEncuestasByTutor(this.user.dni, Number(sessionStorage.getItem('codigoModulo'))).pipe(first())
         .subscribe(
           data => {
             let encuestas = data["encuestas"];
