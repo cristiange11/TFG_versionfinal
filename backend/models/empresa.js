@@ -11,7 +11,6 @@ module.exports = class Empresa {
         this.url = url;
     }
     static async findTelefono(telefono, cifEmpresa) {
-        console.log(`SELECT * FROM empresa where telefono = '${telefono}' AND cifEmpresa != '${cifEmpresa}'`)
         return await promisePool.query(
             `SELECT * FROM empresa where telefono = '${telefono}' AND cifEmpresa != '${cifEmpresa}'`);
     }
@@ -34,7 +33,6 @@ module.exports = class Empresa {
         return rows;
     }
     static async getEmpresasByFp(fpDual) {
-        console.log(`SELECT E.* FROM empresa E, fp_duales F, empresa_fpdual FE WHERE E.cifEmpresa = FE.CifEmpresa AND FE.idFp = F.id AND F.id = ${fpDual}`)
         const [rows, fields] = await promisePool.query(
             `SELECT E.* FROM empresa E, fp_duales F, empresa_fpdual FE WHERE E.cifEmpresa = FE.CifEmpresa AND FE.idFp = F.id AND F.id = ${fpDual}`);
         return rows;
@@ -52,7 +50,6 @@ module.exports = class Empresa {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_EMPRESA','No se ha podido eliminar la empresa ' ,'${user}',sysdate(), 'empresa')`);
 
-            console.log('ROLLBACK', err);
             throw err;
         } finally {
             await connection.release();
@@ -73,7 +70,6 @@ module.exports = class Empresa {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_EMPRESA','No se ha podido eliminar la empresa ' ,'${user}',sysdate(), 'empresa')`);
 
-            console.log('ROLLBACK', err);
             throw err;
         } finally {
             await connection.release();
@@ -82,7 +78,6 @@ module.exports = class Empresa {
     }
     static async createEmpresa(empresa, user) {
         const connection = await promisePool.getConnection();
-        console.log(`INSERT INTO empresa_fpdual(idFp, CifEmpresa, becas, plazas, dineroBeca) VALUES (${empresa.fpDual},'${empresa.cifEmpresa}','${empresa.becas}','${empresa.plazas}', '${empresa.dineroBeca})'`)
         try {
             await connection.beginTransaction();
             let query = `INSERT INTO empresa(cifEmpresa, direccion, nombre, correo, telefono, url) VALUES ('${empresa.cifEmpresa}','${empresa.direccion}','${empresa.nombre}','${empresa.correo}','${empresa.telefono}','${empresa.url}') `;
@@ -93,7 +88,6 @@ module.exports = class Empresa {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_EMPRESA','No se ha añadido empresa con CIF ${empresa.cifEmpresa}','${user}',sysdate(), 'empresa')`);
-            console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {
             await connection.release();
@@ -102,7 +96,6 @@ module.exports = class Empresa {
     }
     static async updateEmpresa(empresa, user) {
         const connection = await promisePool.getConnection();
-        console.log(`UPDATE empresa_fpdual SET becas=${empresa.becas} ,plazas=${empresa.plazas} dineroBeca = '${empresa.dineroBeca}' WHERE CifEmpresa = '${empresa.cifEmpresa}' `)
         try {
             await connection.beginTransaction();
             let query = `UPDATE empresa SET direccion='${empresa.direccion}',nombre='${empresa.nombre}', correo='${empresa.correo}',telefono='${empresa.telefono}',url='${empresa.url}' WHERE cifEmpresa = '${empresa.cifEmpresa}'`;
@@ -113,7 +106,6 @@ module.exports = class Empresa {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_EMPRESA','No se ha actualizado empresa con CIF ${empresa.cifEmpresa}','${user}',sysdate(), 'empresa')`);
-            console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {
             await connection.release();

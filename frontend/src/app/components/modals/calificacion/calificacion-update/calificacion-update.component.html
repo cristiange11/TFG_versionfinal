@@ -1,28 +1,30 @@
 <h1 mat-dialog-title>Crear Calificaci&oacute;n</h1>
 <div mat-dialog-content>
-  <form [formGroup]="formInstance" novalidate >
-     
-      <mat-form-field class="fullWidth" appearance="outline">
-        <mat-label>Nota</mat-label>
-        <input matInput type="text" name="nota" formControlName="nota" placeholder="nota" required>
-        <mat-error *ngIf="formInstance.controls['nota']?.errors?.required">Nota requerida</mat-error>
-        <mat-error *ngIf="formInstance.controls['nota']?.errors?.min || formInstance.controls['nota']?.errors?.max">Nota entre 0 y 10</mat-error>
-        <mat-error *ngIf="formInstance.controls['nota']?.errors?.serverError">{{ formInstance.controls['nota']?.errors?.serverError }}</mat-error>
+  <form [formGroup]="formInstance" novalidate>
 
-      </mat-form-field>
+    <mat-form-field class="fullWidth" appearance="outline">
+      <mat-label>Nota</mat-label>
+      <input matInput type="text" name="nota" formControlName="nota" placeholder="nota" required>
+      <mat-error *ngIf="formInstance.controls['nota']?.errors?.required">Nota requerida</mat-error>
+      <mat-error *ngIf="formInstance.controls['nota']?.errors?.min || formInstance.controls['nota']?.errors?.max">Nota
+        entre 0 y 10</mat-error>
+      <mat-error *ngIf="formInstance.controls['nota']?.errors?.serverError">{{
+        formInstance.controls['nota']?.errors?.serverError }}</mat-error>
 
-      <mat-form-field class="fullWidth" appearance="outline">
-        <mat-label>Descripci&oacute;n</mat-label>
-        <input matInput type="text" name="descripcion" formControlName="descripcion" placeholder="descripcion" required />
-        <mat-error *ngIf="formInstance.controls['descripcion']?.errors?.required">Descripci&oacute;n requerida</mat-error>
-        <mat-error *ngIf="formInstance.controls['descripcion']?.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
-        <mat-error *ngIf="formInstance.controls['descripcion']?.errors?.serverError">{{ formInstance.controls['descripcion']?.errors?.serverError }}</mat-error>
-      </mat-form-field>
-    
+    </mat-form-field>
+
+    <mat-form-field class="fullWidth" appearance="outline">
+      <mat-label>Descripci&oacute;n</mat-label>
+      <input matInput type="text" name="descripcion" formControlName="descripcion" placeholder="descripcion" required />
+      <mat-error *ngIf="formInstance.controls['descripcion']?.errors?.required">Descripci&oacute;n requerida</mat-error>
+      <mat-error *ngIf="formInstance.controls['descripcion']?.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
+      <mat-error *ngIf="formInstance.controls['descripcion']?.errors?.serverError">{{
+        formInstance.controls['descripcion']?.errors?.serverError }}</mat-error>
+    </mat-form-field>
+
   </form>
 </div>
 <div class="mt-5" mat-dialog-actions>
-  <button mat-raised-button color="primary"  (click)="save()" [disabled]="!formInstance.valid">Yes</button>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="!formInstance.valid">Yes</button>
   <button mat-raised-button mat-dialog-close>No</button>
 </div>
-

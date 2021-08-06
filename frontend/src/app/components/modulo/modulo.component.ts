@@ -64,7 +64,6 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getAll();
   }
   descargarPDF() {
-    console.log(this.user.dni);
     this.alumnoService.getCalificacionAlumno(this.user.dni).pipe(first())
       .subscribe(
         data => {
@@ -104,7 +103,11 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
             res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
           }
-
+          else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
+            AppComponent.myapp.openDialog(res);
+          }
         });
   }
   obtenerModulosAdmin(fpDual) {
@@ -118,7 +121,7 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
           });
 
           this.dataSource.data = this.moduloList;
-          console.log(this.dataSource.data)
+         
         },
         error => {
           if (error.status == 401 && error.error.errors == "Sesión expirada") {
@@ -127,6 +130,10 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
           else if (error.status == 406) {
             const res = new Array();
             res.push("Petición incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
             AppComponent.myapp.openDialog(res);
           }
 
@@ -144,7 +151,7 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
           modulos.forEach(moduloInfo => {
 
             this.moduloList.push(moduloInfo);
-            console.log(moduloInfo)
+         
           });
 
           this.dataSource.data = this.moduloList;
@@ -158,6 +165,10 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
           else if (error.status == 406) {
             const res = new Array();
             res.push("Petición incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
             AppComponent.myapp.openDialog(res);
           }
 
@@ -171,7 +182,7 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
           modulos.forEach(moduloInfo => {
 
             this.moduloList.push(moduloInfo);
-            console.log(moduloInfo)
+            
           });
 
           this.dataSource.data = this.moduloList;
@@ -186,6 +197,10 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
             const res = new Array();
             res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
+          }else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
+            AppComponent.myapp.openDialog(res);
           }
 
         });
@@ -198,7 +213,7 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
           modulos.forEach(moduloInfo => {
 
             this.moduloList.push(moduloInfo);
-            console.log(moduloInfo)
+           
           });
 
           this.dataSource.data = this.moduloList;
@@ -212,6 +227,10 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
           else if (error.status == 406) {
             const res = new Array();
             res.push("Petición incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
             AppComponent.myapp.openDialog(res);
           }
 
@@ -245,7 +264,7 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   edit(data: Modulo) {
-    console.log(data)
+    
     const dialogRef = this.dialog.open(ModuloUpdateComponent, {
       width: '400px',
       data: data
@@ -253,20 +272,20 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
   getResultadosAprendizaje(codigoModulo) {
-    console.log(codigoModulo)
+    
     sessionStorage.setItem('codigoModulo', codigoModulo.toString());
 
     this.router.navigate(['resultadoaprendizaje']);
   }
   getEncuesta(codigoModulo) {
-    console.log(codigoModulo)
+    
     sessionStorage.setItem('codigoModulo', codigoModulo.toString());
 
     this.router.navigate(['encuesta']);
   }
   delete(id: any) {
     const dialogRef = this.dialog.open(DeleteComponent);
-    console.log(id)
+    
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.moduloService.deleteModulo(id).pipe(first())
@@ -282,17 +301,17 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
                 const res = new Array();
                 res.push("Petición incorrecta.");
                 AppComponent.myapp.openDialog(res);
+              }else if (error.status == 500) {
+                const res = new Array();
+                res.push("Error del servidor, vuelva a intentarlo más tarde.");
+                AppComponent.myapp.openDialog(res);
               }
             });
       }
     });
 
   }
-  onFileSelect(event) {
-    this.selectedFile = event.target.files[0];
-    console.log(this.selectedFile.name);
-  }
-
+ 
   ngAfterViewInit(): void {
 
     this.dataSource.paginator = this.paginator;

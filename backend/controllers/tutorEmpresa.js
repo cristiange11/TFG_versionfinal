@@ -9,7 +9,7 @@ exports.getTutores = async (req, res, next) => {
     }
     else {
         var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-        console.log(expirado)
+
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
@@ -31,7 +31,7 @@ exports.getTutorByModuloEncuesta = async (req, res, next) => {
     }
     else {
         var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
-        console.log(expirado)
+        
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
@@ -52,7 +52,7 @@ exports.getTutor = async (req, res, next) => {
     }
     else {
         var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
-        console.log(expirado)
+        
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
@@ -73,15 +73,18 @@ exports.deleteTutor = async (req, res, next) => {
     }
     else {
         var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-        console.log(expirado)
+        
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
             const dni = req.params.dni;
             try {
                 const user = jwt_decode(req.headers['authorization']).sub;
-                const tutor = await TutorEmpresa.deleteTutor(dni, user);
-                res.status(200).json({ message: "success" });
+                const tutor = await TutorEmpresa.deleteTutor(dni, user).then(function (result) {
+                    res.status(201).json({ message: "success" });
+                  }).catch(function (err) {
+                    res.status(409).json({ "errors" : "no se ha podido borrar el usuario" });
+                  });
 
             } catch (err) {
                 res.status(500).json({ error: err });
@@ -96,7 +99,7 @@ exports.updateTutor = async (req, res, next) => {
     }
     else {
         var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-        console.log(expirado)
+        
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
@@ -122,13 +125,12 @@ exports.updateTutor = async (req, res, next) => {
                 try {
                     const user = jwt_decode(req.headers['authorization']).sub;
                     const hashedPassword = await bcrypt.hash(req.body.password, 12);
-                    console.log(req.body.moduloEmpresa)
+        
                     TutorEmpresa.updateTutor(req.body, hashedPassword, user).then(function (result) {
-                        console.log("Promise Resolved");
+                        
 
                         res.status(201).json({ profesor: "sucess" });
                     }).catch(function (err) {
-                        console.log("Promise Rejected");
                         res.status(401).json({ message: "no se ha podido actualizar el tutor:" + err });
                     });
 
@@ -146,7 +148,7 @@ exports.createTutor = async (req, res, next) => {
     }
     else {
         var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-        console.log(expirado)
+        
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
@@ -168,18 +170,17 @@ exports.createTutor = async (req, res, next) => {
                 res.status(409).json({ "errors": resJSON });
             }
             else {
-                console.log("entro a crear tutor " + req.body)
                 try {
                     const user = jwt_decode(req.headers['authorization']).sub;
 
                     const hashedPassword = await bcrypt.hash(req.body.password, 12);
-                    console.log("prueba")
+                    
                     const result = TutorEmpresa.createTutor(req.body, hashedPassword, user).then(function (result) {
-                        console.log("Promise Resolved");
+                        
 
                         res.status(201).json({ message: "success" });
                     }).catch(function () {
-                        console.log("Promise Rejected");
+                        res.status(409).json({ "errors" : "no se ha podido crear el tutor" });
                     });
 
 

@@ -46,7 +46,6 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     else {
       this.user = (JSON.parse(this.cookieService.get('user')));
-      console.log(this.user.rol)
       if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2) {
         this.router.navigate(['home']);
       }
@@ -75,7 +74,6 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
     return empresa;
   }
   getAll() {
-    console.log(Number(this.user.rol))
     if (Number(this.user.rol) == 1) {
       this.serviceSubscribe = this.empresaService.getEmpresas().pipe(first())
         .subscribe(
@@ -87,13 +85,21 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
               this.empresaList.push(this.getFps(empresaInfo));
 
             });
-            console.log(this.empresaList)
             this.dataSource.data = this.empresaList
           },
           error => {
             if (error.status == 401 && error.error.errors == "Sesión expirada") {
               AppComponent.myapp.openDialogSesion();
-
+            }
+            else if (error.status == 406) {
+              const res = new Array();
+              res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
+            else if (error.status == 500) {
+              const res = new Array();
+              res.push("Error del servidor, vuelva a intentarlo más tarde.");
+              AppComponent.myapp.openDialog(res);
             }
           });
     } else {
@@ -108,7 +114,6 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
               this.empresaList.push(empresaInfo);
 
             });
-            console.log(this.empresaList)
             this.dataSource.data = this.empresaList
           },
           error => {
@@ -117,9 +122,15 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
               AppComponent.myapp.openDialogSesion();
 
             }
+            
             else if (error.status == 406) {
               const res = new Array();
               res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
+            else if (error.status == 500) {
+              const res = new Array();
+              res.push("Error del servidor, vuelva a intentarlo más tarde.");
               AppComponent.myapp.openDialog(res);
             }
           });
@@ -160,9 +171,19 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
                 AppComponent.myapp.openDialogSesion();
 
               }
+              else if (error.status == 500) {
+                const res = new Array();
+                res.push("Error del servidor, vuelva a intentarlo más tarde.");
+                AppComponent.myapp.openDialog(res);
+              }
               else if (error.status == 406) {
                 const res = new Array();
                 res.push("Petición incorrecta.");
+                AppComponent.myapp.openDialog(res);
+              }
+              else if (error.status == 500) {
+                const res = new Array();
+                res.push("Error del servidor, vuelva a intentarlo más tarde.");
                 AppComponent.myapp.openDialog(res);
               }
               else if (error.status == 409) {
@@ -177,7 +198,22 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
                         error => {
                           if (error.status == 401 && error.error.errors == "Sesión expirada") {
                             AppComponent.myapp.openDialogSesion();
-                          } else {
+                          } else if (error.status == 500) {
+                            const res = new Array();
+                            res.push("Error del servidor, vuelva a intentarlo más tarde.");
+                            AppComponent.myapp.openDialog(res);
+                          } 
+                          else if (error.status == 500) {
+                            const res = new Array();
+                            res.push("Error del servidor, vuelva a intentarlo más tarde.");
+                            AppComponent.myapp.openDialog(res);
+                          }
+                          else if (error.status == 406) {
+                            const res = new Array();
+                            res.push("Petición incorrecta.");
+                            AppComponent.myapp.openDialog(res);
+                          }
+                          else {
                             const res = new Array();
                             res.push("No se ha podido borrar.");
                             AppComponent.myapp.openDialog(res);

@@ -17,138 +17,147 @@ export class EncuestaCreateComponent implements OnInit {
   formInstance: FormGroup;
   alumnoList = new Map<string, string>();
   tutorList = new Map<string, string>();
-  constructor(public dialogRef: MatDialogRef< EncuestaCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Encuesta, public encuestaService: EncuestaService, public alumnoService: AlumnoService , public tutorService : TutorEmpresaService) { 
-      this.formInstance = new FormGroup({
-        titulo: new FormControl("", [Validators.required, Validators.minLength(4)]),
-        descripcion: new FormControl("", [Validators.required, Validators.minLength(4)]),
-        codigoModulo : new FormControl("",[]),
-        resultado : new FormControl("",[]),
-       
-        dniAlumno: new FormControl("", [Validators.required, Validators.pattern(/^\d{8}[a-zA-Z]$/)]),
-        dniTutorEmpresa: new FormControl("", [Validators.required, Validators.pattern(/^\d{8}[a-zA-Z]$/)]),
-      })
-      this.formInstance.setValue({titulo : "", descripcion : "" , codigoModulo : Number(sessionStorage.getItem('codigoModulo')), resultado : "", dniAlumno: "", dniTutorEmpresa: "" })
-    }
-    
+  constructor(public dialogRef: MatDialogRef<EncuestaCreateComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: Encuesta, public encuestaService: EncuestaService, public alumnoService: AlumnoService, public tutorService: TutorEmpresaService) {
+    this.formInstance = new FormGroup({
+      titulo: new FormControl("", [Validators.required, Validators.minLength(4)]),
+      descripcion: new FormControl("", [Validators.required, Validators.minLength(4)]),
+      codigoModulo: new FormControl("", []),
+      resultado: new FormControl("", []),
+
+      dniAlumno: new FormControl("", [Validators.required, Validators.pattern(/^\d{8}[a-zA-Z]$/)]),
+      dniTutorEmpresa: new FormControl("", [Validators.required, Validators.pattern(/^\d{8}[a-zA-Z]$/)]),
+    })
+    this.formInstance.setValue({ titulo: "", descripcion: "", codigoModulo: Number(sessionStorage.getItem('codigoModulo')), resultado: "", dniAlumno: "", dniTutorEmpresa: "" })
+  }
+
 
   ngOnInit(): void {
     this.alumnoService.getAlumnosByModuloEncuesta(this.formInstance.value.codigoModulo).pipe(first())
-    .subscribe(
-      data => {
+      .subscribe(
+        data => {
           let alumnos = JSON.parse(data["alumnos"])
-          console.log(alumnos)
           alumnos.forEach(alumnoInfo => {
             var nombreApellidos = alumnoInfo.nombre + " " + alumnoInfo.apellidos;
-            this.alumnoList.set(alumnoInfo.dni , nombreApellidos );
+            this.alumnoList.set(alumnoInfo.dni, nombreApellidos);
           })
-          
-      },
-      error => {
-        
-        if(error.status == 409){
-          
-          error.error.errors.forEach(errorInfo => {
-            const formControl = this.formInstance.get(errorInfo.param);
-             if (formControl) {
-               formControl.setErrors({
-                 serverError: errorInfo.message
-               });  
-             }          
-           });
-        }
-        else if(error.status == 401 && error.error.errors == "Sesión expirada"){
-          this.dialogRef.close(); 
-          AppComponent.myapp.openDialogSesion();                             
-        }
-        else if (error.status == 406) {
-          const res = new Array();
-          res.push("Cabecera incorrecta.");
-          AppComponent.myapp.openDialog(res);
-        }
-        else if(error.status == 401){
-          const res = new Array();
-        res.push("No se ha podido crear.");
-        AppComponent.myapp.openDialog(res);
-        this.dialogRef.close();
-        }
-      });
-      this.tutorService.getTutorByModuloEncuesta(this.formInstance.value.codigoModulo).pipe(first())
-    .subscribe(
-      data => {
+
+        },
+        error => {
+
+          if (error.status == 409) {
+
+            error.error.errors.forEach(errorInfo => {
+              const formControl = this.formInstance.get(errorInfo.param);
+              if (formControl) {
+                formControl.setErrors({
+                  serverError: errorInfo.message
+                });
+              }
+            });
+          }
+          else if (error.status == 401 && error.error.errors == "Sesión expirada") {
+            this.dialogRef.close();
+            AppComponent.myapp.openDialogSesion();
+          }else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
+            AppComponent.myapp.openDialog(res);
+          }
+          else if (error.status == 406) {
+            const res = new Array();
+            res.push("Cabecera incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }
+          else if (error.status == 401) {
+            const res = new Array();
+            res.push("No se ha podido crear.");
+            AppComponent.myapp.openDialog(res);
+            this.dialogRef.close();
+          }
+        });
+    this.tutorService.getTutorByModuloEncuesta(this.formInstance.value.codigoModulo).pipe(first())
+      .subscribe(
+        data => {
           let tutores = JSON.parse(data["tutores"])
-          console.log("TUTORES => " + tutores);
           tutores.forEach(tutorInfo => {
             var nombreApellidos = tutorInfo.nombre + " " + tutorInfo.apellidos;
-            this.tutorList.set(tutorInfo.dni , nombreApellidos );
+            this.tutorList.set(tutorInfo.dni, nombreApellidos);
           })
-          
-      },
-      error => {
-        
-        if(error.status == 409){
-          
-          error.error.errors.forEach(errorInfo => {
-            const formControl = this.formInstance.get(errorInfo.param);
-             if (formControl) {
-               formControl.setErrors({
-                 serverError: errorInfo.message
-               });  
-             }          
-           });
-        }
-        else if(error.status == 401 && error.error.errors == "Sesión expirada"){
-          this.dialogRef.close(); 
-          AppComponent.myapp.openDialogSesion();                             
-        }
-        else if (error.status == 406) {
-          const res = new Array();
-          res.push("Cabecera incorrecta.");
-          AppComponent.myapp.openDialog(res);
-        }
-        else if(error.status == 401){
-          const res = new Array();
-        res.push("No se ha podido crear.");
-        AppComponent.myapp.openDialog(res);
-        this.dialogRef.close();
-        }
-      });
+
+        },
+        error => {
+
+          if (error.status == 409) {
+
+            error.error.errors.forEach(errorInfo => {
+              const formControl = this.formInstance.get(errorInfo.param);
+              if (formControl) {
+                formControl.setErrors({
+                  serverError: errorInfo.message
+                });
+              }
+            });
+          }else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
+            AppComponent.myapp.openDialog(res);
+          }
+          else if (error.status == 401 && error.error.errors == "Sesión expirada") {
+            this.dialogRef.close();
+            AppComponent.myapp.openDialogSesion();
+          }
+          else if (error.status == 406) {
+            const res = new Array();
+            res.push("Cabecera incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }
+          else if (error.status == 401) {
+            const res = new Array();
+            res.push("No se ha podido crear.");
+            AppComponent.myapp.openDialog(res);
+            this.dialogRef.close();
+          }
+        });
   }
-  save(){
-    console.log(this.formInstance.value);
+  save() {
     this.encuestaService.addEncuesta(this.formInstance.value).pipe(first())
       .subscribe(
         data => {
-         window.location.reload();
+          window.location.reload();
         },
         error => {
-          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+          if (error.status == 401 && error.error.errors == "Sesión expirada") {
             this.dialogRef.close();
-            AppComponent.myapp.openDialogSesion();                             
-          }else if (error.status == 406) {
+            AppComponent.myapp.openDialogSesion();
+          } else if (error.status == 406) {
             const res = new Array();
             res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
+          }else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
+            AppComponent.myapp.openDialog(res);
           }
-          else if(error.status == 409){
-            
+          else if (error.status == 409) {
+
             error.error.errors.forEach(errorInfo => {
               const formControl = this.formInstance.get(errorInfo.param);
-               if (formControl) {
-                 formControl.setErrors({
-                   serverError: errorInfo.message
-                 });  
-               }          
-             });
-          }else if(error.status == 401){
+              if (formControl) {
+                formControl.setErrors({
+                  serverError: errorInfo.message
+                });
+              }
+            });
+          } else if (error.status == 401) {
             const res = new Array();
-          res.push("No se ha podido crear.");
-          AppComponent.myapp.openDialog(res);
-          this.dialogRef.close();
+            res.push("No se ha podido crear.");
+            AppComponent.myapp.openDialog(res);
+            this.dialogRef.close();
           }
-          
+
         });
-    
-   
+
+
   }
 }

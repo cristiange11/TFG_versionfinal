@@ -72,7 +72,6 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getAll();
   }
   getAll() {
-    console.log(Number(this.user.rol))
     if (Number(this.user.rol) == 1) {
       this.serviceSubscribe = this.userService.getUsers().pipe(first())
         .subscribe(
@@ -85,7 +84,6 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
 
             });
             this.dataSource.data = this.userList;
-            console.log(this.dataSource.data)
           },
           error => {
             if (error.status == 401 && error.error.errors == "Sesión expirada") {
@@ -94,6 +92,10 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
             else if (error.status == 406) {
               const res = new Array();
               res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }else if (error.status == 500) {
+              const res = new Array();
+              res.push("Error del servidor, vuelva a intentarlo más tarde.");
               AppComponent.myapp.openDialog(res);
             }
 
@@ -106,14 +108,14 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
             let usuarios = data["usuarios"];
 
             usuarios.forEach(usuarioInfo => {
-              console.log(usuarioInfo);
+              
               var user = this.getUserFila(usuarioInfo);
 
               this.userList.push(user);
 
             });
             this.dataSource.data = this.userList;
-            console.log(this.dataSource.data)
+           
           },
           error => {
             if (error.status == 401 && error.error.errors == "Sesión expirada") {
@@ -122,6 +124,10 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
             else if (error.status == 406) {
               const res = new Array();
               res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }else if (error.status == 500) {
+              const res = new Array();
+              res.push("Error del servidor, vuelva a intentarlo más tarde.");
               AppComponent.myapp.openDialog(res);
             }
 
@@ -156,7 +162,6 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   edit(data: User) {
-    console.log("Le doy a editar")
     this.dialog.open(UsuarioUpdateComponent, {
       width: '400px',
       data: data
@@ -176,6 +181,10 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
             error => {
               if (error.status == 401 && error.error.errors == "Sesión expirada") {
                 AppComponent.myapp.openDialogSesion();
+              }else if (error.status == 500) {
+                const res = new Array();
+                res.push("Error del servidor, vuelva a intentarlo más tarde.");
+                AppComponent.myapp.openDialog(res);
               }
               else if (error.status == 406) {
                 const res = new Array();
@@ -192,7 +201,6 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
                           window.location.reload();
                         },
                         error => {
-                          console.log(error)
                           if (error.status == 401 && error.error.errors == "Sesión expirada") {
                             AppComponent.myapp.openDialogSesion();
                           }

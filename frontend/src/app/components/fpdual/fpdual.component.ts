@@ -58,7 +58,6 @@ export class FpdualComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getAll();
 
     this.dataSource.filterPredicate = function (data, filter: string): boolean {
-      console.log(data.anio)
       return data.nombre.toLowerCase().includes(filter) || data.descripcion.toLowerCase().includes(filter) || data.plazasDisponibles.toString().includes(filter) || data.totalPlazas.toString().includes(filter) || data.nombreCentro.toLowerCase().includes(filter) || data.anio.toString().includes(filter);
     };
   }
@@ -70,7 +69,6 @@ export class FpdualComponent implements OnInit, OnDestroy, AfterViewInit {
           let fps = data["fps"];
           fps.forEach(fpInfo => {
             var fp = this.getFpFila(fpInfo);
-            console.log(fp.codigoCentro)
             this.fpList.push(fp);
           });
 
@@ -84,6 +82,10 @@ export class FpdualComponent implements OnInit, OnDestroy, AfterViewInit {
             const res = new Array();
             res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
+          }else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
+            AppComponent.myapp.openDialog(res);
           }
 
         });
@@ -96,7 +98,6 @@ export class FpdualComponent implements OnInit, OnDestroy, AfterViewInit {
             data => {
               let fps = data["fps"];
               fps.forEach(fpInfo => {
-                console.log(fpInfo)
                 this.fpList.push(this.getFpFila(fpInfo));
 
               });
@@ -111,6 +112,10 @@ export class FpdualComponent implements OnInit, OnDestroy, AfterViewInit {
                 const res = new Array();
                 res.push("Petición incorrecta.");
                 AppComponent.myapp.openDialog(res);
+              }else if (error.status == 500) {
+                const res = new Array();
+                res.push("Error del servidor, vuelva a intentarlo más tarde.");
+                AppComponent.myapp.openDialog(res);
               }
 
             });
@@ -124,7 +129,6 @@ export class FpdualComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   getFpFila(fpInfo) {
-    console.log(fpInfo)
     var fp = {
       nombre: fpInfo.nombre,
       descripcion: fpInfo.descripcion,
@@ -149,7 +153,6 @@ export class FpdualComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   edit(data: Fpduales) {
-    console.log(data)
     this.dialog.open(FpdualUpdateComponent, {
       width: '400px',
       data: data
@@ -179,6 +182,10 @@ export class FpdualComponent implements OnInit, OnDestroy, AfterViewInit {
                 const res = new Array();
                 res.push("Petición incorrecta.");
                 AppComponent.myapp.openDialog(res);
+              }else if (error.status == 500) {
+                const res = new Array();
+                res.push("Error del servidor, vuelva a intentarlo más tarde.");
+                AppComponent.myapp.openDialog(res);
               }
               else if (error.status == 409) {
                 const dialogRef2 = this.dialog.open(FpdualDeleteConfirmationComponent);
@@ -192,6 +199,10 @@ export class FpdualComponent implements OnInit, OnDestroy, AfterViewInit {
                         error => {
                           if (error.status == 401 && error.error.errors == "Sesión expirada") {
                             AppComponent.myapp.openDialogSesion();
+                          }else if (error.status == 500) {
+                            const res = new Array();
+                            res.push("Error del servidor, vuelva a intentarlo más tarde.");
+                            AppComponent.myapp.openDialog(res);
                           }
                           else {
                             const res = new Array();

@@ -19,7 +19,6 @@ export class AuthService {
   }
 
   signup(sigunForm, userJson): Observable<JSON>{
-    console.log('SIGNUPPPP:'+this.cookieService.get('token'));
     var user = {
       dni : sigunForm.dni,
       nombre: sigunForm.nombre,
@@ -35,7 +34,6 @@ export class AuthService {
       fpDual: userJson.fpDual == '' ? null : userJson.fpDual,
       codigoCentro: userJson.codigoCentro == '' ? null : userJson.codigoCentro
     };
-    console.log("Usuario => " + JSON.stringify(user))
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
 
     return this.http.post<JSON>(  `${this.url}/signup`, user , httpOptions);

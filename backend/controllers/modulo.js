@@ -9,12 +9,11 @@ exports.getModulos = async (req, res, next) => {
   }
   else {
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-    console.log(expirado)
+
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
       try {
-        console.log("entro a obtener los modulos")
         const modulos = await Modulo.getModulos(req.params.fpDual);
 
         res.status(200).json({ modulos: modulos });
@@ -31,12 +30,10 @@ exports.getModulosProf = async (req, res, next) => {
   }
   else {
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-    console.log(expirado)
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
       try {
-        console.log("DNI =>  " + req.params.dni)
         const modulos = await Modulo.getModulosProf(req.params.dni);
 
         res.status(200).json({ modulos: modulos });
@@ -52,12 +49,11 @@ exports.getModulosTut = async (req, res, next) => {
   }
   else {
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-    console.log(expirado)
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
       try {
-        console.log("DNI =>  " + req.params.dni)
+
         const modulos = await Modulo.getModulosTut(req.params.dni);
 
         res.status(200).json({ modulos: modulos });
@@ -73,12 +69,11 @@ exports.getModulosAlum = async (req, res, next) => {
   }
   else {
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-    console.log(expirado)
+
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
       try {
-        console.log("DNI =>  " + req.params.dni)
         const modulos = await Modulo.getModulosAlum(req.params.dni);
 
         res.status(200).json({ modulos: modulos });
@@ -94,12 +89,11 @@ exports.getModulosAlumUpdate = async (req, res, next) => {
   }
   else {
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-    console.log(expirado)
+
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
       try {
-        console.log("DNI =>  " + req.params.dni)
         const modulos = await Modulo.getModulosAlumUpdate(req.params.dni);
 
         res.status(200).json({ modulos: modulos });
@@ -121,12 +115,14 @@ exports.deleteModulo = async (req, res, next) => {
       try {
 
         const user = jwt_decode(req.headers['authorization']).sub;
-        await Modulo.deleteModulo(req.params.codigo, user);
-
-        res.status(201).json({ message: "success" });
+        await Modulo.deleteModulo(req.params.codigo, user).then(function (result) {
+          res.status(201).json({ message: "success" });
+        }).catch(function (err) {
+          res.status(409).json({ "errors" : "no se ha podido borrar el modulo" });
+        });
 
       } catch (err) {
-        res.status(409).json({ error: err });
+        res.status(500).json({ error: err });
       }
     }
   }
@@ -159,9 +155,9 @@ exports.updateModulo = async (req, res, next) => {
       else {
         try {
           const user = jwt_decode(req.headers['authorization']).sub;
-          console.log(req.body)
+
           Modulo.updateModulo(req.body, user).then(function (result) {
-            console.log("Promise Resolved");
+
 
             res.status(201).json({ message: "sucess" });
           }).catch(function () {
@@ -207,7 +203,7 @@ exports.createModulo = async (req, res, next) => {
         try {
           const user = jwt_decode(req.headers['authorization']).sub;
           Modulo.createModulo(req.body, user).then(function (result) {
-            console.log("Promise Resolved");
+
 
             res.status(201).json({ message: "success" });
           }).catch(function () {

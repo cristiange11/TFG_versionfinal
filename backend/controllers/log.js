@@ -9,7 +9,6 @@ exports.getLogs = async (req, res, next) => {
   }
   else {
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
-    console.log(expirado)
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {

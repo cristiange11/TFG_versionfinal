@@ -81,6 +81,10 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
             const res = new Array();
             res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
+          }else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
+            AppComponent.myapp.openDialog(res);
           }
 
         });
@@ -95,7 +99,7 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
     });
   }
   edit(data: ResultadoAprendizaje) {
-    console.log(data)
+   
     const dialogRef = this.dialog.open(ResultadoAprendizajeUpdateComponent, {
       width: '400px',
       data: data
@@ -118,6 +122,10 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
               } else if (error.status == 406) {
                 const res = new Array();
                 res.push("Petición incorrecta.");
+                AppComponent.myapp.openDialog(res);
+              }else if (error.status == 500) {
+                const res = new Array();
+                res.push("Error del servidor, vuelva a intentarlo más tarde.");
                 AppComponent.myapp.openDialog(res);
               }
               else {

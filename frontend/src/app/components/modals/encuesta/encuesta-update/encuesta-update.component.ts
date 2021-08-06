@@ -38,13 +38,11 @@ export class EncuestaUpdateComponent implements OnInit {
         data => {
           this.resultadoList = new Map<number, string>();
           let resultado = data["resultados"]
-          console.log(JSON.stringify(data))
           resultado.forEach(resultadoInfo => {
             
             this.resultadoList.set(resultadoInfo.id, resultadoInfo.resultado);
             
           });
-          console.log(this.resultadoList)
         },
         error => {
           if (error.status == 401 && error.error.errors == "Sesión expirada") {
@@ -53,12 +51,15 @@ export class EncuestaUpdateComponent implements OnInit {
             const res = new Array();
             res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
+          }else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
+            AppComponent.myapp.openDialog(res);
           }
         });
   
   }
   save(){
-    console.log(this.formInstance.value);
     this.encuestaService.updateEncuesta(this.formInstance.value).pipe(first())
       .subscribe(
         data => {
@@ -87,6 +88,10 @@ export class EncuestaUpdateComponent implements OnInit {
           res.push("No se ha podido crear.");
           AppComponent.myapp.openDialog(res);
           this.dialogRef.close();
+          }else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
+            AppComponent.myapp.openDialog(res);
           }
           
         });

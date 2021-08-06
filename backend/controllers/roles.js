@@ -7,7 +7,7 @@ exports.getRoles = async (req, res, next) => {
   }
   else {
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-    console.log(expirado)
+    
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
@@ -28,7 +28,7 @@ exports.getRol = async (req, res, next) => {
   }
   else {
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-    console.log(expirado)
+    
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {

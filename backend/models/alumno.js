@@ -22,12 +22,10 @@ module.exports = class Alumno extends User {
         return rows;
     }
     static async getCalificacionesAlumno(dni) {
-        console.log(`SELECT AM.dni, AM.codigoModulo, C.nota,M.nombre as nombreModulo FROM modulo as M, alumno_modulo as AM LEFT JOIN calificacion as C ON AM.codigoModulo = C.codigoModulo where M.codigo = AM.codigoModulo and AM.dni ="${dni}"`)
         const [rows, fields] = await promisePool.query(`SELECT AM.dni, AM.codigoModulo, C.nota,M.nombre as nombreModulo FROM modulo as M, alumno_modulo as AM LEFT JOIN calificacion as C ON AM.codigoModulo = C.codigoModulo where M.codigo = AM.codigoModulo and AM.dni ="${dni}"`);
         return rows;
     }
     static async getAlumnosByModulo(codigoModulo) {
-        console.log(`SELECT AM.dni, AM.codigoModulo, U.*, C.nota as nota FROM usuario U, alumno_modulo as AM LEFT join calificacion as C on C.dni = AM.dni where U.dni = AM.dni and AM.codigoModulo =${codigoModulo} and C.nota is NULL`)
         const [rows, fields] = await promisePool.query(`SELECT AM.dni, AM.codigoModulo, C.nota,M.nombre as nombreModulo, U.* FROM usuario as U,modulo as M, alumno_modulo as AM LEFT JOIN calificacion as C ON AM.codigoModulo = C.codigoModulo where M.codigo = AM.codigoModulo and AM.codigoModulo =${codigoModulo} and C.nota is null and AM.dni = U.dni
         `);
         return rows;
@@ -37,7 +35,6 @@ module.exports = class Alumno extends User {
         return rows;
     }
     static async getAlumno(dni) {
-        console.log(`SELECT U.*, A.numeroExpediente, M.nombre as nombreModulo FROM usuario U, alumno A, alumno_modulo AM, modulo M WHERE U.dni = A.dni AND A.dni=AM.dni AND M.codigo = AM.codigoModulo AND U.dni='${dni}'`)
         const [rows, fields] = await promisePool.query(
             `SELECT U.*, A.numeroExpediente, M.nombre as nombreModulo, M.codigo as moduloCodigo FROM usuario U, alumno A, alumno_modulo AM, modulo M WHERE U.dni = A.dni AND A.dni=AM.dni AND M.codigo = AM.codigoModulo AND U.dni='${dni}'`
         );
@@ -56,7 +53,7 @@ module.exports = class Alumno extends User {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_ALUMNO','No se ha borrado el alumno con DNI ${dni}','${user}',sysdate(), 'alumno')`);
-            console.log('ROLLBACK at querySignUp', err);
+            
             throw err;
         } finally {
             await connection.release();
@@ -78,7 +75,7 @@ module.exports = class Alumno extends User {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_ALUMNO','No se ha añadido el alumno con DNI ${alumno.dni}','${user}',sysdate(), 'alumno')`);
-            console.log('ROLLBACK at querySignUp', err);
+            
             throw err;
         } finally {
             await connection.release();
@@ -86,7 +83,7 @@ module.exports = class Alumno extends User {
     }
     static async updateAlumno(alumno, password, user) {
         const connection = await promisePool.getConnection();
-        console.log("entro a updatear alumno " + alumno)
+        
         try {
             await connection.beginTransaction();
             let query = `UPDATE usuario SET nombre='${alumno.nombre}',apellidos='${alumno.apellidos}',correo='${alumno.correo}', movil='${alumno.movil}',direccion='${alumno.direccion}',password='${password}',genero='${alumno.genero}', cp='${alumno.cp}',fechaNacimiento=STR_TO_DATE('${alumno.fechaNacimiento}','%Y-%m-%d') WHERE dni='${alumno.dni}'`;
@@ -94,7 +91,7 @@ module.exports = class Alumno extends User {
             await connection.query(`UPDATE alumno SET numeroExpediente='${alumno.numeroExpediente}' WHERE dni = '${alumno.dni}'`);
             await connection.query(`DELETE  FROM alumno_modulo WHERE DNI = '${alumno.dni}'`);
             const alum = JSON.parse(JSON.stringify(alumno.modulo.modulo));
-            console.log(alumno.modulo.modulo)
+            
             for (var i = 0; i < alum.length; i++) {
 
                 const moduloInser = alum[i];
@@ -106,7 +103,7 @@ module.exports = class Alumno extends User {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_ALUMNO','No se ha añadido el alumno con DNI ${alumno.dni}','${user}',sysdate(), 'alumno')`);
-            console.log('ROLLBACK at querySignUp', err);
+            
             throw err;
         } finally {
             await connection.release();

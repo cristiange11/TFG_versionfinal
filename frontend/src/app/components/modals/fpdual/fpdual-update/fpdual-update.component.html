@@ -1,61 +1,71 @@
-<h1 mat-dialog-title >Editar FP duales</h1>
+<h1 mat-dialog-title>Editar FP duales</h1>
 <div mat-dialog-content>
-  <form [formGroup]="formInstance" novalidate >
-      <mat-form-field class="fullWidth" appearance="outline">
-          <mat-label>Nombre</mat-label>
-        <input matInput type="text" name="nombre" formControlName="nombre" required>
-        <mat-error *ngIf="formInstance.controls['nombre']?.errors?.required">Nombre requerido</mat-error>
-        <mat-error *ngIf="formInstance.controls['nombre']?.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
-        <mat-error *ngIf="this.formInstance.get('nombre').errors?.serverError">{{ this.formInstance.get('nombre').errors?.serverError }}</mat-error>
+  <form [formGroup]="formInstance" novalidate>
+    <mat-form-field class="fullWidth" appearance="outline">
+      <mat-label>Nombre</mat-label>
+      <input matInput type="text" name="nombre" formControlName="nombre" required>
+      <mat-error *ngIf="formInstance.controls['nombre']?.errors?.required">Nombre requerido</mat-error>
+      <mat-error *ngIf="formInstance.controls['nombre']?.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
+      <mat-error *ngIf="this.formInstance.get('nombre').errors?.serverError">{{
+        this.formInstance.get('nombre').errors?.serverError }}</mat-error>
 
     </mat-form-field>
     <mat-form-field class="fullWidth" appearance="outline">
-        <mat-label>Descripci&oacute;n</mat-label>
-        <input matInput type="text" name="descripcion" formControlName="descripcion" required />
-        <mat-error *ngIf="formInstance.controls['descripcion']?.errors?.required">Total de plazas requeridas</mat-error>
-        <mat-error *ngIf="formInstance.controls['descripcion']?.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
-        <mat-error *ngIf="this.formInstance.get('descripcion').errors?.serverError">{{ this.formInstance.get('descripcion').errors?.serverError }}</mat-error>
-
-    </mat-form-field>
-      <mat-form-field class="fullWidth" appearance="outline">
-        <mat-label>Total de plazas</mat-label>
-        <input matInput type="text" name="totalPlazas" formControlName="totalPlazas" (change)="this.plazasDisponiblesControl.setValue('')" required />
-        <mat-error *ngIf="formInstance.controls['totalPlazas']?.errors?.required">Total de plazas requeridas</mat-error>
-        <mat-error *ngIf="formInstance.controls['totalPlazas']?.errors?.min">Valor m&iacute;nimo de 1</mat-error>
-        <mat-error *ngIf="this.formInstance.get('totalPlazas').errors?.serverError">{{ this.formInstance.get('totalPlazas').errors?.serverError }}</mat-error>
+      <mat-label>Descripci&oacute;n</mat-label>
+      <input matInput type="text" name="descripcion" formControlName="descripcion" required />
+      <mat-error *ngIf="formInstance.controls['descripcion']?.errors?.required">Total de plazas requeridas</mat-error>
+      <mat-error *ngIf="formInstance.controls['descripcion']?.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
+      <mat-error *ngIf="this.formInstance.get('descripcion').errors?.serverError">{{
+        this.formInstance.get('descripcion').errors?.serverError }}</mat-error>
 
     </mat-form-field>
     <mat-form-field class="fullWidth" appearance="outline">
-        <mat-label>Plazas disponibles</mat-label>
-        <input matInput type="text" name="plazasDisponibles"  formControlName="plazasDisponibles" required />
-        <mat-error *ngIf="formInstance.controls['plazasDisponibles']?.errors?.required">Plazas disponibles requeridas</mat-error>
-        <mat-error *ngIf="formInstance.controls['plazasDisponibles']?.errors?.min">Valor m&iacute;nimo de 1</mat-error>
-         <mat-error *ngIf="this.plazasDisponiblesControl.dirty && plazasDisponiblesControl.hasError('scoreError')">Plazas disponibles < Total plazas</mat-error> 
-        
-        <mat-error *ngIf="this.formInstance.get('plazasDisponibles').errors?.serverError">{{ this.formInstance.get('plazasDisponibles').errors?.serverError }}</mat-error>
+      <mat-label>Total de plazas</mat-label>
+      <input matInput type="text" name="totalPlazas" formControlName="totalPlazas"
+        (change)="this.plazasDisponiblesControl.setValue('')" required />
+      <mat-error *ngIf="formInstance.controls['totalPlazas']?.errors?.required">Total de plazas requeridas</mat-error>
+      <mat-error *ngIf="formInstance.controls['totalPlazas']?.errors?.min">Valor m&iacute;nimo de 1</mat-error>
+      <mat-error *ngIf="this.formInstance.get('totalPlazas').errors?.serverError">{{
+        this.formInstance.get('totalPlazas').errors?.serverError }}</mat-error>
 
     </mat-form-field>
     <mat-form-field class="fullWidth" appearance="outline">
-        <mat-label>A&ntilde;o</mat-label>
-        <input matInput type="text" name="anio" formControlName="anio" required />
-        <mat-error *ngIf="formInstance.controls['anio']?.errors?.required">Año requerido</mat-error>
-        <mat-error *ngIf="formInstance.controls['anio']?.errors?.min">Este año o años futuros.</mat-error>
-        <mat-error *ngIf="this.formInstance.get('anio').errors?.serverError">{{ this.formInstance.get('anio').errors?.serverError }}</mat-error>
+      <mat-label>Plazas disponibles</mat-label>
+      <input matInput type="text" name="plazasDisponibles" formControlName="plazasDisponibles" required />
+      <mat-error *ngIf="formInstance.controls['plazasDisponibles']?.errors?.required">Plazas disponibles requeridas
+      </mat-error>
+      <mat-error *ngIf="formInstance.controls['plazasDisponibles']?.errors?.min">Valor m&iacute;nimo de 1</mat-error>
+      <mat-error *ngIf="this.plazasDisponiblesControl.dirty && plazasDisponiblesControl.hasError('scoreError')">Plazas
+        disponibles < Total plazas</mat-error>
+
+          <mat-error *ngIf="this.formInstance.get('plazasDisponibles').errors?.serverError">{{
+            this.formInstance.get('plazasDisponibles').errors?.serverError }}</mat-error>
 
     </mat-form-field>
-    
-      <mat-form-field appearance="fill" *ngIf="this.user.rol == '1'">
-        <mat-label>Centros</mat-label>
-        <mat-select matNativeControl required formControlName="codigoCentro" >
-          <mat-option *ngFor="let cent of centroList | keyvalue" [value]="cent.key" >{{ cent.value }}</mat-option>
-        </mat-select>
-        <mat-error *ngIf="formInstance.controls['codigoCentro']?.errors?.required">Centro requerido</mat-error>
-        <mat-error *ngIf="this.formInstance.get('codigoCentro').errors?.serverError">{{ this.formInstance.get('codigoCentro').errors?.serverError }}</mat-error>
+    <mat-form-field class="fullWidth" appearance="outline">
+      <mat-label>A&ntilde;o</mat-label>
+      <input matInput type="text" name="anio" formControlName="anio" required />
+      <mat-error *ngIf="formInstance.controls['anio']?.errors?.required">Año requerido</mat-error>
+      <mat-error *ngIf="formInstance.controls['anio']?.errors?.min">Este año o años futuros.</mat-error>
+      <mat-error *ngIf="this.formInstance.get('anio').errors?.serverError">{{
+        this.formInstance.get('anio').errors?.serverError }}</mat-error>
 
-      </mat-form-field>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" *ngIf="this.user.rol == '1'">
+      <mat-label>Centros</mat-label>
+      <mat-select matNativeControl required formControlName="codigoCentro">
+        <mat-option *ngFor="let cent of centroList | keyvalue" [value]="cent.key">{{ cent.value }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="formInstance.controls['codigoCentro']?.errors?.required">Centro requerido</mat-error>
+      <mat-error *ngIf="this.formInstance.get('codigoCentro').errors?.serverError">{{
+        this.formInstance.get('codigoCentro').errors?.serverError }}</mat-error>
+
+    </mat-form-field>
   </form>
 </div>
 <div class="mt-5" mat-dialog-actions>
-  <button mat-raised-button color="primary" cdkFocusInitial (click)="save()" [disabled]="!formInstance.valid">Yes</button>
+  <button mat-raised-button color="primary" cdkFocusInitial (click)="save()"
+    [disabled]="!formInstance.valid">Yes</button>
   <button mat-raised-button mat-dialog-close>No</button>
 </div>

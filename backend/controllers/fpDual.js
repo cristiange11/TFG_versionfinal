@@ -9,7 +9,6 @@ exports.getFpByCentro = async (req, res, next) => {
   }
   else {
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-    console.log(expirado)
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
@@ -34,16 +33,17 @@ exports.DeleteUsuariosByFP = async (req, res, next) => {
   else {
 
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-    console.log(expirado)
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
 
       try {
         const user = jwt_decode(req.headers['authorization']).sub;
-        const fp = await Fpdual.DeleteUsuariosByFP(req.params.id, user);
-
-        res.status(200).json({ fps: fp });
+        const fp = await Fpdual.DeleteUsuariosByFP(req.params.id, user).then(function (result) {
+          res.status(201).json({ message: "success" });
+        }).catch(function (err) {
+          res.status(409).json({ "errors" : "no se ha podido borrar el usuario" });
+        });
 
       } catch (err) {
         res.status(500).json({ error: err });
@@ -57,7 +57,6 @@ exports.getFp = async (req, res, next) => {
   }
   else {
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-    console.log(expirado)
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
@@ -78,12 +77,10 @@ exports.getFps = async (req, res, next) => {
   }
   else {
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-    console.log(expirado)
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
       try {
-        console.log("entro a obtener los fps")
         const fps = await Fpdual.getFps();
 
         res.status(200).json({ fps: fps });
@@ -98,9 +95,7 @@ exports.getFpsConPlazasDisponibles = async (req, res, next) => {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else {
-    console.log(req.headers);
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-    console.log(expirado)
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
@@ -124,11 +119,12 @@ exports.deleteFp = async (req, res, next) => {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
       try {
-        console.log("entro a comprobar")
         const user = jwt_decode(req.headers['authorization']).sub;
-        const centro = await Fpdual.deleteFp(req.params.id, user);
-
-        res.status(201).json({ message: "success" });
+        const centro = await Fpdual.deleteFp(req.params.id, user).then(function (result) {
+          res.status(201).json({ message: "success" });
+        }).catch(function (err) {
+          res.status(409).json({ "errors" : "no se ha podido borrar el usuario" });
+        });
 
       } catch (err) {
         res.status(409).json({ error: err });
@@ -165,7 +161,7 @@ exports.updateFp = async (req, res, next) => {
         try {
           const user = jwt_decode(req.headers['authorization']).sub;
           const result = Fpdual.updateFp(req.body, user).then(function (result) {
-            console.log("Promise Resolved");
+
 
             res.status(201).json({ message: "sucess" });
           }).catch(function () {
@@ -231,10 +227,9 @@ exports.createFp = async (req, res, next) => {
       }
       else {
         try {
-          console.log("Hola entro a registrar")
           const user = jwt_decode(req.headers['authorization']).sub;
           const result = Fpdual.createFp(req.body, user).then(function (result) {
-            console.log("Promise Resolved");
+
 
             res.status(201).json({ message: "success" });
           }).catch(function () {

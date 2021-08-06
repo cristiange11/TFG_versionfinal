@@ -36,9 +36,9 @@ export class ModuloUpdateComponent implements OnInit {
           window.location.reload();
         },
         error => {
-          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+          if (error.status == 401 && error.error.errors == "Sesión expirada") {
             this.dialogRef.close();
-            AppComponent.myapp.openDialogSesion();                             
+            AppComponent.myapp.openDialogSesion();
           }
           else if (error.status == 409) {
             error.error.errors.forEach(errorInfo => {
@@ -54,6 +54,10 @@ export class ModuloUpdateComponent implements OnInit {
             res.push("No se ha podido crear.");
             AppComponent.myapp.openDialog(res);
             this.dialogRef.close();
+          }else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
+            AppComponent.myapp.openDialog(res);
           }
           else if (error.status == 406) {
             const res = new Array();

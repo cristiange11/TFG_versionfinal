@@ -28,7 +28,6 @@ export class ResultadoAprendizajeUpdateComponent implements OnInit {
   ngOnInit(): void {
   }
   save() {
-    console.log(this.formInstance.value);
     this.resultadoAprendizajeService.updateResultadoAprendizaje(this.formInstance.value).pipe(first())
       .subscribe(
         data => {
@@ -36,9 +35,13 @@ export class ResultadoAprendizajeUpdateComponent implements OnInit {
           this.dialogRef.close();
         },
         error => {
-          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+          if (error.status == 401 && error.error.errors == "Sesión expirada") {
             this.dialogRef.close();
-            AppComponent.myapp.openDialogSesion();                             
+            AppComponent.myapp.openDialogSesion();
+          }else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
+            AppComponent.myapp.openDialog(res);
           }
           else if (error.status == 409) {
             error.error.errors.forEach(errorInfo => {

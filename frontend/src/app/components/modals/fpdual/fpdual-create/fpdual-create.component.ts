@@ -19,14 +19,14 @@ export class FpdualCreateComponent implements OnInit {
   fecha;
   anio;
   user;
-  totalPlazasControl =new FormControl("", [Validators.required, Validators.min(1)]);
+  totalPlazasControl = new FormControl("", [Validators.required, Validators.min(1)]);
   plazasDisponiblesControl = new FormControl("", [Validators.required, this.validateScore()]);
   centroList = new Map<string, string>();
   constructor(public cookieService: CookieService, public router: Router, public dialogRef: MatDialogRef<FpdualCreateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Fpduales, public fpdualesService: FpdualesService, public centroService: CentroService) {
     this.fecha = new Date();
     this.anio = this.fecha.getFullYear();
-    
+
     this.formInstance = new FormGroup({
       nombre: new FormControl("", [Validators.required, Validators.minLength(4)]),
       descripcion: new FormControl("", [Validators.required, Validators.minLength(4)]),
@@ -34,29 +34,30 @@ export class FpdualCreateComponent implements OnInit {
       anio: new FormControl("", [Validators.required, Validators.min(this.anio)]),
       plazasDisponibles: this.plazasDisponiblesControl,
       codigoCentro: new FormControl("", [Validators.required]),
-    },)
-    if(!this.cookieService.get('user')){
+    })
+    if (!this.cookieService.get('user')) {
       this.dialogRef.close();
       this.router.navigate(['home']);
     }
-    else{
-      this.user =(JSON.parse(this.cookieService.get('user')));
-    if(Number(this.user.rol)!=1 && Number(this.user.rol) != 2){
-      this.dialogRef.close();
-      this.router.navigate(['home']);
+    else {
+      this.user = (JSON.parse(this.cookieService.get('user')));
+      if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2) {
+        this.dialogRef.close();
+        this.router.navigate(['home']);
+      }
+
     }
-    
-  }
-  if(sessionStorage.getItem('codigoCentro') == null){
-    this.formInstance.setValue({nombre : "", descripcion : "", totalPlazas: "" , anio : "", plazasDisponibles : "", codigoCentro : this.user.codigoCentro}); }
-    else{
-      this.formInstance.setValue({nombre : "", descripcion : "", totalPlazas: "" , anio : "", plazasDisponibles : "", codigoCentro : sessionStorage.getItem('codigoCentro')});
+    if (sessionStorage.getItem('codigoCentro') == null) {
+      this.formInstance.setValue({ nombre: "", descripcion: "", totalPlazas: "", anio: "", plazasDisponibles: "", codigoCentro: this.user.codigoCentro });
     }
-      
+    else {
+      this.formInstance.setValue({ nombre: "", descripcion: "", totalPlazas: "", anio: "", plazasDisponibles: "", codigoCentro: sessionStorage.getItem('codigoCentro') });
+    }
+
   }
 
   ngOnInit(): void {
-   
+
     this.centroService.getCentros().pipe(first())
       .subscribe(
         data => {
@@ -68,12 +69,16 @@ export class FpdualCreateComponent implements OnInit {
           });
         },
         error => {
-          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+          if (error.status == 401 && error.error.errors == "Sesión expirada") {
             this.dialogRef.close();
-            AppComponent.myapp.openDialogSesion();                             
-          }else if (error.status == 406) {
+            AppComponent.myapp.openDialogSesion();
+          } else if (error.status == 406) {
             const res = new Array();
             res.push("Petición incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
             AppComponent.myapp.openDialog(res);
           }
         });
@@ -85,7 +90,6 @@ export class FpdualCreateComponent implements OnInit {
   }
 
   get totalPlazasValue() {
-    console.log("Valor => " + this.totalPlazasControl.value)
     return this.totalPlazasControl.value;
   }
   save() {
@@ -96,9 +100,9 @@ export class FpdualCreateComponent implements OnInit {
           window.location.reload();
         },
         error => {
-          
+
           if (error.status == 409) {
-           
+
             error.error.errors.forEach(errorInfo => {
               const formControl = this.formInstance.get(errorInfo.param);
               if (formControl) {
@@ -107,12 +111,16 @@ export class FpdualCreateComponent implements OnInit {
                 });
               }
             });
-          } else if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            this.dialogRef.close(); 
-            AppComponent.myapp.openDialogSesion();                             
-          }else if (error.status == 406) {
+          } else if (error.status == 401 && error.error.errors == "Sesión expirada") {
+            this.dialogRef.close();
+            AppComponent.myapp.openDialogSesion();
+          } else if (error.status == 406) {
             const res = new Array();
             res.push("Petición incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
             AppComponent.myapp.openDialog(res);
           }
           else if (error.status == 401) {

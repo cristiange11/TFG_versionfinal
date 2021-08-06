@@ -1,23 +1,22 @@
-.boton-ok{
-text-transform: uppercase;
-    letter-spacing: 0.15em;
-    border: none;
-    font-size: 0.875rem;
-    font-weight: bold;
-    background-color: rgb(82, 55, 204);
-    width: 50%;
-    display: inline-flex;
-    padding: 0.875rem 1rem;
-    border-radius: 1.5rem;
-    box-shadow: 3px 3px 8px #b1b1b1, -3px -3px 8px #ffffff;
-    cursor: pointer;
-    margin: auto;
-  
-  }
-  .boton-ok span{
-    width:100%;
-    color:white;
+.boton-ok {
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  border: none;
+  font-size: 0.875rem;
+  font-weight: bold;
+  background-color: rgb(82, 55, 204);
+  width: 50%;
+  display: inline-flex;
+  padding: 0.875rem 1rem;
+  border-radius: 1.5rem;
+  box-shadow: 3px 3px 8px #b1b1b1, -3px -3px 8px #ffffff;
+  cursor: pointer;
+  margin: auto;
 }
-  ::ng-deep .mat-dialog-container {
-    border-radius: 1.5rem !important;
-  }
+.boton-ok span {
+  width: 100%;
+  color: white;
+}
+::ng-deep .mat-dialog-container {
+  border-radius: 1.5rem !important;
+}

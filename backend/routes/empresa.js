@@ -32,7 +32,6 @@ router.post(
     body('telefono').trim().not().isEmpty().withMessage("Teléfono vacío")
       .matches(/^(\+34|0034|34)?[ -]*(8|9)[ -]*([0-9][ -]*){8}$/).withMessage("Formato teléfono incorrecto")
       .custom(async (telefono,{req}) => {
-        console.log(telefono + " " + req.body.cifEmpresa)
         const user = await Empresa.findTelefono(telefono, req.body.cifEmpresa);
         if (user[0].length > 0) {
           return Promise.reject('Teléfono introducido ya existe');
@@ -65,8 +64,7 @@ router.post(
   }),
   body('dineroBeca').trim().not().isEmpty().withMessage("Dinero de beca vacío")
     .custom(async (dineroBeca, {req}) => {    
-      console.log("DINERO BECA => " + dineroBeca);
-      console.log("BECA => " + req.body.becas)
+      
       if (isNaN(dineroBeca) || req.body.becas==1  && dineroBeca<=100)  {
         return Promise.reject('La beca mínima tiene que ser 100 euros');
       }
@@ -120,8 +118,7 @@ router.put(
   }),
   body('dineroBeca').trim().not().isEmpty().withMessage("Dinero de beca vacío")
     .custom(async (dineroBeca, {req}) => {    
-      console.log("DINERO BECA => " + dineroBeca);
-      console.log("BECA => " + req.body.becas)
+   
       if (isNaN(dineroBeca) || req.body.becas==1  && dineroBeca<=100)  {
         return Promise.reject('La beca mínima tiene que ser 100 euros');
       }

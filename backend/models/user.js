@@ -53,7 +53,7 @@ module.exports = class User {
             } catch (err) {
                 await connection.query("ROLLBACK");
                 await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_USER','El usuario con DNI ${resultado.dni} no ha actualizado su contraseña','${resultado.dni}',sysdate(), 'user')`);
-                console.log('ROLLBACK at querySignUp', err);
+                
                 throw err;
             } finally {
                 await connection.release();
@@ -73,7 +73,7 @@ module.exports = class User {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_USER','No se ha añadido el user con DNI ${user.dni}','${userLogado}',sysdate(), 'user')`);
-            console.log('ROLLBACK at querySignUp', err);
+           
             throw err;
         } finally {
             await connection.release();
@@ -83,7 +83,7 @@ module.exports = class User {
         const connection = await promisePool.getConnection();
         try {
             await connection.beginTransaction();
-            let query = `DELETE FROM logs WHERE usuario = '${dni}'`;
+            let query = `DELETE FROM logs WHERE usuario = ${dni}`;
             await connection.query(query);
             await connection.query(`DELETE FROM usuario WHERE dni = '${dni}'`);
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha borrado usuario con DNI ${dni} ','${userLogado}',sysdate(), 'user')`);
@@ -91,7 +91,6 @@ module.exports = class User {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_USER','No se ha borrado el usuario con DNI ${dni}','${userLogado}',sysdate(), 'user')`);
-            console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {
             await connection.release();
@@ -102,14 +101,13 @@ module.exports = class User {
         const connection = await promisePool.getConnection();
         try {
             await connection.beginTransaction();
-            let query = `DELETE FROM usuario WHERE dni = '${dni}'`;
+            let query = `DELETE FROM usuario WHERE dni = ${dni}`;
             await connection.query(query);
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha borrado usuario con DNI ${dni} ','${userLogado}',sysdate(), 'user')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_USER','No se ha borrado el usuario con DNI ${dni}','${userLogado}',sysdate(), 'user')`);
-            console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {
             await connection.release();
@@ -126,7 +124,6 @@ module.exports = class User {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_USER','No se ha actualizado el usuario con DNI ${user.dni}','${userLogado}',sysdate(), 'user')`);
-            console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {
             await connection.release();
@@ -136,7 +133,6 @@ module.exports = class User {
         return await promisePool.query(`SELECT usuario.*,rol.id, rol.nombreRol, fp_duales.nombre AS nombreFP, fp_duales.id, centro_educativo.codigoCentro, centro_educativo.nombre AS nombreCentro FROM usuario LEFT JOIN rol ON rol.id = usuario.rol LEFT JOIN fp_duales ON fp_duales.id = usuario.fpDual INNER JOIN centro_educativo ON centro_educativo.codigoCentro = usuario.codigoCentro AND usuario.codigoCentro = "${codigoCentro}"`);
     }
     static async getUsers() {
-        console.log('SELECT usuario.*,rol.id,  rol.nombreRol, fp_duales.nombre AS nombreFP, fp_duales.id, centro_educativo.codigoCentro, centro_educativo.nombre AS nombreCentro FROM usuario LEFT JOIN rol ON rol.id = usuario.rol LEFT JOIN fp_duales ON fp_duales.id = usuario.fpDual LEFT JOIN centro_educativo ON centro_educativo.codigoCentro = usuario.codigoCentro')
         return await promisePool.query('SELECT usuario.*,rol.id,  rol.nombreRol, fp_duales.nombre AS nombreFP, fp_duales.id, centro_educativo.codigoCentro, centro_educativo.nombre AS nombreCentro FROM usuario LEFT JOIN rol ON rol.id = usuario.rol LEFT JOIN fp_duales ON fp_duales.id = usuario.fpDual LEFT JOIN centro_educativo ON centro_educativo.codigoCentro = usuario.codigoCentro');
     }
 };

@@ -26,7 +26,7 @@ module.exports = class Calificacion {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_CALIFICACION','No se ha borrado la calificación','${user}',sysdate(), 'calificacion')`);
-            console.log('ROLLBACK at querySignUp', err);
+            
             throw err;
         } finally {
             await connection.release();
@@ -45,7 +45,7 @@ module.exports = class Calificacion {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_CALIFICACION','No se ha añadido la calificación del alumno ${calificacion.dni}','${user}',sysdate(), 'calificacion')`);
-            console.log('ROLLBACK at querySignUp', err);
+            
             throw err;
         } finally {
             await connection.release();
@@ -62,7 +62,7 @@ module.exports = class Calificacion {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_CALIFICACION','No se ha actualizado la calificación al alumno con DNI ${calificacion.dni}','${user}',sysdate(), 'calificacion')`);
-            console.log('ROLLBACK at querySignUp', err);
+            
             throw err;
         } finally {
             await connection.release();

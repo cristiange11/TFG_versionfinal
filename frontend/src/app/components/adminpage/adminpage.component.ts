@@ -43,8 +43,7 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
-    console.log("Token " + this.cookieService.get('token'));
-    console.log("USER " + this.cookieService.get('user'))
+    
     this.nagivationComponent.obtenerItems();
     this.getAll();
     if (!this.cookieService.get('user')) {
@@ -76,7 +75,6 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
           this.dataSource.data = this.centroList
         },
         error => {
-          console.log(error);
           if (error.status == 401 && error.error.errors == "Sesión expirada") {
             AppComponent.myapp.openDialogSesion();
 
@@ -84,6 +82,10 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
           else if (error.status == 406) {
             const res = new Array();
             res.push("Petición incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
             AppComponent.myapp.openDialog(res);
           }
 
@@ -125,7 +127,6 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
               window.location.reload();
             },
             error => {
-              console.log(error)
               if (error.status == 401 && error.error.errors == "Sesión expirada") {
                 AppComponent.myapp.openDialogSesion();
 
@@ -135,7 +136,11 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
                 res.push("Petición incorrecta.");
                 AppComponent.myapp.openDialog(res);
               }
-
+              else if (error.status == 500) {
+                const res = new Array();
+                res.push("Error del servidor, vuelva a intentarlo más tarde.");
+                AppComponent.myapp.openDialog(res);
+              }
 
               else if (error.status == 409) {
                 const dialogRef2 = this.dialog.open(CentroDeleteConfirmationComponent);
@@ -151,11 +156,22 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
                             AppComponent.myapp.openDialogSesion();
 
                           }
+                          else if (error.status == 406) {
+                            const res = new Array();
+                            res.push("Petición incorrecta.");
+                            AppComponent.myapp.openDialog(res);
+                          }
+                          else if (error.status == 500) {
+                            const res = new Array();
+                            res.push("Error del servidor, vuelva a intentarlo más tarde.");
+                            AppComponent.myapp.openDialog(res);
+                          }
                           else {
                             const res = new Array();
                             res.push("No se ha podido borrar.");
                             AppComponent.myapp.openDialog(res);
                           }
+                          
                         }
                       )
                   }

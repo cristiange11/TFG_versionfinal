@@ -21,7 +21,6 @@ module.exports = class TutorEmpresa {
         return rows;
     }
     static async getTutorByModuloEncuesta(codigoModulo) {
-        console.log(`SELECT U.* FROM usuario as U, modulo as M where U.rol=3 AND M.codigo = ${codigoModulo}  `)
         const [rows, fields] = await promisePool.query(`SELECT U.* FROM usuario as U, modulo as M where U.rol=3 AND M.codigo = ${codigoModulo}  `);
         return rows;
     }
@@ -46,8 +45,7 @@ module.exports = class TutorEmpresa {
     static async createTutor(tutorEmpresa, password, user) {
 
         const connection = await promisePool.getConnection();
-        console.log(tutorEmpresa.modulo.modulo)
-        console.log(`INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fechaNacimiento, fpDual, codigoCentro) VALUES ('${tutorEmpresa.dni}','${tutorEmpresa.nombre}','${tutorEmpresa.apellidos}','${tutorEmpresa.correo}','${tutorEmpresa.movil}','${tutorEmpresa.direccion}','${password}','${tutorEmpresa.genero}',${tutorEmpresa.cp},'${tutorEmpresa.rol}',STR_TO_DATE('${tutorEmpresa.fechaNacimiento}','%Y-%m-%d'),'${tutorEmpresa.fpDual}','${tutorEmpresa.codigoCentro}')`);
+        
         try {
             await connection.beginTransaction();
             let query = `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fechaNacimiento, fpDual, codigoCentro) VALUES ('${tutorEmpresa.dni}','${tutorEmpresa.nombre}','${tutorEmpresa.apellidos}','${tutorEmpresa.correo}','${tutorEmpresa.movil}','${tutorEmpresa.direccion}','${password}','${tutorEmpresa.genero}',${tutorEmpresa.cp},'${tutorEmpresa.rol}',STR_TO_DATE('${tutorEmpresa.fechaNacimiento}','%Y-%m-%d'),'${tutorEmpresa.fpDual}','${tutorEmpresa.codigoCentro}')`;

@@ -27,6 +27,12 @@ export class LoginComponent implements OnInit {
       if (Number(user.rol) == 1) {
         this.router.navigate(['adminpage']);
       }
+      else if (Number(user.rol) == 2) {
+        this.router.navigate(['fpdual']);
+      }
+      else if (Number(user.rol) == 4 || Number(user.rol) == 3 || Number(user.rol) == 5) {
+        this.router.navigate(['modulo']);
+      }
     }
 
   }
@@ -71,7 +77,12 @@ export class LoginComponent implements OnInit {
             const res = new Array();
             res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
-          } else {
+          } else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
+            AppComponent.myapp.openDialog(res);
+          }
+          else {
             var arrayRes = new Array();
             arrayRes.push(error.error.message);
             AppComponent.myapp.openDialog(arrayRes);

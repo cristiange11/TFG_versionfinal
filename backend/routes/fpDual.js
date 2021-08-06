@@ -42,7 +42,7 @@ router.post(
     .custom(async (anio) => {
       let fecha = new Date();
       let anioActual = fecha.getFullYear();
-      console.log(anioActual + " " + anio)
+     
       if(anio<anioActual){
        return Promise.reject('Año pasado')
       }
@@ -90,7 +90,7 @@ router.put(
     .custom(async (anio) => {
       let fecha = new Date();
       let anioActual = fecha.getFullYear();
-      console.log(anioActual + " " + anio)
+     
       if(anio<anioActual){
        return Promise.reject('Año pasado')
       }

@@ -10,7 +10,7 @@ import { NavigationComponent } from '../../navigation/navigation.component';
 })
 export class PasswordComponent implements OnInit {
 
-  constructor(private router: Router, private nagivationComponent: NavigationComponent,public dialogRef: MatDialogRef<PasswordComponent>) { }
+  constructor(private router: Router, private nagivationComponent: NavigationComponent, public dialogRef: MatDialogRef<PasswordComponent>) { }
 
   ngOnInit(): void {
   }

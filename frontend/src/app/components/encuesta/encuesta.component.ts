@@ -77,7 +77,6 @@ export class EncuestaComponent implements OnInit, OnDestroy, AfterViewInit {
         .subscribe(
           data => {
             let encuestas = data["encuestas"];
-            console.log(encuestas)
 
             encuestas.forEach(encuestaInfo => {
               var encuesta = this.transformJSON(encuestaInfo);
@@ -94,6 +93,11 @@ export class EncuestaComponent implements OnInit, OnDestroy, AfterViewInit {
               res.push("Petición incorrecta.");
               AppComponent.myapp.openDialog(res);
             }
+            else if (error.status == 500) {
+              const res = new Array();
+              res.push("Error del servidor, vuelva a intentarlo más tarde.");
+              AppComponent.myapp.openDialog(res);
+            }
 
           });
     } else {
@@ -101,7 +105,7 @@ export class EncuestaComponent implements OnInit, OnDestroy, AfterViewInit {
         .subscribe(
           data => {
             let encuestas = data["encuestas"];
-            console.log(encuestas)
+            
 
             encuestas.forEach(encuestaInfo => {
               var encuesta = this.transformJSON(encuestaInfo);
@@ -111,12 +115,16 @@ export class EncuestaComponent implements OnInit, OnDestroy, AfterViewInit {
             this.dataSource.data = this.encuestaList;
           },
           error => {
-            console.log(error)
             if (error.status == 401 && error.error.errors == "Sesión expirada") {
               AppComponent.myapp.openDialogSesion();
             } else if (error.status == 406) {
               const res = new Array();
               res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
+            else if (error.status == 500) {
+              const res = new Array();
+              res.push("Error del servidor, vuelva a intentarlo más tarde.");
               AppComponent.myapp.openDialog(res);
             }
 
@@ -166,6 +174,11 @@ export class EncuestaComponent implements OnInit, OnDestroy, AfterViewInit {
             error => {
               if (error.status == 401 && error.error.errors == "Sesión expirada") {
                 AppComponent.myapp.openDialogSesion();
+              }
+              else if (error.status == 500) {
+                const res = new Array();
+                res.push("Error del servidor, vuelva a intentarlo más tarde.");
+                AppComponent.myapp.openDialog(res);
               }
               else if (error.status == 406) {
                 const res = new Array();

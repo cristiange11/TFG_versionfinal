@@ -25,7 +25,7 @@ module.exports = class ResultadoAprendizaje {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_RESULTADOAPRENDIZAJE','No se ha podido eliminar el resultado aprendizaje ' ,'${user}',sysdate(), 'resultado aprendizaje')`);
-            console.log('ROLLBACK', err);
+           
             throw err;
         } finally {
             await connection.release();
@@ -43,7 +43,7 @@ module.exports = class ResultadoAprendizaje {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_RESULTADOAPRENDIZAJE','No se ha añadido el resultado aprendizaje con ','${user}',sysdate(), 'resultado aprendizaje')`);
-            console.log('ROLLBACK at querySignUp', err);
+           
             throw err;
         } finally {
             await connection.release();
@@ -62,7 +62,7 @@ module.exports = class ResultadoAprendizaje {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_RESULTADOAPRENDIZAJE','No se ha actualizado el resultado de aprendizaje con id ${resultadoAprendizaje.id}','${user}',sysdate(), 'modulo')`);
-            console.log('ROLLBACK at querySignUp', err);
+            
             throw err;
         } finally {
             await connection.release();

@@ -78,8 +78,12 @@ exports.deleteTutorEmpresaByEmpresa = async (req, res, next) => {
     const CIF = req.params.CIF;
     try {
       const user = jwt_decode(req.headers['authorization']).sub;
-      const empresa = await Empresa.deleteTutorEmpresaByEmpresa(CIF,user);
-      res.status(200).json({ message: empresa });
+      const empresa = await Empresa.deleteTutorEmpresaByEmpresa(CIF,user).then(function (result) {
+        res.status(201).json({ message: "success" });
+      }).catch(function (err) {
+        res.status(409).json({ "errors" : "no se ha podido borrar el usuario" });
+      });;
+    
 
     } catch (err) {
       res.status(500).json({ error: err });
@@ -101,8 +105,11 @@ exports.deleteEmpresa = async (req, res, next) => {
     try {
       
       const user = jwt_decode(req.headers['authorization']).sub;
-      const empresa = await Empresa.deleteEmpresa(CIF,user);
-      res.status(200).json({ message: empresa });
+      const empresa = await Empresa.deleteEmpresa(CIF,user).then(function (result) {
+        res.status(201).json({ message: "success" });
+      }).catch(function (err) {
+        res.status(409).json({ "errors" : "no se ha podido borrar la empresa" });
+      });
 
     } catch (err) {
       res.status(500).json({ error: err });
@@ -141,11 +148,11 @@ exports.updateEmpresa = async (req, res, next) => {
       try {
         const user = jwt_decode(req.headers['authorization']).sub;
         const result = Empresa.updateEmpresa(req.body, user).then(function (result) {
-          console.log("Promise Resolved");
+          
 
           res.status(201).json({ message: "success" });
         }).catch(function () {
-          console.log("Promise Rejected");
+         
           res.status(401).json({   "errors" : "no se ha podido actualizar la empresa"  });
         });
 
@@ -188,11 +195,11 @@ exports.createEmpresa = async (req, res, next) => {
       try {
         const user = jwt_decode(req.headers['authorization']).sub;
         const result = Empresa.createEmpresa(req.body, user).then(function (result) {
-          console.log("Promise Resolved");
+          
 
           res.status(201).json({ message: "success" });
         }).catch(function () {
-          console.log("Promise Rejected");
+          
           res.status(401).json({ message: "no se ha podido crear la empresa:" });
         });
 

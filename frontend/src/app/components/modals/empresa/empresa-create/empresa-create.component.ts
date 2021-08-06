@@ -21,7 +21,7 @@ export class EmpresaCreateComponent implements OnInit {
   user;
   dineroBeca = new FormControl("", [Validators.required, Validators.min(1)]);
   constructor(private router: Router, private cookieService: CookieService, public dialogRef: MatDialogRef<EmpresaCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: Empresa, private nagivationComponent: NavigationComponent, public empresaService: EmpresaService, private fpdualesService: FpdualesService) {
-    
+
     this.formInstance = new FormGroup({
       cifEmpresa: new FormControl("", [Validators.required, Validators.pattern(/^[a-zA-Z]{1}\d{7}[a-zA-Z0-9]{1}$/)]),
       nombre: new FormControl("", [Validators.required, Validators.minLength(4)]),
@@ -33,71 +33,79 @@ export class EmpresaCreateComponent implements OnInit {
       becas: new FormControl("", [Validators.required]),
       fpDual: new FormControl("", [Validators.required]),
     })
-    if(!this.cookieService.get('user')){
+    if (!this.cookieService.get('user')) {
       this.router.navigate(['home']);
     }
-    else{
-      this.user =(JSON.parse(this.cookieService.get('user')));
-    if(Number(this.user.rol)!=1 && Number(this.user.rol) != 2){
-      this.dialogRef.close();
-      this.router.navigate(['home']);
+    else {
+      this.user = (JSON.parse(this.cookieService.get('user')));
+      if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2) {
+        this.dialogRef.close();
+        this.router.navigate(['home']);
+      }
+
     }
-    
-  }
   }
 
-  
+
 
   ngOnInit(): void {
-    if(this.user.rol == 2){
-    this.fpdualesService.getFPsByCentro(this.user.codigoCentro).pipe(first())
-      .subscribe(
-        data => {
-          this.fpList = new Map<number, string>();
-          let fps = data["fps"]
-          fps.forEach(fpInfo => {
-            var fp = fpInfo as Fpduales
+    if (this.user.rol == 2) {
+      this.fpdualesService.getFPsByCentro(this.user.codigoCentro).pipe(first())
+        .subscribe(
+          data => {
+            this.fpList = new Map<number, string>();
+            let fps = data["fps"]
+            fps.forEach(fpInfo => {
+              var fp = fpInfo as Fpduales
 
-            this.fpList.set(fp.id, fp.nombre)
+              this.fpList.set(fp.id, fp.nombre)
+            });
+          },
+
+          error => {
+            if (error.status == 401 && error.error.errors == "Sesión expirada") {
+              this.dialogRef.close();
+              AppComponent.myapp.openDialogSesion();
+            } else if (error.status == 406) {
+              const res = new Array();
+              res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }else if (error.status == 500) {
+              const res = new Array();
+              res.push("Error del servidor, vuelva a intentarlo más tarde.");
+              AppComponent.myapp.openDialog(res);
+            }
           });
-        },
+    }
+    else if (this.user.rol == 1) {
+      this.fpdualesService.getFps().pipe(first())
+        .subscribe(
+          data => {
+            this.fpList = new Map<number, string>();
+            let fps = data["fps"]
+            fps.forEach(fpInfo => {
+              var fp = fpInfo as Fpduales
 
-        error => {
-          if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            this.dialogRef.close();
-            AppComponent.myapp.openDialogSesion();                             
-          }else if (error.status == 406) {
-            const res = new Array();
-            res.push("Petición incorrecta.");
-            AppComponent.myapp.openDialog(res);
-          }
-        });
-      }
-      else if(this.user.rol == 1){
-        this.fpdualesService.getFps().pipe(first())
-      .subscribe(
-        data => {
-          this.fpList = new Map<number, string>();
-          let fps = data["fps"]
-          fps.forEach(fpInfo => {
-            var fp = fpInfo as Fpduales
+              this.fpList.set(fp.id, fp.nombre)
+            });
+          },
 
-            this.fpList.set(fp.id, fp.nombre)
+          error => {
+
+            if (error.status == 401 && error.error.errors == "Sesión expirada") {
+              this.dialogRef.close();
+              AppComponent.myapp.openDialogSesion();
+            } else if (error.status == 406) {
+              const res = new Array();
+              res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }else if (error.status == 500) {
+              const res = new Array();
+              res.push("Error del servidor, vuelva a intentarlo más tarde.");
+              AppComponent.myapp.openDialog(res);
+            }
           });
-        },
-
-        error => {
-          console.log(error)
-          if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            this.dialogRef.close();
-            AppComponent.myapp.openDialogSesion();                             
-          }else if (error.status == 406) {
-            const res = new Array();
-            res.push("Petición incorrecta.");
-            AppComponent.myapp.openDialog(res);
-          }
-        });
-      }
+    }
   }
   save() {
     this.empresaService.addEmpresa(this.formInstance.value, this.dineroBeca.value).pipe(first())
@@ -106,24 +114,27 @@ export class EmpresaCreateComponent implements OnInit {
           window.location.reload();
         },
         error => {
-          console.log(error)
           if (error.status == 409) {
-           
+
             error.error.errors.forEach(errorInfo => {
               const formControl = this.formInstance.get(errorInfo.param);
               if (formControl) {
                 formControl.setErrors({
                   serverError: errorInfo.message
                 });
-              }if (errorInfo.param == "dineroBeca") {
+              } if (errorInfo.param == "dineroBeca") {
                 this.dineroBeca.setErrors({
                   serverError: errorInfo.message
                 });
               }
             });
-          } else if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            this.dialogRef.close(); 
-            AppComponent.myapp.openDialogSesion();                             
+          } else if (error.status == 401 && error.error.errors == "Sesión expirada") {
+            this.dialogRef.close();
+            AppComponent.myapp.openDialogSesion();
+          }else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
+            AppComponent.myapp.openDialog(res);
           }
           else if (error.status == 406) {
             const res = new Array();

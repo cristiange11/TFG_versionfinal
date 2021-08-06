@@ -38,7 +38,6 @@ export class CentroService {
   deleteUserAndFPByCentro(codigoCentro : string): Observable<JSON>{
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
 
-    console.log(`${this.url}/${codigoCentro}`);
     return this.http.delete<JSON>(`${this.url}/delete/${codigoCentro}`,  httpOptions);
   }
 }

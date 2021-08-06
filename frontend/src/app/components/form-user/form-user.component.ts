@@ -76,6 +76,11 @@ export class FormUserComponent implements OnInit {
               res.push("Petición incorrecta.");
               AppComponent.myapp.openDialog(res);
             }
+            else if (error.status == 500) {
+              const res = new Array();
+              res.push("Error del servidor, vuelva a intentarlo más tarde.");
+              AppComponent.myapp.openDialog(res);
+            }
           });
     }
     this.rolService.getRoles().pipe(first())
@@ -97,6 +102,11 @@ export class FormUserComponent implements OnInit {
           } else if (error.status == 406) {
             const res = new Array();
             res.push("Petición incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }
+          else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
             AppComponent.myapp.openDialog(res);
           }
         });
@@ -125,7 +135,6 @@ export class FormUserComponent implements OnInit {
       this.codigoCentro.setValue(this.user.codigoCentro);
       this.obtenerFP(this.user.codigoCentro);
     }
-    console.log(this.user)
     return res;
   }
 
@@ -142,7 +151,6 @@ export class FormUserComponent implements OnInit {
 
   obtenerRol(rol): number {
     this.numero = rol;
-    console.log("Rol => " + this.numero)
     if (rol == 5) {
       this.numeroExpediente = new FormControl("", [Validators.required, Validators.minLength(6)]);
     }
@@ -153,7 +161,6 @@ export class FormUserComponent implements OnInit {
 
       this.modulo = new FormControl("", [Validators.required]);
       this.formGroupTutor = new FormGroup({ moduloEmpresa: new FormControl("", [Validators.required, Validators.minLength(6)]), cifEmpresa: new FormControl("", [Validators.required]) })
-      console.log(this.user)
       this.empresaService.getEmpresasByFp(this.user.fpDual).pipe(first())
         .subscribe(
           data => {
@@ -173,6 +180,11 @@ export class FormUserComponent implements OnInit {
               res.push("Petición incorrecta.");
               AppComponent.myapp.openDialog(res);
             }
+            else if (error.status == 500) {
+              const res = new Array();
+              res.push("Error del servidor, vuelva a intentarlo más tarde.");
+              AppComponent.myapp.openDialog(res);
+            }
           });
 
 
@@ -181,7 +193,6 @@ export class FormUserComponent implements OnInit {
     return this.numero;
   }
   obtenerModuloAndEmpresa(fp): void {
-    console.log("entro " + fp)
     this.empresaService.getEmpresasByFp(fp).pipe(first())
       .subscribe(
         data => {
@@ -202,6 +213,11 @@ export class FormUserComponent implements OnInit {
           else if (error.status == 406) {
             const res = new Array();
             res.push("Petición incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }
+          else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
             AppComponent.myapp.openDialog(res);
           }
         });
@@ -231,6 +247,11 @@ export class FormUserComponent implements OnInit {
             res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
           }
+          else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
+            AppComponent.myapp.openDialog(res);
+          }
         });
   }
   obtenerFP(centro): void {
@@ -257,6 +278,11 @@ export class FormUserComponent implements OnInit {
               res.push("Petición incorrecta.");
               AppComponent.myapp.openDialog(res);
             }
+            else if (error.status == 500) {
+              const res = new Array();
+              res.push("Error del servidor, vuelva a intentarlo más tarde.");
+              AppComponent.myapp.openDialog(res);
+            }
           });
     } else {
       this.fpdualesService.getFPdualByAlumno(centro).pipe(first())
@@ -276,6 +302,11 @@ export class FormUserComponent implements OnInit {
             } else if (error.status == 406) {
               const res = new Array();
               res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
+            else if (error.status == 500) {
+              const res = new Array();
+              res.push("Error del servidor, vuelva a intentarlo más tarde.");
               AppComponent.myapp.openDialog(res);
             }
           });
@@ -299,7 +330,11 @@ export class FormUserComponent implements OnInit {
             AppComponent.myapp.openDialog(arrayRes);
           },
           error => {
-            console.log(error)
+            if(error.status == 409 && error.error.errors == "no se ha podido crear el usuario"){
+              const res = new Array();
+              res.push("No se ha podido crear el usuario.");
+              AppComponent.myapp.openDialog(res);
+            }
             if (error.status == 409) {
 
               error.error.errors.forEach(errorInfo => {
@@ -318,6 +353,11 @@ export class FormUserComponent implements OnInit {
             else if (error.status == 401 && error.error.errors == "Sesión expirada") {
               AppComponent.myapp.openDialogSesion();
             }
+            else if (error.status == 500) {
+              const res = new Array();
+              res.push("Error del servidor, vuelva a intentarlo más tarde.");
+              AppComponent.myapp.openDialog(res);
+            }
           });
     }
 
@@ -332,8 +372,12 @@ export class FormUserComponent implements OnInit {
             AppComponent.myapp.openDialog(arrayRes);
           },
           error => {
-            console.log(error)
-            if (error.status == 409) {
+            if(error.status == 409 && error.error.errors == "no se ha podido crear el alumno"){
+              const res = new Array();
+              res.push("No se ha podido crear el alumno.");
+              AppComponent.myapp.openDialog(res);
+            }
+            else if (error.status == 409) {
               error.error.errors.forEach(errorInfo => {
                 const formControl = this.signupForm.get(errorInfo.param);
                 if (formControl) {
@@ -367,6 +411,11 @@ export class FormUserComponent implements OnInit {
               res.push("Petición incorrecta.");
               AppComponent.myapp.openDialog(res);
             }
+            else if (error.status == 500) {
+              const res = new Array();
+              res.push("Error del servidor, vuelva a intentarlo más tarde.");
+              AppComponent.myapp.openDialog(res);
+            }
           });
     } else if (this.numero == 4) {
 
@@ -378,9 +427,12 @@ export class FormUserComponent implements OnInit {
             AppComponent.myapp.openDialog(arrayRes);
           },
           error => {
-
-            if (error.status == 409) {
-              console.log(error)
+            if(error.status == 409 && error.error.errors == "no se ha podido crear el profesor"){
+              const res = new Array();
+              res.push("No se ha podido crear el profesor.");
+              AppComponent.myapp.openDialog(res);
+            }
+            else if (error.status == 409) {
               error.error.errors.forEach(errorInfo => {
                 const formControl = this.signupForm.get(errorInfo.param);
                 if (formControl) {
@@ -415,6 +467,11 @@ export class FormUserComponent implements OnInit {
             else if (error.status == 401 && error.error.errors == "Sesión expirada") {
               AppComponent.myapp.openDialogSesion();
             }
+            else if (error.status == 500) {
+              const res = new Array();
+              res.push("Error del servidor, vuelva a intentarlo más tarde.");
+              AppComponent.myapp.openDialog(res);
+            }
           });
     } else if (this.numero == 3) {
 
@@ -426,6 +483,11 @@ export class FormUserComponent implements OnInit {
             AppComponent.myapp.openDialog(arrayRes);
           },
           error => {
+            if(error.status == 409 && error.error.errors == "no se ha podido crear el tutor"){
+              const res = new Array();
+              res.push("No se ha podido crear el tutor.");
+              AppComponent.myapp.openDialog(res);
+            }
             if (error.status == 409) {
               error.error.errors.forEach(errorInfo => {
                 const formControl = this.signupForm.get(errorInfo.param);
@@ -459,6 +521,11 @@ export class FormUserComponent implements OnInit {
             else if (error.status == 406) {
               const res = new Array();
               res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
+            else if (error.status == 500) {
+              const res = new Array();
+              res.push("Error del servidor, vuelva a intentarlo más tarde.");
               AppComponent.myapp.openDialog(res);
             }
           });

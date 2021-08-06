@@ -15,7 +15,6 @@ module.exports = class Profesor extends User {
         return rows;
     }
     static async getProfesor(dni) {
-        console.log(`SELECT * FROM profesor WHERE dni='${dni}'`)
         const [rows, fields] = await promisePool.query(
             `SELECT U.*, P.departamento, M.nombre as nombreModulo, M.codigo as moduloCodigo FROM usuario U, profesor P, profesor_modulo PM, modulo M WHERE U.dni = P.dni AND P.dni=PM.dni AND M.codigo = PM.codigoModulo AND U.dni='${dni}'`
         );
@@ -35,7 +34,6 @@ module.exports = class Profesor extends User {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_PROFESOR','No se ha borrado profesor con DNI ${profesor.dni} ','${user}',sysdate(), 'profesor')`);
-            console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {
             await connection.release();
@@ -44,8 +42,6 @@ module.exports = class Profesor extends User {
     }
     static async createProfesor(profesor, password, user) {
         const connection = await promisePool.getConnection();
-        console.log(profesor.modulo)
-        console.log(`INSERT INTO profesor_modulo (codigoModulo, dni) SELECT modulo.codigo, profesor.dni FROM modulo, profesor WHERE modulo.codigo = ${profesor.modulo.modulo} AND profesor.dni="${profesor.dni}"`)
         try {
             await connection.beginTransaction();
             let query = `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fechaNacimiento, fpDual, codigoCentro) VALUES ('${profesor.dni}','${profesor.nombre}','${profesor.apellidos}','${profesor.correo}','${profesor.movil}','${profesor.direccion}','${password}','${profesor.genero}',${profesor.cp},'${profesor.rol}',STR_TO_DATE('${profesor.fechaNacimiento}','%Y-%m-%d'),'${profesor.fpDual}','${profesor.codigoCentro}')`
@@ -65,16 +61,13 @@ module.exports = class Profesor extends User {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_PROFESOR','No se ha añadido profesor con DNI ${profesor.dni} ','${user}',sysdate(), 'profesor')`);
-            console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {
             await connection.release();
         }
     }
     static async updateProfesor(profesor, password, user) {
-        console.log("entro")
         const connection = await promisePool.getConnection();
-        console.log(`UPDATE usuario SET nombre='${profesor.nombre}',apellidos='${profesor.apellidos}',correo='${profesor.correo}', movil='${profesor.movil}',direccion='${profesor.direccion}',password='${password}',genero='${profesor.genero}', cp='${profesor.cp}',fechaNacimiento=STR_TO_DATE('${profesor.fechaNacimiento}','%Y-%m-%d') WHERE dni='${profesor.dni}'`)
         try {
             await connection.beginTransaction();
             let query = `UPDATE usuario SET nombre='${profesor.nombre}',apellidos='${profesor.apellidos}',correo='${profesor.correo}', movil='${profesor.movil}',direccion='${profesor.direccion}',password='${password}',genero='${profesor.genero}', cp='${profesor.cp}',rol='${profesor.rol}',fechaNacimiento=STR_TO_DATE('${profesor.fechaNacimiento}','%Y-%m-%d'),fpDual=${profesor.fpDual},codigoCentro='${profesor.codigoCentro}' WHERE dni='${profesor.dni}'`;
@@ -94,7 +87,6 @@ module.exports = class Profesor extends User {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_PROFESOR','No se ha actualizado profesor con DNI ${profesor.dni} ','${user}',sysdate(), 'profesor')`);
-            console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {
             await connection.release();

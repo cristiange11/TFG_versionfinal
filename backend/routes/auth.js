@@ -28,7 +28,6 @@ router.post(
     .custom(async (rol) => {
      
       if(!isNaN(rol)){
-        console.log("entro al rol")
         const user = await Rol.getRol(rol);
       if (user[0].length == 0) {
         return Promise.reject('Error');
@@ -92,10 +91,10 @@ router.put(
       .custom(async (actualPassword , {req}) => {
         if(actualPassword != null){
           await User.find(req.body.dni).then(async function (usuario){
-              console.log(usuario[0][0]);
+              
               await User.comparePassword(actualPassword, usuario[0][0].password).then(function (resultado){
                 if(!resultado){
-                  console.log("entro en error")
+                  
                   return Promise.reject('Contraseña incorrecta');
                 }
               })

@@ -1,66 +1,73 @@
 <h1 mat-dialog-title>Editar Empresa</h1>
 <div mat-dialog-content>
-  <form [formGroup]="formInstance" novalidate >
-    
-      <mat-form-field class="fullWidth" appearance="outline">
-        <mat-label>Nombre</mat-label>
-        <input matInput type="text" name="nombre" formControlName="nombre" placeholder="nombre" required>
-        <mat-error *ngIf="formInstance.controls['nombre']?.errors?.required">Nombre requerido</mat-error>
-        <mat-error *ngIf="formInstance.controls['nombre']?.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
-        <mat-error *ngIf="formInstance.controls['nombre']?.errors?.serverError">{{ formInstance.controls['nombre']?.errors?.serverError }}</mat-error>
+  <form [formGroup]="formInstance" novalidate>
 
-      </mat-form-field>
+    <mat-form-field class="fullWidth" appearance="outline">
+      <mat-label>Nombre</mat-label>
+      <input matInput type="text" name="nombre" formControlName="nombre" placeholder="nombre" required>
+      <mat-error *ngIf="formInstance.controls['nombre']?.errors?.required">Nombre requerido</mat-error>
+      <mat-error *ngIf="formInstance.controls['nombre']?.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
+      <mat-error *ngIf="formInstance.controls['nombre']?.errors?.serverError">{{
+        formInstance.controls['nombre']?.errors?.serverError }}</mat-error>
+
+    </mat-form-field>
 
     <mat-form-field class="fullWidth" appearance="outline">
       <mat-label>Direcci&oacute;n</mat-label>
-        <input matInput type="text" name="direccion" formControlName="direccion" placeholder="direccion" required />
-        <mat-error *ngIf="formInstance.controls['direccion']?.errors?.required">Direcci&oacute;n requerida</mat-error>
-        <mat-error *ngIf="formInstance.controls['direccion']?.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
-        <mat-error *ngIf="formInstance.controls['direccion']?.errors?.serverError">{{ formInstance.controls['direccion']?.errors?.serverError }}</mat-error>
+      <input matInput type="text" name="direccion" formControlName="direccion" placeholder="direccion" required />
+      <mat-error *ngIf="formInstance.controls['direccion']?.errors?.required">Direcci&oacute;n requerida</mat-error>
+      <mat-error *ngIf="formInstance.controls['direccion']?.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
+      <mat-error *ngIf="formInstance.controls['direccion']?.errors?.serverError">{{
+        formInstance.controls['direccion']?.errors?.serverError }}</mat-error>
 
     </mat-form-field>
     <mat-form-field class="fullWidth" appearance="outline">
       <mat-label>Tel&eacute;fono</mat-label>
-        <input matInput type="text" name="telefono" formControlName="telefono" placeholder="telefono" required />
-        <mat-error *ngIf="formInstance.controls['telefono']?.errors?.required">Tel&eacute;fono requerido</mat-error>
-        <mat-error *ngIf="formInstance.controls['telefono']?.errors?.serverError">{{formInstance.controls['telefono']?.errors?.serverError}}</mat-error>
+      <input matInput type="text" name="telefono" formControlName="telefono" placeholder="telefono" required />
+      <mat-error *ngIf="formInstance.controls['telefono']?.errors?.required">Tel&eacute;fono requerido</mat-error>
+      <mat-error *ngIf="formInstance.controls['telefono']?.errors?.serverError">
+        {{formInstance.controls['telefono']?.errors?.serverError}}</mat-error>
 
     </mat-form-field>
     <mat-form-field class="fullWidth" appearance="outline">
       <mat-label>Correo</mat-label>
-        <input matInput type="text" name="correo" formControlName="correo" placeholder="correo" required />
-        <mat-error *ngIf="formInstance.controls['correo']?.errors?.required">Correo requerido</mat-error>
-        <mat-error *ngIf="formInstance.controls['correo']?.errors?.email">Formato correo err&oacute;neo</mat-error>
-        <mat-error *ngIf="formInstance.controls['correo']?.errors?.serverError">{{formInstance.controls['correo']?.errors?.serverError}}</mat-error>
+      <input matInput type="text" name="correo" formControlName="correo" placeholder="correo" required />
+      <mat-error *ngIf="formInstance.controls['correo']?.errors?.required">Correo requerido</mat-error>
+      <mat-error *ngIf="formInstance.controls['correo']?.errors?.email">Formato correo err&oacute;neo</mat-error>
+      <mat-error *ngIf="formInstance.controls['correo']?.errors?.serverError">
+        {{formInstance.controls['correo']?.errors?.serverError}}</mat-error>
     </mat-form-field>
     <mat-form-field class="fullWidth" appearance="outline">
       <mat-label>URL</mat-label>
-        <input matInput type="text" name="url" formControlName="url" placeholder="url" required />
-        <mat-error *ngIf="formInstance.controls['url']?.errors?.required">URL requerida</mat-error>
-        <mat-error *ngIf="formInstance.controls['url']?.errors?.pattern">Formato URL errónea</mat-error>
-        <mat-error *ngIf="formInstance.controls['url']?.errors?.serverError">{{ formInstance.controls['url']?.errors?.serverError }}</mat-error>
+      <input matInput type="text" name="url" formControlName="url" placeholder="url" required />
+      <mat-error *ngIf="formInstance.controls['url']?.errors?.required">URL requerida</mat-error>
+      <mat-error *ngIf="formInstance.controls['url']?.errors?.pattern">Formato URL errónea</mat-error>
+      <mat-error *ngIf="formInstance.controls['url']?.errors?.serverError">{{
+        formInstance.controls['url']?.errors?.serverError }}</mat-error>
 
     </mat-form-field>
     <mat-form-field class="fullWidth" appearance="outline">
       <mat-label>Plazas</mat-label>
-        <input matInput type="text" name="plazas" formControlName="plazas" placeholder="plazas" required />
-        <mat-error *ngIf="formInstance.controls['plazas']?.errors?.required">Plaza requerida</mat-error>
-        <mat-error *ngIf="formInstance.controls['plazas']?.errors?.min">M&iacute;nima 1 plaza</mat-error>
-        <mat-error *ngIf="formInstance.controls['plazas']?.errors?.serverError">{{ formInstance.controls['plazas']?.errors?.serverError }}</mat-error>
+      <input matInput type="text" name="plazas" formControlName="plazas" placeholder="plazas" required />
+      <mat-error *ngIf="formInstance.controls['plazas']?.errors?.required">Plaza requerida</mat-error>
+      <mat-error *ngIf="formInstance.controls['plazas']?.errors?.min">M&iacute;nima 1 plaza</mat-error>
+      <mat-error *ngIf="formInstance.controls['plazas']?.errors?.serverError">{{
+        formInstance.controls['plazas']?.errors?.serverError }}</mat-error>
     </mat-form-field>
     <mat-form-field appearance="fill">
       <mat-label>Becas</mat-label>
       <mat-select matNativeControl required formControlName="becas">
-        <mat-option  value="si">S&iacute;</mat-option>
-      <mat-option  value="no" >No</mat-option>
+        <mat-option value="si">S&iacute;</mat-option>
+        <mat-option value="no">No</mat-option>
       </mat-select>
       <mat-error *ngIf="formInstance.controls['becas']?.errors?.required">Becas requerida</mat-error>
-      <mat-error *ngIf="formInstance.controls['becas']?.errors?.serverError">{{ formInstance.controls['becas']?.errors?.serverError }}</mat-error>
+      <mat-error *ngIf="formInstance.controls['becas']?.errors?.serverError">{{
+        formInstance.controls['becas']?.errors?.serverError }}</mat-error>
     </mat-form-field>
     <mat-form-field appearance="fill" *ngIf="formInstance.controls['becas'].value == 'si' ">
       <mat-label>Cuant&iacute;a beca</mat-label>
       <input matInput type="text" name="direccion" [formControl]="dineroBeca" placeholder="cuantía beca" required />
-     
+
       <mat-error *ngIf="this.dineroBeca.errors?.required">Dinero requerido</mat-error>
       <mat-error *ngIf="this.dineroBeca.errors?.min">M&iacute;nimo 1 €</mat-error>
       <mat-error *ngIf="this.dineroBeca.errors?.serverError">{{ this.dineroBeca.errors?.serverError }}</mat-error>
@@ -69,11 +76,11 @@
 </div>
 <div class="mt-5" mat-dialog-actions>
   <div *ngIf="formInstance.controls['becas'].value == 'si'; else no">
-    <button mat-raised-button color="primary"  (click)="edit()" [disabled]="!formInstance.valid || !dineroBeca.valid">Yes</button>
-  <button mat-raised-button mat-dialog-close>No</button>
+    <button mat-raised-button color="primary" (click)="edit()"
+      [disabled]="!formInstance.valid || !dineroBeca.valid">Yes</button>
+    <button mat-raised-button mat-dialog-close>No</button>
   </div>
-  <ng-template  #no>
-    <button mat-raised-button color="primary"  (click)="edit()" [disabled]="!formInstance.valid">Yes</button>
-  <button mat-raised-button mat-dialog-close>No</button>
+  <ng-template #no>
+    <button mat-raised-button color="primary" (click)="edit()" [disabled]="!formInstance.valid">Yes</button>
+    <button mat-raised-button mat-dialog-close>No</button>
   </ng-template>
-  

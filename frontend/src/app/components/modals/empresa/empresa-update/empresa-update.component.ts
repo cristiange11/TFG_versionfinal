@@ -30,7 +30,7 @@ export class EmpresaUpdateComponent implements OnInit {
 
     });
     this.formInstance.setValue(data);
-    if(this.formInstance.value.becas != "0"){
+    if (this.formInstance.value.becas != "0") {
       this.dineroBeca.setValue(sessionStorage.getItem('dineroBeca'));
     }
   }
@@ -39,16 +39,15 @@ export class EmpresaUpdateComponent implements OnInit {
   ngOnInit(): void {
   }
   edit() {
-    console.log(this.formInstance.value.becas)
     this.empresaService.updateEmpresa(this.formInstance.value, this.dineroBeca.value).pipe(first())
       .subscribe(
         data => {
-         
+
           window.location.reload();
         },
         error => {
           if (error.status == 409) {
-           
+
             error.error.errors.forEach(errorInfo => {
               const formControl = this.formInstance.get(errorInfo.param);
               if (formControl) {
@@ -57,9 +56,13 @@ export class EmpresaUpdateComponent implements OnInit {
                 });
               }
             });
-          } else if(error.status == 401 && error.error.errors == "Sesión expirada"){
-            this.dialogRef.close(); 
-            AppComponent.myapp.openDialogSesion();                             
+          } else if (error.status == 401 && error.error.errors == "Sesión expirada") {
+            this.dialogRef.close();
+            AppComponent.myapp.openDialogSesion();
+          }else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
+            AppComponent.myapp.openDialog(res);
           }
           else if (error.status == 406) {
             const res = new Array();

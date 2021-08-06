@@ -48,7 +48,7 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     else {
       this.user = (JSON.parse(this.cookieService.get('user')));
-      console.log(this.user.rol)
+      
       if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2 && Number(this.user.rol) != 4) {
         this.router.navigate(['home']);
       }
@@ -65,15 +65,12 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
   getAll() {
     var res = [];
     if (Number(this.user.rol != 5)) {
-      console.log("Modulo => " + Number(sessionStorage.getItem('codigoModulo')))
       this.serviceSubscribe = this.calificacionService.getCalificaciones(Number(sessionStorage.getItem('codigoModulo'))).pipe(first())
         .subscribe(
           data => {
-            console.log(data)
             let calificaciones = data["calificaciones"];
 
             calificaciones.forEach(calificacionesInfo => {
-              console.log("Calificaciones => " + calificacionesInfo.nombreUsuario);
               this.calificacionList.push(calificacionesInfo);
 
             });
@@ -84,7 +81,6 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
             
           },
           error => {
-            console.log(error)
             if (error.status == 401 && error.error.errors == "Sesión expirada") {
               AppComponent.myapp.openDialogSesion();
 
@@ -94,8 +90,13 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
               res.push("Petición incorrecta.");
               AppComponent.myapp.openDialog(res);
             }
+            else if (error.status == 500) {
+              const res = new Array();
+              res.push("Error del servidor, vuelva a intentarlo más tarde.");
+              AppComponent.myapp.openDialog(res);
+            }
           });
-    }console.log(res)
+    }
     return res;
   }
   public doFilter = (value: { target: HTMLInputElement }) => {
@@ -144,6 +145,14 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
               else if (error.status == 406) {
                 const res = new Array();
                 res.push("Petición incorrecta.");
+                AppComponent.myapp.openDialog(res);
+              }else if (error.status == 500) {
+                const res = new Array();
+                res.push("Error del servidor, vuelva a intentarlo más tarde.");
+                AppComponent.myapp.openDialog(res);
+              }else{
+                const res = new Array();
+                res.push("No se ha podido eliminar.");
                 AppComponent.myapp.openDialog(res);
               }
 

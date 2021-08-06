@@ -142,8 +142,6 @@ export class EditProfileComponent implements OnInit {
     return false;
   }
   editProfile() {
-
-    console.log(this.editForm.value)
     this.authService.updateUsuario(this.editForm.value, this.user).pipe(first())
       .subscribe(
         data => {
@@ -155,7 +153,6 @@ export class EditProfileComponent implements OnInit {
           AppComponent.myapp.openDialog(arrayRes);
         },
         error => {
-          console.log(error)
           if (error.status == 401 && error.error.errors == "Sesión expirada") {
             AppComponent.myapp.openDialogSesion();
 
@@ -168,6 +165,11 @@ export class EditProfileComponent implements OnInit {
           else if (error.status == 406) {
             const res = new Array();
             res.push("Petición incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }
+          else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
             AppComponent.myapp.openDialog(res);
           }
           else if (error.status == 409) {

@@ -60,7 +60,6 @@ export class AppComponent {
             }else{
               var observaciones = enc;
 
-              console.log(observaciones)
               resultado.push(observaciones);
             }
           })

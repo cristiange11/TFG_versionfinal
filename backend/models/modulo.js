@@ -33,7 +33,6 @@ module.exports = class Modulo {
         return rows;
     }
     static async getModulosAlumUpdate(dni) {
-        console.log(`SELECT U.*, M.nombre as nombreModulo, A.numeroExpediente FROM alumno as A, usuario as U, modulo as M,calificacion as C where U.rol=5 AND U.dni='${dni}' AND A.dni = U.dni AND (not EXISTS(SELECT * from calificacion as E where E.codigoModulo = M.codigo ) OR (C.dni = U.dni AND C.nota<5))`)
         const [rows, fields] = await promisePool.query(`SELECT U.*, M.nombre as nombreModulo, M.codigo as codigoModulo, A.numeroExpediente FROM alumno as A, usuario as U, modulo as M,calificacion as C where U.rol=5 AND U.dni='${dni}' AND A.dni = U.dni AND (not EXISTS(SELECT * from calificacion as E where E.codigoModulo = M.codigo ) OR (C.dni = U.dni AND C.nota<5))`);
         return rows;
     }
@@ -50,7 +49,6 @@ module.exports = class Modulo {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_MODULO','No se ha podido eliminar el módulo ' ,'${user}',sysdate(), 'modulo')`);
-            console.log('ROLLBACK', err);
             throw err;
         } finally {
             await connection.release();
@@ -71,7 +69,6 @@ module.exports = class Modulo {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_modulo','No se ha podido eliminar la modulo ' ,'${user}',sysdate(), 'modulo')`);
 
-            console.log('ROLLBACK', err);
             throw err;
         } finally {
             await connection.release();
@@ -80,7 +77,6 @@ module.exports = class Modulo {
     }
     static async createModulo(modulo, user) {
         const connection = await promisePool.getConnection();
-        console.log(`INSERT INTO modulo(nombre, descripcion, curso, fpDual) VALUES ('${modulo.nombre}','${modulo.descripcion}','${modulo.curso}', ${modulo.fpDual}) `)
         try {
             await connection.beginTransaction();
             let query = `INSERT INTO modulo(nombre, descripcion, curso, fpDual) VALUES ('${modulo.nombre}','${modulo.descripcion}','${modulo.curso}', ${modulo.fpDual}) `;
@@ -90,7 +86,6 @@ module.exports = class Modulo {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_MODULO','No se ha añadido modulo con el nombre ${modulo.nombre}','${user}',sysdate(), 'modulo')`);
-            console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {
             await connection.release();
@@ -109,7 +104,6 @@ module.exports = class Modulo {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_MODULO','No se ha actualizado el modulo con id ${modulo.id}','${user}',sysdate(), 'modulo')`);
-            console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {
             await connection.release();

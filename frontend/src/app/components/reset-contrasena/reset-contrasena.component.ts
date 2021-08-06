@@ -51,7 +51,6 @@ export class ResetContrasenaComponent implements OnInit {
           AppComponent.myapp.openDialogUpdatePassword();
         },
         error => {
-          console.log(error)
           if (error.status == 401 && error.error.errors == "Sesión expirada") {
             const res = new Array();
             res.push("El enlace ha caducado.");
@@ -59,6 +58,10 @@ export class ResetContrasenaComponent implements OnInit {
           } else if (error.status == 406) {
             const res = new Array();
             res.push("Petición incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
             AppComponent.myapp.openDialog(res);
           }
           else if (error.status == 409) {
@@ -71,6 +74,10 @@ export class ResetContrasenaComponent implements OnInit {
 
               }
             });
+          }else{
+            const res = new Array();
+            res.push("No se ha podido cambiar la contraseña.");
+            AppComponent.myapp.openDialog(res);
           }
         });
   }

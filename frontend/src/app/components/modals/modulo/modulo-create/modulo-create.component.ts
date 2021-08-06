@@ -1,6 +1,6 @@
-import { Component,  OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatDialogRef} from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { first } from 'rxjs/operators';
 import { AppComponent } from 'src/app/app.component';
 
@@ -29,7 +29,6 @@ export class ModuloCreateComponent implements OnInit {
   ngOnInit(): void {
   }
   save() {
-    console.log(this.formInstance.value);
     this.moduloService.addModulo(this.formInstance.value).pipe(first())
       .subscribe(
         data => {
@@ -37,12 +36,16 @@ export class ModuloCreateComponent implements OnInit {
           this.dialogRef.close();
         },
         error => {
-          if(error.status == 401 && error.error.errors == "Sesión expirada"){
+          if (error.status == 401 && error.error.errors == "Sesión expirada") {
             this.dialogRef.close();
-            AppComponent.myapp.openDialogSesion();                             
-          }else if (error.status == 406) {
+            AppComponent.myapp.openDialogSesion();
+          } else if (error.status == 406) {
             const res = new Array();
             res.push("Petición incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
             AppComponent.myapp.openDialog(res);
           }
           else if (error.status == 409) {

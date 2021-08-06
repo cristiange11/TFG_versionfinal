@@ -41,7 +41,6 @@ router.post(
     body('rol').trim().not().isEmpty().withMessage("Rol vacío")
     .custom(async (rol) => {
       if(!isNaN(rol)){
-        console.log("entro al rol")
         const user = await Rol.getRol(rol);
       if (user[0].length == 0) {
         return Promise.reject('Error');

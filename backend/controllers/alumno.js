@@ -9,7 +9,7 @@ exports.getAlumnos = async (req, res, next) => {
     }
     else {
         var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-        console.log(expirado)
+
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
@@ -30,7 +30,7 @@ exports.getCalificacionesAlumno = async (req, res, next) => {
     }
     else {
         var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-        console.log(expirado)
+
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
@@ -51,13 +51,12 @@ exports.getAlumnosByModulo = async (req, res, next) => {
     }
     else {
         var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
-        console.log(expirado)
+
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
             try {
                 const alumnos = await Alumno.getAlumnosByModulo(req.params.codigoModulo);
-                console.log("Alumnos =>  " + JSON.stringify(alumnos))
                 res.status(200).json({ alumnos: JSON.stringify(alumnos) });
 
             } catch (err) {
@@ -72,7 +71,6 @@ exports.getAlumnosByModuloEncuesta = async (req, res, next) => {
     }
     else {
         var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
-        console.log(expirado)
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
@@ -93,15 +91,12 @@ exports.getAlumno = async (req, res, next) => {
     }
     else {
         var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
-        console.log(expirado)
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
 
             try {
-
                 const alumno = await Alumno.getAlumno(req.params.dni);
-                console.log("Alumno => " + alumno)
                 res.status(200).json({ alumno: JSON.stringify(alumno) });
 
             } catch (err) {
@@ -117,30 +112,30 @@ exports.deleteAlumno = async (req, res, next) => {
     }
     else {
         var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-        console.log(expirado)
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
             const dni = req.params.dni;
             try {
                 const user = jwt_decode(req.headers['authorization'].sub)
-                const alumno = await Alumno.deleteAlumno(dni, user);
-                res.status(200).json({ alumno: alumno });
+                const alumno = await Alumno.deleteAlumno(dni, user).then(function (result) {
+                    res.status(201).json({ message: "success" });
+                  }).catch(function (err) {
+                    res.status(409).json({ "errors" : "no se ha podido borrar el alumno" });
+                  });
 
             } catch (err) {
-                res.status(409).json({ error: err });
+                res.status(500).json({ error: err });
             }
         }
     }
 };
 exports.updateAlumno = async (req, res, next) => {
-    console.log("ENTRO A UPDATEAR ALUMNO")
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
     }
     else {
         var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-        console.log(expirado)
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
@@ -166,13 +161,12 @@ exports.updateAlumno = async (req, res, next) => {
 
                     const user = jwt_decode(req.headers['authorization']).sub;
                     const hashedPassword = await bcrypt.hash(req.body.password, 12);
-                    console.log("Campos " + req.body.dni)
                     Alumno.updateAlumno(req.body, hashedPassword, user).then(function (result) {
-                        console.log("Promise Resolved");
+
 
                         res.status(201).json({ alumno: "success" });
                     }).catch(function () {
-                        console.log("Promise Rejected");
+                        res.status(401).json({ errors: "No se ha podido actualizar el alumno" });
                     });
 
 
@@ -193,7 +187,7 @@ exports.createAlumno = async (req, res, next) => {
     }
     else {
         var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-        console.log(expirado)
+
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
@@ -217,12 +211,12 @@ exports.createAlumno = async (req, res, next) => {
             else {
                 try {
                     const user = jwt_decode(req.headers['authorization']).sub;
-                    console.log("Usuario => " + user)
+
                     const hashedPassword = await bcrypt.hash(req.body.password, 12);
                     Alumno.createAlumno(req.body, hashedPassword, user).then(function (result) {
                         res.status(201).json({ alumno: "success" });
                     }).catch(function (err) {
-                        res.status(409).json({ message: "no se ha podido crear el alumno:" + err });
+                        res.status(409).json({ "errors": "no se ha podido crear el alumno"  });
                     });
                 } catch (err) {
                     res.status(500).json({ error: err });

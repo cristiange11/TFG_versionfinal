@@ -9,7 +9,6 @@ exports.getProfesores = async (req, res, next) => {
     }
     else {
         var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-        console.log(expirado)
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
@@ -30,7 +29,6 @@ exports.getProfesor = async (req, res, next) => {
     }
     else {
         var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-        console.log(expirado)
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
@@ -52,7 +50,7 @@ exports.deleteProfesor = async (req, res, next) => {
     }
     else {
         var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-        console.log(expirado)
+        
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
@@ -60,9 +58,11 @@ exports.deleteProfesor = async (req, res, next) => {
 
             try {
                 const user = jwt_decode(req.headers['authorization']).sub;
-                const profesor = await Profesor.deleteProfesor(dni, user);
-                res.status(200).json({ profesor: "sucess" });
-
+                const profesor = await Profesor.deleteProfesor(dni, user).then(function (result) {
+                    res.status(201).json({ message: "success" });
+                  }).catch(function (err) {
+                    res.status(409).json({ "errors" : "no se ha podido borrar el usuario" });
+                  });
             } catch (err) {
                 res.status(500).json({ error: err });
             }
@@ -75,7 +75,7 @@ exports.updateProfesor = async (req, res, next) => {
     }
     else {
         var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
-        console.log(expirado)
+        
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
@@ -101,11 +101,10 @@ exports.updateProfesor = async (req, res, next) => {
                     const user = jwt_decode(req.headers['authorization']).sub;
                     const hashedPassword = await bcrypt.hash(req.body.password, 12);
                     Profesor.updateProfesor(req.body, hashedPassword, user).then(function (result) {
-                        console.log("Promise Resolved");
+                        
 
                         res.status(201).json({ profesor: "sucess" });
                     }).catch(function () {
-                        console.log("Promise Rejected");
                         res.status(401).json({ message: "no se ha podido actualizar el profesor:" + err });
                     });
 
@@ -123,7 +122,7 @@ exports.createProfesor = async (req, res, next) => {
     }
     else {
         var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-        console.log(expirado)
+        
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
@@ -148,11 +147,11 @@ exports.createProfesor = async (req, res, next) => {
                     const user = jwt_decode(req.headers['authorization']).sub;
                     const hashedPassword = await bcrypt.hash(req.body.password, 12);
                     Profesor.createProfesor(req.body, hashedPassword, user).then(function (result) {
-                        console.log("Promise Resolved");
+                        
                         res.status(201).json({ profesor: "success" });
                     }).catch(function () {
-                        console.log("Promise Rejected");
-                        res.status(401).json({ message: "no se ha podido crear el profesor:" + err });
+                        
+                        res.status(409).json({ "errors" : "no se ha podido crear el profesor" });
                     });
 
 

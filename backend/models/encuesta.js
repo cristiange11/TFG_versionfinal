@@ -12,7 +12,6 @@ module.exports = class ResultadoAprendizaje {
     }
 
     static async getEncuestas(codigoModulo) {
-        console.log(`SELECT encuesta.*, A.nombre as nombreAlumno, A.apellidos as apellidoAlumno, T.nombre as nombreTutor, T.apellidos as apellidoTutor, R.resultado as resultado FROM encuesta left JOIN usuario as A on encuesta.dniAlumno= A.dni left JOIN usuario as T on encuesta.dniTutorEmpresa = T.dni left join resultado_encuesta as R on (R.id = encuesta.resultado ) where encuesta.codigoModulo= ${codigoModulo}`)
         const [rows, fields] = await promisePool.query(`SELECT encuesta.*, A.nombre as nombreAlumno, A.apellidos as apellidoAlumno, T.nombre as nombreTutor, T.apellidos as apellidoTutor, R.resultado as resultado FROM encuesta left JOIN usuario as A on encuesta.dniAlumno= A.dni left JOIN usuario as T on encuesta.dniTutorEmpresa = T.dni left join resultado_encuesta as R on (R.id = encuesta.resultado ) where encuesta.codigoModulo= ${codigoModulo}`);
         return rows;
     }
@@ -35,7 +34,7 @@ module.exports = class ResultadoAprendizaje {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_ENCUESTA','No se ha podido eliminar la encuesta ' ,'${user}',sysdate(), 'encuesta')`);
-            console.log('ROLLBACK', err);
+   
             throw err;
         } finally {
             await connection.release();
@@ -53,7 +52,7 @@ module.exports = class ResultadoAprendizaje {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_ENCUESTA','No se ha añadido la encuesta con título ${encuesta.titulo}','${user}',sysdate(), 'encuesta')`);
-            console.log('ROLLBACK at querySignUp', err);
+           
             throw err;
         } finally {
             await connection.release();
@@ -71,7 +70,6 @@ module.exports = class ResultadoAprendizaje {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_ENCUESTA','No se ha actualizado la encuesta con id ${encuesta.id}','${user}',sysdate(), 'encuesta')`);
-            console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {
             await connection.release();

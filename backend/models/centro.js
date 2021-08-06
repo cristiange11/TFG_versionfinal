@@ -20,7 +20,6 @@ module.exports = class Centro {
             `SELECT * FROM centro_educativo where correo = '${correo}' AND codigoCentro != '${codigoCentro}'`);
     }
     static async findTelefono(telefono, codigoCentro) {
-        console.log(`SELECT * FROM centro_educativo where telefono = '${telefono}'  AND codigoCentro != '${codigoCentro}'`)
         return await promisePool.query(
             `SELECT * FROM centro_educativo where telefono = '${telefono}'  AND codigoCentro != '${codigoCentro}'`);
     }
@@ -44,7 +43,6 @@ module.exports = class Centro {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_CENTRO','No se ha borrado el centro con codigo centro ${centro.codigoCentro}','${user}',sysdate(), 'centro educativo')`);
-            console.log('ROLLBACK at querySignUp', err);
             throw err;
         } finally {
             await connection.release();
@@ -62,7 +60,7 @@ module.exports = class Centro {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_CENTRO','No se ha añadido el centro con codigo centro ${centro.codigoCentro}','${user}',sysdate(), 'centro educativo')`);
-            console.log('ROLLBACK at querySignUp', err);
+            
             throw err;
         } finally {
             await connection.release();
@@ -82,7 +80,7 @@ module.exports = class Centro {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_CENTRO','No se ha podido actualizar el centro ${centro.codigoCentro}' ,'${user}',sysdate(), 'centro educativo')`);
 
-            console.log('ROLLBACK', err);
+            
             throw err;
         } finally {
             await connection.release();
@@ -90,7 +88,6 @@ module.exports = class Centro {
     }
     static async deleteUserAndFPByCentro(codigoCentro, user) {
         const connection = await promisePool.getConnection();
-        console.log(`DELETE t1 FROM logs t1 INNER JOIN usuario t2 ON ( t1.usuario = t2.dni) WHERE t2.codigoCentro = '${codigoCentro}'`)
         try {
             await connection.beginTransaction();
             let query = `DELETE t1 FROM logs t1 INNER JOIN usuario t2 ON ( t1.usuario = t2.dni) WHERE t2.codigoCentro = '${codigoCentro}'`
@@ -109,7 +106,6 @@ module.exports = class Centro {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_CENTRO','No se ha podido eliminar el centro ' ,'${user}',sysdate(), 'centro educativo')`);
 
-            console.log('ROLLBACK', err);
             throw err;
         } finally {
             await connection.release();
