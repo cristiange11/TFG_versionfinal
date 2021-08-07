@@ -147,7 +147,7 @@ exports.updateEmpresa = async (req, res, next) => {
 
       try {
         const user = jwt_decode(req.headers['authorization']).sub;
-        const result = Empresa.updateEmpresa(req.body, user).then(function (result) {
+        await Empresa.updateEmpresa(req.body, user).then(function (result) {
           
 
           res.status(201).json({ message: "success" });
@@ -194,7 +194,7 @@ exports.createEmpresa = async (req, res, next) => {
 
       try {
         const user = jwt_decode(req.headers['authorization']).sub;
-        const result = Empresa.createEmpresa(req.body, user).then(function (result) {
+        await Empresa.createEmpresa(req.body, user).then(function (result) {
           
 
           res.status(201).json({ message: "success" });

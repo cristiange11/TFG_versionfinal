@@ -126,7 +126,7 @@ exports.updateTutor = async (req, res, next) => {
                     const user = jwt_decode(req.headers['authorization']).sub;
                     const hashedPassword = await bcrypt.hash(req.body.password, 12);
         
-                    TutorEmpresa.updateTutor(req.body, hashedPassword, user).then(function (result) {
+                    await TutorEmpresa.updateTutor(req.body, hashedPassword, user).then(function (result) {
                         
 
                         res.status(201).json({ profesor: "sucess" });
@@ -175,7 +175,7 @@ exports.createTutor = async (req, res, next) => {
 
                     const hashedPassword = await bcrypt.hash(req.body.password, 12);
                     
-                    const result = TutorEmpresa.createTutor(req.body, hashedPassword, user).then(function (result) {
+                    await TutorEmpresa.createTutor(req.body, hashedPassword, user).then(function (result) {
                         
 
                         res.status(201).json({ message: "success" });

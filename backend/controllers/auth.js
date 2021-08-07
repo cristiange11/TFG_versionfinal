@@ -75,7 +75,7 @@ exports.signup = async (req, res, next) => {
           };
 
           const user = jwt_decode(req.headers['authorization']).sub;
-          const result = User.save(us, user).then(function (result) {
+          await User.save(us, user).then(function (result) {
 
 
             res.status(201).json({ message: "success" });
@@ -141,7 +141,7 @@ exports.login = async (req, res, next) => {
             res.status(200).json(resJSON);
           }
         } else {
-          res.status(401).json({ "errors": 'Credenciales incorrectas.' });
+          res.status(401).json({ "errors": 'Usuario introducido no existente' });
         }
       } catch (err) {
         res.status(500).json({ error: err });
@@ -248,7 +248,7 @@ exports.updateUsuario = async (req, res, next) => {
         try {
           const user = jwt_decode(req.headers['authorization']).sub;
           const hashedPassword = await bcrypt.hash(req.body.password, 12);
-          const result = User.updateUser(req.body, hashedPassword, user).then(function (result) {
+          await User.updateUser(req.body, hashedPassword, user).then(function (result) {
 
 
             res.status(201).json({ user: req.body });
@@ -376,7 +376,7 @@ exports.updatePassword = async (req, res, next) => {
           const user = jwt_decode(req.headers['authorization']).sub;
 
           const hashedPassword = await bcrypt.hash(req.body.password, 12);
-          User.updatePassword(user, hashedPassword).then(function (result) {
+          await User.updatePassword(user, hashedPassword).then(function (result) {
 
             res.status(201).json({ "message": "success" });
           }).catch(function () {

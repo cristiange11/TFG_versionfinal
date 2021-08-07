@@ -100,7 +100,7 @@ exports.updateProfesor = async (req, res, next) => {
                 try {
                     const user = jwt_decode(req.headers['authorization']).sub;
                     const hashedPassword = await bcrypt.hash(req.body.password, 12);
-                    Profesor.updateProfesor(req.body, hashedPassword, user).then(function (result) {
+                    await Profesor.updateProfesor(req.body, hashedPassword, user).then(function (result) {
                         
 
                         res.status(201).json({ profesor: "sucess" });
@@ -146,7 +146,7 @@ exports.createProfesor = async (req, res, next) => {
                 try {
                     const user = jwt_decode(req.headers['authorization']).sub;
                     const hashedPassword = await bcrypt.hash(req.body.password, 12);
-                    Profesor.createProfesor(req.body, hashedPassword, user).then(function (result) {
+                    await Profesor.createProfesor(req.body, hashedPassword, user).then(function (result) {
                         
                         res.status(201).json({ profesor: "success" });
                     }).catch(function () {

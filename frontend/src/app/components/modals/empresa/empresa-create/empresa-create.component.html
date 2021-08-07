@@ -56,6 +56,13 @@
       <mat-error *ngIf="formInstance.controls['url']?.errors?.serverError">{{
         formInstance.controls['url']?.errors?.serverError }}</mat-error>
     </mat-form-field>
+    <mat-form-field *ngIf="this.user.rol==1" appearance="fill">
+      <mat-label>Centro educativo</mat-label>
+      <mat-select matNativeControl required [formControl]="codigoCentro" (selectionChange)="obtenerFP($event.value)">
+        <mat-option *ngFor="let centro of centroList | keyvalue" [value]="centro.key">{{ centro.value }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="this.codigoCentro.errors?.required">Centro requerido</mat-error>
+    </mat-form-field>
     <mat-form-field appearance="fill">
       <mat-label>FP</mat-label>
       <mat-select matNativeControl required formControlName="fpDual">

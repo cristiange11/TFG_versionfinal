@@ -75,7 +75,7 @@ exports.updateResultadoAprendizaje = async (req, res, next) => {
         try {
           const user = jwt_decode(req.headers['authorization']).sub;
 
-          ResultadoAprendizaje.updateResultadoAprendizaje(req.body, user).then(function (result) {
+          await ResultadoAprendizaje.updateResultadoAprendizaje(req.body, user).then(function (result) {
 
 
             res.status(201).json({ message: "sucess" });
@@ -121,7 +121,7 @@ exports.createResultadoAprendizaje = async (req, res, next) => {
       else {
         try {
           const user = jwt_decode(req.headers['authorization']).sub;
-          ResultadoAprendizaje.createResultadoAprendizaje(req.body, user).then(function (result) {
+          await ResultadoAprendizaje.createResultadoAprendizaje(req.body, user).then(function (result) {
 
 
             res.status(201).json({ message: "success" });

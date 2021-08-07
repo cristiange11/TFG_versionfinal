@@ -75,7 +75,7 @@ exports.updateCalificacion = async (req, res, next) => {
             else {
                 try {
                     const user = jwt_decode(req.headers['authorization']).sub;
-                    Calificacion.updateCalificacion(req.body, user).then(function (result) {
+                    await Calificacion.updateCalificacion(req.body, user).then(function (result) {
                         res.status(201).json({ message: "sucess" });
                     }).catch(function () {
                         res.status(401).json({ "errors": "no se ha podido actualizar la calificación" });
@@ -115,7 +115,7 @@ exports.createCalifcacion = async (req, res, next) => {
             else {
                 try {
                     const user = jwt_decode(req.headers['authorization']).sub;
-                    Calificacion.createCalificacion(req.body, user).then(function () {
+                    await Calificacion.createCalificacion(req.body, user).then(function () {
                         res.status(201).json({ message: "success" });
                     }).catch(function () {
                         res.status(401).json({ message: "no se ha podido crear la calificación:" + err });

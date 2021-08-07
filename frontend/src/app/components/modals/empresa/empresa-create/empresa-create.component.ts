@@ -8,6 +8,7 @@ import { AppComponent } from 'src/app/app.component';
 import { NavigationComponent } from 'src/app/components/navigation/navigation.component';
 import { Empresa } from 'src/app/models/Empresa';
 import { Fpduales } from 'src/app/models/Fpduales';
+import { CentroService } from 'src/app/services/centro.service';
 import { EmpresaService } from 'src/app/services/empresa.service';
 import { FpdualesService } from 'src/app/services/fpduales.service';
 @Component({
@@ -19,8 +20,10 @@ export class EmpresaCreateComponent implements OnInit {
   formInstance: FormGroup;
   fpList = new Map<number, string>();
   user;
+  codigoCentro = new FormControl("", [Validators.required]);
+  centroList = new Map<string, string>();
   dineroBeca = new FormControl("", [Validators.required, Validators.min(1)]);
-  constructor(private router: Router, private cookieService: CookieService, public dialogRef: MatDialogRef<EmpresaCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: Empresa, private nagivationComponent: NavigationComponent, public empresaService: EmpresaService, private fpdualesService: FpdualesService) {
+  constructor(private centroService: CentroService, private router: Router, private cookieService: CookieService, public dialogRef: MatDialogRef<EmpresaCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: Empresa, private nagivationComponent: NavigationComponent, public empresaService: EmpresaService, private fpdualesService: FpdualesService) {
 
     this.formInstance = new FormGroup({
       cifEmpresa: new FormControl("", [Validators.required, Validators.pattern(/^[a-zA-Z]{1}\d{7}[a-zA-Z0-9]{1}$/)]),
@@ -46,7 +49,33 @@ export class EmpresaCreateComponent implements OnInit {
     }
   }
 
-
+  obtenerFP(centro): void {   
+      this.fpdualesService.getFPdual(centro).pipe(first())
+        .subscribe(
+          data => {
+            this.fpList = new Map<number, string>();
+            let fps = data["fps"]
+            fps.forEach(fpInfo => {
+              var fp = fpInfo as Fpduales
+              this.fpList.set(fp.id, fp.nombre)
+            });
+          },
+          error => {
+            if (error.status == 401 && error.error.errors == "Sesión expirada") {
+              AppComponent.myapp.openDialogSesion();
+            }
+            else if (error.status == 406) {
+              const res = new Array();
+              res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
+            else if (error.status == 500) {
+              const res = new Array();
+              res.push("Error del servidor, vuelva a intentarlo más tarde.");
+              AppComponent.myapp.openDialog(res);
+            }
+          });   
+  }
 
   ngOnInit(): void {
     if (this.user.rol == 2) {
@@ -78,6 +107,32 @@ export class EmpresaCreateComponent implements OnInit {
           });
     }
     else if (this.user.rol == 1) {
+      this.centroService.getCentros().pipe(first())
+        .subscribe(
+          data => {
+            this.centroList = new Map<string, string>();
+            let centros = data["centros"]
+
+            centros.forEach(centroInfo => {
+
+              this.centroList.set(centroInfo.codigoCentro, centroInfo.nombre)
+            });
+          },
+          error => {
+            if (error.status == 401 && error.error.errors == "Sesión expirada") {
+              AppComponent.myapp.openDialogSesion();
+            }
+            else if (error.status == 406) {
+              const res = new Array();
+              res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
+            else if (error.status == 500) {
+              const res = new Array();
+              res.push("Error del servidor, vuelva a intentarlo más tarde.");
+              AppComponent.myapp.openDialog(res);
+            }
+          });
       this.fpdualesService.getFps().pipe(first())
         .subscribe(
           data => {

@@ -160,7 +160,7 @@ exports.updateFp = async (req, res, next) => {
       else {
         try {
           const user = jwt_decode(req.headers['authorization']).sub;
-          const result = Fpdual.updateFp(req.body, user).then(function (result) {
+          const result = await Fpdual.updateFp(req.body, user).then(function (result) {
 
 
             res.status(201).json({ message: "sucess" });
@@ -228,7 +228,7 @@ exports.createFp = async (req, res, next) => {
       else {
         try {
           const user = jwt_decode(req.headers['authorization']).sub;
-          const result = Fpdual.createFp(req.body, user).then(function (result) {
+          const result = await Fpdual.createFp(req.body, user).then(function (result) {
 
 
             res.status(201).json({ message: "success" });

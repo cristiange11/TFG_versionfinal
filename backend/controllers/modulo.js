@@ -156,7 +156,7 @@ exports.updateModulo = async (req, res, next) => {
         try {
           const user = jwt_decode(req.headers['authorization']).sub;
 
-          Modulo.updateModulo(req.body, user).then(function (result) {
+          await Modulo.updateModulo(req.body, user).then(function (result) {
 
 
             res.status(201).json({ message: "sucess" });
@@ -202,7 +202,7 @@ exports.createModulo = async (req, res, next) => {
       else {
         try {
           const user = jwt_decode(req.headers['authorization']).sub;
-          Modulo.createModulo(req.body, user).then(function (result) {
+          await Modulo.createModulo(req.body, user).then(function (result) {
 
 
             res.status(201).json({ message: "success" });

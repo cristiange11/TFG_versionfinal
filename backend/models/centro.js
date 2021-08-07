@@ -51,7 +51,7 @@ module.exports = class Centro {
     }
     static async createCentro(centro, user) {
         const connection = await promisePool.getConnection();
-
+        
         try {
             await connection.beginTransaction();
             let query = `INSERT INTO centro_educativo (codigoCentro, correo, telefono, provincia, nombre, CP, direccion) VALUES ('${centro.codigoCentro}','${centro.correo}','${centro.telefono}','${centro.provincia}','${centro.nombre}','${centro.CP}','${centro.direccion}') `;

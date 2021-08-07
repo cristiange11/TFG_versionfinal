@@ -138,12 +138,13 @@ exports.createCentro = async (req, res, next) => {
         try {
           const user = jwt_decode(req.headers["authorization"]).sub;
 
-          const result = Centro.createCentro(req.body, user).then(function (result) {
-
+          const result = await Centro.createCentro(req.body, user).then(function (result) {
+            
             res.status(201).json({ message: "success" });
           })
             .catch(function () {
-              res.status(401).json({ message: "no se ha podido crear el centro:" + err });
+              
+              res.status(401).json({ message: "no se ha podido crear el centro:" });
             });
         } catch (err) {
           res.status(500).json({ error: err });

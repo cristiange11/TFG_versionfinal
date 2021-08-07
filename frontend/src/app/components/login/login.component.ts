@@ -73,6 +73,7 @@ export class LoginComponent implements OnInit {
           }
         },
         error => {
+          console.log(error)
           if (error.status == 406) {
             const res = new Array();
             res.push("Petición incorrecta.");
@@ -83,7 +84,7 @@ export class LoginComponent implements OnInit {
             AppComponent.myapp.openDialog(res);
           }else if (error.status == 409) {
             const res = new Array();
-            res.push("Usuario no existente.");
+            res.push(error.error.errors);
             AppComponent.myapp.openDialog(res);
           }
           else {

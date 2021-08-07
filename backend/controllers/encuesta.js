@@ -116,7 +116,7 @@ exports.updateEncuesta = async (req, res, next) => {
         try {
           const user = jwt_decode(req.headers['authorization']).sub;
 
-          Encuesta.updateEncuesta(req.body, user).then(function (result) {
+          await Encuesta.updateEncuesta(req.body, user).then(function (result) {
 
 
             res.status(201).json({ message: "sucess" });
@@ -162,7 +162,7 @@ exports.createEncuesta = async (req, res, next) => {
       else {
         try {
           const user = jwt_decode(req.headers['authorization']).sub;
-          Encuesta.createEncuesta(req.body, user).then(function (result) {
+          await Encuesta.createEncuesta(req.body, user).then(function (result) {
 
 
             res.status(201).json({ message: "success" });
