@@ -29,7 +29,7 @@ module.exports = class Empresa {
     }
     static async getEmpresasByCentro(codigoCentro) {
         const [rows, fields] = await promisePool.query(
-            `SELECT E.* FROM empresa E, fp_duales F, empresa_fpdual FE WHERE E.cifEmpresa = FE.CifEmpresa AND FE.idFp = F.id AND F.codigoCentro = "${codigoCentro}"`);
+            `SELECT E.*, EF.dineroBeca AS dineroBeca,EF.becas as beca, EF.plazas AS plazas, F.nombre as nombreFp, F.id as idFp FROM empresa E, empresa_fpdual EF, fp_duales F where E.cifEmpresa = EF.CifEmpresa and EF.idFp=F.id AND F.codigoCentro = "${codigoCentro}"`);
         return rows;
     }
     static async getEmpresasByFp(fpDual) {

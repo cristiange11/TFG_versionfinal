@@ -25,9 +25,10 @@ module.exports = class Centro {
     }
 
     static async getCentros() {
-        const [rows, fields] = await promisePool.query(
-            `SELECT * FROM centro_educativo WHERE nombre != '' `
-        );
+        const connection = await promisePool.getConnection();
+        const [rows, fields] = await connection.query(
+            `SELECT * FROM centro_educativo WHERE nombre != '' `);
+        connection.release();
         return rows;
     }
 

@@ -17,8 +17,11 @@ module.exports = class User {
         this.codigoCentro = json.codigoCentro;
     }
     static async find(dni) {
-        return await promisePool.query(
+        const connection = await promisePool.getConnection();
+        const res = await connection.query(
             `SELECT * FROM usuario where dni = '${dni}'`);
+        await connection.release();
+        return res;
     }
 
     static async comparePassword(password, password2) {

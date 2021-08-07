@@ -62,7 +62,16 @@ router.post(
   authController.signup
 );
 
-router.post('/login', authController.login);
+router.post('/login',[
+  body('dni').trim().not().isEmpty().withMessage("Dni vacío")
+      .matches(/^\d{8}[a-zA-Z]$/).withMessage("Formato DNI incorrecto")
+    .custom(async (dni) => {
+     const user = await User.find(dni);
+     if(user[0].length == 0){
+      return Promise.reject('Usuario no existente');
+     }
+    }),
+], authController.login);
 
 router.get('/', authController.getUsuarios);
 

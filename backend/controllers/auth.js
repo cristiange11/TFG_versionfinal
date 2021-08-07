@@ -81,7 +81,7 @@ exports.signup = async (req, res, next) => {
             res.status(201).json({ message: "success" });
           }).catch(function (err) {
 
-            res.status(409).json({ "errors" : "no se ha podido crear el usuario" });
+            res.status(409).json({ "errors": "no se ha podido crear el usuario" });
           });
 
 
@@ -99,36 +99,54 @@ exports.login = async (req, res, next) => {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else {
-    const dni = req.body.dni;
-    const password = req.body.password;
-    try {
-      const queryResult = await User.find(dni);
-      if (queryResult[0].length > 0) {
-        const userJson = queryResult[0][0]
+    const errors = validationResult(req);
+    const resu = errors.array();
+    const resJSON = [{
+      param: String,
+      message: String,
+    }]
+    resu.forEach(element => {
+      resJSON.push({
+        param: element.param,
+        message: element.msg
+      })
+    });
 
-        let user = new User(userJson)
-        const isEqual = await bcrypt.compare(password, user.password);
+    if (!errors.isEmpty()) {
+      res.status(409).json({ "errors": resJSON });
+    }
+    else {
+      const dni = req.body.dni;
+      const password = req.body.password;
+      try {
+        const queryResult = await User.find(dni);
+        if (queryResult[0].length > 0) {
+          const userJson = queryResult[0][0]
+
+          let user = new User(userJson)
+          const isEqual = await bcrypt.compare(password, user.password);
 
 
-        if (!isEqual) {
-          await promisePool.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_LOGIN','Credenciales incorrectas ' ,'${req.body.dni}',sysdate(), 'login')`);
+          if (!isEqual) {
+            await promisePool.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_LOGIN','Credenciales incorrectas ' ,'${req.body.dni}',sysdate(), 'login')`);
 
-          res.status(401).json({ message: 'Credenciales incorrectas.' });
+            res.status(401).json({ "errors": 'Credenciales incorrectas.' });
+          }
+          else {
+            await promisePool.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha logado usuario ' ,'${req.body.dni}',sysdate(), 'login')`);
+
+            const jwtBearerToken = jwt.sign({ sub: user.dni }, RSA_PRIVATE_KEY/*'proyecto final carrera'*/, { expiresIn: '24h' });
+
+            const resJSON = { "result": { "user": userJson, "token": jwtBearerToken } }
+            res.status(200).json(resJSON);
+          }
+        } else {
+          res.status(401).json({ "errors": 'Credenciales incorrectas.' });
         }
-        else {
-          await promisePool.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha logado usuario ' ,'${req.body.dni}',sysdate(), 'login')`);
+      } catch (err) {
+        res.status(500).json({ error: err });
 
-          const jwtBearerToken = jwt.sign({ sub: user.dni }, RSA_PRIVATE_KEY/*'proyecto final carrera'*/, { expiresIn: '24h' });
-
-          const resJSON = { "result": { "user": userJson, "token": jwtBearerToken } }
-          res.status(200).json(resJSON);
-        }
-      } else {
-        res.status(401).json({ errors: 'Credenciales incorrectas.' });
       }
-    } catch (err) {
-      res.status(500).json({ error: err });
-    
     }
   }
 };
@@ -147,9 +165,9 @@ exports.deleteUser = async (req, res, next) => {
         await User.deleteUser(req.params.dni, user).then(function (result) {
           res.status(201).json({ message: "success" });
         }).catch(function (err) {
-          res.status(409).json({ "errors" : "no se ha podido borrar el usuario" });
+          res.status(409).json({ "errors": "no se ha podido borrar el usuario" });
         });
-       
+
 
       } catch (err) {
         res.status(500).json({ error: err });
@@ -172,7 +190,7 @@ exports.deleteLogsByUser = async (req, res, next) => {
         await User.deleteLogsByUser(req.params.dni, user).then(function (result) {
           res.status(201).json({ message: "success" });
         }).catch(function (err) {
-          res.status(409).json({ "errors" : "no se ha podido borrar el usuario" });
+          res.status(409).json({ "errors": "no se ha podido borrar el usuario" });
         });
 
       } catch (err) {

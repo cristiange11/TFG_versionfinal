@@ -81,10 +81,14 @@ export class LoginComponent implements OnInit {
             const res = new Array();
             res.push("Error del servidor, vuelva a intentarlo más tarde.");
             AppComponent.myapp.openDialog(res);
+          }else if (error.status == 409) {
+            const res = new Array();
+            res.push("Usuario no existente.");
+            AppComponent.myapp.openDialog(res);
           }
           else {
             var arrayRes = new Array();
-            arrayRes.push(error.error.message);
+            arrayRes.push(error.error.errors);
             AppComponent.myapp.openDialog(arrayRes);
           }
         });
