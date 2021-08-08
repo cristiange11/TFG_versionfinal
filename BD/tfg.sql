@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 30-07-2021 a las 14:46:51
--- Versión del servidor: 10.4.17-MariaDB
--- Versión de PHP: 8.0.1
+-- Tiempo de generación: 08-08-2021 a las 09:50:25
+-- Versión del servidor: 10.4.19-MariaDB
+-- Versión de PHP: 7.3.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -37,6 +37,7 @@ CREATE TABLE `alumno` (
 --
 
 INSERT INTO `alumno` (`numeroExpediente`, `dni`) VALUES
+('111111', '22222222A'),
 ('PRUEBA', '11111111A');
 
 -- --------------------------------------------------------
@@ -55,8 +56,10 @@ CREATE TABLE `alumno_modulo` (
 --
 
 INSERT INTO `alumno_modulo` (`dni`, `codigoModulo`) VALUES
-('11111111A', 24),
-('11111111A', 26);
+('11111111A', 25),
+('11111111A', 26),
+('22222222A', 24),
+('22222222A', 26);
 
 -- --------------------------------------------------------
 
@@ -71,6 +74,15 @@ CREATE TABLE `calificacion` (
   `descripcion` varchar(100) NOT NULL,
   `codigoModulo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `calificacion`
+--
+
+INSERT INTO `calificacion` (`id`, `dni`, `nota`, `descripcion`, `codigoModulo`) VALUES
+(2, '11111111A', 6, 'Has trabajado muy bien', 24),
+(15, '22222222A', 6, '1234', 24),
+(16, '11111111A', 7, 'EJJEJE', 25);
 
 -- --------------------------------------------------------
 
@@ -97,7 +109,8 @@ INSERT INTO `centro_educativo` (`codigoCentro`, `correo`, `telefono`, `provincia
 ('41000557', 'direccion@iesalandalus.com', '955 96 79 43', 'Sevilla', 'Al-Ándalus', '41600', 'Calle Dalia S/N'),
 ('41004113', 'info@iesvirgendelosreyes.es', '954 55 40 44', 'Sevilla', 'Virgen de los Reyes', '41014', 'Ctra. de Isla Menor, s/n'),
 ('41006481', 'sevilla@sopenasevilla.org', '954 42 31 55', 'Sevilla', 'Sopeña', '41003', 'Calle Juan de Vera, 2'),
-('41701365', '41701365.edu@juntadeandalucia.es', '955 967 951', 'Sevilla', 'Federico García Lorca', '41540', 'CALLE CASTELAR S/N');
+('41701365', '41701365.edu@juntadeandalucia.es', '955 967 951', 'Sevilla', 'Federico García Lorca', '41540', 'CALLE CASTELAR S/N'),
+('PRUEBA', 'cristiangarciaespino5@gmail.com', '911019010', 'Sevillaa', 'PRUEBA', '41920', 'C/aSTURIAS');
 
 -- --------------------------------------------------------
 
@@ -120,7 +133,7 @@ CREATE TABLE `empresa` (
 
 INSERT INTO `empresa` (`cifEmpresa`, `direccion`, `nombre`, `correo`, `telefono`, `url`) VALUES
 ('B21321286', 'Calle Mayo, 2, Arahal', 'El Gitanilla', '41016437.edu@juntadeandalucia.es', '955967686', 'https://www.escuelainfantilgitanilla.es/Datos-del-centro/'),
-('B41364613', 'Recreo de Montestruque, 26  Morón de la Frontera, Sevilla', 'Mitelec Instalaciones', 'instalaciones@mitelec.es', '955 853 905', 'https://mitelec.es/'),
+('B41364613', 'Recreo de Montestruque, 26  Morón de la Frontera, Sevilla', 'Mitelec Instalaciones', 'instalaciones@mitelec.es', '955853905', 'https://mitelec.es/'),
 ('B41600560', 'CALLE CHAPISTAS, 6 - Y 8', 'DIFRISUR SL', 'jlmanaute@hotmail.com', '955841956', 'https://los-artesanos.com/'),
 ('B41912023', 'Pol.Industrial “El Corbones” C/ Constructores, 2 La Puebla de Cazalla', 'BALLESTAS CHIA', 'info@ballestaschia.com', '955291092', 'https://ballestaschia.es/'),
 ('B91295881', 'Calle María Auxiliadora, 54, Morón de la Frontera, Sevilla', 'RESIDENCIAL GERIATRICA MEDITERRANEO', 'recepcion@residenciamayores.com', '955 85 48 0', 'https://www.residenciamayores.com/'),
@@ -130,7 +143,7 @@ INSERT INTO `empresa` (`cifEmpresa`, `direccion`, `nombre`, `correo`, `telefono`
 ('K11111114', 'jsakjsakjdk', 'sjkajkawjwekj', 'crissad@hotmail.es', '911010106', 'https://www.w3schools.com/js/tryit.asp?filename=tryjs_global_parseint'),
 ('K12345678', 'Calle Asturias nº140', 'prueba', 'prueba@hotmail.es', '911019281', 'https://www.logicbig.com/tutorials/misc/primefaces/menu-bar.html'),
 ('K99999999', 'Calle Asturias nº140', 'EMPRESA', 'empresa@hotmail.es', '911010109', 'https://stackblitz.com/edit/angular-mat-select-multi-with-formcontrol?file=app%2Fselect-overview-exa'),
-('P4101100H', 'Plaza Corredera, 1, Arahal', 'Ayuntamiento de el Arahal', 'info@arahal.es', '955 84 10 3', 'http://www.arahal.es/opencms/opencms/arahal'),
+('P4101100H', 'Plaza Corredera, 1, Arahal', 'Ayuntamiento de el Arahal', 'info@arahal.es', '955841033', 'http://www.arahal.es/opencms/opencms/arahal'),
 ('Q11111111', 'prueba', 'prueba', 'empresa@hotmail.com', '911899812', 'https://www.geeksforgeeks.org/how-to-validate-if-input-in-input-field-has-integer-number-only-using-'),
 ('Q11111112', 'Calle Asturias nº140', 'García Espino, Cristiana', 'dsakjsdjk@hotmail.com', '911010101', 'https://www.geeksforgeeks.org/how-to-validate-if-input-in-input-field-has-integer-number-only-using-');
 
@@ -170,12 +183,20 @@ CREATE TABLE `encuesta` (
   `id` int(11) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
   `titulo` varchar(100) NOT NULL,
-  `resultado` varchar(100) DEFAULT NULL,
+  `resultado` int(11) DEFAULT NULL,
   `codigoModulo` int(11) NOT NULL,
   `dniAlumno` varchar(9) NOT NULL,
   `dniTutorEmpresa` varchar(9) NOT NULL,
   `observaciones` varchar(1000) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `encuesta`
+--
+
+INSERT INTO `encuesta` (`id`, `descripcion`, `titulo`, `resultado`, `codigoModulo`, `dniAlumno`, `dniTutorEmpresa`, `observaciones`) VALUES
+(15, 'prueba', 'Prubea', 5, 24, '11111111A', '11111111T', 'prueba'),
+(16, 'prueba', 'Prueba', NULL, 24, '22222222A', '11111111T', NULL);
 
 -- --------------------------------------------------------
 
@@ -198,7 +219,7 @@ CREATE TABLE `fp_duales` (
 --
 
 INSERT INTO `fp_duales` (`nombre`, `descripcion`, `totalPlazas`, `anio`, `codigoCentro`, `plazasDisponibles`, `id`) VALUES
-('Administración y Finanzas', 'Este profesional desempeña las tareas administrativas en la gestión y el asesoramiento en las áreas laboral, comercial, contable y fiscal de las empresas', 10, 2021, '41000557', 9, 42),
+('Administración y Finanzas', 'Este profesional desempeña las tareas administrativas en la gestión y el asesoramiento en las áreas laboral, comercial, contable y fiscal de las empresas', 10, 2021, '41000557', 8, 42),
 ('Atención a Personas en Situación de Dependecia', 'Este profesional ejerce su actividad en el sector de servicios a las personas: asistenciales, psicosociales y de apoyo a la gestión doméstica', 12, 2021, '41000557', 12, 43),
 ('Automatización y Robótica Industrial', 'Este profesional ejerce su actividad en empresas  relacionadas con los sistemas automáticos industriales', 21, 2021, '41004113', 21, 45),
 ('Automoción', 'Este profesional desarrolla su actividad en el sector de construcción y mantenimiento de vehículos', 12, 2021, '41004113', 12, 46),
@@ -297,7 +318,6 @@ INSERT INTO `logs` (`id`, `codigoError`, `mensaje`, `usuario`, `fechaHoraLog`, `
 (855, NULL, 'Se ha actualizado empresa con CIF B41364613 ', '12345678A', '2021-07-29 12:03:53', 'empresa'),
 (863, NULL, 'Se ha añadido usuario con DNI 11111111L ', '12345678A', '2021-07-29 12:14:19', 'user'),
 (864, NULL, 'Se ha añadido profesor con DNI 11111111P ', '12345678A', '2021-07-29 12:15:03', 'profesor'),
-(865, NULL, 'Se ha logado usuario ', '11111111L', '2021-07-29 12:15:26', 'login'),
 (866, NULL, 'Se ha logado usuario ', '11111111P', '2021-07-29 12:15:45', 'login'),
 (867, NULL, 'Se ha logado usuario ', '11111111P', '2021-07-29 12:16:04', 'login'),
 (868, NULL, 'Se ha creado el resultado aprendizaje con id undefined ', '11111111P', '2021-07-29 12:57:26', 'resultado aprendizaje'),
@@ -351,7 +371,303 @@ INSERT INTO `logs` (`id`, `codigoError`, `mensaje`, `usuario`, `fechaHoraLog`, `
 (916, NULL, 'Se ha logado usuario ', '11111111P', '2021-07-30 10:41:00', 'login'),
 (917, 'ERROR_DELETE_CALIFICACION', 'No se ha borrado la calificación', '11111111P', '2021-07-30 11:51:28', 'calificacion'),
 (918, 'ERROR_DELETE_CALIFICACION', 'No se ha borrado la calificación', '11111111P', '2021-07-30 11:52:17', 'calificacion'),
-(919, NULL, 'Se ha borrado calificacion con id 1 ', '11111111P', '2021-07-30 11:53:45', 'calificacion');
+(919, NULL, 'Se ha borrado calificacion con id 1 ', '11111111P', '2021-07-30 11:53:45', 'calificacion'),
+(920, NULL, 'Se ha logado usuario ', '12345678A', '2021-07-30 16:41:23', 'login'),
+(921, NULL, 'Se ha logado usuario ', '11111111P', '2021-07-30 18:53:42', 'login'),
+(922, NULL, 'Se ha logado usuario ', '12345678A', '2021-07-30 18:55:37', 'login'),
+(923, NULL, 'Se ha logado usuario ', '11111111P', '2021-07-30 19:13:28', 'login'),
+(924, NULL, 'Se ha logado usuario ', '12345678A', '2021-07-30 19:14:12', 'login'),
+(925, NULL, 'Se ha logado usuario ', '11111111P', '2021-07-30 19:18:49', 'login'),
+(926, NULL, 'Se ha logado usuario ', '12345678A', '2021-07-30 19:40:24', 'login'),
+(927, NULL, 'Se ha logado usuario ', '11111111P', '2021-07-30 19:43:07', 'login'),
+(928, NULL, 'Se ha añadido calificación del alumno 11111111A ', '11111111P', '2021-07-30 19:51:46', 'calificacion'),
+(929, NULL, 'Se ha logado usuario ', '11111111T', '2021-07-30 20:38:31', 'login'),
+(930, NULL, 'Se ha logado usuario ', '11111111T', '2021-07-30 20:39:09', 'login'),
+(931, NULL, 'Se ha logado usuario ', '11111111T', '2021-07-30 21:57:44', 'login'),
+(932, NULL, 'Se ha logado usuario ', '12345678A', '2021-07-31 09:00:10', 'login'),
+(933, NULL, 'Se ha creado la encuesta con id undefined ', '12345678A', '2021-07-31 09:25:54', 'encuesta'),
+(934, NULL, 'Se ha eliminado la encuesta aprendizaje 10', '12345678A', '2021-07-31 09:27:38', 'encuesta'),
+(935, NULL, 'Se ha actualizado la encuesta con id 9 ', '12345678A', '2021-07-31 09:32:50', 'encuesta'),
+(936, NULL, 'Se ha logado usuario ', '11111111T', '2021-07-31 09:34:11', 'login'),
+(937, NULL, 'Se ha logado usuario ', '11111111P', '2021-07-31 09:37:53', 'login'),
+(938, NULL, 'Se ha logado usuario ', '11111111T', '2021-07-31 09:48:29', 'login'),
+(939, NULL, 'Se ha actualizado la encuesta con id 9 ', '11111111T', '2021-07-31 09:53:25', 'encuesta'),
+(940, NULL, 'Se ha actualizado la encuesta con id 9 ', '11111111T', '2021-07-31 09:54:07', 'encuesta'),
+(941, NULL, 'Se ha actualizado la encuesta con id 9 ', '11111111T', '2021-07-31 09:55:05', 'encuesta'),
+(942, NULL, 'Se ha actualizado la encuesta con id 9 ', '11111111T', '2021-07-31 09:58:52', 'encuesta'),
+(943, NULL, 'Se ha logado usuario ', '12345678A', '2021-07-31 10:11:06', 'login'),
+(944, NULL, 'Se ha logado usuario ', '11111111P', '2021-07-31 10:11:46', 'login'),
+(945, NULL, 'Se ha logado usuario ', '12345678A', '2021-07-31 10:50:37', 'login'),
+(946, NULL, 'Se ha añadido alumno con DNI 22222222A ', '12345678A', '2021-07-31 10:51:34', 'alumno'),
+(947, 'ERROR_LOGIN', 'Credenciales incorrectas ', '11111111P', '2021-07-31 11:02:34', 'login'),
+(948, NULL, 'Se ha logado usuario ', '11111111P', '2021-07-31 11:02:41', 'login'),
+(949, 'ERROR_LOGIN', 'Credenciales incorrectas ', '12345678A', '2021-07-31 11:04:41', 'login'),
+(950, NULL, 'Se ha logado usuario ', '12345678A', '2021-07-31 11:04:47', 'login'),
+(951, NULL, 'Se ha actualizado el modulo con id undefined ', '12345678A', '2021-07-31 12:53:39', 'modulo'),
+(952, NULL, 'Se ha actualizado el modulo con id undefined ', '12345678A', '2021-07-31 12:53:47', 'modulo'),
+(953, NULL, 'Se ha añadido alumno con DNI 22222222A ', '12345678A', '2021-07-31 13:00:49', 'alumno'),
+(954, NULL, 'Se ha actualizado empresa con CIF B41364613 ', '12345678A', '2021-07-31 15:30:52', 'empresa'),
+(955, NULL, 'Se ha actualizado empresa con CIF B41364613 ', '12345678A', '2021-07-31 15:31:06', 'empresa'),
+(956, NULL, 'Se ha actualizado empresa con CIF B41364613 ', '12345678A', '2021-07-31 15:32:10', 'empresa'),
+(957, NULL, 'Se ha actualizado empresa con CIF B41364613 ', '12345678A', '2021-07-31 15:32:23', 'empresa'),
+(958, NULL, 'Se ha actualizado empresa con CIF P4101100H ', '12345678A', '2021-07-31 15:33:02', 'empresa'),
+(959, NULL, 'Se ha actualizado empresa con CIF B41912023 ', '12345678A', '2021-07-31 15:34:33', 'empresa'),
+(960, NULL, 'Se ha actualizado empresa con CIF B41912023 ', '12345678A', '2021-07-31 15:34:44', 'empresa'),
+(961, NULL, 'Se ha logado usuario ', '12345678A', '2021-07-31 15:43:51', 'login'),
+(962, NULL, 'Se ha logado usuario ', '12345678A', '2021-07-31 15:44:09', 'login'),
+(963, NULL, 'Se ha logado usuario ', '11111111P', '2021-07-31 16:41:05', 'login'),
+(964, NULL, 'Se ha logado usuario ', '12345678A', '2021-07-31 16:41:22', 'login'),
+(965, NULL, 'Se ha actualizado la encuesta con id 9 ', '12345678A', '2021-07-31 16:42:35', 'encuesta'),
+(966, NULL, 'Se ha creado la encuesta con id undefined ', '12345678A', '2021-07-31 17:10:33', 'encuesta'),
+(967, NULL, 'Se ha eliminado la encuesta aprendizaje 12', '12345678A', '2021-07-31 17:10:45', 'encuesta'),
+(968, NULL, 'Se ha actualizado la encuesta con id 9 ', '12345678A', '2021-07-31 17:14:52', 'encuesta'),
+(969, NULL, 'Se ha actualizado la encuesta con id 9 ', '12345678A', '2021-07-31 17:23:18', 'encuesta'),
+(970, NULL, 'Se ha creado la encuesta con id undefined ', '12345678A', '2021-07-31 17:23:28', 'encuesta'),
+(971, NULL, 'Se ha eliminado la encuesta aprendizaje 13', '12345678A', '2021-07-31 17:23:32', 'encuesta'),
+(972, 'ERROR_LOGIN', 'Credenciales incorrectas ', '11111111P', '2021-07-31 17:37:21', 'login'),
+(973, NULL, 'Se ha logado usuario ', '11111111P', '2021-07-31 17:37:28', 'login'),
+(974, NULL, 'Se ha añadido calificación del alumno 22222222A ', '11111111P', '2021-07-31 17:42:02', 'calificacion'),
+(975, NULL, 'Se ha borrado calificacion con id 3 ', '11111111P', '2021-07-31 17:42:13', 'calificacion'),
+(976, NULL, 'Se ha logado usuario ', '12345678A', '2021-07-31 17:47:17', 'login'),
+(977, NULL, 'Se ha añadido centro con codigo 1923928921 ', '12345678A', '2021-07-31 17:59:31', 'centro educativo'),
+(978, NULL, 'Se ha actualizado todo lo asociado al centro 1923928921', '12345678A', '2021-07-31 17:59:39', 'centro educativo'),
+(979, NULL, 'Se ha eliminado el centro con codigoCentro 1923928921', '12345678A', '2021-07-31 17:59:43', 'centro educativo'),
+(980, NULL, 'Se ha añadido alumno con DNI 11111111A ', '12345678A', '2021-07-31 19:02:28', 'alumno'),
+(981, NULL, 'Se ha logado usuario ', '11111111A', '2021-07-31 19:05:22', 'login'),
+(982, NULL, 'Se ha logado usuario ', '11111111A', '2021-07-31 19:05:25', 'login'),
+(983, NULL, 'Se ha logado usuario ', '11111111A', '2021-07-31 19:05:28', 'login'),
+(984, NULL, 'Se ha logado usuario ', '11111111A', '2021-07-31 19:05:28', 'login'),
+(985, NULL, 'Se ha logado usuario ', '11111111A', '2021-07-31 19:05:29', 'login'),
+(986, NULL, 'Se ha logado usuario ', '11111111A', '2021-07-31 19:05:29', 'login'),
+(987, NULL, 'Se ha logado usuario ', '11111111A', '2021-07-31 19:05:29', 'login'),
+(988, NULL, 'Se ha logado usuario ', '11111111A', '2021-07-31 19:05:36', 'login'),
+(989, NULL, 'Se ha logado usuario ', '11111111A', '2021-07-31 19:06:20', 'login'),
+(990, NULL, 'Se ha logado usuario ', '12345678A', '2021-07-31 19:15:07', 'login'),
+(991, NULL, 'Se ha logado usuario ', '11111111A', '2021-07-31 19:15:20', 'login'),
+(992, NULL, 'Se ha logado usuario ', '11111111A', '2021-07-31 19:15:23', 'login'),
+(993, NULL, 'Se ha logado usuario ', '11111111A', '2021-07-31 19:15:23', 'login'),
+(994, NULL, 'Se ha logado usuario ', '11111111A', '2021-07-31 19:15:23', 'login'),
+(995, NULL, 'Se ha logado usuario ', '11111111A', '2021-07-31 19:15:24', 'login'),
+(996, NULL, 'Se ha logado usuario ', '11111111A', '2021-07-31 19:15:25', 'login'),
+(997, NULL, 'Se ha logado usuario ', '11111111A', '2021-07-31 19:15:49', 'login'),
+(998, NULL, 'Se ha logado usuario ', '11111111T', '2021-07-31 19:19:44', 'login'),
+(999, NULL, 'Se ha actualizado usuario con DNI 11111111T ', '11111111T', '2021-07-31 19:20:08', 'user'),
+(1000, NULL, 'Se ha logado usuario ', '12345678A', '2021-07-31 19:20:27', 'login'),
+(1001, NULL, 'Se ha logado usuario ', '12345678A', '2021-07-31 19:45:29', 'login'),
+(1002, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-01 10:59:12', 'login'),
+(1003, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-01 11:45:18', 'login'),
+(1004, NULL, 'Se ha logado usuario ', '11111111P', '2021-08-01 11:45:34', 'login'),
+(1005, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-01 11:46:32', 'login'),
+(1006, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-01 11:46:43', 'login'),
+(1007, NULL, 'Se ha actualizado usuario con DNI 12345678A ', '12345678A', '2021-08-01 11:46:54', 'user'),
+(1008, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-01 15:51:30', 'login'),
+(1009, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-01 16:44:04', 'login'),
+(1010, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-01 16:54:19', 'login'),
+(1031, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-01 17:17:34', 'user'),
+(1032, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-01 17:17:49', 'user'),
+(1033, 'ERROR_LOGIN', 'Credenciales incorrectas ', '12345678A', '2021-08-01 17:18:17', 'login'),
+(1034, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-01 17:18:27', 'user'),
+(1035, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-01 17:18:43', 'user'),
+(1036, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-01 17:20:11', 'user'),
+(1037, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-01 17:21:07', 'user'),
+(1038, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-01 17:29:41', 'user'),
+(1039, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-01 17:36:20', 'user'),
+(1040, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-01 17:37:36', 'user'),
+(1041, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-01 17:38:25', 'user'),
+(1042, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-01 17:39:42', 'user'),
+(1043, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-01 17:43:41', 'user'),
+(1044, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-01 18:08:27', 'user'),
+(1045, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-01 18:09:50', 'user'),
+(1046, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-01 18:10:21', 'user'),
+(1047, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-01 18:11:35', 'user'),
+(1048, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-01 18:13:38', 'user'),
+(1049, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-01 18:14:16', 'user'),
+(1050, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-01 18:17:16', 'user'),
+(1051, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-01 18:18:17', 'user'),
+(1052, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-01 18:19:22', 'user'),
+(1053, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-01 18:20:15', 'login'),
+(1054, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-01 18:30:29', 'login'),
+(1055, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-01 18:32:03', 'login'),
+(1056, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-01 18:34:22', 'login'),
+(1057, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-01 20:24:08', 'login'),
+(1058, NULL, 'Se ha actualizado todo lo asociado al centro 41000557', '12345678A', '2021-08-01 20:24:45', 'centro educativo'),
+(1059, NULL, 'Se ha actualizado todo lo asociado al centro 41000557', '12345678A', '2021-08-01 20:24:51', 'centro educativo'),
+(1060, NULL, 'Se ha logado usuario ', '11111111A', '2021-08-01 20:26:40', 'login'),
+(1061, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-01 20:28:01', 'login'),
+(1062, NULL, 'Se ha logado usuario ', '11111111P', '2021-08-01 20:28:44', 'login'),
+(1063, NULL, 'Se ha creado la encuesta con título Valen ', '11111111P', '2021-08-01 20:29:22', 'encuesta'),
+(1064, NULL, 'Se ha logado usuario ', '11111111T', '2021-08-01 20:29:41', 'login'),
+(1065, NULL, 'Se ha actualizado la encuesta con id 14 ', '11111111T', '2021-08-01 20:30:05', 'encuesta'),
+(1066, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-01 20:31:24', 'user'),
+(1067, NULL, 'Se ha logado usuario ', '11111111P', '2021-08-01 23:12:52', 'login'),
+(1068, NULL, 'Se ha logado usuario ', '11111111A', '2021-08-02 09:49:05', 'login'),
+(1069, NULL, 'Se ha logado usuario ', '11111111P', '2021-08-02 09:49:59', 'login'),
+(1070, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-02 10:25:17', 'login'),
+(1071, NULL, 'Se ha añadido calificación del alumno 22222222A ', '12345678A', '2021-08-02 10:28:05', 'calificacion'),
+(1072, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-02 11:33:37', 'user'),
+(1073, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-02 11:33:52', 'user'),
+(1074, 'ERROR_LOGIN', 'Credenciales incorrectas ', '12345678A', '2021-08-02 11:34:00', 'login'),
+(1075, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-02 11:34:02', 'login'),
+(1076, NULL, 'Se ha actualizado usuario con DNI 12345678A ', '12345678A', '2021-08-02 11:34:15', 'user'),
+(1077, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-03 09:23:48', 'login'),
+(1078, NULL, 'Se ha creado la encuesta con título Prubea ', '12345678A', '2021-08-03 09:34:28', 'encuesta'),
+(1079, NULL, 'Se ha creado la encuesta con título Prueba ', '12345678A', '2021-08-03 09:34:56', 'encuesta'),
+(1080, NULL, 'Se ha actualizado profesor con DNI 11111111P ', '12345678A', '2021-08-03 09:50:18', 'profesor'),
+(1081, NULL, 'Se ha actualizado tutor empresa con DNI 11111111T ', '12345678A', '2021-08-03 09:50:53', 'tutor de empresa'),
+(1082, NULL, 'Se ha actualizado usuario con DNI 11111111L ', '12345678A', '2021-08-03 09:52:43', 'user'),
+(1083, NULL, 'Se ha actualizado usuario con DNI 12345678A ', '12345678A', '2021-08-03 09:53:12', 'user'),
+(1084, NULL, 'Se ha actualizado tutor empresa con DNI 11111111T ', '12345678A', '2021-08-03 09:53:43', 'tutor de empresa'),
+(1085, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-03 10:13:43', 'login'),
+(1086, NULL, 'Se ha actualizado la encuesta con id 15 ', '12345678A', '2021-08-03 10:32:17', 'encuesta'),
+(1087, NULL, 'Se ha logado usuario ', '11111111P', '2021-08-03 18:03:03', 'login'),
+(1088, NULL, 'Se ha logado usuario ', '11111111A', '2021-08-03 18:48:56', 'login'),
+(1089, NULL, 'Se ha logado usuario ', '11111111T', '2021-08-03 18:50:01', 'login'),
+(1090, NULL, 'Se ha logado usuario ', '11111111T', '2021-08-03 18:53:59', 'login'),
+(1091, NULL, 'Se ha logado usuario ', '11111111P', '2021-08-04 11:35:53', 'login'),
+(1092, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-04 11:39:15', 'login'),
+(1093, NULL, 'Se ha logado usuario ', '11111111P', '2021-08-04 11:39:33', 'login'),
+(1094, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-04 11:47:06', 'login'),
+(1095, NULL, 'Se ha añadido tutor empresa con DNI 22222222T ', '12345678A', '2021-08-04 11:47:59', 'tutor de empresa'),
+(1097, NULL, 'Se ha logado usuario ', '11111111T', '2021-08-04 12:07:57', 'login'),
+(1099, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-04 12:25:18', 'login'),
+(1100, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-04 13:15:09', 'login'),
+(1101, NULL, 'Se ha actualizado todo lo asociado al centro 41000557', '12345678A', '2021-08-04 13:15:14', 'centro educativo'),
+(1102, NULL, 'Se ha actualizado todo lo asociado al centro 41000557', '12345678A', '2021-08-04 13:15:19', 'centro educativo'),
+(1103, NULL, 'Se ha actualizado usuario con DNI 12345678A ', '12345678A', '2021-08-04 13:15:29', 'user'),
+(1104, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-04 15:53:57', 'login'),
+(1105, NULL, 'Se ha añadido calificación del alumno 22222222A ', '12345678A', '2021-08-04 16:05:49', 'calificacion'),
+(1106, NULL, 'Se ha añadido calificación del alumno 22222222A ', '12345678A', '2021-08-04 16:05:51', 'calificacion'),
+(1107, NULL, 'Se ha borrado calificacion con id 5 ', '12345678A', '2021-08-04 16:06:43', 'calificacion'),
+(1108, NULL, 'Se ha borrado calificacion con id 6 ', '12345678A', '2021-08-04 16:06:48', 'calificacion'),
+(1109, NULL, 'Se ha añadido calificación del alumno 22222222A ', '12345678A', '2021-08-04 16:06:54', 'calificacion'),
+(1110, NULL, 'Se ha borrado calificacion con id 7 ', '12345678A', '2021-08-04 16:09:57', 'calificacion'),
+(1111, NULL, 'Se ha añadido calificación del alumno 22222222A ', '12345678A', '2021-08-04 16:10:03', 'calificacion'),
+(1112, NULL, 'Se ha borrado calificacion con id 8 ', '12345678A', '2021-08-04 16:11:07', 'calificacion'),
+(1113, NULL, 'Se ha añadido calificación del alumno 22222222A ', '12345678A', '2021-08-04 16:12:54', 'calificacion'),
+(1114, NULL, 'Se ha borrado calificacion con id 9 ', '12345678A', '2021-08-04 16:16:21', 'calificacion'),
+(1115, NULL, 'Se ha añadido calificación del alumno 22222222A ', '12345678A', '2021-08-04 16:16:35', 'calificacion'),
+(1116, NULL, 'Se ha borrado calificacion con id 10 ', '12345678A', '2021-08-04 16:19:43', 'calificacion'),
+(1117, NULL, 'Se ha añadido calificación del alumno 22222222A ', '12345678A', '2021-08-04 16:19:50', 'calificacion'),
+(1118, NULL, 'Se ha borrado calificacion con id 11 ', '12345678A', '2021-08-04 16:20:08', 'calificacion'),
+(1119, NULL, 'Se ha añadido calificación del alumno 22222222A ', '12345678A', '2021-08-04 16:53:58', 'calificacion'),
+(1120, NULL, 'Se ha borrado calificacion con id 12 ', '12345678A', '2021-08-04 16:54:12', 'calificacion'),
+(1121, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-05 10:26:26', 'login'),
+(1122, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-05 11:30:11', 'login'),
+(1123, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-05 11:32:27', 'login'),
+(1124, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-05 11:32:56', 'login'),
+(1125, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-05 11:33:24', 'login'),
+(1126, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-05 11:34:17', 'login'),
+(1127, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-05 11:34:59', 'login'),
+(1128, NULL, 'Se ha añadido calificación del alumno 22222222A ', '12345678A', '2021-08-05 11:35:34', 'calificacion'),
+(1129, NULL, 'Se ha actualizado la calificación al alumno con DNI 22222222A ', '12345678A', '2021-08-05 13:28:33', 'calificacion'),
+(1130, 'ERROR_UPDATE_MODULO', 'No se ha subido pdf al modulo con id undefined', '12345678A', '2021-08-05 13:28:36', 'modulo'),
+(1131, NULL, 'Se ha actualizado la calificación al alumno con DNI 22222222A ', '12345678A', '2021-08-05 13:30:16', 'calificacion'),
+(1132, 'ERROR_UPDATE_MODULO', 'No se ha subido pdf al modulo con id undefined', '12345678A', '2021-08-05 13:30:19', 'modulo'),
+(1133, NULL, 'Se ha actualizado la calificación al alumno con DNI 22222222A ', '12345678A', '2021-08-05 13:30:45', 'calificacion'),
+(1134, 'ERROR_UPDATE_MODULO', 'No se ha subido pdf al modulo con id undefined', '12345678A', '2021-08-05 13:30:48', 'modulo'),
+(1135, NULL, 'Se ha actualizado la calificación al alumno con DNI 22222222A ', '12345678A', '2021-08-05 13:34:04', 'calificacion'),
+(1136, 'ERROR_UPDATE_MODULO', 'No se ha subido pdf al modulo con id undefined', '12345678A', '2021-08-05 13:34:05', 'modulo'),
+(1137, NULL, 'Se ha actualizado la calificación al alumno con DNI 22222222A ', '12345678A', '2021-08-05 13:44:38', 'calificacion'),
+(1138, NULL, 'Se ha actualizado la calificación al alumno con DNI 22222222A ', '12345678A', '2021-08-05 13:44:45', 'calificacion'),
+(1139, NULL, 'Se ha actualizado la calificación al alumno con DNI 22222222A ', '12345678A', '2021-08-05 13:44:45', 'calificacion'),
+(1140, NULL, 'Se ha actualizado la calificación al alumno con DNI 22222222A ', '12345678A', '2021-08-05 13:44:45', 'calificacion'),
+(1141, NULL, 'Se ha actualizado la calificación al alumno con DNI 22222222A ', '12345678A', '2021-08-05 13:44:45', 'calificacion'),
+(1142, NULL, 'Se ha actualizado la calificación al alumno con DNI 22222222A ', '12345678A', '2021-08-05 13:44:45', 'calificacion'),
+(1143, NULL, 'Se ha actualizado la calificación al alumno con DNI 22222222A ', '12345678A', '2021-08-05 13:44:45', 'calificacion'),
+(1144, NULL, 'Se ha actualizado la calificación al alumno con DNI 22222222A ', '12345678A', '2021-08-05 13:44:45', 'calificacion'),
+(1145, NULL, 'Se ha borrado calificacion con id 13 ', '12345678A', '2021-08-05 13:45:31', 'calificacion'),
+(1146, 'ERROR_UPDATE_MODULO', 'No se ha subido pdf al modulo con id undefined', '12345678A', '2021-08-05 13:45:35', 'modulo'),
+(1147, NULL, 'Se ha actualizado la calificación al alumno con DNI 11111111A ', '12345678A', '2021-08-05 14:32:00', 'calificacion'),
+(1148, 'ERROR_UPDATE_MODULO', 'No se ha subido pdf al modulo con id undefined', '12345678A', '2021-08-05 14:32:07', 'modulo'),
+(1149, NULL, 'Se ha actualizado la calificación al alumno con DNI 11111111A ', '12345678A', '2021-08-05 14:33:47', 'calificacion'),
+(1150, 'ERROR_UPDATE_MODULO', 'No se ha subido pdf al modulo con id undefined', '12345678A', '2021-08-05 14:33:50', 'modulo'),
+(1151, NULL, 'Se ha actualizado la calificación al alumno con DNI 11111111A ', '12345678A', '2021-08-05 14:34:38', 'calificacion'),
+(1152, 'ERROR_UPDATE_MODULO', 'No se ha subido pdf al modulo con id undefined', '12345678A', '2021-08-05 14:34:40', 'modulo'),
+(1153, NULL, 'Se ha actualizado la calificación al alumno con DNI 11111111A ', '12345678A', '2021-08-05 14:35:05', 'calificacion'),
+(1154, NULL, 'Se ha actualizado la calificación al alumno con DNI 11111111A ', '12345678A', '2021-08-05 14:35:28', 'calificacion'),
+(1155, NULL, 'Se ha actualizado la calificación al alumno con DNI 11111111A ', '12345678A', '2021-08-05 14:39:15', 'calificacion'),
+(1156, NULL, 'Se ha actualizado la calificación al alumno con DNI 11111111A ', '12345678A', '2021-08-05 14:45:30', 'calificacion'),
+(1157, 'ERROR_UPDATE_MODULO', 'No se ha subido pdf al modulo con id undefined', '12345678A', '2021-08-05 14:45:33', 'modulo'),
+(1158, NULL, 'Se ha actualizado la calificación al alumno con DNI 11111111A ', '12345678A', '2021-08-05 14:46:24', 'calificacion'),
+(1159, NULL, 'Se ha actualizado la calificación al alumno con DNI 11111111A ', '12345678A', '2021-08-05 14:47:56', 'calificacion'),
+(1160, NULL, 'Se ha actualizado la calificación al alumno con DNI 11111111A ', '12345678A', '2021-08-05 14:48:48', 'calificacion'),
+(1161, NULL, 'Se ha actualizado la calificación al alumno con DNI 11111111A ', '12345678A', '2021-08-05 14:49:31', 'calificacion'),
+(1162, 'ERROR_UPDATE_MODULO', 'No se ha subido pdf al modulo con id undefined', '12345678A', '2021-08-05 14:49:33', 'modulo'),
+(1163, NULL, 'Se ha actualizado la calificación al alumno con DNI 11111111A ', '12345678A', '2021-08-05 14:54:06', 'calificacion'),
+(1164, 'ERROR_UPDATE_MODULO', 'No se ha subido pdf al modulo con id undefined', '12345678A', '2021-08-05 14:54:09', 'modulo'),
+(1165, NULL, 'Se ha actualizado la calificación al alumno con DNI 11111111A ', '12345678A', '2021-08-05 14:54:42', 'calificacion'),
+(1166, 'ERROR_UPDATE_MODULO', 'No se ha subido pdf al modulo con id undefined', '12345678A', '2021-08-05 14:54:44', 'modulo'),
+(1167, NULL, 'Se ha actualizado la calificación al alumno con DNI 11111111A ', '12345678A', '2021-08-05 14:55:44', 'calificacion'),
+(1168, 'ERROR_UPDATE_MODULO', 'No se ha subido pdf al modulo con id undefined', '12345678A', '2021-08-05 14:55:46', 'modulo'),
+(1169, NULL, 'Se ha actualizado la calificación al alumno con DNI 11111111A ', '12345678A', '2021-08-05 14:56:39', 'calificacion'),
+(1170, 'ERROR_UPDATE_MODULO', 'No se ha subido pdf al modulo con id undefined', '12345678A', '2021-08-05 14:56:40', 'modulo'),
+(1171, NULL, 'Se ha actualizado la calificación al alumno con DNI 11111111A ', '12345678A', '2021-08-05 14:57:07', 'calificacion'),
+(1172, 'ERROR_UPDATE_MODULO', 'No se ha subido pdf al modulo con id undefined', '12345678A', '2021-08-05 14:57:09', 'modulo'),
+(1173, NULL, 'Se ha actualizado la calificación al alumno con DNI 11111111A ', '12345678A', '2021-08-05 14:58:30', 'calificacion'),
+(1174, 'ERROR_UPDATE_MODULO', 'No se ha subido pdf al modulo con id undefined', '12345678A', '2021-08-05 14:58:32', 'modulo'),
+(1175, NULL, 'Se ha logado usuario ', '11111111A', '2021-08-05 16:12:55', 'login'),
+(1176, NULL, 'Se ha logado usuario ', '22222222A', '2021-08-05 19:19:55', 'login'),
+(1177, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-05 19:24:09', 'login'),
+(1178, NULL, 'Se ha añadido calificación del alumno 22222222A ', '12345678A', '2021-08-05 19:24:26', 'calificacion'),
+(1179, NULL, 'Se ha borrado calificacion con id 14 ', '12345678A', '2021-08-05 19:30:49', 'calificacion'),
+(1180, NULL, 'Se ha añadido alumno con DNI 11111111A ', '12345678A', '2021-08-05 20:51:51', 'alumno'),
+(1181, NULL, 'Se ha añadido calificación del alumno 22222222A ', '12345678A', '2021-08-05 21:14:58', 'calificacion'),
+(1182, NULL, 'Se ha añadido calificación del alumno 11111111A ', '12345678A', '2021-08-05 21:24:55', 'calificacion'),
+(1183, 'ERROR_LOGIN', 'Credenciales incorrectas ', '11111111A', '2021-08-05 21:25:32', 'login'),
+(1184, NULL, 'Se ha logado usuario ', '11111111A', '2021-08-05 21:25:40', 'login'),
+(1185, NULL, 'Se ha logado usuario ', '11111111T', '2021-08-05 21:28:37', 'login'),
+(1186, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-05 21:32:26', 'login'),
+(1187, NULL, 'Se ha logado usuario ', '11111111T', '2021-08-05 21:55:17', 'login'),
+(1188, NULL, 'Se ha actualizado la encuesta con id 15 ', '11111111T', '2021-08-05 21:55:33', 'encuesta'),
+(1189, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-06 11:18:10', 'login'),
+(1190, 'ERROR_DELETE_USER', 'No se ha borrado el usuario con DNI 22222222T', '12345678A', '2021-08-06 11:18:40', 'user'),
+(1191, NULL, 'Se ha borrado usuario con DNI 22222222T ', '12345678A', '2021-08-06 11:18:41', 'user'),
+(1192, 'ERROR_DELETE_USER', 'No se ha borrado el usuario con DNI 11111111L', '12345678A', '2021-08-06 11:19:06', 'user'),
+(1193, NULL, 'Se ha borrado usuario con DNI 11111111L ', '12345678A', '2021-08-06 11:19:07', 'user'),
+(1194, NULL, 'Se ha añadido usuario con DNI 11111111L ', '12345678A', '2021-08-06 11:20:41', 'user'),
+(1195, 'ERROR_DELETE_USER', 'No se ha borrado el usuario con DNI 11111111L', '12345678A', '2021-08-06 11:20:52', 'user'),
+(1196, NULL, 'Se ha borrado usuario con DNI 11111111L ', '12345678A', '2021-08-06 11:20:53', 'user'),
+(1197, NULL, 'Se ha añadido usuario con DNI 11111111L ', '12345678A', '2021-08-06 11:22:05', 'user'),
+(1198, NULL, 'Se ha borrado usuario con DNI 11111111L ', '12345678A', '2021-08-06 11:22:12', 'user'),
+(1199, NULL, 'Se ha añadido usuario con DNI 11111111L ', '12345678A', '2021-08-06 11:23:13', 'user'),
+(1200, 'ERROR_DELETE_USER', 'No se ha borrado el usuario con DNI 11111111L', '12345678A', '2021-08-06 11:23:19', 'user'),
+(1201, 'ERROR_DELETE_USER', 'No se ha borrado el usuario con DNI 11111111L', '12345678A', '2021-08-06 11:23:20', 'user'),
+(1202, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-06 11:55:31', 'login'),
+(1203, NULL, 'Se ha añadido alumno con DNI 11111111A ', '12345678A', '2021-08-06 12:03:56', 'alumno'),
+(1204, NULL, 'Se ha logado usuario ', '11111111T', '2021-08-06 12:05:00', 'login'),
+(1205, 'ERROR_LOGIN', 'Credenciales incorrectas ', '12345678A', '2021-08-06 12:19:09', 'login'),
+(1206, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-06 12:19:15', 'login'),
+(1207, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-06 12:55:08', 'login'),
+(1208, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-06 16:18:24', 'login'),
+(1209, NULL, 'Se ha logado usuario ', '11111111A', '2021-08-06 16:54:21', 'login'),
+(1210, NULL, 'Se ha logado usuario ', '11111111P', '2021-08-06 17:04:27', 'login'),
+(1211, NULL, 'Se ha logado usuario ', '11111111L', '2021-08-06 17:47:12', 'login'),
+(1212, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-06 18:15:11', 'login'),
+(1213, NULL, 'Se ha logado usuario ', '11111111P', '2021-08-06 18:40:32', 'login'),
+(1214, NULL, 'Se ha logado usuario ', '11111111P', '2021-08-07 10:56:12', 'login'),
+(1215, 'ERROR_LOGIN', 'Credenciales incorrectas ', '12345678A', '2021-08-07 13:16:53', 'login'),
+(1216, 'ERROR_LOGIN', 'Credenciales incorrectas ', '12345678A', '2021-08-07 13:17:26', 'login'),
+(1217, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-07 13:19:11', 'login'),
+(1218, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-07 16:21:43', 'user'),
+(1219, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-07 16:44:33', 'login'),
+(1220, NULL, 'Se ha actualizado usuario con DNI 12345678A ', '12345678A', '2021-08-07 16:47:08', 'user'),
+(1248, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-07 17:36:47', 'login'),
+(1249, NULL, 'Se ha añadido centro con codigo PRUEBA ', '12345678A', '2021-08-07 17:36:57', 'centro educativo'),
+(1250, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-07 17:38:45', 'user'),
+(1251, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-07 17:38:51', 'login'),
+(1252, NULL, 'Se ha añadido centro con codigo PRUEBAa ', '12345678A', '2021-08-07 17:39:09', 'centro educativo'),
+(1253, NULL, 'Se ha eliminado el centro con codigoCentro PRUEBAa', '12345678A', '2021-08-07 17:39:23', 'centro educativo'),
+(1254, NULL, 'Se ha logado usuario ', '11111111L', '2021-08-07 18:35:32', 'login'),
+(1255, NULL, 'Se ha creado el modulo con nombre ssadsads ', '11111111L', '2021-08-07 18:59:51', 'modulo'),
+(1256, NULL, 'Se ha eliminado el módulo 27', '11111111L', '2021-08-07 18:59:55', 'modulo'),
+(1257, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-07 19:12:48', 'login'),
+(1258, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-07 19:42:39', 'login'),
+(1259, NULL, 'Se ha actualizado tutor empresa con DNI 11111111T ', '12345678A', '2021-08-07 19:43:01', 'tutor de empresa'),
+(1260, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-07 22:47:55', 'login'),
+(1261, 'ERROR_LOGIN', 'Credenciales incorrectas ', '12345678A', '2021-08-07 22:48:10', 'login'),
+(1262, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-07 22:52:56', 'login'),
+(1263, NULL, 'Se ha añadido empresa con CIF J11111111 ', '12345678A', '2021-08-07 22:55:24', 'empresa'),
+(1264, NULL, 'Se ha eliminado  la empresa ', '12345678A', '2021-08-07 22:55:33', 'empresa');
 
 -- --------------------------------------------------------
 
@@ -548,7 +864,8 @@ CREATE TABLE `profesor_modulo` (
 
 INSERT INTO `profesor_modulo` (`dni`, `codigoModulo`) VALUES
 ('11111111P', 24),
-('11111111P', 25);
+('11111111P', 25),
+('11111111P', 26);
 
 -- --------------------------------------------------------
 
@@ -576,6 +893,29 @@ INSERT INTO `resultado_aprendizaje` (`id`, `codigoModulo`, `titulo`, `descripcio
 (14, 25, 'Confecciona las cuentas anuales y verifica los trámites', 'Confecciona las cuentas anuales y verifica los trámites para su depósito en el Registro Mercantil, aplicando la legislación mercantil vigente'),
 (16, 25, 'Elabora informes de análisis sobre la situación económica-financiera', 'Elabora informes de análisis sobre la situación económica-financiera y patrimonial de una empresa, interpretando los estados contables'),
 (17, 25, 'Caracteriza el proceso de auditoría', 'Caracteriza el proceso de auditoría en la empresa, describiendo su propósito dentro del marco normativo español.');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `resultado_encuesta`
+--
+
+CREATE TABLE `resultado_encuesta` (
+  `id` int(11) NOT NULL,
+  `codigoResultado` varchar(10) NOT NULL,
+  `resultado` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `resultado_encuesta`
+--
+
+INSERT INTO `resultado_encuesta` (`id`, `codigoResultado`, `resultado`) VALUES
+(1, 'Def', 'Deficiente'),
+(2, 'Ac', 'Aceptable'),
+(3, 'Re', 'Regular'),
+(4, 'Bi', 'Bien'),
+(5, 'Op', 'Óptimo');
 
 -- --------------------------------------------------------
 
@@ -665,11 +1005,12 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`dni`, `nombre`, `apellidos`, `correo`, `movil`, `direccion`, `password`, `genero`, `cp`, `rol`, `fechaNacimiento`, `fpDual`, `codigoCentro`) VALUES
-('11111111A', 'Alumno', 'Alumno', 'alumno1@hotmail.com', '622222222', 'Calle Asturias nº140', '$2a$12$wb4ZmAKK7OaGDJgqcRwczuXQ3KPyZUVxAm8T90VsLnjNMnJEhLXvO', 'masculino', '41920', 5, '1998-02-11', 42, '41000557'),
-('11111111L', 'AdminCentro', 'Centro', 'admincentro@hotmail.com', '699999999', 'Calle Asturias nº140', '$2a$12$SUkaOOUZfbeEkqK8Cgf7pOubV0x89qWarHtOeQO9ajXL9NBAkOwIe', 'masculino', '41920', 2, '1998-02-11', NULL, '41000557'),
-('11111111P', 'profesor', 'profesor', 'profesor@hotmail.com', '611111111', 'Calle Asturias nº140', '$2a$12$iHhPw/25owHPjAav8XBvNORNvHgBMH26hZgfGLtdpO7/i6APV4Gy6', 'masculino', '41920', 4, '1998-02-11', 42, '41000557'),
-('11111111T', 'Alumno', 'Alumno', 'tutor@hotmail.com', '633333333', 'Calle Asturias nº140', '$2a$12$/0DCayDCQYEUpZ6CBPlQhO7WXuIMve2v6qwaIzuRUzTFMJ6MVle1e', 'masculino', '41920', 3, '1998-02-11', 42, '41000557'),
-('12345678A', 'Cristian', 'García Espino', 'cristiangarciaespino5@gmail.com', '650927664', 'Calle Asturias nº140', '$2a$12$NEqtw.nT2yUH1HrN7ZjAJeeyZ11c5REcZwap2Q/pTX/DbUN.ufxsa', 'masculino', '41920', 1, '1998-02-11', NULL, NULL);
+('11111111A', 'Alumno', 'Alumno2', 'alumno1@hotmail.com', '622222222', 'Calle Asturias nº140', '$2a$12$p4CtP7BY5wAez65DYP7rx.Ax34ddqh6a65rzskW7kPDBviNNajvay', 'masculino', '41920', 5, '1998-02-11', 42, '41000557'),
+('11111111L', 'Admin', 'centro', 'admincentro@hotmail.es', '699011010', 'c/ Asturias', '$2a$12$yughG160rf.No46qW2qj1eLW5gCFyL.qWp7ZfC/7STBmxr.G1eLeq', 'masculino', '41920', 2, '1998-02-11', NULL, '41000557'),
+('11111111P', 'profesor', 'profesor', 'profesor@hotmail.com', '611111111', 'Calle Asturias nº140', '$2a$12$IM/X/NpWTjZA.7yZvXbDfu97JNgWOALWUMupkZ/c3vp41ZR2/QtTq', 'masculino', '41920', 4, '1998-02-11', 42, '41000557'),
+('11111111T', 'Tutor1', 'Alumno', 'tutor@hotmail.com', '633333333', 'Calle Asturias nº140', '$2a$12$LyctZRHS.ZX.g0GeP7doEub7GUa3gJ4K7Pu2WeJasrGcidX8eXuDq', 'femenino', '41920', 3, '1998-02-11', 42, '41000557'),
+('12345678A', 'Cristian', 'García Espinos', 'cristiangarciaespino5@gmail.com', '650927664', 'Calle Asturias nº140', '$2a$12$2HVsV3dK9TsdbqQTvBFWreGMeK6zJmVseh0nCpeSU3oUcPGLNYHoy', 'masculino', '41920', 1, '1998-02-11', NULL, NULL),
+('22222222A', 'Paula', 'García', 'cga@hotmail.es', '669899821', 'c/Asturias', '$2a$12$HYsfe9XBwUzX2YewxkJrVeYt70tmnOQ4bKGP9T1pK1ksXYaVnSR1y', 'femenino', '41920', 5, '1998-02-11', 42, '41000557');
 
 --
 -- Índices para tablas volcadas
@@ -729,7 +1070,8 @@ ALTER TABLE `encuesta`
   ADD PRIMARY KEY (`id`),
   ADD KEY `codigo_modulo` (`codigoModulo`),
   ADD KEY `dni_alumno` (`dniAlumno`),
-  ADD KEY `dni_tutor_empresa` (`dniTutorEmpresa`);
+  ADD KEY `dni_tutor_empresa` (`dniTutorEmpresa`),
+  ADD KEY `resultado` (`resultado`);
 
 --
 -- Indices de la tabla `fp_duales`
@@ -782,6 +1124,13 @@ ALTER TABLE `resultado_aprendizaje`
   ADD KEY `codigo_modulo` (`codigoModulo`);
 
 --
+-- Indices de la tabla `resultado_encuesta`
+--
+ALTER TABLE `resultado_encuesta`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `codigoResultado` (`codigoResultado`);
+
+--
 -- Indices de la tabla `rol`
 --
 ALTER TABLE `rol`
@@ -824,13 +1173,13 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `calificacion`
 --
 ALTER TABLE `calificacion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `encuesta`
 --
 ALTER TABLE `encuesta`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `fp_duales`
@@ -842,7 +1191,7 @@ ALTER TABLE `fp_duales`
 -- AUTO_INCREMENT de la tabla `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=920;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1265;
 
 --
 -- AUTO_INCREMENT de la tabla `log_login`
@@ -854,13 +1203,19 @@ ALTER TABLE `log_login`
 -- AUTO_INCREMENT de la tabla `modulo`
 --
 ALTER TABLE `modulo`
-  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT de la tabla `resultado_aprendizaje`
 --
 ALTER TABLE `resultado_aprendizaje`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT de la tabla `resultado_encuesta`
+--
+ALTER TABLE `resultado_encuesta`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `rol`
@@ -905,7 +1260,8 @@ ALTER TABLE `empresa_fpdual`
 ALTER TABLE `encuesta`
   ADD CONSTRAINT `encuesta_ibfk_1` FOREIGN KEY (`codigoModulo`) REFERENCES `modulo` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `encuesta_ibfk_2` FOREIGN KEY (`dniAlumno`) REFERENCES `alumno` (`dni`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `encuesta_ibfk_3` FOREIGN KEY (`dniTutorEmpresa`) REFERENCES `tutor_empresa` (`dni`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `encuesta_ibfk_3` FOREIGN KEY (`dniTutorEmpresa`) REFERENCES `tutor_empresa` (`dni`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `encuesta_ibfk_4` FOREIGN KEY (`resultado`) REFERENCES `resultado_encuesta` (`id`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `fp_duales`

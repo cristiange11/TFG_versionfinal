@@ -27,6 +27,13 @@
             "tsConfig": "tsconfig.app.json",
             "showCircularDependencies": false,
             "aot": true,
+            "allowedCommonJsDependencies": [
+              "jspdf-autotable",
+              "raf",
+             
+              "@babel/runtime-corejs3"
+              
+           ],
             "assets": [
               "src/favicon.ico",
               "src/assets"
