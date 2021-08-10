@@ -33,7 +33,7 @@ module.exports = class Modulo {
         return rows;
     }
     static async getModulosAlumUpdate(dni) {
-        const [rows, fields] = await promisePool.query(`SELECT U.*, M.nombre as nombreModulo, M.codigo as codigoModulo, A.numeroExpediente FROM alumno as A, usuario as U, modulo as M,calificacion as C where U.rol=5 AND U.dni='${dni}' AND A.dni = U.dni AND (not EXISTS(SELECT * from calificacion as E where E.codigoModulo = M.codigo ) OR (C.dni = U.dni AND C.nota<5))`);
+        const [rows, fields] = await promisePool.query(`SELECT U.*, M.nombre as nombreModulo, M.codigo as codigoModulo, A.numeroExpediente, C.nota FROM alumno as A, usuario as U, modulo as M left join calificacion as C on C.codigoModulo = M.codigo AND C.dni = '11111111A' where U.rol=5 AND U.dni='11111111A' AND A.dni = U.dni AND C.nota is NULL or C.nota < 5`);
         return rows;
     }
 

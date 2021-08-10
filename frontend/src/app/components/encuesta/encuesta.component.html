@@ -22,7 +22,7 @@
 
           {{element[column]}} </td>
       </ng-container>
-      <div *ngIf="this.user.rol == 1 || this.user.rol == 2 || this.user.rol == 3">
+      <div *ngIf="this.user.rol == 1 || this.user.rol == 2 || this.user.rol == 4">
         <ng-container [matColumnDef]="'actions'">
           <th mat-header-cell *matHeaderCellDef> actions </th>
           <td mat-cell *matCellDef="let element">

@@ -185,7 +185,6 @@ export class UsuarioUpdateComponent implements OnInit {
             modulos.forEach(moduloInfo => {
 
               var modulo = moduloInfo
-
               this.moduloList.set(modulo.codigoModulo, modulo.nombreModulo);
             });
 

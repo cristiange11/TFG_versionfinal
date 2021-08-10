@@ -73,7 +73,6 @@ export class LoginComponent implements OnInit {
           }
         },
         error => {
-          console.log(error)
           if (error.status == 406) {
             const res = new Array();
             res.push("Petición incorrecta.");

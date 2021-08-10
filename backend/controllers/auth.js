@@ -311,7 +311,6 @@ exports.RecoveryPassword = async (req, res, next) => {
         const correo = req.body.correo
         const token = jwt.sign({ sub: correo }, RSA_PRIVATE_KEY/*'proyecto final carrera'*/, { expiresIn: '24h' })
 
-        verificationLink = `http://localhost:3000/new-password/${token}`;
         //Creamos el objeto de transporte
         const transporter = nodemailer.createTransport({
           host: "smtp.gmail.com",

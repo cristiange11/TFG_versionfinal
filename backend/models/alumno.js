@@ -31,7 +31,7 @@ module.exports = class Alumno extends User {
         return rows;
     }
     static async getAlumnosByModuloEncuesta(codigoModulo) {
-        const [rows, fields] = await promisePool.query(`SELECT U.* FROM usuario as U, modulo as M where U.rol=5 AND M.codigo = ${codigoModulo} AND not EXISTS(SELECT * from encuesta as E where E.dniAlumno = U.dni ) `);
+        const [rows, fields] = await promisePool.query(`SELECT U.* FROM usuario as U, modulo as M where U.rol=5 AND M.codigo = ${codigoModulo} `);
         return rows;
     }
     static async getAlumno(dni) {
