@@ -40,7 +40,7 @@ export class UsuarioUpdateComponent implements OnInit {
   fpDual = new FormControl("", [Validators.required]);
 
   confirmPasswordFormControl = new FormControl("", [Validators.required, this.checkConfirmPassword()]);
-  cifEmpresa;
+  idEmpresa;
   centroList = new Map<string, string>();
   rolesList = new Map<number, string>();
   fpList = new Map<number, string>();
@@ -146,15 +146,13 @@ export class UsuarioUpdateComponent implements OnInit {
       this.tutorService.getTutor(data.dni).pipe(first())
         .subscribe(
           data => {
-
             var tutor = JSON.parse(data['tutor']);
             Array.prototype.forEach.call(tutor, moduloInfo => {
               this.moduloUserList.set(moduloInfo.moduloCodigo, moduloInfo.nombreModulo);
             });
             this.modulo.setValue(Array.from(this.moduloUserList.keys()))
             this.formGroupTutor.setValue(tutor[0].moduloEmpresa);
-
-            this.cifEmpresa = tutor[0].CIF;
+            this.idEmpresa = tutor[0].idEmpresa;
           },
 
           error => {
@@ -403,7 +401,7 @@ export class UsuarioUpdateComponent implements OnInit {
 
       var formGroupTutorJSON = {
         moduloEmpresa: this.formGroupTutor.value,
-        cifEmpresa: this.cifEmpresa
+        idEmpresa: this.idEmpresa
       }
       this.tutorService.updateTutor(this.formInstance.value, userJson, formGroupTutorJSON, this.modulo.value).pipe(first())
         .subscribe(

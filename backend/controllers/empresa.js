@@ -75,12 +75,12 @@ exports.deleteTutorEmpresaByEmpresa = async (req, res, next) => {
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
   } else {
-    const CIF = req.params.CIF;
     try {
       const user = jwt_decode(req.headers['authorization']).sub;
-      const empresa = await Empresa.deleteTutorEmpresaByEmpresa(CIF,user).then(function (result) {
+      await Empresa.deleteTutorEmpresaByEmpresa(req.params.id,user).then(function (result) {
         res.status(201).json({ message: "success" });
       }).catch(function (err) {
+        
         res.status(409).json({ "errors" : "no se ha podido borrar el usuario" });
       });;
     
@@ -101,13 +101,14 @@ exports.deleteEmpresa = async (req, res, next) => {
   if (expirado) {
     res.status(401).json({ "errors": "Sesión expirada" });
   } else {
-    const CIF = req.params.CIF;
+    
     try {
       
       const user = jwt_decode(req.headers['authorization']).sub;
-      const empresa = await Empresa.deleteEmpresa(CIF,user).then(function (result) {
+      await Empresa.deleteEmpresa(req.params.id,user).then(function (result) {
         res.status(201).json({ message: "success" });
       }).catch(function (err) {
+        console.log(err)
         res.status(409).json({ "errors" : "no se ha podido borrar la empresa" });
       });
 
@@ -198,8 +199,8 @@ exports.createEmpresa = async (req, res, next) => {
           
 
           res.status(201).json({ message: "success" });
-        }).catch(function () {
-          
+        }).catch(function (err) {
+          console.log("error =?> " + err)
           res.status(401).json({ message: "no se ha podido crear la empresa:" });
         });
 

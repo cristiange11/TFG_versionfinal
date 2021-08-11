@@ -32,13 +32,15 @@ export class TutorEmpresaService {
       fpDual: userJson.fpDual,
       codigoCentro: userJson.codigoCentro, 
       moduloEmpresa: formulario2.moduloEmpresa,
-      cifEmpresa: formulario2.cifEmpresa,
+      idEmpresa: formulario2.idEmpresa,
+      
       modulo : {modulo : modulo}
     };
     return tutor;
   }
   createTutor(sigunForm , userJson,  formulario2, modulo): Observable<JSON>{    
     var tutor = this.formarTutor(sigunForm , userJson,  formulario2, modulo);
+   
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json","X-Frame-Options" : "deny"}),}
     return this.http.post<JSON>(`${this.url}/create`, tutor , httpOptions);   
   }

@@ -40,7 +40,7 @@ export class FormUserComponent implements OnInit {
   centroList = new Map<string, string>();
   rolesList = new Map<number, string>();
   fpList = new Map<number, string>();
-  empresaList = new Map<string, string>();
+  empresaList = new Map<number, string>();
   constructor(private nagivationComponent: NavigationComponent, private moduloService: ModuloService, private cookieService: CookieService, private router: Router, private appRouting: AppRoutingModule, private authService: AuthService, private tutorService: TutorEmpresaService, private profesorService: ProfesorService, private alumnoService: AlumnoService, private empresaService: EmpresaService, private centroService: CentroService, private rolService: RolService, private fpdualesService: FpdualesService) {
     document.body.style.background = "linear-gradient(to right, #1dcd9b, #00d4ff)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
@@ -160,15 +160,15 @@ export class FormUserComponent implements OnInit {
     } else if (rol == 3) {
 
       this.modulo = new FormControl("", [Validators.required]);
-      this.formGroupTutor = new FormGroup({ moduloEmpresa: new FormControl("", [Validators.required, Validators.minLength(6)]), cifEmpresa: new FormControl("", [Validators.required]) })
+      this.formGroupTutor = new FormGroup({ moduloEmpresa: new FormControl("", [Validators.required, Validators.minLength(6)]), idEmpresa: new FormControl("", [Validators.required]) })
       this.empresaService.getEmpresasByFp(this.user.fpDual).pipe(first())
         .subscribe(
           data => {
-            this.empresaList = new Map<string, string>();
+            this.empresaList = new Map<number, string>();
             let empresas = data["empresas"]
             empresas.forEach(empresaInfo => {
               var empresa = empresaInfo as Empresa
-              this.empresaList.set(empresa.cifEmpresa, empresa.nombre)
+              this.empresaList.set(empresa.id, empresa.nombre)
             });
           },
           error => {
@@ -196,12 +196,12 @@ export class FormUserComponent implements OnInit {
     this.empresaService.getEmpresasByFp(fp).pipe(first())
       .subscribe(
         data => {
-          this.empresaList = new Map<string, string>();
+          this.empresaList = new Map<number, string>();
           let empresas = data["empresas"]
           empresas.forEach(empresaInfo => {
             var empresa = empresaInfo
-
-            this.empresaList.set(empresa.cifEmpresa, empresa.nombre)
+              console.log("EMRPESA " + empresa)
+            this.empresaList.set(empresa.id, empresa.nombre)
           });
 
         },
@@ -616,8 +616,8 @@ export class FormUserComponent implements OnInit {
       return err.hasError('required') ? 'Añade el campo' :
         err.hasError('minlength') ? 'Cadena mínima de 6 caracteres' :
           '';
-    } else if (this.numero == 3 && attribute == "cifEmpresa") {
-      let err = this.formGroupTutor.get("cifEmpresa")
+    } else if (this.numero == 3 && attribute == "idEmpresa") {
+      let err = this.formGroupTutor.get("idEmpresa")
       return err.hasError('required') ? 'Añade el campo' :
         '';
     }

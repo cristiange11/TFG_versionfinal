@@ -35,6 +35,8 @@ export class EmpresaService {
       url: empresa.url,
       plazas: empresa.plazas,
       fpDual: empresa.fpDual,
+      codigoCentro: empresa.codigoCentro,
+      id: empresa.id != null ? empresa.id : 0,
     }
     return res;
   }
@@ -43,19 +45,19 @@ export class EmpresaService {
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.post<JSON>(`${this.url}/create`, res , httpOptions);
   }
-  deleteEmpresa(cifEmpresa : string): Observable<JSON>{
+  deleteEmpresa(id): Observable<JSON>{
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
-    return this.http.delete<JSON>(`${this.url}/${cifEmpresa}`,  httpOptions);
+    return this.http.delete<JSON>(`${this.url}/${id}`,  httpOptions);
   }
   updateEmpresa(empresa, dineroBeca): Observable<JSON>{
     var res= this.formarEmpresa(empresa, dineroBeca);
-   
+    console.log(res)
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.put<JSON>(`${this.url}/update`, res, httpOptions);
   }
-  deleteTutorEmpresaByEmpresa(cifEmpresa : string): Observable<JSON>{
+  deleteTutorEmpresaByEmpresa(id): Observable<JSON>{
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
-    return this.http.delete<JSON>(`${this.url}/delete/${cifEmpresa}`,  httpOptions);
+    return this.http.delete<JSON>(`${this.url}/delete/${id}`,  httpOptions);
   }
 
 }

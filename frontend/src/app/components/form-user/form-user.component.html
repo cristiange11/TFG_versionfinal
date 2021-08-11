@@ -186,14 +186,14 @@
     </mat-form-field>
     <mat-form-field [formGroup]="formGroupTutor" *ngIf="this.numero==3" appearance="fill">
       <mat-label>Empresas</mat-label>
-      <mat-select matNativeControl required formControlName="cifEmpresa">
+      <mat-select matNativeControl required formControlName="idEmpresa">
         <mat-option *ngFor="let empresa of empresaList | keyvalue" [value]="empresa.key">{{ empresa.value }}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="this.formGroupTutor.get('cifEmpresa').errors?.required"> {{ getErrorMessage("cifEmpresa") }}
+      <mat-error *ngIf="this.formGroupTutor.get('idEmpresa').errors?.required"> {{ getErrorMessage("idEmpresa") }}
       </mat-error>
-      <mat-error *ngIf="this.formGroupTutor.get('cifEmpresa').errors?.serverError">{{
-        this.formGroupTutor.get('cifEmpresa').errors?.serverError }}</mat-error>
+      <mat-error *ngIf="this.formGroupTutor.get('idEmpresa').errors?.serverError">{{
+        this.formGroupTutor.get('idEmpresa').errors?.serverError }}</mat-error>
     </mat-form-field>
   </ng-template>
   <div *ngIf="this.numero==5">

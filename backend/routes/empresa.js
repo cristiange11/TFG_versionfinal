@@ -12,21 +12,16 @@ router.get('/:codigoCentro', empresaController.getEmpresasByCentro);
 
 router.get('/fp/:fpDual', empresaController.getEmpresasByFp);
 
-router.delete('/delete/:CIF', empresaController.deleteTutorEmpresaByEmpresa);
+router.delete('/delete/:id', empresaController.deleteTutorEmpresaByEmpresa);
 
-router.delete('/:CIF', empresaController.deleteEmpresa);
+router.delete('/:id', empresaController.deleteEmpresa);
 
 router.post(
   '/create',
   [
     body('cifEmpresa').trim().not().isEmpty().withMessage("CIF vacío")
-    .matches(/^[a-zA-Z]{1}\d{7}[a-zA-Z0-9]{1}$/).withMessage("Formato CIF incorrecto")
-      .custom(async (cifEmpresa) => {
-        const empresa = await Empresa.find(cifEmpresa);
-        if (empresa[0].length > 0) {
-          return Promise.reject('CIF introducido ya existe');
-        }
-      }),
+    .matches(/^[a-zA-Z]{1}\d{7}[a-zA-Z0-9]{1}$/).withMessage("Formato CIF incorrecto"),
+      
     body('direccion').trim().not().isEmpty().withMessage("Dirección vacía"),
     body('nombre').trim().not().isEmpty().withMessage("Nombre vacío"),
     body('telefono').trim().not().isEmpty().withMessage("Teléfono vacío")

@@ -35,6 +35,7 @@ export class EmpresaCreateComponent implements OnInit {
       plazas: new FormControl("", [Validators.required, Validators.min(1)]),
       becas: new FormControl("", [Validators.required]),
       fpDual: new FormControl("", [Validators.required]),
+      codigoCentro : this.codigoCentro
     })
     if (!this.cookieService.get('user')) {
       this.router.navigate(['home']);
@@ -133,33 +134,7 @@ export class EmpresaCreateComponent implements OnInit {
               AppComponent.myapp.openDialog(res);
             }
           });
-      this.fpdualesService.getFps().pipe(first())
-        .subscribe(
-          data => {
-            this.fpList = new Map<number, string>();
-            let fps = data["fps"]
-            fps.forEach(fpInfo => {
-              var fp = fpInfo as Fpduales
-
-              this.fpList.set(fp.id, fp.nombre)
-            });
-          },
-
-          error => {
-
-            if (error.status == 401 && error.error.errors == "Sesión expirada") {
-              this.dialogRef.close();
-              AppComponent.myapp.openDialogSesion();
-            } else if (error.status == 406) {
-              const res = new Array();
-              res.push("Petición incorrecta.");
-              AppComponent.myapp.openDialog(res);
-            }else if (error.status == 500) {
-              const res = new Array();
-              res.push("Error del servidor, vuelva a intentarlo más tarde.");
-              AppComponent.myapp.openDialog(res);
-            }
-          });
+      
     }
   }
   save() {
@@ -168,8 +143,10 @@ export class EmpresaCreateComponent implements OnInit {
         data => {
           window.location.reload();
         },
+       
         error => {
-          if (error.status == 409) {
+          console.log(error)
+          /*if (error.status == 409) {
 
             error.error.errors.forEach(errorInfo => {
               const formControl = this.formInstance.get(errorInfo.param);
@@ -201,7 +178,7 @@ export class EmpresaCreateComponent implements OnInit {
             res.push("No se ha podido crear.");
             AppComponent.myapp.openDialog(res);
             this.dialogRef.close();
-          }
+          }*/
         });
 
 

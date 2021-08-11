@@ -27,7 +27,7 @@ export class EmpresaUpdateComponent implements OnInit {
       plazas: new FormControl("", [Validators.required, /*Validators.min(1)*/]),
       becas: new FormControl("", [Validators.required]),
       dineroBeca: new FormControl("", []),
-
+      id: new FormControl("", []),
     });
     this.formInstance.setValue(data);
     if (this.formInstance.value.becas != "0") {
@@ -71,7 +71,7 @@ export class EmpresaUpdateComponent implements OnInit {
           }
           else if (error.status == 401) {
             const res = new Array();
-            res.push("No se ha podido crear.");
+            res.push("No se ha podido actualizar.");
             AppComponent.myapp.openDialog(res);
             this.dialogRef.close();
           }

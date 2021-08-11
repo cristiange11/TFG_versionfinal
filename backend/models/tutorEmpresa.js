@@ -16,8 +16,7 @@ module.exports = class TutorEmpresa {
         return rows;
     }
     static async getTutor(dni) {
-
-        const [rows, fields] = await promisePool.query(`SELECT U.*, T.cifEmpresa AS CIF, T.moduloEmpresa, M.nombre as nombreModulo, M.codigo as moduloCodigo FROM usuario U, tutor_empresa T, tutor_modulo TM, modulo M WHERE U.dni = T.dni AND T.dni=TM.dni AND M.codigo = TM.codigoModulo AND U.dni='${dni}'`);
+        const [rows, fields] = await promisePool.query(`SELECT U.*, T.idEmpresa AS idEmpresa, T.moduloEmpresa, M.nombre as nombreModulo, M.codigo as moduloCodigo FROM usuario as U, tutor_empresa as T, tutor_modulo as TM, modulo as M WHERE U.dni = T.dni AND T.dni=TM.dni AND M.codigo = TM.codigoModulo AND U.dni='${dni}'`);
         return rows;
     }
     static async getTutorByModuloEncuesta(codigoModulo) {
@@ -43,14 +42,12 @@ module.exports = class TutorEmpresa {
 
     }
     static async createTutor(tutorEmpresa, password, user) {
-
         const connection = await promisePool.getConnection();
-        
         try {
             await connection.beginTransaction();
             let query = `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fechaNacimiento, fpDual, codigoCentro) VALUES ('${tutorEmpresa.dni}','${tutorEmpresa.nombre}','${tutorEmpresa.apellidos}','${tutorEmpresa.correo}','${tutorEmpresa.movil}','${tutorEmpresa.direccion}','${password}','${tutorEmpresa.genero}',${tutorEmpresa.cp},'${tutorEmpresa.rol}',STR_TO_DATE('${tutorEmpresa.fechaNacimiento}','%Y-%m-%d'),'${tutorEmpresa.fpDual}','${tutorEmpresa.codigoCentro}')`;
             await connection.query(query);
-            await connection.query(`INSERT INTO tutor_empresa (dni, moduloEmpresa, cifEmpresa) VALUES ('${tutorEmpresa.dni}','${tutorEmpresa.moduloEmpresa}', '${tutorEmpresa.cifEmpresa}')`);
+            await connection.query(`INSERT INTO tutor_empresa (dni, moduloEmpresa, idEmpresa) VALUES ('${tutorEmpresa.dni}','${tutorEmpresa.moduloEmpresa}', ${tutorEmpresa.idEmpresa})`);
             const tutor = JSON.parse(JSON.stringify(tutorEmpresa.modulo.modulo));
             for (var i = 0; i < tutor.length; i++) {
                 const moduloInser = tutor[i];

@@ -94,10 +94,10 @@ module.exports = class Centro {
             let query = `DELETE t1 FROM logs t1 INNER JOIN usuario t2 ON ( t1.usuario = t2.dni) WHERE t2.codigoCentro = '${codigoCentro}'`
             await connection.query(query)
             connection.query(`DELETE FROM usuario WHERE codigoCentro =  '${codigoCentro}'`);
-
-
+            
             await connection.query(`DELETE t1 FROM modulo t1 INNER JOIN fp_duales t2 ON ( t1.fpDual = t2.id) WHERE t2.codigoCentro = '${codigoCentro}'`);
             await connection.query(`DELETE t1 FROM empresa_fpdual t1 INNER JOIN fp_duales t2 ON ( t1.idFp = t2.id) WHERE t2.codigoCentro = '${codigoCentro}'`);
+            await connection.query(`DELETE FROM empresa where codigoCentro= '${codigoCentro}'`);
             await connection.query(`DELETE FROM fp_duales WHERE codigoCentro = '${codigoCentro}'`);
 
             await connection.query(`DELETE FROM centro_educativo WHERE codigoCentro =  '${codigoCentro}'`);

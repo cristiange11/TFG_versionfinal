@@ -62,6 +62,7 @@ exports.getTutor = async (req, res, next) => {
                 res.status(200).json({ tutor: JSON.stringify(tutor) });
 
             } catch (err) {
+                console.log(err)
                 res.status(500).json({ error: err });
             }
         }
@@ -174,7 +175,7 @@ exports.createTutor = async (req, res, next) => {
                     const user = jwt_decode(req.headers['authorization']).sub;
 
                     const hashedPassword = await bcrypt.hash(req.body.password, 12);
-                    
+               
                     await TutorEmpresa.createTutor(req.body, hashedPassword, user).then(function (result) {
                         
 

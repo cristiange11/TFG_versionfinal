@@ -86,13 +86,15 @@ module.exports = class User {
         const connection = await promisePool.getConnection();
         try {
             await connection.beginTransaction();
-            let query = `DELETE FROM logs WHERE usuario = ${dni}`;
+            let query = `DELETE FROM logs WHERE usuario = '${dni}'`;
             await connection.query(query);
+            await connection.query(`DELETE FROM calificacion WHERE dni = '${dni}'`);
             await connection.query(`DELETE FROM usuario WHERE dni = '${dni}'`);
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha borrado usuario con DNI ${dni} ','${userLogado}',sysdate(), 'user')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
+            console.log(err)
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_USER','No se ha borrado el usuario con DNI ${dni}','${userLogado}',sysdate(), 'user')`);
             throw err;
         } finally {
@@ -104,12 +106,13 @@ module.exports = class User {
         const connection = await promisePool.getConnection();
         try {
             await connection.beginTransaction();
-            let query = `DELETE FROM usuario WHERE dni = ${dni}`;
+            let query = `DELETE FROM usuario WHERE dni = '${dni}'`;
             await connection.query(query);
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha borrado usuario con DNI ${dni} ','${userLogado}',sysdate(), 'user')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
+            console.log(err)
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_USER','No se ha borrado el usuario con DNI ${dni}','${userLogado}',sysdate(), 'user')`);
             throw err;
         } finally {

@@ -90,9 +90,10 @@ router.post(
       })
       .normalizeEmail(),
     body('password').trim().isLength({ min: 6 }).withMessage("Contraseña con una longitud menor a 6"),
-    body('cifEmpresa').trim().not().isEmpty().withMessage("CIF vacío")
-    .custom(async (cifEmpresa) => {
-      const user = await Empresa.find(cifEmpresa);
+    body('idEmpresa').trim().not().isEmpty().withMessage("Empresa vacía")
+    .custom(async (idEmpresa) => {
+      console.log("Empresa => " + idEmpresa)
+      const user = await Empresa.find(idEmpresa);
       if (user[0].length == 0) {
         return Promise.reject('Empresa no existente');
       }
@@ -138,9 +139,9 @@ router.put(
       })
       .normalizeEmail(),
     body('password').trim().isLength({ min: 6 }).withMessage("Contraseña con una longitud menor a 6"),
-    body('cifEmpresa').trim().not().isEmpty().withMessage("CIF vacío")
-    .custom(async (cifEmpresa) => {
-      const user = await Empresa.find(cifEmpresa);
+    body('idEmpresa').trim().not().isEmpty().withMessage("Empresa vacía")
+    .custom(async (idEmpresa) => {
+      const user = await Empresa.find(idEmpresa);
       if (user[0].length == 0) {
         return Promise.reject('Empresa no existente');
       }
