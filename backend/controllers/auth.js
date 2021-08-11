@@ -314,15 +314,15 @@ exports.RecoveryPassword = async (req, res, next) => {
         //Creamos el objeto de transporte
         const transporter = nodemailer.createTransport({
           host: "smtp.gmail.com",
-          port: 587,
-          secure: false,
+          port: 465,
+          secure: true,
           auth: {
             user: "appdualtfg@gmail.com",
             pass: "M8f*Zb&AT7!z"
           }
         });
         var mailOptions = {
-          from: 'cristiangarciaespino5@gmail.com',
+          from: 'appdualtfg@gmail.com',
           to: correo,
           subject: 'Solicitud De Cambio De Contraseña',
           html: '<h1>Solicitud de cambio de contraseña</h1>' +

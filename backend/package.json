@@ -26,7 +26,8 @@
     "node-datetime": "^2.1.2",
     "node-openssl-cert": "0.0.59",
     "nodemailer": "^6.6.3",
-    "openssl-nodejs": "^1.0.5"
+    "openssl-nodejs": "^1.0.5",
+    "smtp": "^0.1.4"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
