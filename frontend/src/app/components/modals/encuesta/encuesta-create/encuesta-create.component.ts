@@ -7,6 +7,8 @@ import { AppComponent } from 'src/app/app.component';
 import { Encuesta } from 'src/app/models/Encuesta';
 import { EncuestaService } from 'src/app/services/encuesta.service';
 import { TutorEmpresaService } from 'src/app/services/tutor-empresa.service';
+import { ResultadoEncuestaService } from 'src/app/services/resultado-encuesta.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-encuesta-create',
@@ -16,23 +18,49 @@ import { TutorEmpresaService } from 'src/app/services/tutor-empresa.service';
 export class EncuestaCreateComponent implements OnInit {
   formInstance: FormGroup;
   alumnoList = new Map<string, string>();
-  tutorList = new Map<string, string>();
+  user;
+  resultadoList;
   constructor(public dialogRef: MatDialogRef<EncuestaCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Encuesta, public encuestaService: EncuestaService, public alumnoService: AlumnoService, public tutorService: TutorEmpresaService) {
+    @Inject(MAT_DIALOG_DATA) public data: Encuesta, public encuestaService: EncuestaService,public cookieService: CookieService,public resultadoService: ResultadoEncuestaService, public alumnoService: AlumnoService, public tutorService: TutorEmpresaService) {
     this.formInstance = new FormGroup({
       titulo: new FormControl("", [Validators.required, Validators.minLength(4)]),
       descripcion: new FormControl("", [Validators.required, Validators.minLength(4)]),
       codigoModulo: new FormControl("", []),
-      resultado: new FormControl("", []),
-
+      observaciones : new FormControl("",[]),
+      resultado : new FormControl("",[Validators.required]),
       dniAlumno: new FormControl("", [Validators.required, Validators.pattern(/^\d{8}[a-zA-Z]$/)]),
       dniTutorEmpresa: new FormControl("", [Validators.required, Validators.pattern(/^\d{8}[a-zA-Z]$/)]),
     })
-    this.formInstance.setValue({ titulo: "", descripcion: "", codigoModulo: Number(sessionStorage.getItem('codigoModulo')), resultado: "", dniAlumno: "", dniTutorEmpresa: "" })
+    this.user = (JSON.parse(this.cookieService.get('user')));
+    this.formInstance.setValue({ titulo: "", descripcion: "", codigoModulo: Number(sessionStorage.getItem('codigoModulo')), resultado: "", dniAlumno: "", dniTutorEmpresa: this.user.dni , observaciones:"" })
   }
 
 
   ngOnInit(): void {
+    this.resultadoService.getResultados().pipe(first())
+      .subscribe(
+        data => {
+          this.resultadoList = new Map<number, string>();
+          let resultado = data["resultados"]
+          resultado.forEach(resultadoInfo => {
+            
+            this.resultadoList.set(resultadoInfo.id, resultadoInfo.resultado);
+            
+          });
+        },
+        error => {
+          if (error.status == 401 && error.error.errors == "Sesión expirada") {
+            AppComponent.myapp.openDialogSesion();
+          } else if (error.status == 406) {
+            const res = new Array();
+            res.push("Petición incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
+            AppComponent.myapp.openDialog(res);
+          }
+        });
     this.alumnoService.getAlumnosByModuloEncuesta(this.formInstance.value.codigoModulo).pipe(first())
       .subscribe(
         data => {
@@ -76,49 +104,7 @@ export class EncuestaCreateComponent implements OnInit {
             this.dialogRef.close();
           }
         });
-    this.tutorService.getTutorByModuloEncuesta(this.formInstance.value.codigoModulo).pipe(first())
-      .subscribe(
-        data => {
-          let tutores = JSON.parse(data["tutores"])
-          tutores.forEach(tutorInfo => {
-            var nombreApellidos = tutorInfo.nombre + " " + tutorInfo.apellidos;
-            this.tutorList.set(tutorInfo.dni, nombreApellidos);
-          })
-
-        },
-        error => {
-
-          if (error.status == 409) {
-
-            error.error.errors.forEach(errorInfo => {
-              const formControl = this.formInstance.get(errorInfo.param);
-              if (formControl) {
-                formControl.setErrors({
-                  serverError: errorInfo.message
-                });
-              }
-            });
-          }else if (error.status == 500) {
-            const res = new Array();
-            res.push("Error del servidor, vuelva a intentarlo más tarde.");
-            AppComponent.myapp.openDialog(res);
-          }
-          else if (error.status == 401 && error.error.errors == "Sesión expirada") {
-            this.dialogRef.close();
-            AppComponent.myapp.openDialogSesion();
-          }
-          else if (error.status == 406) {
-            const res = new Array();
-            res.push("Cabecera incorrecta.");
-            AppComponent.myapp.openDialog(res);
-          }
-          else if (error.status == 401) {
-            const res = new Array();
-            res.push("No se ha podido crear.");
-            AppComponent.myapp.openDialog(res);
-            this.dialogRef.close();
-          }
-        });
+   
   }
   save() {
     this.encuestaService.addEncuesta(this.formInstance.value).pipe(first())

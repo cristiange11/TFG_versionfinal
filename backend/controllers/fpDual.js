@@ -42,7 +42,6 @@ exports.DeleteUsuariosByFP = async (req, res, next) => {
         const fp = await Fpdual.DeleteUsuariosByFP(req.params.id, user).then(function (result) {
           res.status(201).json({ message: "success" });
         }).catch(function (err) {
-          console.log(err)
           res.status(409).json({ "errors" : "no se ha podido borrar el usuario" });
         });
 

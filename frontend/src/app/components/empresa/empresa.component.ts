@@ -148,7 +148,6 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   edit(data) {
-    console.log(data)
     sessionStorage.setItem("dineroBeca", data.dineroBeca);
     this.dialog.open(EmpresaUpdateComponent, {
       width: '400px',
@@ -160,16 +159,16 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
   delete(id) {
 
     const dialogRef = this.dialog.open(DeleteComponent);
-    console.log(id)
+   
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.empresaService.deleteEmpresa(id).pipe(first())
           .subscribe(
             data => {
-              //window.location.reload();
+              window.location.reload();
             },
             error => {
-              console.log(error)
+              
               if (error.status == 401 && error.error.errors == "Sesión expirada") {
                 AppComponent.myapp.openDialogSesion();
 
@@ -196,11 +195,10 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.empresaService.deleteTutorEmpresaByEmpresa(id).pipe(first())
                       .subscribe(
                         data => {
-                          //window.location.reload();
+                          window.location.reload();
                         },
                         
                         error => {
-                          console.log("ERROR 2 => " + error)
                           if (error.status == 401 && error.error.errors == "Sesión expirada") {
                             AppComponent.myapp.openDialogSesion();
                           } else if (error.status == 500) {

@@ -23,13 +23,11 @@ module.exports = class Empresa {
             `SELECT * FROM empresa where id =${idEmpresa}`);
     }
     static async getEmpresas() {
-        console.log(`SELECT E.*, EF.dineroBeca AS dineroBeca,EF.becas as beca, EF.plazas AS plazas, F.nombre as nombreFp, F.id as idFp FROM empresa E, empresa_fpdual EF, fp_duales F where E.id = EF.idEmpresa and EF.idFp=F.id `)
         const [rows, fields] = await promisePool.query(
             `SELECT E.*, EF.dineroBeca AS dineroBeca,EF.becas as beca, EF.plazas AS plazas, F.nombre as nombreFp, F.id as idFp FROM empresa E, empresa_fpdual EF, fp_duales F where E.id = EF.idEmpresa and EF.idFp=F.id `);
         return rows;
     }
     static async getEmpresasByCentro(codigoCentro) {
-        console.log(`SELECT E.*, EF.dineroBeca AS dineroBeca,EF.becas as beca, EF.plazas AS plazas, F.nombre as nombreFp, F.id as idFp FROM empresa E, empresa_fpdual EF, fp_duales F where E.id = EF.idEmpresa and EF.idFp=F.id AND F.codigoCentro = "${codigoCentro}"`)
         const [rows, fields] = await promisePool.query(
             `SELECT E.*, EF.dineroBeca AS dineroBeca,EF.becas as beca, EF.plazas AS plazas, F.nombre as nombreFp, F.id as idFp FROM empresa E, empresa_fpdual EF, fp_duales F where E.id = EF.idEmpresa and EF.idFp=F.id AND F.codigoCentro = "${codigoCentro}"`);
         return rows;
@@ -41,7 +39,6 @@ module.exports = class Empresa {
     }
     static async deleteEmpresa(id, user) {
         const connection = await promisePool.getConnection();
-        console.log("ENTRO A BORRAR " + `DELETE FROM empresa WHERE empresa.id  =  ${id}`)
         try {
             await connection.beginTransaction();
             let query = `DELETE FROM empresa WHERE id  =  ${id}`;
@@ -60,7 +57,6 @@ module.exports = class Empresa {
     }
     static async deleteTutorEmpresaByEmpresa(idEmpresa, user) {
         const connection = await promisePool.getConnection();
-        console.log("entro en la segunda")
         try {
             await connection.beginTransaction();
             let query = `DELETE t1 FROM usuario t1 INNER JOIN tutor_empresa t2 ON ( t1.dni = t2.dni) WHERE t2.idEmpresa = ${idEmpresa}`;
@@ -105,7 +101,6 @@ module.exports = class Empresa {
     }
     static async updateEmpresa(empresa, user) {
         const connection = await promisePool.getConnection();
-        console.log(`UPDATE empresa SET direccion='${empresa.direccion}',nombre='${empresa.nombre}', correo='${empresa.correo}',telefono='${empresa.telefono}',url='${empresa.url}' WHERE id = ${empresa.id}`)
         try {
             await connection.beginTransaction();
             let query = `UPDATE empresa SET direccion='${empresa.direccion}',nombre='${empresa.nombre}', correo='${empresa.correo}',telefono='${empresa.telefono}',url='${empresa.url}' WHERE id = ${empresa.id}`;

@@ -26,17 +26,22 @@
       <mat-error *ngIf="formInstance.controls['dniAlumno']?.errors?.required">Alumno requerido</mat-error>
       <mat-error *ngIf="formInstance.controls['dniAlumno']?.errors?.serverError">{{
         formInstance.controls['alumnos']?.errors?.serverError }}</mat-error>
-
     </mat-form-field>
     <mat-form-field class="fullWidth" appearance="outline">
-      <mat-label>Tutor empresa</mat-label>
-      <mat-select matNativeControl required formControlName="dniTutorEmpresa">
-        <mat-option *ngFor="let tutor of tutorList | keyvalue" [value]="tutor.key">{{ tutor.value }}</mat-option>
+      <mat-label>Resultado</mat-label>
+      <mat-select matNativeControl required formControlName="resultado">
+        <mat-option *ngFor="let resultado of resultadoList | keyvalue" [value]="resultado.key">{{ resultado.value }}
+        </mat-option>
       </mat-select>
-      <mat-error *ngIf="formInstance.controls['dniTutorEmpresa']?.errors?.required">Tutor requerido</mat-error>
-      <mat-error *ngIf="formInstance.controls['dniTutorEmpresa']?.errors?.serverError">{{
-        formInstance.controls['dniTutorEmpresa']?.errors?.serverError }}</mat-error>
+      <mat-error *ngIf="this.formInstance.get('resultado').errors?.required">Resultado requerido</mat-error>
+      <mat-error *ngIf="this.formInstance.get('resultado').errors?.serverError">{{
+        this.formInstance.get('resultado').errors?.serverError }}</mat-error>
+    </mat-form-field>
 
+    <mat-form-field class="fullWidth" appearance="outline">
+      <mat-label>Observaciones</mat-label>
+      <textarea matInput type="text" name="observaciones" formControlName="observaciones" placeholder="observaciones">
+          </textarea>
     </mat-form-field>
   </form>
 </div>

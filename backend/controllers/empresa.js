@@ -108,7 +108,7 @@ exports.deleteEmpresa = async (req, res, next) => {
       await Empresa.deleteEmpresa(req.params.id,user).then(function (result) {
         res.status(201).json({ message: "success" });
       }).catch(function (err) {
-        console.log(err)
+        
         res.status(409).json({ "errors" : "no se ha podido borrar la empresa" });
       });
 
@@ -200,7 +200,6 @@ exports.createEmpresa = async (req, res, next) => {
 
           res.status(201).json({ message: "success" });
         }).catch(function (err) {
-          console.log("error =?> " + err)
           res.status(401).json({ message: "no se ha podido crear la empresa:" });
         });
 

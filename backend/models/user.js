@@ -94,7 +94,6 @@ module.exports = class User {
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            console.log(err)
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_USER','No se ha borrado el usuario con DNI ${dni}','${userLogado}',sysdate(), 'user')`);
             throw err;
         } finally {
@@ -112,7 +111,6 @@ module.exports = class User {
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            console.log(err)
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_USER','No se ha borrado el usuario con DNI ${dni}','${userLogado}',sysdate(), 'user')`);
             throw err;
         } finally {

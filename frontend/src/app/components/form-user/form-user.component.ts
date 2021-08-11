@@ -200,7 +200,6 @@ export class FormUserComponent implements OnInit {
           let empresas = data["empresas"]
           empresas.forEach(empresaInfo => {
             var empresa = empresaInfo
-              console.log("EMRPESA " + empresa)
             this.empresaList.set(empresa.id, empresa.nombre)
           });
 

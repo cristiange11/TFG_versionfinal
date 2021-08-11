@@ -92,7 +92,6 @@ router.post(
     body('password').trim().isLength({ min: 6 }).withMessage("Contraseña con una longitud menor a 6"),
     body('idEmpresa').trim().not().isEmpty().withMessage("Empresa vacía")
     .custom(async (idEmpresa) => {
-      console.log("Empresa => " + idEmpresa)
       const user = await Empresa.find(idEmpresa);
       if (user[0].length == 0) {
         return Promise.reject('Empresa no existente');

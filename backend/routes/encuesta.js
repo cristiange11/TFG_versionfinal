@@ -44,7 +44,19 @@ router.post(
         return Promise.reject('Tutor no existente en la aplicación');
       }
     }),
-    body('descripcion').trim().not().isEmpty().withMessage("Descripción vacía")
+    body('descripcion').trim().not().isEmpty().withMessage("Descripción vacía"),
+    body('resultado').trim().not().isEmpty().withMessage("Resultado vacío")
+    .custom(async (resultado) => {    
+      if(!isNaN(resultado)){
+        const user = await Resultado.getResultado(resultado);
+      if (user[0].length == 0) {
+        return Promise.reject('Error');
+      }
+      }else{
+        return Promise.reject('Campo erróneo');
+      }
+    
+  }),
   ],
   encuestaController.createEncuesta
 );

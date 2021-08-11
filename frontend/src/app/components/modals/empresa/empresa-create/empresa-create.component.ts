@@ -145,8 +145,7 @@ export class EmpresaCreateComponent implements OnInit {
         },
        
         error => {
-          console.log(error)
-          /*if (error.status == 409) {
+          if (error.status == 409) {
 
             error.error.errors.forEach(errorInfo => {
               const formControl = this.formInstance.get(errorInfo.param);
@@ -178,7 +177,7 @@ export class EmpresaCreateComponent implements OnInit {
             res.push("No se ha podido crear.");
             AppComponent.myapp.openDialog(res);
             this.dialogRef.close();
-          }*/
+          }
         });
 
 

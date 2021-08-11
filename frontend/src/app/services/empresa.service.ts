@@ -51,7 +51,6 @@ export class EmpresaService {
   }
   updateEmpresa(empresa, dineroBeca): Observable<JSON>{
     var res= this.formarEmpresa(empresa, dineroBeca);
-    console.log(res)
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.put<JSON>(`${this.url}/update`, res, httpOptions);
   }

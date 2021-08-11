@@ -16,6 +16,7 @@ import { EncuestaCreateComponent } from '../encuesta-create/encuesta-create.comp
 export class EncuestaUpdateComponent implements OnInit {
   resultadoList;
   formInstance: FormGroup;
+  resultado;
   constructor(public resultadoService: ResultadoEncuestaService, public dialogRef: MatDialogRef< EncuestaCreateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Encuesta, public encuestaService: EncuestaService) { 
       this.formInstance = new FormGroup({
@@ -27,7 +28,19 @@ export class EncuestaUpdateComponent implements OnInit {
         resultado : new FormControl("",[Validators.required]),
         
       });
-      this.formInstance.setValue({id: data.id,observaciones: data.observaciones , titulo : data.titulo, descripcion : data.descripcion , codigoModulo : Number(sessionStorage.getItem('codigoModulo')), resultado : data.resultado })
+     
+      if(data.resultado == "Deficiente"){
+        this.resultado= 1;
+      }else if(data.resultado == "Aceptable"){
+        this.resultado = 2;
+      }else if(data.resultado == "Regular"){
+        this.resultado = 3;
+      }else if(data.resultado == "Bien"){
+        this.resultado = 4;
+      }else if(data.resultado == "Óptimo"){
+        this.resultado = 5;
+      }
+      this.formInstance.setValue({id: data.id,observaciones: data.observaciones , titulo : data.titulo, descripcion : data.descripcion , codigoModulo : Number(sessionStorage.getItem('codigoModulo')), resultado : this.resultado })
 
     }
     
