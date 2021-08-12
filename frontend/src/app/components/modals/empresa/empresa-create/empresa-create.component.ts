@@ -145,6 +145,7 @@ export class EmpresaCreateComponent implements OnInit {
         },
        
         error => {
+          console.log(error)
           if (error.status == 409) {
 
             error.error.errors.forEach(errorInfo => {

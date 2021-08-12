@@ -12,6 +12,8 @@ router.get('/:codigoCentro', empresaController.getEmpresasByCentro);
 
 router.get('/fp/:fpDual', empresaController.getEmpresasByFp);
 
+router.get('/empresa/:idEmpresa', empresaController.getFpAndCentroByEmpresa);
+
 router.delete('/delete/:id', empresaController.deleteTutorEmpresaByEmpresa);
 
 router.delete('/:id', empresaController.deleteEmpresa);

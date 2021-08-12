@@ -9,4 +9,5 @@ export class Empresa {
     dineroBeca: string;
     plazas: string;
     id:number;
+    becas;
 }

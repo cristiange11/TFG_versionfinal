@@ -41,6 +41,13 @@ module.exports = class Empresa {
         await connection.end();
         return rows;
     }
+    static async getFpAndCentroByEmpresa(idEmpresa) {
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(`SELECT FP.nombre AS nombreFP, C.nombre as nombreCentro FROM fp_duales as FP, empresa as E, empresa_fpdual as EP, centro_educativo as C where E.id = EP.idEmpresa AND EP.idFp = FP.id AND E.id = ${connection.escape(idEmpresa)} and C.codigoCentro = E.codigoCentro`);
+        await connection.end();
+        return rows;
+    }
+    
     static async getEmpresasByFp(fpDual) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT E.* FROM empresa E, fp_duales F, empresa_fpdual FE WHERE E.id = FE.idEmpresa AND FE.idFp = F.id AND F.id = ${connection.escape(fpDual)}`);
@@ -87,10 +94,10 @@ module.exports = class Empresa {
     }
     static async createEmpresa(empresa, user) {
         const connection = await promisePool.connection().getConnection();       
-
+        
         try {
             await connection.beginTransaction();
-            let query = `INSERT INTO empresa(cifEmpresa, direccion, nombre, correo, telefono, url, codigoCentro) VALUES ( ${connection.escape(empresa.cifEmpresaEmpresa)},${connection.escape(empresa.direccion)},${connection.escape(empresa.nombre)},${connection.escape(empresa.correo)},${connection.escape(empresa.telefono)},${connection.escape(empresa.url)}, ${connection.escape(empresa.codigoCentro)}) `;
+            let query = `INSERT INTO empresa(cifEmpresa, direccion, nombre, correo, telefono, url, codigoCentro) VALUES ( ${connection.escape(empresa.cifEmpresa)},${connection.escape(empresa.direccion)},${connection.escape(empresa.nombre)},${connection.escape(empresa.correo)},${connection.escape(empresa.telefono)},${connection.escape(empresa.url)}, ${connection.escape(empresa.codigoCentro)}) `;
             await connection.query(query)
             let id = await connection.query(`SELECT MAX(id) AS id FROM empresa`);
             const idEmpresa = JSON.parse(JSON.stringify(id));

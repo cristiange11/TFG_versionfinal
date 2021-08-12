@@ -29,7 +29,16 @@ export class EmpresaUpdateComponent implements OnInit {
       dineroBeca: new FormControl("", []),
       id: new FormControl("", []),
     });
-    this.formInstance.setValue(data);
+    var beca;
+   
+    if(data.becas == "0"){
+      beca = "no";
+    }else{
+      beca="si";
+    }
+    
+    this.formInstance.setValue({cifEmpresa : data.cifEmpresa, nombre : data.nombre, direccion : data.direccion, telefono: data.telefono, correo: data.correo, url:data.url, plazas:data.plazas,becas:beca,dineroBeca:data.dineroBeca,id:data.id });
+   
     if (this.formInstance.value.becas != "0") {
       this.dineroBeca.setValue(sessionStorage.getItem('dineroBeca'));
     }
