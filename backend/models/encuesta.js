@@ -13,19 +13,19 @@ module.exports = class ResultadoAprendizaje {
 
     static async getEncuestas(codigoModulo) {
         const connection = await promisePool.connection();
-        const [rows, fields] = await connection.query(`SELECT encuesta.*, A.nombre as nombreAlumno, A.apellidos as apellidoAlumno, T.nombre as nombreTutor, T.apellidos as apellidoTutor, R.resultado as resultado FROM encuesta left JOIN usuario as A on encuesta.dniAlumno= A.dni left JOIN usuario as T on encuesta.dniTutorEmpresa = T.dni left join resultado_encuesta as R on (R.id = encuesta.resultado ) where encuesta.codigoModulo= ${codigoModulo}`);
+        const [rows, fields] = await connection.query(`SELECT encuesta.*, A.nombre as nombreAlumno, A.apellidos as apellidoAlumno, T.nombre as nombreTutor, T.apellidos as apellidoTutor, R.resultado as resultado FROM encuesta left JOIN usuario as A on encuesta.dniAlumno= A.dni left JOIN usuario as T on encuesta.dniTutorEmpresa = T.dni left join resultado_encuesta as R on (R.id = encuesta.resultado ) where encuesta.codigoModulo= ${connection.escape(codigoModulo)}`);
         await connection.end();
         return rows;
     }
     static async getEncuestaByTutor(dni,codigoModulo) {
         const connection = await promisePool.connection();
-        const [rows, fields] = await connection.query(`SELECT encuesta.*, A.nombre as nombreAlumno, A.apellidos as apellidoAlumno, T.nombre as nombreTutor, T.apellidos as apellidoTutor, R.resultado as resultado FROM encuesta left JOIN usuario as A on encuesta.dniAlumno= A.dni left JOIN usuario as T on encuesta.dniTutorEmpresa = T.dni left join resultado_encuesta as R on (R.id = encuesta.resultado ) where encuesta.dniTutorEmpresa= '${dni}' and encuesta.codigoModulo= ${codigoModulo}`);
+        const [rows, fields] = await connection.query(`SELECT encuesta.*, A.nombre as nombreAlumno, A.apellidos as apellidoAlumno, T.nombre as nombreTutor, T.apellidos as apellidoTutor, R.resultado as resultado FROM encuesta left JOIN usuario as A on encuesta.dniAlumno= A.dni left JOIN usuario as T on encuesta.dniTutorEmpresa = T.dni left join resultado_encuesta as R on (R.id = encuesta.resultado ) where encuesta.dniTutorEmpresa= ${connection.escape(dni)} and encuesta.codigoModulo= ${connection.escape(codigoModulo)}`);
         await connection.end();
         return rows;
     }
     static async getEncuesta(id) {
         const connection = await promisePool.connection();
-        const [rows, fields] = await connection.query(`SELECT observaciones FROM encuesta where id = ${id}`);
+        const [rows, fields] = await connection.query(`SELECT observaciones FROM encuesta where id =${connection.escape(id)}`);
         await connection.end();
         return rows;
     }
@@ -34,9 +34,9 @@ module.exports = class ResultadoAprendizaje {
         
         try {
             await connection.beginTransaction();
-            let query = `DELETE FROM encuesta WHERE id =  ${id}`;
+            let query = `DELETE FROM encuesta WHERE id =  ${connection.escape(id)}`;
             await connection.query(query);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha eliminado la encuesta aprendizaje ${id}' ,'${user}',sysdate(), 'encuesta')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha eliminado la encuesta aprendizaje ${connection.escape(id)}" ,'${user}',sysdate(), 'encuesta')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
@@ -53,13 +53,13 @@ module.exports = class ResultadoAprendizaje {
         const connection = await promisePool.connection().getConnection();       
         try {
             await connection.beginTransaction();
-            let query = `INSERT INTO encuesta(codigoModulo, titulo, descripcion, dniAlumno, dniTutorEmpresa, resultado, observaciones) VALUES (${encuesta.codigoModulo},'${encuesta.titulo}','${encuesta.descripcion}', '${encuesta.dniAlumno}' , '${encuesta.dniTutorEmpresa}' , '${encuesta.resultado}' , ${observaciones}) `;
+            let query = `INSERT INTO encuesta(codigoModulo, titulo, descripcion, dniAlumno, dniTutorEmpresa, resultado, observaciones) VALUES (${connection.escape(encuesta.codigoModulo)},${connection.escape(encuesta.titulo)},${connection.escape(encuesta.descripcion)}, ${connection.escape(encuesta.dniAlumno)} , ${connection.escape(encuesta.dniTutorEmpresa)}, ${connection.escape(encuesta.resultado)} , ${connection.escape(observaciones)}) `;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha creado la encuesta con título ${encuesta.titulo} ','${user}',sysdate(), 'encuesta')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha creado la encuesta con título ${connection.escape(encuesta.titulo)} ",'${user}',sysdate(), 'encuesta')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_ENCUESTA','No se ha añadido la encuesta con título ${encuesta.titulo}','${user}',sysdate(), 'encuesta')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_ENCUESTA',"No se ha añadido la encuesta con título ${connection.escape(encuesta.titulo)}",'${user}',sysdate(), 'encuesta')`);
            
             throw err;
         } finally {
@@ -68,16 +68,17 @@ module.exports = class ResultadoAprendizaje {
 
     }
     static async updateEncuesta(encuesta, user) {
+        let observaciones = encuesta.observaciones == null ? null : `'${encuesta.observaciones}'`;
         const connection = await promisePool.connection().getConnection();       
         try {
             await connection.beginTransaction();
-            let query = `UPDATE encuesta SET codigoModulo='${encuesta.codigoModulo}', observaciones = '${encuesta.observaciones}' , titulo='${encuesta.titulo}',descripcion='${encuesta.descripcion}', resultado = '${encuesta.resultado}' WHERE id = '${encuesta.id}'`;
+            let query = `UPDATE encuesta SET codigoModulo=${connection.escape(encuesta.codigoModulo)}, observaciones = ${connection.escape(observaciones)} , titulo=${connection.escape(encuesta.titulo)},descripcion=${connection.escape(encuesta.descripcion)}, resultado = ${connection.escape(encuesta.resultado)} WHERE id = ${connection.escape(encuesta.id)}`;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha actualizado la encuesta con id ${encuesta.id} ','${user}',sysdate(), 'encuesta')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado la encuesta con id ${connection.escape(encuesta.id)} ",'${user}',sysdate(), 'encuesta')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_ENCUESTA','No se ha actualizado la encuesta con id ${encuesta.id}','${user}',sysdate(), 'encuesta')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_ENCUESTA',"No se ha actualizado la encuesta con id ${connection.escape(encuesta.id)}",'${user}',sysdate(), 'encuesta')`);
             throw err;
         } finally {
             await connection.release();

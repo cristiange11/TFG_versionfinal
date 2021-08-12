@@ -14,7 +14,7 @@ module.exports = class FP_dual {
     }
     static async getRol(id) {
         const connection = await promisePool.connection();
-        const [rows, fields] = await connection.query(`SELECT * FROM rol WHERE id = ${id}`);
+        const [rows, fields] = await connection.query(`SELECT * FROM rol WHERE id = ${connection.escape(id)}`);
         await connection.end();
         return rows;
     }

@@ -14,7 +14,7 @@ module.exports = class ResultadoEncuesta {
     }
     static async getResultado(id) {
         const connection = await promisePool.connection();
-        const [rows, fields] = await connection.query(`SELECT * FROM resultado_encuesta WHERE id = ${id}`);
+        const [rows, fields] = await connection.query(`SELECT * FROM resultado_encuesta WHERE id = ${connection.escape(id)}`);
         await connection.end();
         return rows;
     }

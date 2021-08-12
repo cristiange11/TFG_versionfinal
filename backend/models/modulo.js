@@ -10,53 +10,52 @@ module.exports = class Modulo {
     static async find(codigo) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(
-            `SELECT * FROM modulo where codigo = ${codigo}`);
-            await connection.end();
+            `SELECT * FROM modulo where codigo = ${connection.escape(codigo)}`);
+        await connection.end();
         return rows;
     }
     static async getModulos(fpDual) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(
-            `SELECT * FROM modulo where fpDual = ${fpDual}`);
-            await connection.end();
+            `SELECT * FROM modulo where fpDual = ${connection.escape(fpDual)}`);
+        await connection.end();
         return rows;
     }
     static async getModulosProf(dni) {
         const connection = await promisePool.connection();
-        const [rows, fields] = await connection.query(
-            `SELECT M.* FROM modulo M, profesor_modulo PM, profesor P WHERE P.dni = PM.dni AND PM.codigoModulo = M.codigo AND P.dni = "${dni}"`);
-            await connection.end();
+        const [rows, fields] = await connection.query(`SELECT M.* FROM modulo M, profesor_modulo PM, profesor P WHERE P.dni = PM.dni AND PM.codigoModulo = M.codigo AND P.dni = ${connection.escape(dni)}`);
+        await connection.end();
         return rows;
     }
     static async getModulosTut(dni) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(
-            `SELECT M.* FROM modulo M, tutor_modulo TM, tutor_empresa T WHERE T.dni = TM.dni AND TM.codigoModulo = M.codigo AND T.dni = "${dni}"`);
-            await connection.end();
-            return rows;
+            `SELECT M.* FROM modulo M, tutor_modulo TM, tutor_empresa T WHERE T.dni = TM.dni AND TM.codigoModulo = M.codigo AND T.dni = ${connection.escape(dni)}`);
+        await connection.end();
+        return rows;
     }
     static async getModulosAlum(dni) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(
-            `SELECT M.* FROM modulo as M, alumno_modulo as AM, alumno as A WHERE A.dni = AM.dni AND AM.codigoModulo = M.codigo AND A.dni = "${dni}"`);
-            await connection.end();
-            return rows;
+            `SELECT M.* FROM modulo as M, alumno_modulo as AM, alumno as A WHERE A.dni = AM.dni AND AM.codigoModulo = M.codigo AND A.dni = ${connection.escape(dni)}`);
+        await connection.end();
+        return rows;
     }
     static async getModulosAlumUpdate(dni) {
         const connection = await promisePool.connection();
-        const [rows, fields] = await connection.query(`SELECT U.*, M.nombre as nombreModulo, M.codigo as codigoModulo, A.numeroExpediente, C.nota FROM alumno as A, usuario as U, modulo as M left join calificacion as C on C.codigoModulo = M.codigo AND C.dni = '${dni}' where U.rol=5 AND U.dni='${dni}' AND A.dni = U.dni AND C.nota is NULL or C.nota < 5`);
+        const [rows, fields] = await connection.query(`SELECT U.*, M.nombre as nombreModulo, M.codigo as codigoModulo, A.numeroExpediente, C.nota FROM alumno as A, usuario as U, modulo as M left join calificacion as C on C.codigoModulo = M.codigo AND C.dni = ${connection.escape(dni)} where U.rol=5 AND U.dni=${connection.escape(dni)} AND A.dni = U.dni AND C.nota is NULL or C.nota < 5`);
         await connection.end();
         return rows;
     }
 
     static async deleteModulo(codigo, user) {
-        const connection = await promisePool.connection().getConnection();       
+        const connection = await promisePool.connection().getConnection();
 
         try {
             await connection.beginTransaction();
-            let query = `DELETE FROM modulo WHERE codigo =  ${codigo}`;
+            let query = `DELETE FROM modulo WHERE codigo =  ${connection.escape(codigo)}`;
             await connection.query(query);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha eliminado el módulo ${codigo}' ,'${user}',sysdate(), 'modulo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null}, "Se ha eliminado el módulo ${connection.escape(codigo)}" ,'${user}',sysdate(), 'modulo')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
@@ -67,37 +66,18 @@ module.exports = class Modulo {
         }
 
     }
-    static async deleteAllBymodulo(codigo, user) {
-        const connection = await promisePool.connection().getConnection();       
 
-        try {
-            await connection.beginTransaction();
-            let query = `DELETE FROM usuario U , alumno A, alumno_modulo AM, `;
-            await connection.query(query);
-            await connection.query(`DELETE FROM modulo WHERE codigo =  '${codigo}'`);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha eliminado todo lo asociado a la modulo ' ,'${user}',sysdate(), 'modulo')`);
-            await connection.commit();
-        } catch (err) {
-            await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_modulo','No se ha podido eliminar la modulo ' ,'${user}',sysdate(), 'modulo')`);
-
-            throw err;
-        } finally {
-            await connection.release();
-        }
-
-    }
     static async createModulo(modulo, user) {
-        const connection = await promisePool.connection().getConnection();       
+        const connection = await promisePool.connection().getConnection();
         try {
             await connection.beginTransaction();
-            let query = `INSERT INTO modulo(nombre, descripcion, curso, fpDual) VALUES ('${modulo.nombre}','${modulo.descripcion}','${modulo.curso}', ${modulo.fpDual}) `;
+            let query = `INSERT INTO modulo(nombre, descripcion, curso, fpDual) VALUES (${connection.escape(modulo.nombre)},${connection.escape(modulo.descripcion)},${connection.escape(modulo.curso)}, ${connection.escape(modulo.fpDual)}) `;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha creado el modulo con nombre ${modulo.nombre} ','${user}',sysdate(), 'modulo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha creado el modulo con nombre ${connection.escape(modulo.nombre)} ",'${user}',sysdate(), 'modulo')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_MODULO','No se ha añadido modulo con el nombre ${modulo.nombre}','${user}',sysdate(), 'modulo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_MODULO',"No se ha añadido modulo con el nombre ${connection.escape(modulo.nombre)}",'${user}',sysdate(), 'modulo')`);
             throw err;
         } finally {
             await connection.release();
@@ -105,17 +85,17 @@ module.exports = class Modulo {
 
     }
     static async updateModulo(modulo, user) {
-        const connection = await promisePool.connection().getConnection();       
+        const connection = await promisePool.connection().getConnection();
 
         try {
             await connection.beginTransaction();
-            let query = `UPDATE modulo SET nombre='${modulo.nombre}', descripcion='${modulo.descripcion}',curso='${modulo.curso}', fpDual = ${modulo.fpDual} WHERE codigo = '${modulo.codigo}'`;
+            let query = `UPDATE modulo SET nombre=${connection.escape(modulo.nombre)}, descripcion=${connection.escape(modulo.descripcion)},curso=${connection.escape(modulo.curso)}, fpDual = ${connection.escape(modulo.fpDual)}, WHERE codigo = ${connection.escape(modulo.codigo)}`;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha actualizado el modulo con id ${modulo.id} ','${user}',sysdate(), 'modulo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado el modulo con id ${connection.escape(modulo.codigo)} ",'${user}',sysdate(), 'modulo')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_MODULO','No se ha actualizado el modulo con id ${modulo.id}','${user}',sysdate(), 'modulo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_MODULO',"No se ha actualizado el modulo con id ${connection.escape(modulo.codigo)}",'${user}',sysdate(), 'modulo')`);
             throw err;
         } finally {
             await connection.release();

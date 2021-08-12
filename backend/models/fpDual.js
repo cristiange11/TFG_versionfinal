@@ -12,7 +12,7 @@ module.exports = class FP_dual {
     static async find(id) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(
-            `SELECT * FROM fp_duales WHERE id=${id}  `);
+            `SELECT * FROM fp_duales WHERE id=${connection.escape(id)}  `);
             await connection.end();
         return rows;
     }
@@ -20,7 +20,7 @@ module.exports = class FP_dual {
     static async getNombreFPByCentro(codigoCentro) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(
-            `SELECT F.id, F.nombre FROM fp_duales as F, centro_educativo as C WHERE C.codigoCentro=F.codigoCentro and C.codigoCentro='${codigoCentro}'  `);
+            `SELECT F.id, F.nombre FROM fp_duales as F, centro_educativo as C WHERE C.codigoCentro=F.codigoCentro and C.codigoCentro=${connection.escape(codigoCentro)}  `);
             await connection.end();
             return rows;
     }
@@ -29,16 +29,16 @@ module.exports = class FP_dual {
         
         try {
             await connection.beginTransaction();
-            let query = `DELETE FROM usuario WHERE fpDual = ${fpDual}`;
+            let query = `DELETE FROM usuario WHERE fpDual =${connection.escape(fpDual)}`;
             await connection.query(query)
-            await connection.query(`DELETE FROM empresa_fpdual  WHERE idFp = ${fpDual}`);
-            await connection.query(`DELETE FROM modulo WHERE fpDual =  ${fpDual}`);
-            await connection.query(`DELETE FROM fp_duales WHERE id =  ${fpDual}`);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha borrado el FP ${fpDual} y todo lo asociado','${user}',sysdate(), 'FP')`);
+            await connection.query(`DELETE FROM empresa_fpdual  WHERE idFp =${connection.escape(fpDual)}`);
+            await connection.query(`DELETE FROM modulo WHERE fpDual =  ${connection.escape(fpDual)}`);
+            await connection.query(`DELETE FROM fp_duales WHERE id = ${connection.escape(fpDual)}`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha borrado el FP ${connection.escape(fpDual)} y todo lo asociado",'${user}',sysdate(), 'FP')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK" + err);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_FP','No Se ha borrado el FP ${fpDual}','${user}',sysdate(), 'FP')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_FP',"No Se ha borrado el FP ${connection.escape(fpDual)}",'${user}',sysdate(), 'FP')`);
             throw err;
         } finally {
             await connection.release();
@@ -47,14 +47,14 @@ module.exports = class FP_dual {
     static async getFp(id) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(
-            `SELECT * FROM fp_duales where id = ${id}`);
+            `SELECT * FROM fp_duales where id = ${connection.escape(id)}`);
             await connection.end();
             return rows;
     }
     static async getFpsByAdminCentro(codigoCentro) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(
-            `SELECT F.*,C.nombre as nombreCentro FROM fp_duales as F, centro_educativo as C WHERE C.codigoCentro = F.codigoCentro AND F.codigoCentro='${codigoCentro}'`);
+            `SELECT F.*,C.nombre as nombreCentro FROM fp_duales as F, centro_educativo as C WHERE C.codigoCentro = F.codigoCentro AND F.codigoCentro=${connection.escape(codigoCentro)}`);
             await connection.end();
             return rows;
     }
@@ -68,7 +68,7 @@ module.exports = class FP_dual {
     static async getFpsConPlazasDisponibles(codigoCentro) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(
-            `SELECT * FROM fp_duales where plazasDisponibles > 0 AND codigoCentro ='${codigoCentro}'`);
+            `SELECT * FROM fp_duales where plazasDisponibles > 0 AND codigoCentro =${connection.escape(codigoCentro)}`);
             await connection.end();
             return rows;
     }
@@ -77,13 +77,13 @@ module.exports = class FP_dual {
         
         try {
             await connection.beginTransaction();
-            let query = `DELETE FROM fp_duales WHERE id = '${id}' `;
+            let query = `DELETE FROM fp_duales WHERE id = ${connection.escape(id)} `;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha borrado el FP ${id}','${user}',sysdate(), 'FP')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha borrado el FP ${connection.escape(id)}",'${user}',sysdate(), 'FP')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_FP','No se ha borrado el FP ${id} ','${user}',sysdate(), 'FP')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_FP',"No se ha borrado el FP ${connection.escape(id)} ",'${user}',sysdate(), 'FP')`);
             
             throw err;
         } finally {
@@ -96,13 +96,13 @@ module.exports = class FP_dual {
         
         try {
             await connection.beginTransaction();
-            let query = `INSERT INTO fp_duales (nombre, descripcion, totalPlazas, anio, codigoCentro, plazasDisponibles) VALUES ('${fp.nombre}','${fp.descripcion}','${fp.totalPlazas}','${fp.anio}','${fp.codigoCentro}','${fp.plazasDisponibles}') `;
+            let query = `INSERT INTO fp_duales (nombre, descripcion, totalPlazas, anio, codigoCentro, plazasDisponibles) VALUES (${connection.escape(fp.nombre)},${connection.escape(fp.descripcion)},${connection.escape(fp.totalPlazas)},${connection.escape(fp.anio)},${connection.escape(fp.codigoCentro)},${connection.escape(fp.plazasDisponibles)}) `;
             await connection.query(query)
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha añadido FP ','${user}',sysdate(), 'FP')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_FP','No se ha añadido FP con ','${user}',sysdate(), 'FP')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_FP','No se ha añadido FP  ','${user}',sysdate(), 'FP')`);
             
             throw err;
         } finally {
@@ -115,13 +115,13 @@ module.exports = class FP_dual {
         
         try {
             await connection.beginTransaction();
-            let query = `UPDATE fp_duales SET nombre='${fp.nombre}',descripcion='${fp.descripcion}',totalPlazas='${fp.totalPlazas}' ,anio='${fp.anio}',codigoCentro='${fp.codigoCentro}',plazasDisponibles='${fp.plazasDisponibles}' WHERE id = '${fp.id}' `;
+            let query = `UPDATE fp_duales SET nombre=${connection.escape(fp.nombre)},descripcion=${connection.escape(fp.descripcion)},totalPlazas=${connection.escape(fp.totalPlazas)} ,anio=${connection.escape(fp.anio)},codigoCentro=${connection.escape(fp.codigoCentro)},plazasDisponibles=${connection.escape(fp.plazasDisponibles)} WHERE id = ${connection.escape(fp.id)} `;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha actualiza el FP ${fp.id}','${user}',sysdate(), 'FP')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualiza el FP ${connection.escape(fp.id)}",'${user}',sysdate(), 'FP')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_FP','No se ha actualizado FP ${fp.id} ','${user}',sysdate(), 'FP')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_FP',"No se ha actualizado FP ${connection.escape(fp.id)} ",'${user}',sysdate(), 'FP')`);
             
             throw err;
         } finally {

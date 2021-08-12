@@ -11,18 +11,18 @@ module.exports = class ResultadoAprendizaje {
     static async getResultadoAprendizajes(codigoModulo) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(
-            `SELECT * FROM resultado_aprendizaje where codigoModulo = ${codigoModulo}`);
+            `SELECT * FROM resultado_aprendizaje where codigoModulo = ${connection.escape(codigoModulo)}`);
         await connection.end();
         return rows;
     }
     static async deleteResultadoAprendizaje(id, user) {
-        const connection = await promisePool.connection().getConnection();       
+        const connection = await promisePool.connection().getConnection();
 
         try {
             await connection.beginTransaction();
-            let query = `DELETE FROM resultado_aprendizaje WHERE id =  ${id}`;
+            let query = `DELETE FROM resultado_aprendizaje WHERE id =  ${connection.escape(id)}`;
             await connection.query(query);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha eliminado el resultado aprendizaje ${id}' ,'${user}',sysdate(), 'resultado aprendizaje')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha eliminado el resultado aprendizaje ${connection.escape(id)}" ,'${user}',sysdate(), 'resultado aprendizaje')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
@@ -35,10 +35,10 @@ module.exports = class ResultadoAprendizaje {
 
     }
     static async createResultadoAprendizaje(resultadoAprendizaje, user) {
-        const connection = await promisePool.connection().getConnection();       
+        const connection = await promisePool.connection().getConnection();
         try {
             await connection.beginTransaction();
-            let query = `INSERT INTO resultado_aprendizaje(codigoModulo, titulo, descripcion) VALUES ('${resultadoAprendizaje.codigoModulo}','${resultadoAprendizaje.titulo}','${resultadoAprendizaje.descripcion}' ) `;
+            let query = `INSERT INTO resultado_aprendizaje(codigoModulo, titulo, descripcion) VALUES (${connection.escape(resultadoAprendizaje.codigoModulo)},${connection.escape(resultadoAprendizaje.titulo)},${connection.escape(resultadoAprendizaje.descripcion)} ) `;
             await connection.query(query)
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha creado el resultado aprendizaje  ','${user}',sysdate(), 'resultado aprendizaje')`);
             await connection.commit();
@@ -53,17 +53,17 @@ module.exports = class ResultadoAprendizaje {
 
     }
     static async updateResultadoAprendizaje(resultadoAprendizaje, user) {
-        const connection = await promisePool.connection().getConnection();       
+        const connection = await promisePool.connection().getConnection();
 
         try {
             await connection.beginTransaction();
-            let query = `UPDATE resultado_aprendizaje SET codigoModulo='${resultadoAprendizaje.codigoModulo}', titulo='${resultadoAprendizaje.titulo}',descripcion='${resultadoAprendizaje.descripcion}' WHERE id = '${resultadoAprendizaje.id}'`;
+            let query = `UPDATE resultado_aprendizaje SET codigoModulo=${connection.escape(resultadoAprendizaje.codigoModulo)}, titulo=${connection.escape(resultadoAprendizaje.titulo)},descripcion=${connection.escape(resultadoAprendizaje.descripcion)} WHERE id = ${connection.escape(resultadoAprendizaje.id)}`;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha actualizado el resultado de aprendizaje con id ${resultadoAprendizaje.id} ','${user}',sysdate(), 'modulo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado el resultado de aprendizaje con id ${connection.escape(resultadoAprendizaje.id)} ",'${user}',sysdate(), 'modulo')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_RESULTADOAPRENDIZAJE','No se ha actualizado el resultado de aprendizaje con id ${resultadoAprendizaje.id}','${user}',sysdate(), 'modulo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_RESULTADOAPRENDIZAJE',"No se ha actualizado el resultado de aprendizaje con id ${connection.escape(resultadoAprendizaje.id)}",'${user}',sysdate(), 'modulo')`);
 
             throw err;
         } finally {
