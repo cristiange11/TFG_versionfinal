@@ -6,23 +6,30 @@ module.exports = class Profesor extends User {
         this.departamento = departamento;
     }
     static async find(dni) {
-        return await promisePool.query(
+        const connection = await promisePool.connection();
+        const res = await connection.query(
             `SELECT * FROM profesor where dni = '${dni}'`);
+        await connection.end();
+        return res;
     }
     static async getProfesores() {
-        const [rows, fields] = await promisePool.query(
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(
             `SELECT * FROM profesor `);
+        await connection.end();
         return rows;
     }
     static async getProfesor(dni) {
-        const [rows, fields] = await promisePool.query(
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(
             `SELECT U.*, P.departamento, M.nombre as nombreModulo, M.codigo as moduloCodigo FROM usuario U, profesor P, profesor_modulo PM, modulo M WHERE U.dni = P.dni AND P.dni=PM.dni AND M.codigo = PM.codigoModulo AND U.dni='${dni}'`
         );
+        await connection.end();
         return rows;
     }
 
     static async deleteProfesor(dni, user) {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();       
 
         try {
             await connection.beginTransaction();
@@ -41,7 +48,7 @@ module.exports = class Profesor extends User {
 
     }
     static async createProfesor(profesor, password, user) {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();       
         try {
             await connection.beginTransaction();
             let query = `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fechaNacimiento, fpDual, codigoCentro) VALUES ('${profesor.dni}','${profesor.nombre}','${profesor.apellidos}','${profesor.correo}','${profesor.movil}','${profesor.direccion}','${password}','${profesor.genero}',${profesor.cp},'${profesor.rol}',STR_TO_DATE('${profesor.fechaNacimiento}','%Y-%m-%d'),'${profesor.fpDual}','${profesor.codigoCentro}')`
@@ -67,7 +74,7 @@ module.exports = class Profesor extends User {
         }
     }
     static async updateProfesor(profesor, password, user) {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();       
         try {
             await connection.beginTransaction();
             let query = `UPDATE usuario SET nombre='${profesor.nombre}',apellidos='${profesor.apellidos}',correo='${profesor.correo}', movil='${profesor.movil}',direccion='${profesor.direccion}',password='${password}',genero='${profesor.genero}', cp='${profesor.cp}',rol='${profesor.rol}',fechaNacimiento=STR_TO_DATE('${profesor.fechaNacimiento}','%Y-%m-%d'),fpDual=${profesor.fpDual},codigoCentro='${profesor.codigoCentro}' WHERE dni='${profesor.dni}'`;

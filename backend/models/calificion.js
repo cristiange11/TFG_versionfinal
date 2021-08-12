@@ -10,7 +10,9 @@ module.exports = class Calificacion {
     }
 
     static async getCalificaciones(codigoModulo) {
-        const [rows, fields] = await promisePool.query(`SELECT C.*, U.nombre as nombreUsuario, U.apellidos as apellidoUsuario FROM calificacion as C, usuario as U where U.dni = C.dni and C.codigoModulo = ${codigoModulo}`);
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(`SELECT C.*, U.nombre as nombreUsuario, U.apellidos as apellidoUsuario FROM calificacion as C, usuario as U where U.dni = C.dni and C.codigoModulo = ${codigoModulo}`);
+        connection.end();
         return rows;
     }
 
@@ -34,7 +36,7 @@ module.exports = class Calificacion {
 
     }
     static async createCalificacion(calificacion, user) {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();       
 
         try {
             await connection.beginTransaction();
@@ -52,7 +54,7 @@ module.exports = class Calificacion {
         }
     }
     static async updateCalificacion(calificacion, user) {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();       
         try {
             await connection.beginTransaction();
             let query = `UPDATE calificacion SET nota='${calificacion.nota}',descripcion='${calificacion.descripcion}'  where id = ${calificacion.id}`;

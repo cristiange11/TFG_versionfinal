@@ -8,8 +8,10 @@ module.exports = class LogSesion {
 
     }
     static async getLogs() {
-        const [rows, fields] = await promisePool.query(
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(
             `SELECT * FROM logs `);
+            await connection.end();
         return rows;
     }
 

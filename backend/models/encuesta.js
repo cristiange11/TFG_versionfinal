@@ -12,19 +12,26 @@ module.exports = class ResultadoAprendizaje {
     }
 
     static async getEncuestas(codigoModulo) {
-        const [rows, fields] = await promisePool.query(`SELECT encuesta.*, A.nombre as nombreAlumno, A.apellidos as apellidoAlumno, T.nombre as nombreTutor, T.apellidos as apellidoTutor, R.resultado as resultado FROM encuesta left JOIN usuario as A on encuesta.dniAlumno= A.dni left JOIN usuario as T on encuesta.dniTutorEmpresa = T.dni left join resultado_encuesta as R on (R.id = encuesta.resultado ) where encuesta.codigoModulo= ${codigoModulo}`);
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(`SELECT encuesta.*, A.nombre as nombreAlumno, A.apellidos as apellidoAlumno, T.nombre as nombreTutor, T.apellidos as apellidoTutor, R.resultado as resultado FROM encuesta left JOIN usuario as A on encuesta.dniAlumno= A.dni left JOIN usuario as T on encuesta.dniTutorEmpresa = T.dni left join resultado_encuesta as R on (R.id = encuesta.resultado ) where encuesta.codigoModulo= ${codigoModulo}`);
+        await connection.end();
         return rows;
     }
     static async getEncuestaByTutor(dni,codigoModulo) {
-        const [rows, fields] = await promisePool.query(`SELECT encuesta.*, A.nombre as nombreAlumno, A.apellidos as apellidoAlumno, T.nombre as nombreTutor, T.apellidos as apellidoTutor, R.resultado as resultado FROM encuesta left JOIN usuario as A on encuesta.dniAlumno= A.dni left JOIN usuario as T on encuesta.dniTutorEmpresa = T.dni left join resultado_encuesta as R on (R.id = encuesta.resultado ) where encuesta.dniTutorEmpresa= '${dni}' and encuesta.codigoModulo= ${codigoModulo}`);
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(`SELECT encuesta.*, A.nombre as nombreAlumno, A.apellidos as apellidoAlumno, T.nombre as nombreTutor, T.apellidos as apellidoTutor, R.resultado as resultado FROM encuesta left JOIN usuario as A on encuesta.dniAlumno= A.dni left JOIN usuario as T on encuesta.dniTutorEmpresa = T.dni left join resultado_encuesta as R on (R.id = encuesta.resultado ) where encuesta.dniTutorEmpresa= '${dni}' and encuesta.codigoModulo= ${codigoModulo}`);
+        await connection.end();
         return rows;
     }
     static async getEncuesta(id) {
-        const [rows, fields] = await promisePool.query(`SELECT observaciones FROM encuesta where id = ${id}`);
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(`SELECT observaciones FROM encuesta where id = ${id}`);
+        await connection.end();
         return rows;
     }
     static async deleteEncuesta(id, user) {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();       
+        
         try {
             await connection.beginTransaction();
             let query = `DELETE FROM encuesta WHERE id =  ${id}`;
@@ -43,7 +50,7 @@ module.exports = class ResultadoAprendizaje {
     }
     static async createEncuesta(encuesta, user) {
         let observaciones = encuesta.observaciones == null ? null : `'${encuesta.observaciones}'`;
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();       
         try {
             await connection.beginTransaction();
             let query = `INSERT INTO encuesta(codigoModulo, titulo, descripcion, dniAlumno, dniTutorEmpresa, resultado, observaciones) VALUES (${encuesta.codigoModulo},'${encuesta.titulo}','${encuesta.descripcion}', '${encuesta.dniAlumno}' , '${encuesta.dniTutorEmpresa}' , '${encuesta.resultado}' , ${observaciones}) `;
@@ -61,7 +68,7 @@ module.exports = class ResultadoAprendizaje {
 
     }
     static async updateEncuesta(encuesta, user) {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();       
         try {
             await connection.beginTransaction();
             let query = `UPDATE encuesta SET codigoModulo='${encuesta.codigoModulo}', observaciones = '${encuesta.observaciones}' , titulo='${encuesta.titulo}',descripcion='${encuesta.descripcion}', resultado = '${encuesta.resultado}' WHERE id = '${encuesta.id}'`;

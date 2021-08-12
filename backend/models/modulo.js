@@ -8,37 +8,49 @@ module.exports = class Modulo {
         this.curso = curso;
     }
     static async find(codigo) {
-        const [rows, fields] = await promisePool.query(
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(
             `SELECT * FROM modulo where codigo = ${codigo}`);
+            await connection.end();
         return rows;
     }
     static async getModulos(fpDual) {
-        const [rows, fields] = await promisePool.query(
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(
             `SELECT * FROM modulo where fpDual = ${fpDual}`);
+            await connection.end();
         return rows;
     }
     static async getModulosProf(dni) {
-        const [rows, fields] = await promisePool.query(
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(
             `SELECT M.* FROM modulo M, profesor_modulo PM, profesor P WHERE P.dni = PM.dni AND PM.codigoModulo = M.codigo AND P.dni = "${dni}"`);
+            await connection.end();
         return rows;
     }
     static async getModulosTut(dni) {
-        const [rows, fields] = await promisePool.query(
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(
             `SELECT M.* FROM modulo M, tutor_modulo TM, tutor_empresa T WHERE T.dni = TM.dni AND TM.codigoModulo = M.codigo AND T.dni = "${dni}"`);
-        return rows;
+            await connection.end();
+            return rows;
     }
     static async getModulosAlum(dni) {
-        const [rows, fields] = await promisePool.query(
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(
             `SELECT M.* FROM modulo as M, alumno_modulo as AM, alumno as A WHERE A.dni = AM.dni AND AM.codigoModulo = M.codigo AND A.dni = "${dni}"`);
-        return rows;
+            await connection.end();
+            return rows;
     }
     static async getModulosAlumUpdate(dni) {
-        const [rows, fields] = await promisePool.query(`SELECT U.*, M.nombre as nombreModulo, M.codigo as codigoModulo, A.numeroExpediente, C.nota FROM alumno as A, usuario as U, modulo as M left join calificacion as C on C.codigoModulo = M.codigo AND C.dni = '11111111A' where U.rol=5 AND U.dni='11111111A' AND A.dni = U.dni AND C.nota is NULL or C.nota < 5`);
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(`SELECT U.*, M.nombre as nombreModulo, M.codigo as codigoModulo, A.numeroExpediente, C.nota FROM alumno as A, usuario as U, modulo as M left join calificacion as C on C.codigoModulo = M.codigo AND C.dni = '${dni}' where U.rol=5 AND U.dni='${dni}' AND A.dni = U.dni AND C.nota is NULL or C.nota < 5`);
+        await connection.end();
         return rows;
     }
 
     static async deleteModulo(codigo, user) {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();       
 
         try {
             await connection.beginTransaction();
@@ -56,7 +68,7 @@ module.exports = class Modulo {
 
     }
     static async deleteAllBymodulo(codigo, user) {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();       
 
         try {
             await connection.beginTransaction();
@@ -76,7 +88,7 @@ module.exports = class Modulo {
 
     }
     static async createModulo(modulo, user) {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();       
         try {
             await connection.beginTransaction();
             let query = `INSERT INTO modulo(nombre, descripcion, curso, fpDual) VALUES ('${modulo.nombre}','${modulo.descripcion}','${modulo.curso}', ${modulo.fpDual}) `;
@@ -93,7 +105,7 @@ module.exports = class Modulo {
 
     }
     static async updateModulo(modulo, user) {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();       
 
         try {
             await connection.beginTransaction();

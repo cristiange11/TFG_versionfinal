@@ -80,13 +80,13 @@ exports.signup = async (req, res, next) => {
 
             res.status(201).json({ message: "success" });
           }).catch(function (err) {
-
+            console.log(err)
             res.status(409).json({ "errors": "no se ha podido crear el usuario" });
           });
 
 
         } catch (err) {
-
+          console.log(err)
           res.status(500).json({ error: err });
         }
       }
@@ -128,13 +128,15 @@ exports.login = async (req, res, next) => {
 
 
           if (!isEqual) {
-            await promisePool.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_LOGIN','Credenciales incorrectas ' ,'${req.body.dni}',sysdate(), 'login')`);
-
+            const connection = await promisePool.connection();
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_LOGIN','Credenciales incorrectas ' ,'${req.body.dni}',sysdate(), 'login')`);
+            await connection.end();
             res.status(401).json({ "errors": 'Credenciales incorrectas.' });
           }
           else {
-            await promisePool.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha logado usuario ' ,'${req.body.dni}',sysdate(), 'login')`);
-
+            const connection = await promisePool.connection();
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha logado usuario ' ,'${req.body.dni}',sysdate(), 'login')`);
+            await connection.end();
             const jwtBearerToken = jwt.sign({ sub: user.dni }, RSA_PRIVATE_KEY/*'proyecto final carrera'*/, { expiresIn: '24h' });
 
             const resJSON = { "result": { "user": userJson, "token": jwtBearerToken } }
@@ -144,6 +146,7 @@ exports.login = async (req, res, next) => {
           res.status(401).json({ "errors": 'Usuario introducido no existente' });
         }
       } catch (err) {
+        console.log(err)
         res.status(500).json({ error: err });
 
       }

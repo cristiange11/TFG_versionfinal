@@ -10,18 +10,22 @@ module.exports = class FP_dual {
         this.plazasDisponibles = plazasDisponibles;
     }
     static async find(id) {
-        const [rows, fields] = await promisePool.query(
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(
             `SELECT * FROM fp_duales WHERE id=${id}  `);
+            await connection.end();
         return rows;
     }
 
     static async getNombreFPByCentro(codigoCentro) {
-        const [rows, fields] = await promisePool.query(
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(
             `SELECT F.id, F.nombre FROM fp_duales as F, centro_educativo as C WHERE C.codigoCentro=F.codigoCentro and C.codigoCentro='${codigoCentro}'  `);
-        return rows;
+            await connection.end();
+            return rows;
     }
     static async DeleteUsuariosByFP(fpDual, user) {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();       
         
         try {
             await connection.beginTransaction();
@@ -41,28 +45,35 @@ module.exports = class FP_dual {
         }
     }
     static async getFp(id) {
-        const [rows, fields] = await promisePool.query(
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(
             `SELECT * FROM fp_duales where id = ${id}`);
-        return rows;
+            await connection.end();
+            return rows;
     }
     static async getFpsByAdminCentro(codigoCentro) {
-
-        const [rows, fields] = await promisePool.query(
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(
             `SELECT F.*,C.nombre as nombreCentro FROM fp_duales as F, centro_educativo as C WHERE C.codigoCentro = F.codigoCentro AND F.codigoCentro='${codigoCentro}'`);
-        return rows;
+            await connection.end();
+            return rows;
     }
     static async getFps() {
-        const [rows, fields] = await promisePool.query(
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(
             `SELECT F.*,C.nombre as nombreCentro FROM fp_duales as F, centro_educativo as C WHERE C.codigoCentro = F.codigoCentro `);
-        return rows;
+            await connection.end();
+            return rows;
     }
     static async getFpsConPlazasDisponibles(codigoCentro) {
-        const [rows, fields] = await promisePool.query(
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(
             `SELECT * FROM fp_duales where plazasDisponibles > 0 AND codigoCentro ='${codigoCentro}'`);
-        return rows;
+            await connection.end();
+            return rows;
     }
     static async deleteFp(id, user) {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();       
         
         try {
             await connection.beginTransaction();
@@ -81,7 +92,7 @@ module.exports = class FP_dual {
 
     }
     static async createFp(fp, user) {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();       
         
         try {
             await connection.beginTransaction();
@@ -100,7 +111,7 @@ module.exports = class FP_dual {
 
     }
     static async updateFp(fp, user) {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();       
         
         try {
             await connection.beginTransaction();

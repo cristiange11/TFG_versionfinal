@@ -9,12 +9,14 @@ module.exports = class ResultadoAprendizaje {
     }
 
     static async getResultadoAprendizajes(codigoModulo) {
-        const [rows, fields] = await promisePool.query(
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(
             `SELECT * FROM resultado_aprendizaje where codigoModulo = ${codigoModulo}`);
+        await connection.end();
         return rows;
     }
     static async deleteResultadoAprendizaje(id, user) {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();       
 
         try {
             await connection.beginTransaction();
@@ -25,7 +27,7 @@ module.exports = class ResultadoAprendizaje {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_RESULTADOAPRENDIZAJE','No se ha podido eliminar el resultado aprendizaje ' ,'${user}',sysdate(), 'resultado aprendizaje')`);
-           
+
             throw err;
         } finally {
             await connection.release();
@@ -33,7 +35,7 @@ module.exports = class ResultadoAprendizaje {
 
     }
     static async createResultadoAprendizaje(resultadoAprendizaje, user) {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();       
         try {
             await connection.beginTransaction();
             let query = `INSERT INTO resultado_aprendizaje(codigoModulo, titulo, descripcion) VALUES ('${resultadoAprendizaje.codigoModulo}','${resultadoAprendizaje.titulo}','${resultadoAprendizaje.descripcion}' ) `;
@@ -43,7 +45,7 @@ module.exports = class ResultadoAprendizaje {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_RESULTADOAPRENDIZAJE','No se ha añadido el resultado aprendizaje con ','${user}',sysdate(), 'resultado aprendizaje')`);
-           
+
             throw err;
         } finally {
             await connection.release();
@@ -51,7 +53,7 @@ module.exports = class ResultadoAprendizaje {
 
     }
     static async updateResultadoAprendizaje(resultadoAprendizaje, user) {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();       
 
         try {
             await connection.beginTransaction();
@@ -62,7 +64,7 @@ module.exports = class ResultadoAprendizaje {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_RESULTADOAPRENDIZAJE','No se ha actualizado el resultado de aprendizaje con id ${resultadoAprendizaje.id}','${user}',sysdate(), 'modulo')`);
-            
+
             throw err;
         } finally {
             await connection.release();

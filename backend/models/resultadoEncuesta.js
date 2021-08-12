@@ -7,11 +7,15 @@ module.exports = class ResultadoEncuesta {
         this.nombreResultado = nombreResultado;
     }
     static async getResultados() {
-        const [rows, fields] = await promisePool.query(`SELECT * FROM resultado_encuesta`);
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(`SELECT * FROM resultado_encuesta`);
+        await connection.end();
         return rows;
     }
     static async getResultado(id) {
-        const [rows, fields] = await promisePool.query(`SELECT * FROM resultado_encuesta WHERE id = ${id}`);
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(`SELECT * FROM resultado_encuesta WHERE id = ${id}`);
+        await connection.end();
         return rows;
     }
 

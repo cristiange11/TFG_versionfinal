@@ -23,5 +23,6 @@
     "nombreUsuario" : "Nombre",
     "apellidoUsuario" : "Apellido",
     "nombreCentro" : "Nombre del Centro",
-    "nota": "Nota"
+    "nota": "Nota",
+    "dineroBeca": "Dinero Beca"
 }

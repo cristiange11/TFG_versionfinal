@@ -11,29 +11,37 @@ module.exports = class Centro {
         this.direccion = direccion;
     }
     static async find(codigoCentro) {
-
-        return await promisePool.query(
+        const connection = await promisePool.connection();
+        const res = await connection.query(
             `SELECT * FROM centro_educativo where codigoCentro = '${codigoCentro}'`);
+        await connection.end();
+        return res;
     }
     static async findCorreo(correo, codigoCentro) {
-        return await promisePool.query(
+        const connection = await promisePool.connection();
+        const res = await connection.query(
             `SELECT * FROM centro_educativo where correo = '${correo}' AND codigoCentro != '${codigoCentro}'`);
-    }
+            await connection.end();
+            return res;
+        }
     static async findTelefono(telefono, codigoCentro) {
-        return await promisePool.query(
+        const connection = await promisePool.connection();
+        const res = await connection.query(
             `SELECT * FROM centro_educativo where telefono = '${telefono}'  AND codigoCentro != '${codigoCentro}'`);
+            await connection.end();
+            return res;
     }
 
     static async getCentros() {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(
             `SELECT * FROM centro_educativo WHERE nombre != '' `);
-        connection.release();
+        connection.end();
         return rows;
     }
 
     static async deleteCentro(codigoCentro, user) {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();       
 
         try {
             await connection.beginTransaction();
@@ -50,8 +58,8 @@ module.exports = class Centro {
         }
     }
     static async createCentro(centro, user) {
-        const connection = await promisePool.getConnection();
-        
+        const connection = await promisePool.connection().getConnection();       
+
         try {
             await connection.beginTransaction();
             let query = `INSERT INTO centro_educativo (codigoCentro, correo, telefono, provincia, nombre, CP, direccion) VALUES ('${centro.codigoCentro}','${centro.correo}','${centro.telefono}','${centro.provincia}','${centro.nombre}','${centro.CP}','${centro.direccion}') `;
@@ -61,7 +69,7 @@ module.exports = class Centro {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_CENTRO','No se ha añadido el centro con codigo centro ${centro.codigoCentro}','${user}',sysdate(), 'centro educativo')`);
-            
+
             throw err;
         } finally {
             await connection.release();
@@ -69,7 +77,7 @@ module.exports = class Centro {
 
     }
     static async updateCentro(centro, user) {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();       
 
         try {
             await connection.beginTransaction();
@@ -81,20 +89,20 @@ module.exports = class Centro {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_CENTRO','No se ha podido actualizar el centro ${centro.codigoCentro}' ,'${user}',sysdate(), 'centro educativo')`);
 
-            
+
             throw err;
         } finally {
             await connection.release();
         }
     }
     static async deleteUserAndFPByCentro(codigoCentro, user) {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();       
         try {
             await connection.beginTransaction();
             let query = `DELETE t1 FROM logs t1 INNER JOIN usuario t2 ON ( t1.usuario = t2.dni) WHERE t2.codigoCentro = '${codigoCentro}'`
             await connection.query(query)
             connection.query(`DELETE FROM usuario WHERE codigoCentro =  '${codigoCentro}'`);
-            
+
             await connection.query(`DELETE t1 FROM modulo t1 INNER JOIN fp_duales t2 ON ( t1.fpDual = t2.id) WHERE t2.codigoCentro = '${codigoCentro}'`);
             await connection.query(`DELETE t1 FROM empresa_fpdual t1 INNER JOIN fp_duales t2 ON ( t1.idFp = t2.id) WHERE t2.codigoCentro = '${codigoCentro}'`);
             await connection.query(`DELETE FROM empresa where codigoCentro= '${codigoCentro}'`);

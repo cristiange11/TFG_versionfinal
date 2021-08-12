@@ -7,24 +7,33 @@ module.exports = class TutorEmpresa {
         this.cifEmpresa = cifEmpresa;
     }
     static async find(dni) {
-        return await promisePool.query(
+        const connection = await promisePool.connection();
+        const res= await connection.query(
             `SELECT * FROM tutor_empresa where dni = '${dni}'`);
+            await connection.end();
+            return res;
     }
     static async getTutores() {
-        const [rows, fields] = await promisePool.query(
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(
             `SELECT * FROM tutor_empresa `);
+        await connection.end();
         return rows;
     }
     static async getTutor(dni) {
-        const [rows, fields] = await promisePool.query(`SELECT U.*, T.idEmpresa AS idEmpresa, T.moduloEmpresa, M.nombre as nombreModulo, M.codigo as moduloCodigo FROM usuario as U, tutor_empresa as T, tutor_modulo as TM, modulo as M WHERE U.dni = T.dni AND T.dni=TM.dni AND M.codigo = TM.codigoModulo AND U.dni='${dni}'`);
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(`SELECT U.*, T.idEmpresa AS idEmpresa, T.moduloEmpresa, M.nombre as nombreModulo, M.codigo as moduloCodigo FROM usuario as U, tutor_empresa as T, tutor_modulo as TM, modulo as M WHERE U.dni = T.dni AND T.dni=TM.dni AND M.codigo = TM.codigoModulo AND U.dni='${dni}'`);
+        await connection.end();
         return rows;
     }
     static async getTutorByModuloEncuesta(codigoModulo) {
-        const [rows, fields] = await promisePool.query(`SELECT U.* FROM usuario as U, modulo as M where U.rol=3 AND M.codigo = ${codigoModulo}  `);
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(`SELECT U.* FROM usuario as U, modulo as M where U.rol=3 AND M.codigo = ${codigoModulo}  `);
+        await connection.end();
         return rows;
     }
     static async deleteTutor(dni, user) {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();       
         try {
             await connection.beginTransaction();
             let query = `DELETE FROM tutor_empresa WHERE dni = '${dni}' `;
@@ -42,7 +51,7 @@ module.exports = class TutorEmpresa {
 
     }
     static async createTutor(tutorEmpresa, password, user) {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();       
         try {
             await connection.beginTransaction();
             let query = `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fechaNacimiento, fpDual, codigoCentro) VALUES ('${tutorEmpresa.dni}','${tutorEmpresa.nombre}','${tutorEmpresa.apellidos}','${tutorEmpresa.correo}','${tutorEmpresa.movil}','${tutorEmpresa.direccion}','${password}','${tutorEmpresa.genero}',${tutorEmpresa.cp},'${tutorEmpresa.rol}',STR_TO_DATE('${tutorEmpresa.fechaNacimiento}','%Y-%m-%d'),'${tutorEmpresa.fpDual}','${tutorEmpresa.codigoCentro}')`;
@@ -64,7 +73,7 @@ module.exports = class TutorEmpresa {
         }
     }
     static async updateTutor(tutor, password, user) {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();       
         try {
             await connection.beginTransaction();
             let query = `UPDATE usuario SET nombre='${tutor.nombre}',apellidos='${tutor.apellidos}',correo='${tutor.correo}', movil='${tutor.movil}',direccion='${tutor.direccion}',password='${password}',genero='${tutor.genero}', cp='${tutor.cp}',fechaNacimiento=STR_TO_DATE('${tutor.fechaNacimiento}','%Y-%m-%d') WHERE dni='${tutor.dni}'`;
