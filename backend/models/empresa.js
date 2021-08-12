@@ -105,11 +105,11 @@ module.exports = class Empresa {
                 id = element.id
             });
             await connection.query(`INSERT INTO empresa_fpdual(idFp, idEmpresa, becas, plazas, dineroBeca) VALUES (${connection.escape(empresa.fpDual)},${id},${connection.escape(empresa.becas)},${connection.escape(empresa.plazas)}, ${connection.escape(empresa.dineroBeca)})`);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha añadido empresa con CIF ${connection.escape(empresa.cifEmpresaEmpresa)} ",'${user}',sysdate(), 'empresa')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha añadido empresa con CIF ${connection.escape(empresa.cifEmpresa)} ",'${user}',sysdate(), 'empresa')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK " + err);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_EMPRESA',"No se ha añadido empresa con CIF ${connection.escape(empresa.cifEmpresaEmpresa)}",'${user}',sysdate(), 'empresa')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_EMPRESA',"No se ha añadido empresa con CIF ${connection.escape(empresa.cifEmpresa)}",'${user}',sysdate(), 'empresa')`);
             throw err;
         } finally {
             await connection.release();

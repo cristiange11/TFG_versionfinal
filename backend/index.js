@@ -20,7 +20,7 @@ const encuestaRoutes= require('./routes/encuesta');
 const calificacionRoutes= require('./routes/calificacion');
 const logRoutes= require('./routes/logSesion');
 const resultadoRoutes= require('./routes/resultadoEncuesta');
-
+var https = require('https');
 app.use(cors());
 
 app.use(express.json());

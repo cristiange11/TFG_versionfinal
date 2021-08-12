@@ -27,7 +27,7 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   public displayedColumns: string[] = ['cifEmpresa', 'nombre', 'direccion', 'telefono', 'correo', 'url', 'dineroBeca', 'plazas'];
-  public columnsToDisplay: string[] = [...this.displayedColumns, 'actions'];
+  public columnsToDisplay: string[] = [...this.displayedColumns, 'actions', 'FP'];
 
   public columnsFilters = {};
 
@@ -147,6 +147,40 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
       width: '400px'
     });
   }
+  getEmpresaAndCentro(idEmpresa){
+    this.serviceSubscribe = this.empresaService.getFPandCentroByEmpresa(idEmpresa).pipe(first())
+        .subscribe(
+          data => {
+            let resultado = new Array();
+            let empresas = data["empresas"];
+            console.log(empresas)
+            empresas.forEach(empresaInfo => {
+              resultado.push(empresaInfo.nombreFP +", " + empresaInfo.nombreCentro);
+            });
+          
+              AppComponent.myapp.openDialog(resultado);
+          },
+          error => {
+
+            if (error.status == 401 && error.error.errors == "Sesión expirada") {
+              AppComponent.myapp.openDialogSesion();
+
+            }
+            
+            else if (error.status == 406) {
+              const res = new Array();
+              res.push("Petición incorrecta.");
+              AppComponent.myapp.openDialog(res);
+            }
+            else if (error.status == 500) {
+              const res = new Array();
+              res.push("Error del servidor, vuelva a intentarlo más tarde.");
+              AppComponent.myapp.openDialog(res);
+            }
+          });
+    }
+    
+  
   edit(data) {
     sessionStorage.setItem("dineroBeca", data.dineroBeca);
     this.dialog.open(EmpresaUpdateComponent, {

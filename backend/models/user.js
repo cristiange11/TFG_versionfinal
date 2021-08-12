@@ -134,7 +134,7 @@ module.exports = class User {
             await connection.beginTransaction();
             let query = `UPDATE usuario SET nombre=${connection.escape(user.nombre)},apellidos=${connection.escape(user.apellidos)},correo=${connection.escape(user.correo)}, movil=${connection.escape(user.movil)},direccion=${connection.escape(user.direccion)},password=${connection.escape(password)},genero=${connection.escape(user.genero)}, cp=${connection.escape(user.cp)},fechaNacimiento=STR_TO_DATE(${connection.escape(user.fechaNacimiento)},'%Y-%m-%d') WHERE dni=${connection.escape(user.dni)}`;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado usuario con DNI ${connection.escape(user.dni)} ",'${userLogado}',sysdate(), 'user')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado usuario con DNI"+  ${connection.escape(user.dni)} +  ",'${userLogado}',sysdate(), 'user')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");

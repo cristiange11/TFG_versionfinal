@@ -7,17 +7,20 @@ import { CookieService } from "ngx-cookie-service";
   providedIn: 'root'
 })
 export class EmpresaService {
-  private url = "https://localhost:3000/empresa";
+  private url = "http://localhost:3000/empresa";
 
   constructor(private cookieService: CookieService, private http: HttpClient,  private router: Router ) { }
   getEmpresas(): Observable<JSON[] >{
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.get<JSON []>(this.url, httpOptions);
   }
-  getEmpresasByCentro(codigoCentro): Observable<JSON[] >{
-    
+  getEmpresasByCentro(codigoCentro): Observable<JSON[] >{    
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.get<JSON []>(`${this.url}/${codigoCentro}`, httpOptions);
+  }
+  getFPandCentroByEmpresa(idEmpresa): Observable<JSON[] >{    
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
+    return this.http.get<JSON []>(`${this.url}/empresa/${idEmpresa}`, httpOptions);
   }
   getEmpresasByFp(fpDual): Observable<JSON[] >{
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
