@@ -39,6 +39,10 @@ export class ModuloService {
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.delete<JSON>(`${this.url}/${id}`,  httpOptions);
   }
+  deleteAllByModulo(id): Observable<JSON>{
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
+    return this.http.delete<JSON>(`${this.url}/modulo/${id}`,  httpOptions);
+  }
   updateModulo(modulo : Modulo): Observable<JSON>{
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
     return this.http.put<JSON>(`${this.url}/update`, modulo, httpOptions);

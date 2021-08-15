@@ -50,7 +50,7 @@ module.exports = class Modulo {
 
     static async deleteModulo(codigo, user) {
         const connection = await promisePool.connection().getConnection();
-
+        
         try {
             await connection.beginTransaction();
             let query = `DELETE FROM modulo WHERE codigo =  ${connection.escape(codigo)}`;
@@ -66,7 +66,26 @@ module.exports = class Modulo {
         }
 
     }
+    static async deleteAllByModulo(codigo, user) {
+        const connection = await promisePool.connection().getConnection();        
+        try {
+            await connection.beginTransaction();
+            let query = `DELETE FROM calificacion WHERE codigoModulo =  ${connection.escape(codigo)}`;
+            await connection.query(query);
+            await connection.query(`DELETE FROM resultado_aprendizaje WHERE codigoModulo =  ${connection.escape(codigo)}`);
+            await connection.query(`DELETE FROM encuesta WHERE codigoModulo =  ${connection.escape(codigo)}`);
+            await connection.query(`DELETE FROM modulo WHERE codigo =  ${connection.escape(codigo)}`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null}, "Se ha eliminado el módulo ${connection.escape(codigo)}" ,'${user}',sysdate(), 'modulo')`);
+            await connection.commit();
+        } catch (err) {
+            await connection.query("ROLLBACK");
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_MODULO','No se ha podido eliminar el módulo ' ,'${user}',sysdate(), 'modulo')`);
+            throw err;
+        } finally {
+            await connection.release();
+        }
 
+    }
     static async createModulo(modulo, user) {
         const connection = await promisePool.connection().getConnection();
         try {

@@ -19,6 +19,7 @@ import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import 'jspdf-autotable';
 import autoTable from 'jspdf-autotable'
+import { ModuloDeleteConfirmationComponent } from '../modals/modulo/modulo-delete-confirmation/modulo-delete-confirmation.component';
 @Component({
   selector: 'app-modulo',
   templateUrl: './modulo.component.html',
@@ -305,6 +306,32 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
                 const res = new Array();
                 res.push("Error del servidor, vuelva a intentarlo más tarde.");
                 AppComponent.myapp.openDialog(res);
+              }else if (error.status == 409) {
+                const dialogRef2 = this.dialog.open(ModuloDeleteConfirmationComponent);
+                dialogRef2.afterClosed().subscribe(result => {
+                  if (result) {
+                    this.moduloService.deleteAllByModulo(id).pipe(first())
+                      .subscribe(
+                        data => {
+                          window.location.reload();
+                        },
+                        error => {
+                          if (error.status == 401 && error.error.errors == "Sesión expirada") {
+                            AppComponent.myapp.openDialogSesion();
+                          }else if (error.status == 406) {
+                            const res = new Array();
+                            res.push("Petición incorrecta.");
+                            AppComponent.myapp.openDialog(res);
+                          }
+                          else {
+                            const res = new Array();
+                            res.push("No se ha podido borrar.");
+                            AppComponent.myapp.openDialog(res);
+                          }
+                        }
+                      )
+                  }
+                });
               }
             });
       }

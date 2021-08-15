@@ -18,6 +18,8 @@ router.get('/tutor/:dni', moduloController.getModulosTut);
 
 router.delete('/:codigo', moduloController.deleteModulo);
 
+router.delete('/modulo/:codigo', moduloController.deleteAllByModulo);
+
 router.post(
   '/create',
   [

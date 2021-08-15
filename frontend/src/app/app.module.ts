@@ -91,6 +91,7 @@ import { CalificacionUpdateComponent } from './components/modals/calificacion/ca
 import { ResetContrasenaComponent } from './components/reset-contrasena/reset-contrasena.component';
 import { RecoveryComponent } from './components/recovery/recovery.component';
 import { PasswordComponent } from './components/modals/password/password.component';
+import { ModuloDeleteConfirmationComponent } from './components/modals/modulo/modulo-delete-confirmation/modulo-delete-confirmation.component';
 
 @NgModule({
   imports: [
@@ -194,6 +195,7 @@ import { PasswordComponent } from './components/modals/password/password.compone
     ResetContrasenaComponent,
     RecoveryComponent,
     PasswordComponent,
+    ModuloDeleteConfirmationComponent,
     
    
     

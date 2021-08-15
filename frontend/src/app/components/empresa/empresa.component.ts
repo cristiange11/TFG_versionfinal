@@ -153,7 +153,7 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
           data => {
             let resultado = new Array();
             let empresas = data["empresas"];
-            console.log(empresas)
+            
             empresas.forEach(empresaInfo => {
               resultado.push(empresaInfo.nombreFP +", " + empresaInfo.nombreCentro);
             });

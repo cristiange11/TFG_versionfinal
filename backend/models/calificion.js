@@ -11,7 +11,7 @@ module.exports = class Calificacion {
 
     static async getCalificaciones(codigoModulo) {
         const connection = await promisePool.connection();
-        const [rows, fields] = await connection.query(`SELECT C.*, U.nombre as nombreUsuario, U.apellidos as apellidoUsuario FROM calificacion as C, usuario as U where U.dni = C.dni and C.codigoModulo =  ${connection.escape(codigoCentro)}`);
+        const [rows, fields] = await connection.query(`SELECT C.*, U.nombre as nombreUsuario, U.apellidos as apellidoUsuario FROM calificacion as C, usuario as U where U.dni = C.dni and C.codigoModulo =  ${connection.escape(codigoModulo)}`);
         connection.end();
         return rows;
     }

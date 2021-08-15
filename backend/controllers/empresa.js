@@ -221,7 +221,6 @@ exports.createEmpresa = async (req, res, next) => {
 
             res.status(201).json({ message: "success" });
           }).catch(function (err) {
-            console.log(err)
             res.status(401).json({ message: "no se ha podido crear la empresa:" });
           });
 

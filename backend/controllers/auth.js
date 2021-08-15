@@ -80,13 +80,11 @@ exports.signup = async (req, res, next) => {
 
             res.status(201).json({ message: "success" });
           }).catch(function (err) {
-            console.log(err)
             res.status(409).json({ "errors": "no se ha podido crear el usuario" });
           });
 
 
         } catch (err) {
-          console.log(err)
           res.status(500).json({ error: err });
         }
       }
@@ -146,7 +144,6 @@ exports.login = async (req, res, next) => {
           res.status(401).json({ "errors": 'Usuario introducido no existente' });
         }
       } catch (err) {
-        console.log(err)
         res.status(500).json({ error: err });
 
       }
@@ -255,14 +252,14 @@ exports.updateUsuario = async (req, res, next) => {
 
 
             res.status(201).json({ user: req.body });
-          }).catch(function () {
+          }).catch(function (err) {
             res.status(401).json({ errors: "No se ha podido actualizar el usuario" });
 
           });
 
 
         } catch (err) {
-
+          
           res.status(500).json({ error: err });
         }
       }

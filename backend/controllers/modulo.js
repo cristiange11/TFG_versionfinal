@@ -127,6 +127,32 @@ exports.deleteModulo = async (req, res, next) => {
     }
   }
 };
+exports.deleteAllByModulo = async (req, res, next) => {
+  if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
+    res.status(406).json({ "errors": "No aceptable" });
+  }
+  else {
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
+    if (expirado) {
+      res.status(401).json({ "errors": "Sesión expirada" });
+    } else {
+      try {
+        
+        const user = jwt_decode(req.headers['authorization']).sub;
+        await Modulo.deleteAllByModulo(req.params.codigo, user).then(function (result) {
+          res.status(201).json({ message: "success" });
+        }).catch(function (err) {
+          
+          res.status(409).json({ "errors" : "no se ha podido borrar el modulo" });
+        });
+
+      } catch (err) {
+        
+        res.status(500).json({ error: err });
+      }
+    }
+  }
+};
 exports.updateModulo = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });

@@ -75,11 +75,10 @@ module.exports = class User {
     static async save(user, userLogado) {
         let codigoCentro = user.codigoCentro == null ? null : user.codigoCentro;
         const connection = await promisePool.connection().getConnection();
-        console.log(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha añadido usuario con DNI ${connection.escape(user.dni)} ','${userLogado}',sysdate(), 'user')`)
         try {
             await connection.beginTransaction();
             var sql = 'INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fechaNacimiento, fpDual, codigoCentro) VALUES (' + connection.escape(user.dni) + ',' + connection.escape(user.nombre) + ',' + connection.escape(user.apellidos) + ',' + connection.escape(user.correo) + ',' + connection.escape(user.movil) + ',' + connection.escape(user.direccion) + ',' + connection.escape(user.password) + ',' + connection.escape(user.genero) + ',' + connection.escape(user.cp) + ',' + connection.escape(user.rol) + ',STR_TO_DATE(' + connection.escape(user.fechaNacimiento) + ',"%Y-%m-%d"),' + connection.escape(user.fpDual) + ',' + connection.escape(codigoCentro) + ')';
-            console.log(sql)
+            
             let query = `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fechaNacimiento, fpDual, codigoCentro) VALUES ('${connection.escape(user.dni)}','${connection.escape(user.nombre)}','${connection.escape(user.apellidos)}','${connection.escape(user.correo)}','${connection.escape(user.movil)}','${connection.escape(user.direccion)}','${connection.escape(user.password)}','${connection.escape(user.genero)}',${connection.escape(user.cp)},'${connection.escape(user.rol)}',STR_TO_DATE('${connection.escape(user.fechaNacimiento)}','%Y-%m-%d'),${connection.escape(user.fp)},${codigoCentro})`;
             await connection.query(sql)
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha añadido usuario con DNI ${connection.escape(user.dni)} ",'${userLogado}',sysdate(), 'user')`);
@@ -87,7 +86,7 @@ module.exports = class User {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_USER',"No se ha añadido el user con DNI ${connection.escape(user.dni)}",'${userLogado}',sysdate(), 'user')`);
-            console.log(err)
+           
             throw err;
         } finally {
             await connection.release();
@@ -134,7 +133,7 @@ module.exports = class User {
             await connection.beginTransaction();
             let query = `UPDATE usuario SET nombre=${connection.escape(user.nombre)},apellidos=${connection.escape(user.apellidos)},correo=${connection.escape(user.correo)}, movil=${connection.escape(user.movil)},direccion=${connection.escape(user.direccion)},password=${connection.escape(password)},genero=${connection.escape(user.genero)}, cp=${connection.escape(user.cp)},fechaNacimiento=STR_TO_DATE(${connection.escape(user.fechaNacimiento)},'%Y-%m-%d') WHERE dni=${connection.escape(user.dni)}`;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado usuario con DNI"+  ${connection.escape(user.dni)} +  ",'${userLogado}',sysdate(), 'user')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado usuario con DNI  ${connection.escape(user.dni)}",'${userLogado}',sysdate(), 'user')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
