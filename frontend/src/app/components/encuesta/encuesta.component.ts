@@ -105,7 +105,7 @@ export class EncuestaComponent implements OnInit, OnDestroy, AfterViewInit {
         .subscribe(
           data => {
             let encuestas = data["encuestas"];
-            
+
 
             encuestas.forEach(encuestaInfo => {
               var encuesta = this.transformJSON(encuestaInfo);
@@ -206,7 +206,10 @@ export class EncuestaComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
   ngOnDestroy(): void {
-    this.serviceSubscribe.unsubscribe();
+    if (this.cookieService.get('user')) {
+      this.serviceSubscribe.unsubscribe();
+
+    }
   }
 
 }

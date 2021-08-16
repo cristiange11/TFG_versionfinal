@@ -70,7 +70,7 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
       plazas: empresaInfo.plazas,
       telefono: empresaInfo.telefono,
       url: empresaInfo.url,
-      id:empresaInfo.id
+      id: empresaInfo.id
     }
     return empresa;
   }
@@ -123,7 +123,7 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
               AppComponent.myapp.openDialogSesion();
 
             }
-            
+
             else if (error.status == 406) {
               const res = new Array();
               res.push("Petición incorrecta.");
@@ -147,40 +147,40 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
       width: '400px'
     });
   }
-  getEmpresaAndCentro(idEmpresa){
+  getEmpresaAndCentro(idEmpresa) {
     this.serviceSubscribe = this.empresaService.getFPandCentroByEmpresa(idEmpresa).pipe(first())
-        .subscribe(
-          data => {
-            let resultado = new Array();
-            let empresas = data["empresas"];
-            
-            empresas.forEach(empresaInfo => {
-              resultado.push(empresaInfo.nombreFP +", " + empresaInfo.nombreCentro);
-            });
-          
-              AppComponent.myapp.openDialog(resultado);
-          },
-          error => {
+      .subscribe(
+        data => {
+          let resultado = new Array();
+          let empresas = data["empresas"];
 
-            if (error.status == 401 && error.error.errors == "Sesión expirada") {
-              AppComponent.myapp.openDialogSesion();
-
-            }
-            
-            else if (error.status == 406) {
-              const res = new Array();
-              res.push("Petición incorrecta.");
-              AppComponent.myapp.openDialog(res);
-            }
-            else if (error.status == 500) {
-              const res = new Array();
-              res.push("Error del servidor, vuelva a intentarlo más tarde.");
-              AppComponent.myapp.openDialog(res);
-            }
+          empresas.forEach(empresaInfo => {
+            resultado.push(empresaInfo.nombreFP + ", " + empresaInfo.nombreCentro);
           });
-    }
-    
-  
+
+          AppComponent.myapp.openDialog(resultado);
+        },
+        error => {
+
+          if (error.status == 401 && error.error.errors == "Sesión expirada") {
+            AppComponent.myapp.openDialogSesion();
+
+          }
+
+          else if (error.status == 406) {
+            const res = new Array();
+            res.push("Petición incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }
+          else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
+            AppComponent.myapp.openDialog(res);
+          }
+        });
+  }
+
+
   edit(data) {
     sessionStorage.setItem("dineroBeca", data.dineroBeca);
     this.dialog.open(EmpresaUpdateComponent, {
@@ -193,7 +193,7 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
   delete(id) {
 
     const dialogRef = this.dialog.open(DeleteComponent);
-   
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.empresaService.deleteEmpresa(id).pipe(first())
@@ -202,7 +202,7 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
               window.location.reload();
             },
             error => {
-              
+
               if (error.status == 401 && error.error.errors == "Sesión expirada") {
                 AppComponent.myapp.openDialogSesion();
 
@@ -231,7 +231,7 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
                         data => {
                           window.location.reload();
                         },
-                        
+
                         error => {
                           if (error.status == 401 && error.error.errors == "Sesión expirada") {
                             AppComponent.myapp.openDialogSesion();
@@ -239,7 +239,7 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
                             const res = new Array();
                             res.push("Error del servidor, vuelva a intentarlo más tarde.");
                             AppComponent.myapp.openDialog(res);
-                          } 
+                          }
                           else if (error.status == 500) {
                             const res = new Array();
                             res.push("Error del servidor, vuelva a intentarlo más tarde.");
@@ -272,7 +272,10 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
   ngOnDestroy(): void {
-    this.serviceSubscribe.unsubscribe();
+    if (this.cookieService.get('user')) {
+      this.serviceSubscribe.unsubscribe();
+    }
+
   }
 
 }

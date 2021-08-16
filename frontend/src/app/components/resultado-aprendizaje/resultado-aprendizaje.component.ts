@@ -147,7 +147,9 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
 
   }
   ngOnDestroy(): void {
-    this.serviceSubscribe.unsubscribe();
+    if (this.cookieService.get('user')) {
+      this.serviceSubscribe.unsubscribe();
+    }
   }
 
 }

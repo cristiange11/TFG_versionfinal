@@ -346,7 +346,9 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
   ngOnDestroy(): void {
-    this.serviceSubscribe.unsubscribe();
+    if (this.cookieService.get('user')) {
+      this.serviceSubscribe.unsubscribe();
+    };
   }
 
 }
