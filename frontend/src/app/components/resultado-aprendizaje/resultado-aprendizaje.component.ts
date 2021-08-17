@@ -23,6 +23,7 @@ import { NavigationComponent } from '../navigation/navigation.component';
 export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterViewInit {
   myApp = AppComponent.myapp;
   user;
+  userLogged = false;
   resultadoAprendizajeList: Array<ResultadoAprendizaje> = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -41,7 +42,7 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
 
   ngOnInit(): void {
     this.nagivationComponent.obtenerItems();
-    this.getAll();
+    
     this.dataSource.filterPredicate = function (data, filter: string): boolean {
       return data.titulo.toLowerCase().includes(filter) || data.descripcion.toLowerCase().includes(filter);
     };
@@ -49,6 +50,7 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
       this.router.navigate(['home']);
     }
     else {
+      this.userLogged = true;
       this.user = (JSON.parse(this.cookieService.get('user')));
       if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2 && Number(this.user.rol) != 4 && Number(this.user.rol != 3) && Number(this.user.rol != 5)) {
         this.router.navigate(['home']);
@@ -59,6 +61,7 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
       else {
         this.columnsToDisplay = [...this.displayedColumns];
       }
+      this.getAll();
     }
   }
   getAll() {

@@ -32,3 +32,8 @@ td.mat-footer-cell {
 .mat-cell {
   padding: 0px 12px 12px 0;
 }
+.viewMobile{
+  left: 0;
+  position: sticky ;
+  width: 100%;
+}

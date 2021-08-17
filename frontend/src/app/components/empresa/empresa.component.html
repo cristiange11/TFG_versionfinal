@@ -53,7 +53,8 @@
       <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
     </table>
 
-    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 50]" showFirstLastButtons></mat-paginator>
-
+    <div class="viewMobile">
+      <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 50]" showFirstLastButtons></mat-paginator>
+    </div>
   </div>
 </div>

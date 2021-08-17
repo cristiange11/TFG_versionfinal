@@ -28,6 +28,7 @@ import { ModuloDeleteConfirmationComponent } from '../modals/modulo/modulo-delet
 export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
   myApp = AppComponent.myapp;
   user;
+  userLogged = false;
   moduloList: Array<Modulo> = [];
   private selectedFile: File;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -56,13 +57,14 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
       this.router.navigate(['home']);
     }
     else {
+      this.userLogged= true;
       this.user = (JSON.parse(this.cookieService.get('user')));
       if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2 && Number(this.user.rol) != 4 && Number(this.user.rol) != 3 && Number(this.user.rol) != 5) {
         this.router.navigate(['home']);
       }
 
+      this.getAll();
     }
-    this.getAll();
   }
   descargarPDF() {
     this.alumnoService.getCalificacionAlumno(this.user.dni).pipe(first())
@@ -88,9 +90,9 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
           doc.setTextColor(100);
 
           autoTable(doc, {
-            head: [header], 
+            head: [header],
             body: rowTable
-          }) 
+          })
           // below line for Download PDF document  
           doc.save('calificaciones.pdf');
 
@@ -122,7 +124,7 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
           });
 
           this.dataSource.data = this.moduloList;
-         
+
         },
         error => {
           if (error.status == 401 && error.error.errors == "Sesión expirada") {
@@ -132,7 +134,7 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
             const res = new Array();
             res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
-          }else if (error.status == 500) {
+          } else if (error.status == 500) {
             const res = new Array();
             res.push("Error del servidor, vuelva a intentarlo más tarde.");
             AppComponent.myapp.openDialog(res);
@@ -152,7 +154,7 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
           modulos.forEach(moduloInfo => {
 
             this.moduloList.push(moduloInfo);
-         
+
           });
 
           this.dataSource.data = this.moduloList;
@@ -167,7 +169,7 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
             const res = new Array();
             res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
-          }else if (error.status == 500) {
+          } else if (error.status == 500) {
             const res = new Array();
             res.push("Error del servidor, vuelva a intentarlo más tarde.");
             AppComponent.myapp.openDialog(res);
@@ -183,7 +185,7 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
           modulos.forEach(moduloInfo => {
 
             this.moduloList.push(moduloInfo);
-            
+
           });
 
           this.dataSource.data = this.moduloList;
@@ -198,7 +200,7 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
             const res = new Array();
             res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
-          }else if (error.status == 500) {
+          } else if (error.status == 500) {
             const res = new Array();
             res.push("Error del servidor, vuelva a intentarlo más tarde.");
             AppComponent.myapp.openDialog(res);
@@ -214,7 +216,7 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
           modulos.forEach(moduloInfo => {
 
             this.moduloList.push(moduloInfo);
-           
+
           });
 
           this.dataSource.data = this.moduloList;
@@ -229,7 +231,7 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
             const res = new Array();
             res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
-          }else if (error.status == 500) {
+          } else if (error.status == 500) {
             const res = new Array();
             res.push("Error del servidor, vuelva a intentarlo más tarde.");
             AppComponent.myapp.openDialog(res);
@@ -265,7 +267,7 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
   edit(data: Modulo) {
-    
+
     const dialogRef = this.dialog.open(ModuloUpdateComponent, {
       width: '400px',
       data: data
@@ -273,20 +275,20 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
   getResultadosAprendizaje(codigoModulo) {
-    
+
     sessionStorage.setItem('codigoModulo', codigoModulo.toString());
 
     this.router.navigate(['resultadoaprendizaje']);
   }
   getEncuesta(codigoModulo) {
-    
+
     sessionStorage.setItem('codigoModulo', codigoModulo.toString());
 
     this.router.navigate(['encuesta']);
   }
   delete(id: any) {
     const dialogRef = this.dialog.open(DeleteComponent);
-    
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.moduloService.deleteModulo(id).pipe(first())
@@ -302,11 +304,11 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
                 const res = new Array();
                 res.push("Petición incorrecta.");
                 AppComponent.myapp.openDialog(res);
-              }else if (error.status == 500) {
+              } else if (error.status == 500) {
                 const res = new Array();
                 res.push("Error del servidor, vuelva a intentarlo más tarde.");
                 AppComponent.myapp.openDialog(res);
-              }else if (error.status == 409) {
+              } else if (error.status == 409) {
                 const dialogRef2 = this.dialog.open(ModuloDeleteConfirmationComponent);
                 dialogRef2.afterClosed().subscribe(result => {
                   if (result) {
@@ -318,7 +320,7 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
                         error => {
                           if (error.status == 401 && error.error.errors == "Sesión expirada") {
                             AppComponent.myapp.openDialogSesion();
-                          }else if (error.status == 406) {
+                          } else if (error.status == 406) {
                             const res = new Array();
                             res.push("Petición incorrecta.");
                             AppComponent.myapp.openDialog(res);
@@ -338,7 +340,7 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
   }
- 
+
   ngAfterViewInit(): void {
 
     this.dataSource.paginator = this.paginator;

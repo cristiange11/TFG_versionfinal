@@ -53,9 +53,9 @@ export class FpdualComponent implements OnInit, OnDestroy, AfterViewInit {
       if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2) {
         this.router.navigate(['home']);
       }
-
+      this.getAll();
     }
-    this.getAll();
+    
 
     this.dataSource.filterPredicate = function (data, filter: string): boolean {
       return data.nombre.toLowerCase().includes(filter) || data.descripcion.toLowerCase().includes(filter) || data.plazasDisponibles.toString().includes(filter) || data.totalPlazas.toString().includes(filter) || data.nombreCentro.toLowerCase().includes(filter) || data.anio.toString().includes(filter);

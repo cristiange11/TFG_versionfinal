@@ -25,6 +25,7 @@ export class EncuestaComponent implements OnInit, OnDestroy, AfterViewInit {
   myApp = AppComponent.myapp;
   encuestaList = [];
   user;
+  userLogged = false;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -48,28 +49,30 @@ export class EncuestaComponent implements OnInit, OnDestroy, AfterViewInit {
       this.router.navigate(['home']);
     }
     else {
+      this.userLogged = true;
       this.user = (JSON.parse(this.cookieService.get('user')));
       if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2 && Number(this.user.rol) != 4 && Number(this.user.rol) != 3 && Number(this.user.rol) != 5) {
         this.router.navigate(['home']);
       }
 
-    }
-    if (Number(this.user.rol) == 3) {
-      this.columnsToDisplay = [...this.displayedColumns, 'actions'];
-    }
 
-    else {
-      if (Number(this.user.rol) == 4) {
-        this.columnsToDisplay = [...this.displayedColumns, 'observaciones'];
-      } else if (Number(this.user.rol) == 1 || Number(this.user.rol) == 2) {
-        this.columnsToDisplay = [...this.displayedColumns, 'actions', 'observaciones'];
+      if (Number(this.user.rol) == 3) {
+        this.columnsToDisplay = [...this.displayedColumns, 'actions'];
       }
-    }
-    this.dataSource.filterPredicate = function (data, filter: string): boolean {
 
-      return data.titulo.toLowerCase().includes(filter) || data.descripcion.toLowerCase().includes(filter) || data.resultado.toString().includes(filter) || data.nombreApellidoAlumno.toLowerCase().includes(filter) || data.nombreApellidoTutor.toLowerCase().includes(filter);
-    };
-    this.getAll();
+      else {
+        if (Number(this.user.rol) == 4) {
+          this.columnsToDisplay = [...this.displayedColumns, 'observaciones'];
+        } else if (Number(this.user.rol) == 1 || Number(this.user.rol) == 2) {
+          this.columnsToDisplay = [...this.displayedColumns, 'actions', 'observaciones'];
+        }
+      }
+      this.dataSource.filterPredicate = function (data, filter: string): boolean {
+
+        return data.titulo.toLowerCase().includes(filter) || data.descripcion.toLowerCase().includes(filter) || data.resultado.toString().includes(filter) || data.nombreApellidoAlumno.toLowerCase().includes(filter) || data.nombreApellidoTutor.toLowerCase().includes(filter);
+      };
+      this.getAll();
+    }
   }
   getAll() {
     if (Number(this.user.rol) != 3) {

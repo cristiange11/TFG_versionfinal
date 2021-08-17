@@ -37,7 +37,7 @@ export class EditProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.editForm = this.createFormGroup();
     if (!this.cookieService.get('user')) {
       this.router.navigate(['home']);
     }
@@ -48,18 +48,18 @@ export class EditProfileComponent implements OnInit {
         this.router.navigate(['home']);
       }
 
+
+     
+      this.editForm.get('nombre').setValue(this.user.nombre);
+      this.editForm.get('apellidos').setValue(this.user.apellidos);
+      this.editForm.get('direccion').setValue(this.user.direccion);
+      this.editForm.get('cp').setValue(this.user.cp);
+      this.editForm.get('movil').setValue(this.user.movil);
+      this.editForm.get('correo').setValue(this.user.correo);
+      this.editForm.get('fechaNacimiento').setValue(this.datepipe.transform(this.user.fechaNacimiento, "YYYY-MM-dd"));
+      this.editForm.get('genero').setValue(this.user.genero);
+
     }
-    this.editForm = this.createFormGroup();
-    this.editForm.get('nombre').setValue(this.user.nombre);
-    this.editForm.get('apellidos').setValue(this.user.apellidos);
-    this.editForm.get('direccion').setValue(this.user.direccion);
-    this.editForm.get('cp').setValue(this.user.cp);
-    this.editForm.get('movil').setValue(this.user.movil);
-    this.editForm.get('correo').setValue(this.user.correo);
-    this.editForm.get('fechaNacimiento').setValue(this.datepipe.transform(this.user.fechaNacimiento, "YYYY-MM-dd"));
-    this.editForm.get('genero').setValue(this.user.genero);
-
-
   }
   checkConfirmPassword(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null =>

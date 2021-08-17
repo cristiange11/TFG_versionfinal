@@ -31,3 +31,9 @@ td.mat-footer-cell {
   float: right;
   margin-bottom: 0.5%;
 }
+
+.viewMobile{
+  left: 0;
+  position: sticky ;
+  width: 100%;
+}

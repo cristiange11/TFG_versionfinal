@@ -1,3 +1,9 @@
 ::ng-deep .mat-dialog-container {
     border-radius: 1.5rem !important;
-  }
+}
+h1{
+  text-align: center;
+}
+.boton1{
+  margin-left: 30%;
+}

@@ -27,6 +27,7 @@ export class FormUserComponent implements OnInit {
   hide = true;
   hide2 = true;
   numero = -1;
+  userLogged = false;
   formGroupTutor;
   numeroExpediente;
   formGroupProfesor;
@@ -50,28 +51,57 @@ export class FormUserComponent implements OnInit {
       this.router.navigate(['home']);
     }
     else {
+      this.userLogged = true;
       this.user = (JSON.parse(this.cookieService.get('user')));
       if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2) {
         this.router.navigate(['home']);
       }
-    }
-    if (this.user.rol == 1) {
-      this.centroService.getCentros().pipe(first())
+
+      if (this.user.rol == 1) {
+        this.centroService.getCentros().pipe(first())
+          .subscribe(
+            data => {
+              this.centroList = new Map<string, string>();
+              let centros = data["centros"]
+
+              centros.forEach(centroInfo => {
+
+                this.centroList.set(centroInfo.codigoCentro, centroInfo.nombre)
+              });
+            },
+            error => {
+              if (error.status == 401 && error.error.errors == "Sesión expirada") {
+                AppComponent.myapp.openDialogSesion();
+              }
+              else if (error.status == 406) {
+                const res = new Array();
+                res.push("Petición incorrecta.");
+                AppComponent.myapp.openDialog(res);
+              }
+              else if (error.status == 500) {
+                const res = new Array();
+                res.push("Error del servidor, vuelva a intentarlo más tarde.");
+                AppComponent.myapp.openDialog(res);
+              }
+            });
+      }
+      this.rolService.getRoles().pipe(first())
         .subscribe(
           data => {
-            this.centroList = new Map<string, string>();
-            let centros = data["centros"]
-
-            centros.forEach(centroInfo => {
-
-              this.centroList.set(centroInfo.codigoCentro, centroInfo.nombre)
+            this.rolesList = new Map<number, string>();
+            let rol = data["roles"]
+            rol.forEach(rolInfo => {
+              if (this.user.rol == 2 && rolInfo.id != 1 && rolInfo.id != 2) {
+                this.rolesList.set(rolInfo.id, rolInfo.nombreRol);
+              } else if (this.user.rol == 1) {
+                this.rolesList.set(rolInfo.id, rolInfo.nombreRol);
+              }
             });
           },
           error => {
             if (error.status == 401 && error.error.errors == "Sesión expirada") {
               AppComponent.myapp.openDialogSesion();
-            }
-            else if (error.status == 406) {
+            } else if (error.status == 406) {
               const res = new Array();
               res.push("Petición incorrecta.");
               AppComponent.myapp.openDialog(res);
@@ -83,36 +113,7 @@ export class FormUserComponent implements OnInit {
             }
           });
     }
-    this.rolService.getRoles().pipe(first())
-      .subscribe(
-        data => {
-          this.rolesList = new Map<number, string>();
-          let rol = data["roles"]
-          rol.forEach(rolInfo => {
-            if (this.user.rol == 2 && rolInfo.id != 1 && rolInfo.id != 2) {
-              this.rolesList.set(rolInfo.id, rolInfo.nombreRol);
-            } else if (this.user.rol == 1) {
-              this.rolesList.set(rolInfo.id, rolInfo.nombreRol);
-            }
-          });
-        },
-        error => {
-          if (error.status == 401 && error.error.errors == "Sesión expirada") {
-            AppComponent.myapp.openDialogSesion();
-          } else if (error.status == 406) {
-            const res = new Array();
-            res.push("Petición incorrecta.");
-            AppComponent.myapp.openDialog(res);
-          }
-          else if (error.status == 500) {
-            const res = new Array();
-            res.push("Error del servidor, vuelva a intentarlo más tarde.");
-            AppComponent.myapp.openDialog(res);
-          }
-        });
-
     this.signupForm = this.createFormGroup();
-
   }
 
   createFormGroup(): FormGroup {
@@ -131,9 +132,11 @@ export class FormUserComponent implements OnInit {
       password: this.passwordFormControl,
       confirmPassword: this.confirmPasswordFormControl
     })
-    if (this.user.rol == 2) {
-      this.codigoCentro.setValue(this.user.codigoCentro);
-      this.obtenerFP(this.user.codigoCentro);
+    if (this.userLogged == true) {
+      if (this.user.rol == 2) {
+        this.codigoCentro.setValue(this.user.codigoCentro);
+        this.obtenerFP(this.user.codigoCentro);
+      }
     }
     return res;
   }
@@ -329,7 +332,7 @@ export class FormUserComponent implements OnInit {
             AppComponent.myapp.openDialog(arrayRes);
           },
           error => {
-            if(error.status == 409 && error.error.errors == "no se ha podido crear el usuario"){
+            if (error.status == 409 && error.error.errors == "no se ha podido crear el usuario") {
               const res = new Array();
               res.push("No se ha podido crear el usuario.");
               AppComponent.myapp.openDialog(res);
@@ -371,7 +374,7 @@ export class FormUserComponent implements OnInit {
             AppComponent.myapp.openDialog(arrayRes);
           },
           error => {
-            if(error.status == 409 && error.error.errors == "no se ha podido crear el alumno"){
+            if (error.status == 409 && error.error.errors == "no se ha podido crear el alumno") {
               const res = new Array();
               res.push("No se ha podido crear el alumno.");
               AppComponent.myapp.openDialog(res);
@@ -426,7 +429,7 @@ export class FormUserComponent implements OnInit {
             AppComponent.myapp.openDialog(arrayRes);
           },
           error => {
-            if(error.status == 409 && error.error.errors == "no se ha podido crear el profesor"){
+            if (error.status == 409 && error.error.errors == "no se ha podido crear el profesor") {
               const res = new Array();
               res.push("No se ha podido crear el profesor.");
               AppComponent.myapp.openDialog(res);
@@ -482,7 +485,7 @@ export class FormUserComponent implements OnInit {
             AppComponent.myapp.openDialog(arrayRes);
           },
           error => {
-            if(error.status == 409 && error.error.errors == "no se ha podido crear el tutor"){
+            if (error.status == 409 && error.error.errors == "no se ha podido crear el tutor") {
               const res = new Array();
               res.push("No se ha podido crear el tutor.");
               AppComponent.myapp.openDialog(res);

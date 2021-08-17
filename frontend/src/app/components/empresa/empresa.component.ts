@@ -50,12 +50,13 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
         this.router.navigate(['home']);
       }
 
-    }
-    this.getAll();
-    this.dataSource.filterPredicate = function (data, filter: string): boolean {
 
-      return data.cifEmpresa.toLowerCase().includes(filter) || data.nombre.toLowerCase().includes(filter) || data.direccion.toLowerCase().includes(filter) || data.telefono.toLowerCase().includes(filter) || data.correo.toLowerCase().includes(filter) || data.url.toLowerCase().includes(filter) || data.plazas.toString().includes(filter) || data.dineroBeca.toLowerCase().includes(filter);
-    };
+      this.getAll();
+      this.dataSource.filterPredicate = function (data, filter: string): boolean {
+
+        return data.cifEmpresa.toLowerCase().includes(filter) || data.nombre.toLowerCase().includes(filter) || data.direccion.toLowerCase().includes(filter) || data.telefono.toLowerCase().includes(filter) || data.correo.toLowerCase().includes(filter) || data.url.toLowerCase().includes(filter) || data.plazas.toString().includes(filter) || data.dineroBeca.toLowerCase().includes(filter);
+      };
+    }
   }
   getFps(empresaInfo) {
     var empresa = {

@@ -68,8 +68,9 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
         this.router.navigate(['home']);
       }
 
-    }
+    
     this.getAll();
+    }
   }
   getAll() {
     if (Number(this.user.rol) == 1) {

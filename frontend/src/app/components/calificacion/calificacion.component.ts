@@ -53,14 +53,14 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
         this.router.navigate(['home']);
       }
 
-    }
+    
     var aux=this.getAll();
     
     this.dataSource.filterPredicate = function (data, filter: string): boolean {
 
       return data.nombreUsuario.toLowerCase().includes(filter) || data.descripcion.toLowerCase().includes(filter) || data.apellidoUsuario.toLowerCase().includes(filter) || data.nota.toString().includes(filter);
     };
-    
+  }
   }
   getAll() {
     var res = [];
