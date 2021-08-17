@@ -4,6 +4,9 @@
 h1{
   text-align: center;
 }
-.boton1{
-  margin-left: 30%;
+.mt-15 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
 }
