@@ -28,7 +28,18 @@ module.exports = class Centro {
         await connection.end();
         return res;
     }
-
+    static async findCorreoCreate(correo) {
+        const connection = await promisePool.connection();
+        const res = await connection.query(`SELECT * FROM centro_educativo where correo = ${connection.escape(correo)}`);
+        await connection.end();
+        return res;
+    }
+    static async findTelefonoCreate(telefono) {
+        const connection = await promisePool.connection();
+        const res = await connection.query(`SELECT * FROM centro_educativo where telefono = ${connection.escape(telefono)} `);
+        await connection.end();
+        return res;
+    }
     static async getCentros() {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT * FROM centro_educativo WHERE nombre != '' `);

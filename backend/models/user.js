@@ -42,6 +42,14 @@ module.exports = class User {
         await connection.end();
         return res;
     }
+    static async findMovilCreate(movil) {
+        const connection = await promisePool.connection();
+        const res = await connection.query(
+            `SELECT * FROM usuario where movil =${connection.escape(movil)}`);
+        await connection.end();
+        return res;
+    }
+    
     static async findCorreo(correo, dni) {
         const connection = await promisePool.connection();
         const res = await connection.query(
