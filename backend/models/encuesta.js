@@ -49,7 +49,7 @@ module.exports = class ResultadoAprendizaje {
 
     }
     static async createEncuesta(encuesta, user) {
-        let observaciones = encuesta.observaciones == null ? null : `'${encuesta.observaciones}'`;
+        let observaciones = encuesta.observaciones == null ? null : `${encuesta.observaciones}`;
         const connection = await promisePool.connection().getConnection();       
         try {
             await connection.beginTransaction();
@@ -68,7 +68,7 @@ module.exports = class ResultadoAprendizaje {
 
     }
     static async updateEncuesta(encuesta, user) {
-        let observaciones = encuesta.observaciones == null ? null : `'${encuesta.observaciones}'`;
+        let observaciones = encuesta.observaciones == null ? null : `${encuesta.observaciones}`;
         const connection = await promisePool.connection().getConnection();       
         try {
             await connection.beginTransaction();

@@ -2,7 +2,7 @@
   box-sizing: border-box;
 }
 .custom-form {
-  min-width: 300px;
+  min-width: 200px;
   max-width: 80%;
   margin: 0px auto;
   background: rgba(255, 255, 255, 0.15);
@@ -55,5 +55,11 @@ h1 {
 @media only screen and (min-width: 1200px) {
   h1 {
     font-size: 3rem;
+    text-align: center;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .mat-form-field-has-label {
+    width: 100%;
   }
 }

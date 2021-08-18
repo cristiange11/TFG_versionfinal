@@ -1,9 +1,7 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const fileupload = require('express-fileupload');
+
 const app = express();
 const cors = require('cors');
-const busboy = require("connect-busboy");
 const helmet = require("helmet");
 const ports = process.env.PORT || 3000;
 const authRoutes = require('./routes/auth');

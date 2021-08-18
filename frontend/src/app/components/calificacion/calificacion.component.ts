@@ -54,7 +54,7 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
     
-    var aux=this.getAll();
+    this.getAll();
     
     this.dataSource.filterPredicate = function (data, filter: string): boolean {
 
@@ -63,7 +63,7 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   }
   getAll() {
-    var res = [];
+   
     if (Number(this.user.rol != 5)) {
       this.serviceSubscribe = this.calificacionService.getCalificaciones(Number(sessionStorage.getItem('codigoModulo'))).pipe(first())
         .subscribe(
@@ -75,9 +75,7 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
 
             });
             this.dataSource.data = this.calificacionList
-            this.calificacionList.forEach(calif =>{
-              res.push(calif)
-            })
+            
             
           },
           error => {
@@ -97,7 +95,7 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
             }
           });
     }
-    return res;
+    
   }
   public doFilter = (value: { target: HTMLInputElement }) => {
     const filterValue = value.target.value.trim().toLocaleLowerCase();

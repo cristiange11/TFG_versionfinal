@@ -5,13 +5,13 @@
         <input matInput type="text" (keyup)="doFilter($any($event))" placeholder="Buscar">
       </mat-form-field>
     </div>
-    <div *ngIf="this.userLogged == true">
-      <div class="col-md-1" *ngIf="this.user.rol == 1 || this.user.rol == 2"><button mat-raised-button id="dch"
+  
+      <div class="col-md-1" *ngIf="this.userLogged == true && (this.user.rol == 1 || this.user.rol == 2) "><button mat-raised-button id="dch"
           align="right" color="primary" (click)="add()">Crear</button></div>
-      <div class="col-md-1" *ngIf="this.user.rol == 5"><button mat-raised-button id="dch" align="right" color="primary"
+      <div class="col-md-1" *ngIf="this.userLogged == true && this.user.rol == 5"><button mat-raised-button id="dch" align="right" color="primary"
           (click)="descargarPDF()">Descargar calificaciones</button></div>
     </div>
-  </div>
+  
   <div class="example-container mat-elevation-z8">
 
     <table mat-table align="center" [dataSource]="dataSource" matSort class="mat-elevation-z8" cdkDropList>

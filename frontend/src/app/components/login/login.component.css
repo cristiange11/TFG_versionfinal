@@ -48,3 +48,12 @@
 a {
   float: right;
 }
+@media only screen and (max-width: 1200px) {
+  .mat-form-field-has-label {
+    width: 100%;
+  }
+  a{
+    
+    float: right;
+  }
+}

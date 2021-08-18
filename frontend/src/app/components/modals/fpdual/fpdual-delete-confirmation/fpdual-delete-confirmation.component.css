@@ -1,0 +1,9 @@
+h1{
+    text-align: center;
+}
+.mt-15 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
