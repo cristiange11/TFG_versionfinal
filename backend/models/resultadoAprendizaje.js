@@ -22,7 +22,7 @@ module.exports = class ResultadoAprendizaje {
             await connection.beginTransaction();
             let query = `DELETE FROM resultado_aprendizaje WHERE id =  ${connection.escape(id)}`;
             await connection.query(query);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha eliminado el resultado aprendizaje ${connection.escape(id)}" ,'${user}',sysdate(), 'resultado aprendizaje')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha eliminado el resultado aprendizaje " ${connection.escape(id)} ,'${user}',sysdate(), 'resultado aprendizaje')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
@@ -59,11 +59,11 @@ module.exports = class ResultadoAprendizaje {
             await connection.beginTransaction();
             let query = `UPDATE resultado_aprendizaje SET codigoModulo=${connection.escape(resultadoAprendizaje.codigoModulo)}, titulo=${connection.escape(resultadoAprendizaje.titulo)},descripcion=${connection.escape(resultadoAprendizaje.descripcion)} WHERE id = ${connection.escape(resultadoAprendizaje.id)}`;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado el resultado de aprendizaje con id ${connection.escape(resultadoAprendizaje.id)} ",'${user}',sysdate(), 'modulo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado el resultado de aprendizaje con id " ${connection.escape(resultadoAprendizaje.id)} ,'${user}',sysdate(), 'modulo')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_RESULTADOAPRENDIZAJE',"No se ha actualizado el resultado de aprendizaje con id ${connection.escape(resultadoAprendizaje.id)}",'${user}',sysdate(), 'modulo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_RESULTADOAPRENDIZAJE',"No se ha actualizado el resultado de aprendizaje con id " ${connection.escape(resultadoAprendizaje.id)},'${user}',sysdate(), 'modulo')`);
 
             throw err;
         } finally {

@@ -60,11 +60,11 @@ module.exports = class Alumno extends User {
             await connection.beginTransaction();
             let query = `DELETE FROM alumno WHERE dni = ${connection.escape(dni)} `;
             await connection.query(query);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha borrado alumno con DNI ${connection.escape(dni)} ",'${user}',sysdate(), 'alumno')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha borrado alumno con DNI "${connection.escape(dni)} ,'${user}',sysdate(), 'alumno')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_ALUMNO',"No se ha borrado el alumno con DNI ${connection.escape(dni)}",'${user}',sysdate(), 'alumno')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_ALUMNO',"No se ha borrado el alumno con DNI "${connection.escape(dni)},'${user}',sysdate(), 'alumno')`);
             
             throw err;
         } finally {
@@ -82,11 +82,11 @@ module.exports = class Alumno extends User {
             await connection.query(`INSERT INTO alumno(dni, numeroExpediente) VALUES (${connection.escape(alumno.dni)},${connection.escape(alumno.numeroExpediente)})`);
             await connection.query(`UPDATE fp_duales SET plazasDisponibles=plazasDisponibles-1 WHERE id = ${connection.escape(alumno.fpDual)}`);
             await connection.query(`INSERT INTO alumno_modulo (codigoModulo, dni) SELECT modulo.codigo, alumno.dni FROM modulo, alumno WHERE modulo.curso =1 AND alumno.dni=${connection.escape(alumno.dni)}`)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha añadido alumno con DNI ${connection.escape(alumno.dni)}",'${user}',sysdate(), 'alumno')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha añadido alumno con DNI " ${connection.escape(alumno.dni)},'${user}',sysdate(), 'alumno')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_ALUMNO',"No se ha añadido el alumno con DNI ${connection.escape(alumno.dni)}",'${user}',sysdate(), 'alumno')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_ALUMNO',"No se ha añadido el alumno con DNI " ${connection.escape(alumno.dni)},'${user}',sysdate(), 'alumno')`);
             
             throw err;
         } finally {
@@ -107,11 +107,11 @@ module.exports = class Alumno extends User {
                 const moduloInser = alum[i];
                 await connection.query(`INSERT INTO alumno_modulo (codigoModulo, dni) SELECT modulo.codigo, alumno.dni FROM modulo, alumno WHERE modulo.codigo = ${connection.escape(moduloInser)} AND alumno.dni='${alumno.dni}'`);
             }
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado alumno con DNI ${connection.escape(alumno.dni)} ",'${user}',sysdate(), 'alumno')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado alumno con DNI " ${connection.escape(alumno.dni)} ,'${user}',sysdate(), 'alumno')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_ALUMNO',"No se ha actualizado el alumno con DNI ${connection.escape(alumno.dni)}",'${user}',sysdate(), 'alumno')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_ALUMNO',"No se ha actualizado el alumno con DNI " ${connection.escape(alumno.dni)},'${user}',sysdate(), 'alumno')`);
             throw err;
         } finally {
             await connection.release();

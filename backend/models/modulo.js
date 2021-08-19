@@ -55,7 +55,7 @@ module.exports = class Modulo {
             await connection.beginTransaction();
             let query = `DELETE FROM modulo WHERE codigo =  ${connection.escape(codigo)}`;
             await connection.query(query);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null}, "Se ha eliminado el módulo ${connection.escape(codigo)}" ,'${user}',sysdate(), 'modulo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null}, "Se ha eliminado el módulo " ${connection.escape(codigo)} ,'${user}',sysdate(), 'modulo')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
@@ -75,7 +75,7 @@ module.exports = class Modulo {
             await connection.query(`DELETE FROM resultado_aprendizaje WHERE codigoModulo =  ${connection.escape(codigo)}`);
             await connection.query(`DELETE FROM encuesta WHERE codigoModulo =  ${connection.escape(codigo)}`);
             await connection.query(`DELETE FROM modulo WHERE codigo =  ${connection.escape(codigo)}`);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null}, "Se ha eliminado el módulo ${connection.escape(codigo)}" ,'${user}',sysdate(), 'modulo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null}, "Se ha eliminado el módulo "  ${connection.escape(codigo)} ,'${user}',sysdate(), 'modulo')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
@@ -92,11 +92,11 @@ module.exports = class Modulo {
             await connection.beginTransaction();
             let query = `INSERT INTO modulo(nombre, descripcion, curso, fpDual) VALUES (${connection.escape(modulo.nombre)},${connection.escape(modulo.descripcion)},${connection.escape(modulo.curso)}, ${connection.escape(modulo.fpDual)}) `;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha creado el modulo con nombre ${connection.escape(modulo.nombre)} ",'${user}',sysdate(), 'modulo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha creado el modulo con nombre  "  ${connection.escape(modulo.nombre)} ,'${user}',sysdate(), 'modulo')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_MODULO',"No se ha añadido modulo con el nombre ${connection.escape(modulo.nombre)}",'${user}',sysdate(), 'modulo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_MODULO',"No se ha añadido modulo con el nombre " ${connection.escape(modulo.nombre)},'${user}',sysdate(), 'modulo')`);
             throw err;
         } finally {
             await connection.release();
@@ -110,11 +110,11 @@ module.exports = class Modulo {
             await connection.beginTransaction();
             let query = `UPDATE modulo SET nombre=${connection.escape(modulo.nombre)}, descripcion=${connection.escape(modulo.descripcion)},curso=${connection.escape(modulo.curso)}, fpDual = ${connection.escape(modulo.fpDual)}, WHERE codigo = ${connection.escape(modulo.codigo)}`;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado el modulo con id ${connection.escape(modulo.codigo)} ",'${user}',sysdate(), 'modulo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado el modulo con id "${connection.escape(modulo.codigo)} ,'${user}',sysdate(), 'modulo')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_MODULO',"No se ha actualizado el modulo con id ${connection.escape(modulo.codigo)}",'${user}',sysdate(), 'modulo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_MODULO',"No se ha actualizado el modulo con id "${connection.escape(modulo.codigo)},'${user}',sysdate(), 'modulo')`);
             throw err;
         } finally {
             await connection.release();

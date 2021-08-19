@@ -36,7 +36,7 @@ module.exports = class ResultadoAprendizaje {
             await connection.beginTransaction();
             let query = `DELETE FROM encuesta WHERE id =  ${connection.escape(id)}`;
             await connection.query(query);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha eliminado la encuesta aprendizaje ${connection.escape(id)}" ,'${user}',sysdate(), 'encuesta')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha eliminado la encuesta aprendizaje " ${connection.escape(id)} ,'${user}',sysdate(), 'encuesta')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
@@ -55,11 +55,11 @@ module.exports = class ResultadoAprendizaje {
             await connection.beginTransaction();
             let query = `INSERT INTO encuesta(codigoModulo, titulo, descripcion, dniAlumno, dniTutorEmpresa, resultado, observaciones) VALUES (${connection.escape(encuesta.codigoModulo)},${connection.escape(encuesta.titulo)},${connection.escape(encuesta.descripcion)}, ${connection.escape(encuesta.dniAlumno)} , ${connection.escape(encuesta.dniTutorEmpresa)}, ${connection.escape(encuesta.resultado)} , ${connection.escape(observaciones)}) `;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha creado la encuesta con título ${connection.escape(encuesta.titulo)} ",'${user}',sysdate(), 'encuesta')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha creado la encuesta con título " ${connection.escape(encuesta.titulo)} ,'${user}',sysdate(), 'encuesta')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_ENCUESTA',"No se ha añadido la encuesta con título ${connection.escape(encuesta.titulo)}",'${user}',sysdate(), 'encuesta')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_ENCUESTA',"No se ha añadido la encuesta con título " ${connection.escape(encuesta.titulo)},'${user}',sysdate(), 'encuesta')`);
            
             throw err;
         } finally {
@@ -74,11 +74,11 @@ module.exports = class ResultadoAprendizaje {
             await connection.beginTransaction();
             let query = `UPDATE encuesta SET codigoModulo=${connection.escape(encuesta.codigoModulo)}, observaciones = ${connection.escape(observaciones)} , titulo=${connection.escape(encuesta.titulo)},descripcion=${connection.escape(encuesta.descripcion)}, resultado = ${connection.escape(encuesta.resultado)} WHERE id = ${connection.escape(encuesta.id)}`;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado la encuesta con id ${connection.escape(encuesta.id)} ",'${user}',sysdate(), 'encuesta')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado la encuesta con id " ${connection.escape(encuesta.id)} ,'${user}',sysdate(), 'encuesta')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_ENCUESTA',"No se ha actualizado la encuesta con id ${connection.escape(encuesta.id)}",'${user}',sysdate(), 'encuesta')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_ENCUESTA',"No se ha actualizado la encuesta con id " ${connection.escape(encuesta.id)},'${user}',sysdate(), 'encuesta')`);
             throw err;
         } finally {
             await connection.release();

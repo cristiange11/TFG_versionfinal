@@ -54,11 +54,11 @@ module.exports = class Centro {
             await connection.beginTransaction();
             let query = `DELETE FROM centro_educativo WHERE codigoCentro = ${connection.escape(codigoCentro)} `;
             await connection.query(query);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha eliminado el centro con codigoCentro ${connection.escape(codigoCentro)}",'${user}',sysdate(), 'centro educativo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha eliminado el centro con codigoCentro " ${connection.escape(codigoCentro)},'${user}',sysdate(), 'centro educativo')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_CENTRO',"No se ha borrado el centro con codigo centro ${connection.escape(codigoCentro)}",'${user}',sysdate(), 'centro educativo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_CENTRO',"No se ha borrado el centro con codigo centro " ${connection.escape(codigoCentro)},'${user}',sysdate(), 'centro educativo')`);
             throw err;
         } finally {
             await connection.release();
@@ -71,11 +71,11 @@ module.exports = class Centro {
             await connection.beginTransaction();
             let query = `INSERT INTO centro_educativo (codigoCentro, correo, telefono, provincia, nombre, CP, direccion) VALUES (${connection.escape(centro.codigoCentro)},${connection.escape(centro.correo)},${connection.escape(centro.telefono)},${connection.escape(centro.provincia)},${connection.escape(centro.nombre)},${connection.escape(centro.CP)},${connection.escape(centro.direccion)}) `;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha añadido centro con codigo ${connection.escape(centro.codigoCentro)} ",'${user}',sysdate(), 'centro educativo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha añadido centro con codigo " ${connection.escape(centro.codigoCentro)} ,'${user}',sysdate(), 'centro educativo')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_CENTRO',"No se ha añadido el centro con codigo centro ${connection.escape(centro.codigoCentro)}",'${user}',sysdate(), 'centro educativo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_CENTRO',"No se ha añadido el centro con codigo centro " ${connection.escape(centro.codigoCentro)},'${user}',sysdate(), 'centro educativo')`);
 
             throw err;
         } finally {
@@ -90,11 +90,11 @@ module.exports = class Centro {
             await connection.beginTransaction();
             let query = `UPDATE centro_educativo SET correo=${connection.escape(centro.correo)},telefono=${connection.escape(centro.telefono)},provincia=${connection.escape(centro.provincia)}, nombre=${connection.escape(centro.nombre)},CP=${connection.escape(centro.CP)},direccion=${connection.escape(centro.direccion)} WHERE codigoCentro = ${connection.escape(centro.codigoCentro)}`;
             await connection.query(query);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado todo lo asociado al centro ${connection.escape(centro.codigoCentro)}" ,'${user}',sysdate(), 'centro educativo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado todo lo asociado al centro " ${connection.escape(centro.codigoCentro)} ,'${user}',sysdate(), 'centro educativo')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_CENTRO',"No se ha podido actualizar el centro ${connection.escape(centro.codigoCentro)}" ,'${user}',sysdate(), 'centro educativo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_CENTRO',"No se ha podido actualizar el centro " ${connection.escape(centro.codigoCentro)} ,'${user}',sysdate(), 'centro educativo')`);
 
 
             throw err;

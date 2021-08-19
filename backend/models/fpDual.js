@@ -34,11 +34,11 @@ module.exports = class FP_dual {
             await connection.query(`DELETE FROM empresa_fpdual  WHERE idFp =${connection.escape(fpDual)}`);
             await connection.query(`DELETE FROM modulo WHERE fpDual =  ${connection.escape(fpDual)}`);
             await connection.query(`DELETE FROM fp_duales WHERE id = ${connection.escape(fpDual)}`);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha borrado el FP ${connection.escape(fpDual)} y todo lo asociado",'${user}',sysdate(), 'FP')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha borrado el FP " ${connection.escape(fpDual)},'${user}',sysdate(), 'FP')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK" + err);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_FP',"No Se ha borrado el FP ${connection.escape(fpDual)}",'${user}',sysdate(), 'FP')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_FP',"No Se ha borrado el FP " ${connection.escape(fpDual)},'${user}',sysdate(), 'FP')`);
             throw err;
         } finally {
             await connection.release();
@@ -79,11 +79,11 @@ module.exports = class FP_dual {
             await connection.beginTransaction();
             let query = `DELETE FROM fp_duales WHERE id = ${connection.escape(id)} `;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha borrado el FP ${connection.escape(id)}",'${user}',sysdate(), 'FP')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha borrado el FP " ${connection.escape(id)},'${user}',sysdate(), 'FP')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_FP',"No se ha borrado el FP ${connection.escape(id)} ",'${user}',sysdate(), 'FP')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_FP',"No se ha borrado el FP " ${connection.escape(id)} ,'${user}',sysdate(), 'FP')`);
             
             throw err;
         } finally {
@@ -117,11 +117,11 @@ module.exports = class FP_dual {
             await connection.beginTransaction();
             let query = `UPDATE fp_duales SET nombre=${connection.escape(fp.nombre)},descripcion=${connection.escape(fp.descripcion)},totalPlazas=${connection.escape(fp.totalPlazas)} ,anio=${connection.escape(fp.anio)},codigoCentro=${connection.escape(fp.codigoCentro)},plazasDisponibles=${connection.escape(fp.plazasDisponibles)} WHERE id = ${connection.escape(fp.id)} `;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualiza el FP ${connection.escape(fp.id)}",'${user}',sysdate(), 'FP')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualiza el FP " ${connection.escape(fp.id)},'${user}',sysdate(), 'FP')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_FP',"No se ha actualizado FP ${connection.escape(fp.id)} ",'${user}',sysdate(), 'FP')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_FP',"No se ha actualizado FP " ${connection.escape(fp.id)},'${user}',sysdate(), 'FP')`);
             
             throw err;
         } finally {

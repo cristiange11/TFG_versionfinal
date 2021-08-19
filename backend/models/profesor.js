@@ -31,12 +31,12 @@ module.exports = class Profesor extends User {
             await connection.beginTransaction();
             let query = `DELETE FROM profesor WHERE dni = ${connection.escape(dni)} `;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha borrado profesor con DNI ${connection.escape(dni)} ",'${user}',sysdate(), 'profesor')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha borrado profesor con DNI " ${connection.escape(dni)} ,'${user}',sysdate(), 'profesor')`);
 
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_PROFESOR',"No se ha borrado profesor con DNI ${connection.escape(dni)} ",'${user}',sysdate(), 'profesor')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_PROFESOR',"No se ha borrado profesor con DNI " ${connection.escape(dni)} ,'${user}',sysdate(), 'profesor')`);
             throw err;
         } finally {
             await connection.release();
@@ -58,12 +58,12 @@ module.exports = class Profesor extends User {
 
                 await connection.query(`INSERT INTO profesor_modulo (codigoModulo, dni) SELECT modulo.codigo, profesor.dni FROM modulo, profesor WHERE modulo.codigo = ${connection.escape(moduloInser)} AND profesor.dni=${connection.escape(profesor.dni)}`);
             }
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha añadido profesor con DNI ${connection.escape(profesor.dni)} ",'${user}',sysdate(), 'profesor')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha añadido profesor con DNI " ${connection.escape(profesor.dni)} ,'${user}',sysdate(), 'profesor')`);
 
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_PROFESOR',"No se ha añadido profesor con DNI ${connection.escape(profesor.dni)}",'${user}',sysdate(), 'profesor')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_PROFESOR',"No se ha añadido profesor con DNI " ${connection.escape(profesor.dni)},'${user}',sysdate(), 'profesor')`);
             throw err;
         } finally {
             await connection.release();
@@ -85,11 +85,11 @@ module.exports = class Profesor extends User {
 
                 await connection.query(`INSERT INTO profesor_modulo (codigoModulo, dni) SELECT modulo.codigo, profesor.dni FROM modulo, profesor WHERE modulo.codigo = ${connection.escape(moduloInser)} AND profesor.dni=${connection.escape(profesor.dni)}`);
             }
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado profesor con DNI ${connection.escape(profesor.dni)} ",'${user}',sysdate(), 'profesor')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado profesor con DNI " ${connection.escape(profesor.dni)} ,'${user}',sysdate(), 'profesor')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_PROFESOR',"No se ha actualizado profesor con DNI ${connection.escape(profesor.dni)} ",'${user}',sysdate(), 'profesor')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_PROFESOR',"No se ha actualizado profesor con DNI " ${connection.escape(profesor.dni)} ,'${user}',sysdate(), 'profesor')`);
             throw err;
         } finally {
             await connection.release();

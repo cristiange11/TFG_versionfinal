@@ -105,11 +105,11 @@ module.exports = class Empresa {
                 id = element.id
             });
             await connection.query(`INSERT INTO empresa_fpdual(idFp, idEmpresa, becas, plazas, dineroBeca) VALUES (${connection.escape(empresa.fpDual)},${id},${connection.escape(empresa.becas)},${connection.escape(empresa.plazas)}, ${connection.escape(empresa.dineroBeca)})`);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha añadido empresa con CIF ${connection.escape(empresa.cifEmpresa)} ",'${user}',sysdate(), 'empresa')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha añadido empresa con CIF " ${connection.escape(empresa.cifEmpresa)} ,'${user}',sysdate(), 'empresa')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK " + err);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_EMPRESA',"No se ha añadido empresa con CIF ${connection.escape(empresa.cifEmpresa)}",'${user}',sysdate(), 'empresa')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_EMPRESA',"No se ha añadido empresa con CIF " ${connection.escape(empresa.cifEmpresa)},'${user}',sysdate(), 'empresa')`);
             throw err;
         } finally {
             await connection.release();
@@ -123,11 +123,11 @@ module.exports = class Empresa {
             let query = `UPDATE empresa SET direccion=${connection.escape(empresa.direccion)},nombre=${connection.escape(empresa.nombre)}, correo=${connection.escape(empresa.correo)},telefono=${connection.escape(empresa.telefono)},url=${connection.escape(empresa.url)} WHERE id = ${connection.escape(empresa.id)}`;
             await connection.query(query)
             await connection.query(`UPDATE empresa_fpdual SET becas=${connection.escape(empresa.becas)} ,plazas=${connection.escape(empresa.plazas)}, dineroBeca = ${connection.escape(empresa.dineroBeca)} WHERE idEmpresa = ${connection.escape(empresa.id)} `);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado empresa con CIF ${connection.escape(empresa.cifEmpresa)} ",'${user}',sysdate(), 'empresa')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado empresa con CIF " ${connection.escape(empresa.cifEmpresa)} ,'${user}',sysdate(), 'empresa')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_EMPRESA',"No se ha actualizado empresa con CIF ${connection.escape(empresa.cifEmpresa)}",'${user}',sysdate(), 'empresa')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_EMPRESA',"No se ha actualizado empresa con CIF " ${connection.escape(empresa.cifEmpresa)},'${user}',sysdate(), 'empresa')`);
             throw err;
         } finally {
             await connection.release();

@@ -20,10 +20,11 @@
 
     </mat-form-field>
   </div>
-  <div class="row">
-    <div class="col-md-11"><a routerLink="/recovery">¿Olvidaste la contrase&ntilde;a?</a></div>
-  </div>
+  
   <button class="boton-envio" [disabled]="!loginForm.valid" type="submit">
     <span>Iniciar Sesión</span>
   </button>
+  <div class="row enlace-margin-top">
+    <div class="col-md-12 enlace"><a routerLink="/recovery">¿Olvidaste la contrase&ntilde;a?</a></div>
+  </div>
 </form>

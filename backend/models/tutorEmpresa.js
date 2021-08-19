@@ -36,12 +36,12 @@ module.exports = class TutorEmpresa {
             await connection.beginTransaction();
             let query = `DELETE FROM tutor_empresa WHERE dni = ${connection.escape(dni)} `;
             await connection.query(query);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha borrado tutor empresa con DNI ${connection.escape(dni)}",'${user}',sysdate(), 'tutor de empresa')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha borrado tutor empresa con DNI " ${connection.escape(dni)},'${user}',sysdate(), 'tutor de empresa')`);
 
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_TUTOR',"No se ha borrado tutor empresa con DNI ${connection.escape(dni)} ",'${user}',sysdate(), 'tutor de empresa')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_TUTOR',"No se ha borrado tutor empresa con DNI " ${connection.escape(dni)} ,'${user}',sysdate(), 'tutor de empresa')`);
             throw err;
         } finally {
             await connection.release();
@@ -60,11 +60,11 @@ module.exports = class TutorEmpresa {
                 const moduloInser = tutor[i];
                 await connection.query(`INSERT INTO tutor_modulo (codigoModulo, dni) SELECT modulo.codigo, tutor_empresa.dni FROM modulo, tutor_empresa WHERE modulo.codigo = ${connection.escape(moduloInser)} AND tutor_empresa.dni=${connection.escape(tutorEmpresa.dni)}`);
             }
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha añadido tutor empresa con DNI ${connection.escape(tutorEmpresa.dni)} ",'${user}',sysdate(), 'tutor de empresa')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha añadido tutor empresa con DNI " ${connection.escape(tutorEmpresa.dni)} ,'${user}',sysdate(), 'tutor de empresa')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_TUTOR',"No se ha añadido tutor empresa con DNI ${connection.escape(tutorEmpresa.dni)} ",'${user}',sysdate(), 'tutor de empresa')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_TUTOR',"No se ha añadido tutor empresa con DNI " ${connection.escape(tutorEmpresa.dni)} ,'${user}',sysdate(), 'tutor de empresa')`);
             throw err;
         } finally {
             await connection.release();
@@ -83,11 +83,11 @@ module.exports = class TutorEmpresa {
                 const moduloInser = tutorModulo[i];
                 await connection.query(`INSERT INTO tutor_modulo (codigoModulo, dni) SELECT modulo.codigo, tutor_empresa.dni FROM modulo, tutor_empresa WHERE modulo.codigo = ${connection.escape(moduloInser)} AND tutor_empresa.dni=${connection.escape(tutor.dni)}`);
             }
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado tutor empresa con DNI ${connection.escape(tutor.dni)} ",'${user}',sysdate(), 'tutor de empresa')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado tutor empresa con DNI " ${connection.escape(tutor.dni)} ,'${user}',sysdate(), 'tutor de empresa')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_TUTOR',"No se ha actualizado tutor empresa con DNI ${connection.escape(tutor.dni)}",'${user}',sysdate(), 'tutor de empresa')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_TUTOR',"No se ha actualizado tutor empresa con DNI " ${connection.escape(tutor.dni)},'${user}',sysdate(), 'tutor de empresa')`);
             throw err;
         } finally {
             await connection.release();
