@@ -25,8 +25,7 @@ router.post(
       .matches(/^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/),
     body('apellidos').trim().not().isEmpty().withMessage("Apellidos vacío"),
     body('rol').trim().not().isEmpty().withMessage("Rol vacío")
-    .custom(async (rol) => {
-     
+    .custom(async (rol) => {   
       if(!isNaN(rol)){
         const user = await Rol.getRol(rol);
       if (user[0].length == 0) {
@@ -34,8 +33,7 @@ router.post(
       }
       }else{
         return Promise.reject('Campo erróneo');
-      }
-      
+      }     
     }),
     body('fechaNacimiento').trim().not().isEmpty().withMessage("Fecha de nacimiento vacía")  
       .matches(/^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/).withMessage("Formato fecha incorrecto: yyyy/mm/dd"),

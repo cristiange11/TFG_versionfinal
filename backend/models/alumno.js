@@ -1,6 +1,6 @@
 const promisePool = require('../util/database');
 const User = require('./user');
-const mysql = require('mysql');
+
 module.exports = class Alumno extends User {
     constructor(json) {
         super(json);

@@ -3,10 +3,10 @@ const config = require('../config/config.json');
 
 exports.connection = function (){
     const pool =  mysql.createPool({
-        host: 'localhost',
-        user: 'root',
-        database: 'tfg',
-        password: ''
+        host: config.host,
+        user: config.user,
+        database: config.database,
+        password: config.password
     });
     return pool.promise();
 }

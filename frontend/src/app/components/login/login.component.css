@@ -42,13 +42,19 @@
   width: 100%;
 }
 
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 1400px) {
   .mat-form-field-has-label {
-    width: 100%;
+    width: 80%;
   }
-  
+  .enlace{
+    text-align: center;
+    height:5%;
+  }
+  .row.enlace-margin-top{
+    margin-top:4%;
+  }
 }
 .enlace{
   text-align: center;
-  padding-top: 5%;
+  padding-top: 2%;
 }

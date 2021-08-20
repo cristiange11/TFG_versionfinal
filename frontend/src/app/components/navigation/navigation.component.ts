@@ -1,10 +1,8 @@
 import { Component, OnInit, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { icon } from '@fortawesome/fontawesome-svg-core';
-
 import { CookieService } from 'ngx-cookie-service';
 import { MenuItem } from 'primeng/api';
-import { AppComponent } from 'src/app/app.component';
+
 
 @Component({
   selector: 'app-navigation',
@@ -70,7 +68,7 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
             icon: "fas fa-building"
           },
           {
-            label: 'Registrar Usuario',
+            label: 'Registrar usuario',
             routerLink: '/formuser',
             icon: "fas fa-user-plus"
           },
