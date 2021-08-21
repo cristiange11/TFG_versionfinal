@@ -42,16 +42,29 @@
   width: 100%;
 }
 
-@media only screen and (max-width: 1400px) {
+@media only screen and (max-width: 1000px) {
   .mat-form-field-has-label {
     width: 80%;
   }
   .enlace{
     text-align: center;
-    height:5%;
+    height:2%;
   }
   .row.enlace-margin-top{
-    margin-top:4%;
+    margin-top:1%;
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .mat-form-field-has-label {
+    width: 80%;
+  }
+  .enlace{
+    text-align: center;
+    height:2%;
+  }
+  .row.enlace-margin-top{
+    margin-top:6%;
   }
 }
 .enlace{
