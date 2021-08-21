@@ -8,7 +8,7 @@ import { Modulo } from '../models/Modulo';
   providedIn: 'root'
 })
 export class ModuloService {
-  private url = "http://localhost:3000/modulo";
+  private url = "http://3.140.131.165:3000/modulo";
 
   constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { }
   getModulos(fpDual : number): Observable<JSON[] >{   

@@ -12,7 +12,7 @@ import { TutorEmpresa } from "../models/TutorEmpresa";
   providedIn: 'root'
 })
 export class TutorEmpresaService {
-  private url = "http://localhost:3000/tutor";
+  private url = "http://3.140.131.165:3000/tutor";
   
   
   constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { }

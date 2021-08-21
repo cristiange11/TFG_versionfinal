@@ -10,7 +10,7 @@ import { Fpduales } from '../models/Fpduales';
   providedIn: 'root'
 })
 export class FpdualesService {
-  private url = "http://localhost:3000/fpduales";
+  private url = "http://3.140.131.165:3000/fpduales";
  
   constructor(private cookieService: CookieService, private http: HttpClient, private router: Router ) { 
   }

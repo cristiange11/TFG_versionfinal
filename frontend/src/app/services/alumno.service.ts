@@ -7,7 +7,7 @@ import { Alumno } from "../models/Alumno";
   providedIn: 'root'
 })
 export class AlumnoService {
-  private url = "http://localhost:3000/alumno";
+  private url = "http://3.140.131.165:3000/alumno";
 
   constructor(private cookieService: CookieService, private http: HttpClient) { }
 
