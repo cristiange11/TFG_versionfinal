@@ -3,7 +3,7 @@ const { body } = require('express-validator');
 const router = express.Router();
 
 const User = require('../models/user');
-const Fpdual = require('../models/fpdual');
+const Fpdual = require('../models/fpDual');
 const Centro = require('../models/centro');
 const Empresa= require('../models/empresa');
 const Rol = require('../models/roles');
