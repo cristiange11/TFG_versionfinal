@@ -9,6 +9,7 @@ import { User } from "../models/User";
 export class AuthService {
   private url = "http://3.140.131.165:3000/auth";
 
+
   isUserLoggedIn$ : BehaviorSubject<User>;
   public user: Observable<User>;
   userDni: Pick<User, "dni">;

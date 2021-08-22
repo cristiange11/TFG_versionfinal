@@ -203,6 +203,6 @@ import { SesionComponent } from './components/modals/sesion/sesion.component';
 
   providers: [ConfirmationService, MessageService, CookieService, DatePipe, NavigationComponent],
   bootstrap: [AppComponent],
-  entryComponents: [ModalComponent]
+  entryComponents: [ModalComponent, SesionComponent, ModuloDeleteConfirmationComponent, CalificacionUpdateComponent, CalificacionCreateComponent, UsuarioDeleteConfirmationComponent, EncuestaCreateComponent,EncuestaUpdateComponent, ResultadoAprendizajeCreateComponent, ResultadoAprendizajeUpdateComponent, ModuloCreateComponent, ModuloUpdateComponent, UsuarioUpdateComponent, FpdualDeleteConfirmationComponent, FpdualUpdateComponent, FpdualCreateComponent, EmpresaCreateComponent, EmpresaUpdateComponent, EmpresaDeleteConfirmationComponent,  DeleteComponent, CentroUpdateComponent, CentroDeleteConfirmationComponent, CentroCreateComponent]
 })
 export class AppModule { }

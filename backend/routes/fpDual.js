@@ -109,6 +109,7 @@ router.put(
         else if(plazasDisponibles <= 0){         
           return Promise.reject('Mínimo 1 plaza');  
         }else if(plazasDisponibles > req.body.totalPlazas){ 
+          console.log(plazasDisponibles + " ahora totalPalzas " + req.body.totalPlazas)
           return Promise.reject('Plazas disponibles < total plazas');  
         }
     })
