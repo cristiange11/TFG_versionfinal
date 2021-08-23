@@ -47,15 +47,9 @@ export class FormUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (!this.cookieService.get('user')) {
-      this.router.navigate(['home']);
-    }
-    else {
-      this.userLogged = true;
+    
       this.user = (JSON.parse(this.cookieService.get('user')));
-      if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2) {
-        this.router.navigate(['home']);
-      }
+    
 
       if (this.user.rol == 1) {
         this.centroService.getCentros().pipe(first())
@@ -112,7 +106,7 @@ export class FormUserComponent implements OnInit {
               AppComponent.myapp.openDialog(res);
             }
           });
-    }
+    
     this.signupForm = this.createFormGroup();
   }
 

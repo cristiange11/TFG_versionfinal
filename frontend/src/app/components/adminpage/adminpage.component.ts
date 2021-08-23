@@ -16,7 +16,8 @@ import { CentroDeleteConfirmationComponent } from '../modals/centro/centro-delet
 import { CentroCreateComponent } from '../modals/centro/centro-create/centro-create.component';
 import { CookieService } from 'ngx-cookie-service';
 import { NavigationComponent } from '../navigation/navigation.component';
-
+import { AuthGuardService} from '../../guards/auth-guards.service';
+import {AuthService} from '../../guards/auth.service';
 @Component({
   selector: 'app-adminpage',
   templateUrl: './adminpage.component.html',
@@ -40,22 +41,14 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
     document.body.style.background = "linear-gradient(to right, #2d66c9, #1dcd65)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
     this.dataSource = new MatTableDataSource<Centro>();
+    this.getAll();
+
   }
 
   ngOnInit(): void {
     
     this.nagivationComponent.obtenerItems();
-    this.getAll();
-    if (!this.cookieService.get('user')) {
-      this.router.navigate(['home']);
-    }
-    else {
-      var user = (JSON.parse(this.cookieService.get('user')));
-      if (Number(user.rol) != 1) {
-        this.router.navigate(['home']);
-      }
-
-    }
+    
     this.dataSource.filterPredicate = function (data, filter: string): boolean {
 
       return data.nombre.toLowerCase().includes(filter) || data.provincia.toLowerCase().includes(filter) || data.direccion.toLowerCase().includes(filter) || data.telefono.toLowerCase().includes(filter) || data.correo.toLowerCase().includes(filter) || data.CP.toLowerCase().includes(filter);

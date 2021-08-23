@@ -45,16 +45,9 @@ export class FpdualComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     this.nagivationComponent.obtenerItems();
 
-    if (!this.cookieService.get('user')) {
-      this.router.navigate(['home']);
-    }
-    else {
-      this.user = (JSON.parse(this.cookieService.get('user')));
-      if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2) {
-        this.router.navigate(['home']);
-      }
+    this.user = (JSON.parse(this.cookieService.get('user')));
       this.getAll();
-    }
+    
     
 
     this.dataSource.filterPredicate = function (data, filter: string): boolean {

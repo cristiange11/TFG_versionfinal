@@ -104,7 +104,7 @@
     <mat-error *ngIf="this.signupForm.get('genero').errors?.serverError">{{
       this.signupForm.get('genero').errors?.serverError }}</mat-error>
   </mat-form-field>
-  <mat-form-field *ngIf="this.numero!=1 && this.userLogged==true && this.user.rol==1" appearance="fill">
+  <mat-form-field *ngIf="this.numero!=1  && this.user.rol==1" appearance="fill">
     <mat-label>Centro educativo</mat-label>
     <mat-select matNativeControl required [formControl]="codigoCentro" (selectionChange)="obtenerFP($event.value)">
       <mat-option *ngFor="let centro of centroList | keyvalue" [value]="centro.key">{{ centro.value }}</mat-option>

@@ -45,17 +45,9 @@ export class EncuestaComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     this.nagivationComponent.obtenerItems();
 
-    if (!this.cookieService.get('user')) {
-      this.router.navigate(['home']);
-    }
-    else {
-      this.userLogged = true;
+    
       this.user = (JSON.parse(this.cookieService.get('user')));
-      if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2 && Number(this.user.rol) != 4 && Number(this.user.rol) != 3 && Number(this.user.rol) != 5) {
-        this.router.navigate(['home']);
-      }
-
-
+     
       if (Number(this.user.rol) == 3) {
         this.columnsToDisplay = [...this.displayedColumns, 'actions'];
       }
@@ -72,7 +64,7 @@ export class EncuestaComponent implements OnInit, OnDestroy, AfterViewInit {
         return data.titulo.toLowerCase().includes(filter) || data.descripcion.toLowerCase().includes(filter) || data.resultado.toString().includes(filter) || data.nombreApellidoAlumno.toLowerCase().includes(filter) || data.nombreApellidoTutor.toLowerCase().includes(filter);
       };
       this.getAll();
-    }
+    
   }
   getAll() {
     if (Number(this.user.rol) != 3) {

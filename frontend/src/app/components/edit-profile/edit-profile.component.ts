@@ -37,19 +37,9 @@ export class EditProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.user = (JSON.parse(this.cookieService.get('user')));
     this.editForm = this.createFormGroup();
-    if (!this.cookieService.get('user')) {
-      this.router.navigate(['home']);
-    }
-    else {
-      this.user = (JSON.parse(this.cookieService.get('user')));
-
-      if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2 && Number(this.user.rol) != 4 && Number(this.user.rol) != 3 && Number(this.user.rol) != 5) {
-        this.router.navigate(['home']);
-      }
-
-
-     
+  
       this.editForm.get('nombre').setValue(this.user.nombre);
       this.editForm.get('apellidos').setValue(this.user.apellidos);
       this.editForm.get('direccion').setValue(this.user.direccion);
@@ -59,7 +49,7 @@ export class EditProfileComponent implements OnInit {
       this.editForm.get('fechaNacimiento').setValue(this.datepipe.transform(this.user.fechaNacimiento, "YYYY-MM-dd"));
       this.editForm.get('genero').setValue(this.user.genero);
 
-    }
+    
   }
   checkConfirmPassword(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null =>

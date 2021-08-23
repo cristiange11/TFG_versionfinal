@@ -17,21 +17,22 @@ import { EncuestaComponent } from './components/encuesta/encuesta.component';
 import { LogComponent } from './components/log/log.component';
 import { CalificacionComponent } from './components/calificacion/calificacion.component';
 import { ResetContrasenaComponent } from './components/reset-contrasena/reset-contrasena.component';
+import { AuthGuardService as AuthGuard } from './guards/auth-guards.service';
 const routes: Routes = [
   {path: "", component: HomeComponent},
   {path: "navigation", component: NavigationComponent},
-  {path: "adminpage", component: AdminpageComponent},
+  {path: "adminpage", component: AdminpageComponent, canActivate: [AuthGuard] },
   {path: "login", component: LoginComponent},
-  {path: "formuser", component: FormUserComponent},
-  {path: "editprofile", component: EditProfileComponent},
-  {path: "fpdual", component: FpdualComponent},
-  {path: "empresa", component: EmpresaComponent},
-  {path: "usuario", component: UsuarioComponent},
-  {path: "modulo", component: ModuloComponent},
-  {path: "resultadoaprendizaje", component: ResultadoAprendizajeComponent},
-  {path: "encuesta", component: EncuestaComponent},
-  {path: "log", component: LogComponent},
-  {path: "calificacion", component: CalificacionComponent},
+  {path: "formuser", component: FormUserComponent, canActivate: [AuthGuard]},
+  {path: "editprofile", component: EditProfileComponent, canActivate: [AuthGuard] },
+  {path: "fpdual", component: FpdualComponent, canActivate: [AuthGuard]},
+  {path: "empresa", component: EmpresaComponent, canActivate: [AuthGuard]},
+  {path: "usuario", component: UsuarioComponent, canActivate: [AuthGuard]},
+  {path: "modulo", component: ModuloComponent, canActivate: [AuthGuard]},
+  {path: "resultadoaprendizaje", component: ResultadoAprendizajeComponent, canActivate: [AuthGuard]},
+  {path: "encuesta", component: EncuestaComponent, canActivate: [AuthGuard]},
+  {path: "log", component: LogComponent, canActivate: [AuthGuard]},
+  {path: "calificacion", component: CalificacionComponent, canActivate: [AuthGuard]},
   {path: "reset", component: ResetContrasenaComponent},
   {path: "recovery", component: RecoveryComponent},
   {path: "**", redirectTo: ""}

@@ -328,7 +328,7 @@ exports.RecoveryPassword = async (req, res, next) => {
           html: '<h1>Solicitud de cambio de contraseña</h1>' +
             '<p>Hemos recibido una solicitud de cambio de contraseña para tu cuenta de App Dual.</p>' +
             '</br><p>Este enlace caducará en 24 horas. Si no has solicitado un cambio de contraseña, ignora este correo electrónico y no se realizará ningún cambio en tu cuenta.</p>' +
-            `<a href = http://localhost:4200/reset?user=${correo}&token=${token}>RESET PASSWORD</a>`,
+            `<a href = http://bucket-front-end.s3-website.us-east-2.amazonaws.com/reset?user=${correo}&token=${token}>RESET PASSWORD</a>`,
         };
         transporter.sendMail(mailOptions, function (error, info) {
           if (error) {

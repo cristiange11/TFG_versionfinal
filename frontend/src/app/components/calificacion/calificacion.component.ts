@@ -42,17 +42,7 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.nagivationComponent.obtenerItems();
-
-    if (!this.cookieService.get('user')) {
-      this.router.navigate(['home']);
-    }
-    else {
-      this.user = (JSON.parse(this.cookieService.get('user')));
-      
-      if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2 && Number(this.user.rol) != 4) {
-        this.router.navigate(['home']);
-      }
-
+    this.user = (JSON.parse(this.cookieService.get('user')));
     
     this.getAll();
     
@@ -60,7 +50,7 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
 
       return data.nombreUsuario.toLowerCase().includes(filter) || data.descripcion.toLowerCase().includes(filter) || data.apellidoUsuario.toLowerCase().includes(filter) || data.nota.toString().includes(filter);
     };
-  }
+  
   }
   getAll() {
    

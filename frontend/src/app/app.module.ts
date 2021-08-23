@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -93,6 +93,10 @@ import { RecoveryComponent } from './components/recovery/recovery.component';
 import { PasswordComponent } from './components/modals/password/password.component';
 import { ModuloDeleteConfirmationComponent } from './components/modals/modulo/modulo-delete-confirmation/modulo-delete-confirmation.component';
 import { SesionComponent } from './components/modals/sesion/sesion.component';
+import { AuthGuardService} from './guards/auth-guards.service';
+import {AuthService} from './guards/auth.service';
+import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -134,7 +138,6 @@ import { SesionComponent } from './components/modals/sesion/sesion.component';
     ToastModule,
     InputTextModule,
     ProgressBarModule,
-    HttpClientModule,
     FileUploadModule,
     ToolbarModule,
     RatingModule,
@@ -153,7 +156,8 @@ import { SesionComponent } from './components/modals/sesion/sesion.component';
     MatSelectModule,
     MatTableFilterModule,
     MatInputModule ,
-    MDBBootstrapModule.forRoot() 
+    MDBBootstrapModule.forRoot() ,
+    
   ],
   declarations: [
     AppComponent,
@@ -201,7 +205,7 @@ import { SesionComponent } from './components/modals/sesion/sesion.component';
     
   ],
 
-  providers: [ConfirmationService, MessageService, CookieService, DatePipe, NavigationComponent],
+  providers: [ConfirmationService, MessageService, CookieService, DatePipe,HomeComponent,  NavigationComponent, AuthGuardService, AuthService, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },JwtHelperService],
   bootstrap: [AppComponent],
   entryComponents: [ModalComponent, SesionComponent, ModuloDeleteConfirmationComponent, CalificacionUpdateComponent, CalificacionCreateComponent, UsuarioDeleteConfirmationComponent, EncuestaCreateComponent,EncuestaUpdateComponent, ResultadoAprendizajeCreateComponent, ResultadoAprendizajeUpdateComponent, ModuloCreateComponent, ModuloUpdateComponent, UsuarioUpdateComponent, FpdualDeleteConfirmationComponent, FpdualUpdateComponent, FpdualCreateComponent, EmpresaCreateComponent, EmpresaUpdateComponent, EmpresaDeleteConfirmationComponent,  DeleteComponent, CentroUpdateComponent, CentroDeleteConfirmationComponent, CentroCreateComponent]
 })

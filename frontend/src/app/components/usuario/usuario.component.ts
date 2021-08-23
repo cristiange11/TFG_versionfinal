@@ -59,18 +59,12 @@ export class UsuarioComponent implements OnInit, OnDestroy, AfterViewInit {
 
       }
     };
-    if (!this.cookieService.get('user')) {
-      this.router.navigate(['home']);
-    }
-    else {
+    
       this.user = (JSON.parse(this.cookieService.get('user')));
-      if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2) {
-        this.router.navigate(['home']);
-      }
-
+     
     
     this.getAll();
-    }
+    
   }
   getAll() {
     if (Number(this.user.rol) == 1) {

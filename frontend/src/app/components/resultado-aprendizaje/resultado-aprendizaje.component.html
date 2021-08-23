@@ -7,7 +7,7 @@
     </div>
 
     <div class="col-md-1"
-      *ngIf="this.userLogged == true && (this.user.rol == 1 || this.user.rol == 2 || this.user.rol == 4)"><button
+      *ngIf=" (this.user.rol == 1 || this.user.rol == 2 || this.user.rol == 4)"><button
         mat-raised-button id="dch" align="right" color="primary" (click)="add()">Crear</button>
 
     </div>
