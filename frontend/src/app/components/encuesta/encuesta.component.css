@@ -37,3 +37,6 @@ td.mat-footer-cell {
   position: sticky ;
   width: 100%;
 }
+::ng-deep th.mat-header-cell{
+  text-transform: inherit;
+}

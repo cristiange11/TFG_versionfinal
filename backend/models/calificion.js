@@ -1,6 +1,6 @@
 const promisePool = require('../util/database');
 const User = require('./user');
-
+const Modulo = require('./modulo');
 module.exports = class Calificacion {
     constructor(dni, nota, descripcion, codigoModulo) {
         this.dni = dni;
@@ -15,19 +15,28 @@ module.exports = class Calificacion {
         connection.end();
         return rows;
     }
+    static async getCalificacion(id) {
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(`SELECT * FROM calificacion where id =  ${connection.escape(id)}`);
+        connection.end();
+        return rows;
+    }
 
     static async deleteCalificacion(id, user) {
-        const connection = await promisePool.getConnection();
-
+        const connection = await promisePool.connection().getConnection();
+        let calificacion = await this.getCalificacion(id);
+       
+        let modulo = await Modulo.getModulo(calificacion[0].codigoModulo)
+        
         try {
             await connection.beginTransaction();
             let query = `DELETE FROM calificacion WHERE id =  ${connection.escape(id)} `;
             await connection.query(query);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha borrado calificacion con id "${connection.escape(id)},'${user}',sysdate(), 'calificacion')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha borrado calificacion del módulo " ${connection.escape(modulo[0].nombre)} " al alumno " ${connection.escape(calificacion[0].dni)},'${user}',sysdate(), 'calificacion')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_CALIFICACION','No se ha borrado la calificación','${user}',sysdate(), 'calificacion')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_CALIFICACION',"No se ha borrado la calificación del módulo " ${connection.escape(modulo[0].nombre)} " al alumno " ${connection.escape(calificacion[0].dni)},'${user}',sysdate(), 'calificacion')`);
             
             throw err;
         } finally {

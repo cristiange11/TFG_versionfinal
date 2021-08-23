@@ -1,5 +1,5 @@
 const promisePool = require('../util/database');
-
+const Centro = require ('./centro');
 module.exports = class Empresa {
     constructor(cifEmpresaEmpresa, direccion, nombre, tipo, correo, telefono, url) {
         this.cifEmpresaEmpresa = cifEmpresaEmpresa;
@@ -55,16 +55,19 @@ module.exports = class Empresa {
         return rows;
     }
     static async deleteEmpresa(id, user) {
-        const connection = await promisePool.getConnection();
+        const connection = await promisePool.connection().getConnection();
+        console.log(`DELETE FROM empresa_fpdual where idEmpresa = ${connection.escape(id)}`)
         try {
             await connection.beginTransaction();
+            await connection.query(`DELETE FROM empresa_fpdual where idEmpresa = ${connection.escape(idEmpresa)}`);
+
             let query = `DELETE FROM empresa WHERE id  =  ${connection.escape(id)}`;
             await connection.query(query);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha eliminado  la empresa ' ,'${user}',sysdate(), 'empresa')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha eliminado  la empresa " ${connection.escape(id)} ,'${user}',sysdate(), 'empresa')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK" + err);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_EMPRESA','No se ha podido eliminar la empresa ' ,'${user}',sysdate(), 'empresa')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_EMPRESA',"No se ha podido eliminar la empresa " ${connection.escape(id)} ,'${user}',sysdate(), 'empresa')`);
 
             throw err;
         } finally {
@@ -73,19 +76,21 @@ module.exports = class Empresa {
 
     }
     static async deleteTutorEmpresaByEmpresa(idEmpresa, user) {
-        const connection = await promisePool.connection().getConnection();       
+        const connection = await promisePool.connection().getConnection();     
+        console.log(`DELETE t1 FROM usuario t1 INNER JOIN tutor_empresa t2 ON ( t1.dni = t2.dni) WHERE t2.idEmpresa = ${connection.escape(idEmpresa)}`)
+        console.log(`DELETE FROM empresa_fpdual where idEmpresa = ${connection.escape(idEmpresa)}`)
+        console.log(`DELETE FROM empresa WHERE id =  ${connection.escape(idEmpresa)}`)
         try {
             await connection.beginTransaction();
             let query = `DELETE t1 FROM usuario t1 INNER JOIN tutor_empresa t2 ON ( t1.dni = t2.dni) WHERE t2.idEmpresa = ${connection.escape(idEmpresa)}`;
             await connection.query(query);
             await connection.query(`DELETE FROM empresa_fpdual where idEmpresa = ${connection.escape(idEmpresa)}`);
             await connection.query(`DELETE FROM empresa WHERE id =  ${connection.escape(idEmpresa)}`);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha eliminado todo lo asociado a la empresa ' ,'${user}',sysdate(), 'empresa')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha eliminado todo lo asociado a la empresa "  ,'${user}',sysdate(), 'empresa')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_EMPRESA','No se ha podido eliminar la empresa ' ,'${user}',sysdate(), 'empresa')`);
-
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_EMPRESA',"No se ha podido eliminar la empresa "  ,'${user}',sysdate(), 'empresa')`);
             throw err;
         } finally {
             await connection.release();
@@ -94,7 +99,8 @@ module.exports = class Empresa {
     }
     static async createEmpresa(empresa, user) {
         const connection = await promisePool.connection().getConnection();       
-        
+        let centro = await Centro.getCentro(empresa.codigoCentro)
+       
         try {
             await connection.beginTransaction();
             let query = `INSERT INTO empresa(cifEmpresa, direccion, nombre, correo, telefono, url, codigoCentro) VALUES ( ${connection.escape(empresa.cifEmpresa)},${connection.escape(empresa.direccion)},${connection.escape(empresa.nombre)},${connection.escape(empresa.correo)},${connection.escape(empresa.telefono)},${connection.escape(empresa.url)}, ${connection.escape(empresa.codigoCentro)}) `;
@@ -105,11 +111,11 @@ module.exports = class Empresa {
                 id = element.id
             });
             await connection.query(`INSERT INTO empresa_fpdual(idFp, idEmpresa, becas, plazas, dineroBeca) VALUES (${connection.escape(empresa.fpDual)},${id},${connection.escape(empresa.becas)},${connection.escape(empresa.plazas)}, ${connection.escape(empresa.dineroBeca)})`);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha añadido empresa con CIF " ${connection.escape(empresa.cifEmpresa)} ,'${user}',sysdate(), 'empresa')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha añadido empresa con CIF " ${connection.escape(empresa.cifEmpresa)} " con relación al centro " ${connection.escape(centro[0].nombre)} ,'${user}',sysdate(), 'empresa')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK " + err);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_EMPRESA',"No se ha añadido empresa con CIF " ${connection.escape(empresa.cifEmpresa)},'${user}',sysdate(), 'empresa')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_EMPRESA',"No se ha añadido empresa con CIF " ${connection.escape(empresa.cifEmpresa)} " con relación al centro " ${connection.escape(centro[0].nombre)},'${user}',sysdate(), 'empresa')`);
             throw err;
         } finally {
             await connection.release();
@@ -117,17 +123,19 @@ module.exports = class Empresa {
 
     }
     static async updateEmpresa(empresa, user) {
-        const connection = await promisePool.connection().getConnection();       
+        const connection = await promisePool.connection().getConnection();    
+        let centroAndFp = await this.getFpAndCentroByEmpresa(empresa.id);
+        let centro = centroAndFp[0].nombreCentro        
         try {
             await connection.beginTransaction();
             let query = `UPDATE empresa SET direccion=${connection.escape(empresa.direccion)},nombre=${connection.escape(empresa.nombre)}, correo=${connection.escape(empresa.correo)},telefono=${connection.escape(empresa.telefono)},url=${connection.escape(empresa.url)} WHERE id = ${connection.escape(empresa.id)}`;
             await connection.query(query)
             await connection.query(`UPDATE empresa_fpdual SET becas=${connection.escape(empresa.becas)} ,plazas=${connection.escape(empresa.plazas)}, dineroBeca = ${connection.escape(empresa.dineroBeca)} WHERE idEmpresa = ${connection.escape(empresa.id)} `);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado empresa con CIF " ${connection.escape(empresa.cifEmpresa)} ,'${user}',sysdate(), 'empresa')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado empresa con CIF " ${connection.escape(empresa.cifEmpresa)} " con relación al centro " ${connection.escape(centro)},'${user}',sysdate(), 'empresa')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_EMPRESA',"No se ha actualizado empresa con CIF " ${connection.escape(empresa.cifEmpresa)},'${user}',sysdate(), 'empresa')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_EMPRESA',"No se ha actualizado empresa con CIF " ${connection.escape(empresa.cifEmpresa)} " con relación al centro " ${connection.escape(centro)},'${user}',sysdate(), 'empresa')`);
             throw err;
         } finally {
             await connection.release();

@@ -34,21 +34,19 @@ module.exports = class Alumno extends User {
     }
     static async getAlumnosByModulo(codigoModulo) {
         const connection = await promisePool.connection();
-        const [rows, fields] = await connection.query(`SELECT AM.dni, AM.codigoModulo, C.nota,M.nombre as nombreModulo, U.* FROM usuario as U,modulo as M, alumno_modulo as AM LEFT JOIN calificacion as C ON AM.codigoModulo = C.codigoModulo where M.codigo = AM.codigoModulo and AM.codigoModulo =${connection.escape(codigoModulo)} and C.nota is null and AM.dni = U.dni`);
+        const [rows, fields] = await connection.query(`SELECT AM.dni, AM.codigoModulo,M.nombre as nombreModulo, U.* FROM usuario as U,modulo as M, alumno_modulo as AM WHERE NOT EXISTS (SELECT * FROM calificacion as C where C.dni = U.dni AND C.codigoModulo=${connection.escape(codigoModulo)}) AND U.dni = AM.dni AND AM.codigoModulo = ${connection.escape(codigoModulo)} and M.codigo = AM.codigoModulo`);
         connection.end();
         return rows;
     }
     static async getAlumnosByModuloEncuesta(codigoModulo) {
         const connection = await promisePool.connection();
-        const [rows, fields] = await connection.query(`SELECT U.* FROM usuario as U, modulo as M where U.rol=5 AND M.codigo = ${connection.escape(codigoModulo)} `);
+        const [rows, fields] = await connection.query(`SELECT U.* FROM usuario as U, modulo as M, alumno_modulo as AM where U.rol=5 AND M.codigo = ${connection.escape(codigoModulo)} AND AM.dni = U.dni AND AM.codigoModulo = M.codigo `);
         connection.end();
         return rows;
     }
     static async getAlumno(dni) {
         const connection = await promisePool.connection();
-        const [rows, fields] = await connection.query(
-            `SELECT U.*, A.numeroExpediente, M.nombre as nombreModulo, M.codigo as moduloCodigo FROM usuario U, alumno A, alumno_modulo AM, modulo M WHERE U.dni = A.dni AND A.dni=AM.dni AND M.codigo = AM.codigoModulo AND U.dni=${connection.escape(dni)}`
-        );
+        const [rows, fields] = await connection.query(`SELECT U.*, A.numeroExpediente, M.nombre as nombreModulo, M.codigo as moduloCodigo FROM usuario U, alumno A, alumno_modulo AM, modulo M WHERE U.dni = A.dni AND A.dni=AM.dni AND M.codigo = AM.codigoModulo AND U.dni=${connection.escape(dni)}`);
         connection.end();
         return rows;
     }

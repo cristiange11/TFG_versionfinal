@@ -1,5 +1,5 @@
 const promisePool = require('../util/database');
-
+const FP = require ('./fpDual');
 module.exports = class Modulo {
     constructor(codigo, nombre, descripcion, curso) {
         this.codigo = codigo;
@@ -18,6 +18,13 @@ module.exports = class Modulo {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(
             `SELECT * FROM modulo where fpDual = ${connection.escape(fpDual)}`);
+        await connection.end();
+        return rows;
+    }
+    static async getModulo(codigoModulo) {
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(
+            `SELECT * FROM modulo where codigo = ${connection.escape(codigoModulo)}`);
         await connection.end();
         return rows;
     }
@@ -88,15 +95,16 @@ module.exports = class Modulo {
     }
     static async createModulo(modulo, user) {
         const connection = await promisePool.connection().getConnection();
+        const fp = await FP.getFp(modulo.fpDual);
         try {
             await connection.beginTransaction();
             let query = `INSERT INTO modulo(nombre, descripcion, curso, fpDual) VALUES (${connection.escape(modulo.nombre)},${connection.escape(modulo.descripcion)},${connection.escape(modulo.curso)}, ${connection.escape(modulo.fpDual)}) `;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha creado el modulo con nombre  "  ${connection.escape(modulo.nombre)} ,'${user}',sysdate(), 'modulo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha creado el modulo con nombre  " ${connection.escape(modulo.nombre)} " del FP " ${connection.escape(fp[0].nombre)} ,'${user}',sysdate(), 'modulo')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_MODULO',"No se ha añadido modulo con el nombre " ${connection.escape(modulo.nombre)},'${user}',sysdate(), 'modulo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_MODULO',"No se ha añadido modulo con el nombre " ${connection.escape(modulo.nombre)} " del FP " ${connection.escape(fp[0].nombre)},'${user}',sysdate(), 'modulo')`);
             throw err;
         } finally {
             await connection.release();
@@ -105,16 +113,16 @@ module.exports = class Modulo {
     }
     static async updateModulo(modulo, user) {
         const connection = await promisePool.connection().getConnection();
-
+        const fp = await FP.getFp(modulo.fpDual);
         try {
             await connection.beginTransaction();
-            let query = `UPDATE modulo SET nombre=${connection.escape(modulo.nombre)}, descripcion=${connection.escape(modulo.descripcion)},curso=${connection.escape(modulo.curso)}, fpDual = ${connection.escape(modulo.fpDual)}, WHERE codigo = ${connection.escape(modulo.codigo)}`;
+            let query = `UPDATE modulo SET nombre=${connection.escape(modulo.nombre)}, descripcion=${connection.escape(modulo.descripcion)},curso=${connection.escape(modulo.curso)}, fpDual = ${connection.escape(modulo.fpDual)} WHERE codigo = ${connection.escape(modulo.codigo)}`;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado el modulo con id "${connection.escape(modulo.codigo)} ,'${user}',sysdate(), 'modulo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado el modulo " ${connection.escape(modulo.nombre)} " del FP " ${connection.escape(fp[0].nombre)},'${user}',sysdate(), 'modulo')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_MODULO',"No se ha actualizado el modulo con id "${connection.escape(modulo.codigo)},'${user}',sysdate(), 'modulo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_MODULO',"No se ha actualizado el modulo  "${connection.escape(modulo.nombre)} " del FP " ${connection.escape(fp[0].nombre)},'${user}',sysdate(), 'modulo')`);
             throw err;
         } finally {
             await connection.release();
