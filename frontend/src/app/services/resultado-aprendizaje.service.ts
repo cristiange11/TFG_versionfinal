@@ -9,7 +9,7 @@ import { ResultadoAprendizaje } from '../models/ResultadoAprendizaje';
   providedIn: 'root'
 })
 export class ResultadoAprendizajeService {
-  private url = "http://localhost:3000/resultadoaprendizaje";
+  private url = "http://3.140.131.165:3000/resultadoaprendizaje";
 
   constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { }
   getResultadoAprendizaje(codigoModulo : number): Observable<ResultadoAprendizaje[] >{ 

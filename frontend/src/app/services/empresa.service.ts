@@ -7,7 +7,7 @@ import { CookieService } from "ngx-cookie-service";
   providedIn: 'root'
 })
 export class EmpresaService {
-  private url = "http://localhost:3000/empresa";
+  private url = "http://3.140.131.165:3000/empresa";
 
   constructor(private cookieService: CookieService, private http: HttpClient,  private router: Router ) { }
   getEmpresas(): Observable<JSON[] >{

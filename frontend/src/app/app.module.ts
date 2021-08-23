@@ -92,7 +92,7 @@ import { ResetContrasenaComponent } from './components/reset-contrasena/reset-co
 import { RecoveryComponent } from './components/recovery/recovery.component';
 import { PasswordComponent } from './components/modals/password/password.component';
 import { ModuloDeleteConfirmationComponent } from './components/modals/modulo/modulo-delete-confirmation/modulo-delete-confirmation.component';
-
+import { SesionComponent } from './components/modals/sesion/sesion.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -196,13 +196,13 @@ import { ModuloDeleteConfirmationComponent } from './components/modals/modulo/mo
     RecoveryComponent,
     PasswordComponent,
     ModuloDeleteConfirmationComponent,
-    
+    SesionComponent
    
     
   ],
 
   providers: [ConfirmationService, MessageService, CookieService, DatePipe, NavigationComponent],
   bootstrap: [AppComponent],
-  entryComponents: [ModalComponent]
+  entryComponents: [ModalComponent, SesionComponent, ModuloDeleteConfirmationComponent, CalificacionUpdateComponent, CalificacionCreateComponent, UsuarioDeleteConfirmationComponent, EncuestaCreateComponent,EncuestaUpdateComponent, ResultadoAprendizajeCreateComponent, ResultadoAprendizajeUpdateComponent, ModuloCreateComponent, ModuloUpdateComponent, UsuarioUpdateComponent, FpdualDeleteConfirmationComponent, FpdualUpdateComponent, FpdualCreateComponent, EmpresaCreateComponent, EmpresaUpdateComponent, EmpresaDeleteConfirmationComponent,  DeleteComponent, CentroUpdateComponent, CentroDeleteConfirmationComponent, CentroCreateComponent]
 })
 export class AppModule { }

@@ -9,7 +9,7 @@ import { Calificacion } from '../models/Calificacion';
   providedIn: 'root'
 })
 export class CalificacionService {
-  private url = "http://localhost:3000/calificacion";
+  private url = "http://3.140.131.165:3000/calificacion";
 
   constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { }
   getCalificaciones(codigoModulo : number): Observable<JSON[] >{    

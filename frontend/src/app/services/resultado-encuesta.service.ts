@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ResultadoEncuestaService {
-  private url = "http://localhost:3000/resultado";
+  private url = "http://3.140.131.165:3000/resultado";
 
   constructor(private cookieService: CookieService, private http: HttpClient) {
   }

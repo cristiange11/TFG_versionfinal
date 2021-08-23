@@ -13,7 +13,7 @@ import { Centro } from "../models/Centro";
   providedIn: 'root'
 })
 export class CentroService {
-  private url = "http://localhost:3000/centro";
+  private url = "http://3.140.131.165:3000/centro";
   
   constructor(private http: HttpClient,  private router: Router, private cookieService: CookieService ) { 
   }
