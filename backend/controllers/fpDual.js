@@ -160,7 +160,7 @@ exports.updateFp = async (req, res, next) => {
       else {
         try {
           const user = jwt_decode(req.headers['authorization']).sub;
-          const result = await Fpdual.updateFp(req.body, user).then(function (result) {
+          await Fpdual.updateFp(req.body, user).then(function (result) {
 
 
             res.status(201).json({ message: "sucess" });

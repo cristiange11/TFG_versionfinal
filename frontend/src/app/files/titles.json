@@ -12,7 +12,6 @@
     "totalPlazas" : "Total de plazas Duales",
     "plazasDisponibles" : "Plazas disponibles duales",
     "anio" : "año",
-    "titulo" : "título",
     "dniTutorEmpresa" : "DNI tutor",
     "dniAlumno" : "DNI alumno",
     "codigoCentro" : "Nombre Centro",
@@ -24,5 +23,11 @@
     "apellidoUsuario" : "Apellido",
     "nombreCentro" : "Nombre del Centro",
     "nota": "Nota",
-    "dineroBeca": "Dinero Beca"
+    "dineroBeca": "Dinero Beca",
+    "usuario": "Usuario",
+    "mensaje": "Mensaje",
+    "tipo": "Tipo",
+    "titulo": "Título",
+    "resultado": "Resultado"
+
 }

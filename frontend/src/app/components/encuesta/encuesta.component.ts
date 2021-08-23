@@ -111,6 +111,7 @@ export class EncuestaComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
             encuestas.forEach(encuestaInfo => {
+        
               var encuesta = this.transformJSON(encuestaInfo);
               this.encuestaList.push(encuesta);
             });

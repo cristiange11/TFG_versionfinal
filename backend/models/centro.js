@@ -46,6 +46,12 @@ module.exports = class Centro {
         connection.end();
         return rows;
     }
+    static async getCentro(codigoCentro) {
+        const connection = await promisePool.connection();
+        const [rows, fields] = await connection.query(`SELECT * FROM centro_educativo WHERE codigoCentro = ${connection.escape(codigoCentro)} `);
+        connection.end();
+        return rows;
+    }
 
     static async deleteCentro(codigoCentro, user) {
         const connection = await promisePool.connection().getConnection();
@@ -85,7 +91,6 @@ module.exports = class Centro {
     }
     static async updateCentro(centro, user) {
         const connection = await promisePool.connection().getConnection();
-
         try {
             await connection.beginTransaction();
             let query = `UPDATE centro_educativo SET correo=${connection.escape(centro.correo)},telefono=${connection.escape(centro.telefono)},provincia=${connection.escape(centro.provincia)}, nombre=${connection.escape(centro.nombre)},CP=${connection.escape(centro.CP)},direccion=${connection.escape(centro.direccion)} WHERE codigoCentro = ${connection.escape(centro.codigoCentro)}`;

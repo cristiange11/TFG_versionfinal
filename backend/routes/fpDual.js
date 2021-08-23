@@ -55,13 +55,16 @@ router.post(
       }
     }),
     body('plazasDisponibles').trim().not().isEmpty().withMessage("Plazas disponibles vacías")
-      .custom(async (plazasDisponibles , {req}) => {
+      .custom(async (plazasDisponibles , {req}) => {      
+         
+
         if (isNaN(plazasDisponibles))  {
           return Promise.reject('Error total Plazas');
         }
         else if(plazasDisponibles <= 0){         
           return Promise.reject('Mínimo 1 plaza');  
         }else if(plazasDisponibles > req.body.totalPlazas){ 
+          
           return Promise.reject('Plazas disponibles < total plazas');  
         }
     })
@@ -103,13 +106,18 @@ router.put(
     }),
     body('plazasDisponibles').trim().not().isEmpty().withMessage("Plazas disponibles vacías")
       .custom(async (plazasDisponibles , {req}) => {
+        
         if (isNaN(plazasDisponibles))  {
           return Promise.reject('Error total Plazas');
         }
         else if(plazasDisponibles <= 0){         
           return Promise.reject('Mínimo 1 plaza');  
-        }else if(plazasDisponibles > req.body.totalPlazas){ 
-          console.log(plazasDisponibles + " ahora totalPalzas " + req.body.totalPlazas)
+
+        }else if(plazasDisponibles > Number(req.body.totalPlazas)){ 
+
+      
+          
+
           return Promise.reject('Plazas disponibles < total plazas');  
         }
     })

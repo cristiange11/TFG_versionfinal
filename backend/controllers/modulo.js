@@ -187,6 +187,7 @@ exports.updateModulo = async (req, res, next) => {
 
             res.status(201).json({ message: "sucess" });
           }).catch(function () {
+            
             res.status(401).json({ "errors": "no se ha podido actualizar el módulo" });
 
           });

@@ -62,12 +62,12 @@ export class CalificacionUpdateComponent implements OnInit {
           }
           else if (error.status == 406) {
             const res = new Array();
-            res.push("Cabecera incorrecta.");
+            res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
           }
           else if (error.status == 401) {
             const res = new Array();
-            res.push("No se ha podido crear.");
+            res.push("No se ha podido actualizar.");
             AppComponent.myapp.openDialog(res);
             this.dialogRef.close();
           }

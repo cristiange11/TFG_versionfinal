@@ -112,16 +112,16 @@ module.exports = class FP_dual {
     }
     static async updateFp(fp, user) {
         const connection = await promisePool.connection().getConnection();       
-        
         try {
             await connection.beginTransaction();
             let query = `UPDATE fp_duales SET nombre=${connection.escape(fp.nombre)},descripcion=${connection.escape(fp.descripcion)},totalPlazas=${connection.escape(fp.totalPlazas)} ,anio=${connection.escape(fp.anio)},codigoCentro=${connection.escape(fp.codigoCentro)},plazasDisponibles=${connection.escape(fp.plazasDisponibles)} WHERE id = ${connection.escape(fp.id)} `;
             await connection.query(query)
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualiza el FP " ${connection.escape(fp.id)},'${user}',sysdate(), 'FP')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado el FP " ${connection.escape(fp.nombre)} " del centro " ${connection.escape(fp.codigoCentro)} ,'${user}',sysdate(), 'FP')`);
             await connection.commit();
         } catch (err) {
+          
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_FP',"No se ha actualizado FP " ${connection.escape(fp.id)},'${user}',sysdate(), 'FP')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_UPDATE_FP',"No se ha actualizado FP " ${connection.escape(fp.nombre)} " del centro " ${connection.escape(fp.codigoCentro)},'${user}',sysdate(), 'FP')`);
             
             throw err;
         } finally {

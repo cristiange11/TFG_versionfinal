@@ -39,6 +39,7 @@ exports.deleteCalificacion = async (req, res, next) => {
                 await Calificacion.deleteCalificacion(req.params.id, user).then(function (result) {
                     res.status(201).json({ message: "success" });
                   }).catch(function (err) {
+                      
                     res.status(409).json({ "errors" : "no se ha podido borrar la calificación" });
                   });
             } catch (err) {
