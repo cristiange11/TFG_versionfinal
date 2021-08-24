@@ -143,7 +143,6 @@ exports.login = async (req, res, next) => {
           res.status(401).json({ "errors": 'Usuario introducido no existente' });
         }
       } catch (err) {
-        console.log(err)
         res.status(500).json({ error: err });
 
       }

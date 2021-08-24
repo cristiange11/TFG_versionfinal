@@ -78,7 +78,6 @@ exports.deleteEncuesta = async (req, res, next) => {
         await Encuesta.deleteEncuesta(req.params.id, user).then(function (result) {
           res.status(201).json({ message: "success" });
         }).catch(function (err) {
-          console.log(err)
           res.status(409).json({ "errors" : "no se ha podido borrar el usuario" });
         });
 

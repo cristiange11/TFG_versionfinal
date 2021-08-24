@@ -46,7 +46,6 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     var userCookie = (JSON.parse(this.cookieService.get('user')));
-    console.log(Number(userCookie.rol))
     this.nagivationComponent.obtenerItems();
     
     this.dataSource.filterPredicate = function (data, filter: string): boolean {

@@ -56,7 +56,6 @@ module.exports = class Empresa {
     }
     static async deleteEmpresa(id, user) {
         const connection = await promisePool.connection().getConnection();
-        console.log(`DELETE FROM empresa_fpdual where idEmpresa = ${connection.escape(id)}`)
         try {
             await connection.beginTransaction();
             await connection.query(`DELETE FROM empresa_fpdual where idEmpresa = ${connection.escape(idEmpresa)}`);
@@ -77,9 +76,7 @@ module.exports = class Empresa {
     }
     static async deleteTutorEmpresaByEmpresa(idEmpresa, user) {
         const connection = await promisePool.connection().getConnection();     
-        console.log(`DELETE t1 FROM usuario t1 INNER JOIN tutor_empresa t2 ON ( t1.dni = t2.dni) WHERE t2.idEmpresa = ${connection.escape(idEmpresa)}`)
-        console.log(`DELETE FROM empresa_fpdual where idEmpresa = ${connection.escape(idEmpresa)}`)
-        console.log(`DELETE FROM empresa WHERE id =  ${connection.escape(idEmpresa)}`)
+       
         try {
             await connection.beginTransaction();
             let query = `DELETE t1 FROM usuario t1 INNER JOIN tutor_empresa t2 ON ( t1.dni = t2.dni) WHERE t2.idEmpresa = ${connection.escape(idEmpresa)}`;

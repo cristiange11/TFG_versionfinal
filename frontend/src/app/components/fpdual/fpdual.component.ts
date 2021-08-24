@@ -46,7 +46,7 @@ export class FpdualComponent implements OnInit, OnDestroy, AfterViewInit {
     this.nagivationComponent.obtenerItems();
 
     this.user = (JSON.parse(this.cookieService.get('user')));
-    console.log(this.user.rol)
+   
       this.getAll();
     
     
