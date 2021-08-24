@@ -1,6 +1,7 @@
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
+const Log = require ('../models/log');
 const promisePool = require('../util/database');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
@@ -124,17 +125,15 @@ exports.login = async (req, res, next) => {
           let user = new User(userJson)
           const isEqual = await bcrypt.compare(password, user.password);
 
-
+          var equals = true;
           if (!isEqual) {
-            const connection = await promisePool.connection();
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_LOGIN','Credenciales incorrectas ' ,'${req.body.dni}',sysdate(), 'login')`);
-            await connection.end();
+            equals = false;
+            await Log.createLog(equals, dni);
             res.status(401).json({ "errors": 'Credenciales incorrectas.' });
           }
           else {
-            const connection = await promisePool.connection();
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha logado usuario ' ,'${req.body.dni}',sysdate(), 'login')`);
-            await connection.end();
+          
+            await Log.createLog(equals, dni);
             const jwtBearerToken = jwt.sign({ sub: user.dni }, RSA_PRIVATE_KEY/*'proyecto final carrera'*/, { expiresIn: '24h' });
 
             const resJSON = { "result": { "user": userJson, "token": jwtBearerToken } }
@@ -144,6 +143,7 @@ exports.login = async (req, res, next) => {
           res.status(401).json({ "errors": 'Usuario introducido no existente' });
         }
       } catch (err) {
+        console.log(err)
         res.status(500).json({ error: err });
 
       }

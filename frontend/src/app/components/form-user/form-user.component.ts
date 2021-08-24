@@ -49,7 +49,7 @@ export class FormUserComponent implements OnInit {
   ngOnInit(): void {
     
       this.user = (JSON.parse(this.cookieService.get('user')));
-    
+      
 
       if (this.user.rol == 1) {
         this.centroService.getCentros().pipe(first())

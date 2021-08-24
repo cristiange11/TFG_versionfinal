@@ -57,10 +57,11 @@ export class LoginComponent implements OnInit {
           let token = result["token"]
           this.cookieService.set('token', token);
           //this.cookieService.set( 'rol', user.rol );
-
+          
           this.cookieService.set('user', JSON.stringify(user));
           var userCookie = (JSON.parse(this.cookieService.get('user')));
           this.cookieService.delete('correo');
+     
           if (Number(userCookie.rol) == 1) {
             this.router.navigate(['adminpage']);
           }

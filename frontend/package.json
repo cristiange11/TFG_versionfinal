@@ -36,6 +36,7 @@
     "html2canvas": "^1.1.5",
     "jspdf": "^2.3.1",
     "jspdf-autotable": "^3.5.15",
+    "jwt-decode": "^3.1.2",
     "mat-table-filter": "^10.2.0",
     "ngx-cookie-service": "^12.0.0",
     "primeicons": "^4.1.0",

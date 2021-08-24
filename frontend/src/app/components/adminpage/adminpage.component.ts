@@ -16,8 +16,7 @@ import { CentroDeleteConfirmationComponent } from '../modals/centro/centro-delet
 import { CentroCreateComponent } from '../modals/centro/centro-create/centro-create.component';
 import { CookieService } from 'ngx-cookie-service';
 import { NavigationComponent } from '../navigation/navigation.component';
-import { AuthGuardService} from '../../guards/auth-guards.service';
-import {AuthService} from '../../guards/auth.service';
+
 @Component({
   selector: 'app-adminpage',
   templateUrl: './adminpage.component.html',
@@ -46,7 +45,8 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
-    
+    var userCookie = (JSON.parse(this.cookieService.get('user')));
+    console.log(Number(userCookie.rol))
     this.nagivationComponent.obtenerItems();
     
     this.dataSource.filterPredicate = function (data, filter: string): boolean {

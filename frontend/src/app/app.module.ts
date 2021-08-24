@@ -93,9 +93,10 @@ import { RecoveryComponent } from './components/recovery/recovery.component';
 import { PasswordComponent } from './components/modals/password/password.component';
 import { ModuloDeleteConfirmationComponent } from './components/modals/modulo/modulo-delete-confirmation/modulo-delete-confirmation.component';
 import { SesionComponent } from './components/modals/sesion/sesion.component';
-import { AuthGuardService} from './guards/auth-guards.service';
-import {AuthService} from './guards/auth.service';
+import {AuthGuardService} from './guards/auth-guard.service';
+import {AuthService} from './guards/authorization.service';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { RoleGuardService } from './guards/role-guard-service.service';
 
 @NgModule({
   imports: [
@@ -205,7 +206,7 @@ import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
     
   ],
 
-  providers: [ConfirmationService, MessageService, CookieService, DatePipe,HomeComponent,  NavigationComponent, AuthGuardService, AuthService, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },JwtHelperService],
+  providers: [ConfirmationService, MessageService, CookieService, DatePipe,HomeComponent,AuthGuardService, AuthService,RoleGuardService ,  NavigationComponent,  { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },JwtHelperService],
   bootstrap: [AppComponent],
   entryComponents: [ModalComponent, SesionComponent, ModuloDeleteConfirmationComponent, CalificacionUpdateComponent, CalificacionCreateComponent, UsuarioDeleteConfirmationComponent, EncuestaCreateComponent,EncuestaUpdateComponent, ResultadoAprendizajeCreateComponent, ResultadoAprendizajeUpdateComponent, ModuloCreateComponent, ModuloUpdateComponent, UsuarioUpdateComponent, FpdualDeleteConfirmationComponent, FpdualUpdateComponent, FpdualCreateComponent, EmpresaCreateComponent, EmpresaUpdateComponent, EmpresaDeleteConfirmationComponent,  DeleteComponent, CentroUpdateComponent, CentroDeleteConfirmationComponent, CentroCreateComponent]
 })
