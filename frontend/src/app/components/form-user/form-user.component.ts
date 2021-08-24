@@ -126,12 +126,12 @@ export class FormUserComponent implements OnInit {
       password: this.passwordFormControl,
       confirmPassword: this.confirmPasswordFormControl
     })
-    if (this.userLogged == true) {
+   
       if (this.user.rol == 2) {
         this.codigoCentro.setValue(this.user.codigoCentro);
         this.obtenerFP(this.user.codigoCentro);
       }
-    }
+    
     return res;
   }
 
