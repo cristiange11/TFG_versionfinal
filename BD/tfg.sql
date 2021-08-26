@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-08-2021 a las 22:59:52
+-- Tiempo de generación: 25-08-2021 a las 11:17:38
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 8.0.1
 
@@ -41,6 +41,7 @@ CREATE TABLE `alumno` (
 --
 
 INSERT INTO `alumno` (`numeroExpediente`, `dni`) VALUES
+('123123213', '12345678N'),
 ('COF231', '11111112A'),
 ('PRUEBA', '11111111A');
 
@@ -63,7 +64,9 @@ INSERT INTO `alumno_modulo` (`dni`, `codigoModulo`) VALUES
 ('11111111A', 25),
 ('11111111A', 26),
 ('11111112A', 24),
-('11111112A', 26);
+('11111112A', 26),
+('12345678N', 24),
+('12345678N', 26);
 
 -- --------------------------------------------------------
 
@@ -85,7 +88,8 @@ CREATE TABLE `calificacion` (
 
 INSERT INTO `calificacion` (`id`, `dni`, `nota`, `descripcion`, `codigoModulo`) VALUES
 (16, '11111111A', 7, 'EJJEJE', 25),
-(18, '11111112A', 5.7, 'Has trabajd', 24);
+(22, '11111111A', 5.7, '213213', 26),
+(23, '11111112A', 5.8, '213213', 26);
 
 -- --------------------------------------------------------
 
@@ -136,17 +140,15 @@ CREATE TABLE `empresa` (
 --
 
 INSERT INTO `empresa` (`cifEmpresa`, `direccion`, `nombre`, `correo`, `telefono`, `url`, `codigoCentro`, `id`) VALUES
-('B21321286', 'Calle Mayo, 2, Arahal', 'El Gitanilla', '41016437.edu@juntadeandalucia.es', '955967686', 'https://www.escuelainfantilgitanilla.es/Datos-del-centro/', '', 1),
-('K11111114', 'jsakjsakjdk', 'sjkajkawjwekj', 'crissad@hotmail.es', '911010106', 'https://www.w3schools.com/js/tryit.asp?filename=tryjs_global_parseint', '', 2),
-('Q11111112', 'Calle Asturias nº140', 'García Espino, Cristiana', 'dsakjsdjk@hotmail.com', '911010101', 'https://www.geeksforgeeks.org/how-to-validate-if-input-in-input-field-has-integer-number-only-using-', '', 3),
-('Q11111111', 'prueba', 'prueba', 'empresa@hotmail.com', '911899812', 'https://www.geeksforgeeks.org/how-to-validate-if-input-in-input-field-has-integer-number-only-using-', '', 4),
-('K99999999', 'Calle Asturias nº140', 'EMPRESA', 'empresa@hotmail.es', '911010109', 'https://stackblitz.com/edit/angular-mat-select-multi-with-formcontrol?file=app%2Fselect-overview-exa', '', 5),
-('P4101100H', 'Plaza Corredera, 1, Arahal', 'Ayuntamiento de el Arahal', 'info@arahal.es', '955841033', 'http://www.arahal.es/opencms/opencms/arahal', '', 6),
-('B41912023', 'Pol.Industrial “El Corbones” C/ Constructores, 2 La Puebla de Cazalla', 'BALLESTAS CHIA', 'info@ballestaschia.com', '955291092', 'https://ballestaschia.es/', '', 7),
-('B41364613', 'Recreo de Montestruque, 26  Morón de la Frontera, Sevilla', 'Mitelec Instalaciones', 'instalaciones@mitelec.es', '955853905', 'https://mitelec.es/', '', 8),
-('K12345678', 'Calle Asturias nº140', 'prueba', 'prueba@hotmail.es', '911019281', 'https://www.logicbig.com/tutorials/misc/primefaces/menu-bar.html', '', 10),
-('B91295881', 'Calle María Auxiliadora, 54, Morón de la Frontera, Sevilla', 'RESIDENCIAL GERIATRICA MEDITERRANEO', 'recepcion@residenciamayores.com', '955 85 48 0', 'https://www.residenciamayores.com/', '', 11),
-('B41600560', 'CALLE CHAPISTAS, 6 - Y 8', 'DIFRISUR SL', 'jlmanaute@hotmail.com', '955841956', 'https://los-artesanos.com/', '41000557', 74);
+('B41600560', 'CALLE CHAPISTAS, 6 - Y 8', 'DIFRISUR SL', 'jlmanaute@hotmail.com', '955841956', 'https://los-artesanos.com/', '41000557', 74),
+('B41364613', 'Recreo de Montestruque, 26  Morón de la Frontera, Sevilla', 'Mitelec Instalaciones', 'instalaciones@mitelec.es', '955853905', 'https://mitelec.es/', '41000557', 75),
+('B41912023', 'Pol.Industrial “El Corbones” C/ Constructores, 2 La Puebla de Cazalla', 'BALLESTAS CHIA', 'info@ballestaschia.com', '955291092', 'https://ballestaschia.es/', '41000557', 76),
+('B91295881', 'Calle María Auxiliadora, 54, Morón de la Frontera, Sevilla', 'RESIDENCIAL GERIATRICA MEDITERRANEO', 'recepcion@residenciamayores.com', '955854800', 'https://www.residenciamayores.com/', '41000557', 77),
+('B21321286', 'Calle Mayo, 2, Arahal', 'El Gitanilla', '41016437.edu@juntadeandalucia.es', '955967686', 'https://www.escuelainfantilgitanilla.es/Datos-del-centro/', '41000557', 78),
+('P4101100H', 'Plaza Corredera, 1, Arahal', 'Ayuntamiento de el Arahal', 'info@arahal.es', '955841033', 'http://www.arahal.es/opencms/opencms/arahal', '41000557', 79),
+('B91995738', 'Avd del Jardinillo, 8 (41927) Mairena Del Aljarafe, Sevilla', 'Calaem Aljarafe Sl', 'infoleon13@ceichicle.es', '954359696', 'https://ceichicle.es/', '41006481', 80),
+('B91253781', 'C. Conductor Venancio Martínez, 41701 Dos Hermanas, Sevilla', 'Centro Infantil la Cigueña S.L', 'info@escuelalaciguena.com', '955667168', 'http://escuelalaciguena.com/', '41006481', 81),
+('P4101100H', 'Plaza Corredera, 1, Arahal', 'Ayuntamiento de el Arahal', 'info@arahal.es', '955841033', 'http://www.arahal.es/opencms/opencms/arahal', '41000557', 82);
 
 -- --------------------------------------------------------
 
@@ -167,7 +169,15 @@ CREATE TABLE `empresa_fpdual` (
 --
 
 INSERT INTO `empresa_fpdual` (`idFp`, `idEmpresa`, `becas`, `plazas`, `dineroBeca`) VALUES
-(42, 74, 1, 4, '200');
+(42, 74, 1, 3, '300'),
+(42, 75, 0, 2, '0'),
+(42, 76, 1, 4, '150'),
+(42, 77, 0, 12, '0'),
+(42, 82, 0, 1, '0'),
+(47, 78, 1, 6, '300'),
+(47, 79, 0, 4, '0'),
+(48, 80, 0, 10, '0'),
+(48, 81, 0, 10, '0');
 
 -- --------------------------------------------------------
 
@@ -182,7 +192,7 @@ CREATE TABLE `encuesta` (
   `resultado` int(11) DEFAULT NULL,
   `codigoModulo` int(11) NOT NULL,
   `dniAlumno` varchar(9) NOT NULL,
-  `dniTutorEmpresa` varchar(9) NOT NULL,
+  `dniTutoroAdmin` varchar(9) NOT NULL,
   `observaciones` varchar(1000) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -190,9 +200,10 @@ CREATE TABLE `encuesta` (
 -- Volcado de datos para la tabla `encuesta`
 --
 
-INSERT INTO `encuesta` (`id`, `descripcion`, `titulo`, `resultado`, `codigoModulo`, `dniAlumno`, `dniTutorEmpresa`, `observaciones`) VALUES
-(17, 'Trabajo desempeñado x el alumno en la semana 1', 'semana1', 1, 24, '11111111A', '11111111T', 'olakases'),
-(18, 'prueba', 'prueba', 5, 24, '11111112A', '33333333T', '12321213123');
+INSERT INTO `encuesta` (`id`, `descripcion`, `titulo`, `resultado`, `codigoModulo`, `dniAlumno`, `dniTutoroAdmin`, `observaciones`) VALUES
+(17, 'Trabajo desempeñado x el alumno en la semana 1', 'semana1', 1, 24, '11111111A', '11111111T', 'El alumno no ha trabajado absolutamente nada.'),
+(18, 'prueba', 'prueba', 5, 24, '11111112A', '33333333T', '12321213123'),
+(29, 'prueba', 'prueba', 1, 24, '11111111A', '12345678A', '213213213');
 
 -- --------------------------------------------------------
 
@@ -872,7 +883,221 @@ INSERT INTO `logs` (`id`, `codigoError`, `mensaje`, `usuario`, `fechaHoraLog`, `
 (1492, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-11 20:50:29', 'login'),
 (1493, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-11 22:40:29', 'login'),
 (1494, NULL, 'Se ha actualizado tutor empresa con DNI 33333333T ', '12345678A', '2021-08-11 22:41:00', 'tutor de empresa'),
-(1495, NULL, 'Se ha actualizado tutor empresa con DNI 33333333T ', '12345678A', '2021-08-11 22:41:00', 'tutor de empresa');
+(1495, NULL, 'Se ha actualizado tutor empresa con DNI 33333333T ', '12345678A', '2021-08-11 22:41:00', 'tutor de empresa'),
+(1496, NULL, 'El usuario con DNI 12345678A ha actualizado su contraseña ', '12345678A', '2021-08-12 15:25:03', 'user'),
+(1497, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-12 15:30:46', 'login'),
+(1498, 'ERROR_INSERT_USER', 'No se ha añadido el user con DNI 88777777T', '12345678A', '2021-08-12 15:33:11', 'user'),
+(1499, NULL, 'Se ha añadido usuario con DNI \'88777777T\' ', '12345678A', '2021-08-12 15:34:19', 'user'),
+(1500, NULL, 'Se ha añadido tutor empresa con DNI \'88777777P\' ', '12345678A', '2021-08-12 15:51:16', 'tutor de empresa'),
+(1501, NULL, 'Se ha actualizado empresa con CIF \'B41600560\' ', '12345678A', '2021-08-12 18:31:31', 'empresa'),
+(1502, NULL, 'Se ha añadido empresa con CIF NULL ', '12345678A', '2021-08-12 20:45:20', 'empresa'),
+(1503, NULL, 'Se ha añadido empresa con CIF NULL ', '12345678A', '2021-08-12 20:48:16', 'empresa'),
+(1504, NULL, 'Se ha añadido empresa con CIF NULL ', '12345678A', '2021-08-12 20:50:48', 'empresa'),
+(1505, NULL, 'Se ha añadido empresa con CIF NULL ', '12345678A', '2021-08-12 20:54:38', 'empresa'),
+(1506, NULL, 'Se ha añadido empresa con CIF NULL ', '12345678A', '2021-08-12 20:55:18', 'empresa'),
+(1507, NULL, 'Se ha añadido empresa con CIF NULL ', '12345678A', '2021-08-12 21:05:01', 'empresa'),
+(1508, NULL, 'Se ha añadido empresa con CIF NULL ', '12345678A', '2021-08-12 21:06:54', 'empresa'),
+(1509, NULL, 'Se ha actualizado empresa con CIF \'B41600560\' ', '12345678A', '2021-08-12 21:15:55', 'empresa'),
+(1510, NULL, 'Se ha añadido empresa con CIF NULL ', '12345678A', '2021-08-12 21:26:17', 'empresa'),
+(1511, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-12 21:55:59', 'login'),
+(1512, NULL, 'Se ha añadido alumno con DNI \'11111111A\' ', '12345678A', '2021-08-12 23:17:03', 'alumno'),
+(1513, 'ERROR_INSERT_ALUMNO', 'No se ha actualizado el alumno con DNI \'11111111A\'', '12345678A', '2021-08-12 23:18:10', 'alumno'),
+(1514, 'ERROR_INSERT_ALUMNO', 'No se ha actualizado el alumno con DNI \'11111111A\'', '12345678A', '2021-08-12 23:18:13', 'alumno'),
+(1515, 'ERROR_INSERT_ALUMNO', 'No se ha actualizado el alumno con DNI \'11111111A\'', '12345678A', '2021-08-12 23:19:39', 'alumno'),
+(1516, 'ERROR_INSERT_ALUMNO', 'No se ha actualizado el alumno con DNI \'11111111A\'', '12345678A', '2021-08-12 23:20:13', 'alumno'),
+(1517, NULL, 'Se ha actualizado alumno con DNI \'11111111A\' ', '12345678A', '2021-08-12 23:21:50', 'alumno'),
+(1518, NULL, '11111111', '12345678A', '2021-08-13 00:21:04', 'alumno'),
+(1519, NULL, '11111111', '12345678A', '2021-08-13 00:21:04', 'alumno'),
+(1520, NULL, '11111111', '12345678A', '2021-08-13 00:21:37', 'alumno'),
+(1521, 'ERROR_UPDATE_ALUMNO', 'No se ha actualizado el alumno con DNI \'11111111A\'', '12345678A', '2021-08-13 00:22:21', 'alumno'),
+(1522, 'ERROR_UPDATE_ALUMNO', 'No se ha actualizado el alumno con DNI \'11111111A\'', '12345678A', '2021-08-13 00:22:59', 'alumno'),
+(1523, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-16 14:37:08', 'login'),
+(1524, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-16 18:05:06', 'login'),
+(1525, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-17 16:55:13', 'login'),
+(1526, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-17 16:59:34', 'login'),
+(1527, 'ERROR_LOGIN', 'Credenciales incorrectas ', '12345678A', '2021-08-17 17:03:09', 'login'),
+(1528, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-17 17:03:16', 'login'),
+(1529, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-17 17:09:51', 'login'),
+(1530, 'ERROR_DELETE_CENTRO', 'No se ha borrado el centro con codigo centro \'41000557\'', '12345678A', '2021-08-17 18:52:19', 'centro educativo'),
+(1531, 'ERROR_DELETE_CENTRO', 'No se ha borrado el centro con codigo centro \'41000557\'', '12345678A', '2021-08-17 18:53:04', 'centro educativo'),
+(1532, 'ERROR_DELETE_CENTRO', 'No se ha borrado el centro con codigo centro \'41000557\'', '12345678A', '2021-08-17 18:56:28', 'centro educativo'),
+(1533, NULL, 'Se ha actualizado usuario con DNI  \'12345678A\'', '12345678A', '2021-08-17 19:22:46', 'user'),
+(1534, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-17 21:01:28', 'login'),
+(1535, NULL, 'Se ha actualizado profesor con DNI \'11111111P\' ', '12345678A', '2021-08-17 21:32:24', 'profesor'),
+(1536, NULL, 'Se ha actualizado tutor empresa con DNI \'11111111T\' ', '12345678A', '2021-08-17 21:35:32', 'tutor de empresa'),
+(1537, 'ERROR_DELETE_USER', 'No se ha borrado el usuario con DNI \'11111111T\'', '12345678A', '2021-08-17 21:39:14', 'user'),
+(1538, 'ERROR_DELETE_USER', 'No se ha borrado el usuario con DNI \'11111111T\'', '12345678A', '2021-08-17 21:40:49', 'user'),
+(1539, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-17 22:10:02', 'login'),
+(1540, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-17 22:11:46', 'login'),
+(1541, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-17 22:23:47', 'login'),
+(1542, NULL, 'Se ha añadido usuario con DNI \'12345677L\' ', '12345678A', '2021-08-18 00:09:06', 'user'),
+(1543, 'ERROR_DELETE_FP', 'No se ha borrado el FP \'42\' ', '12345678A', '2021-08-18 00:31:55', 'FP'),
+(1544, 'ERROR_DELETE_FP', 'No se ha borrado el FP \'42\' ', '12345678A', '2021-08-18 00:32:23', 'FP'),
+(1545, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-18 10:50:35', 'login'),
+(1546, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-18 10:53:45', 'login'),
+(1547, 'ERROR_DELETE_MODULO', 'No se ha podido eliminar el módulo ', '12345678A', '2021-08-18 11:02:48', 'modulo'),
+(1548, 'ERROR_DELETE_MODULO', 'No se ha podido eliminar el módulo ', '12345678A', '2021-08-18 11:03:15', 'modulo'),
+(1549, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-18 11:25:20', 'login'),
+(1550, NULL, 'Se ha actualizado la encuesta con id 17 ', '12345678A', '2021-08-18 11:30:41', 'encuesta'),
+(1551, NULL, 'Se ha actualizado la encuesta con id 17 ', '12345678A', '2021-08-18 11:31:34', 'encuesta'),
+(1552, NULL, 'Se ha actualizado la encuesta con id 17 ', '12345678A', '2021-08-18 11:32:34', 'encuesta'),
+(1553, NULL, 'Se ha actualizado la calificación al alumno con DNI \'11111112A\' ', '12345678A', '2021-08-18 11:37:13', 'calificacion'),
+(1554, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-18 12:48:26', 'login'),
+(1555, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-19 09:23:33', 'login'),
+(1556, NULL, 'Se ha actualizado usuario con DNI  12345678A', '12345678A', '2021-08-19 09:30:10', 'user'),
+(1557, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-19 11:05:00', 'login'),
+(1558, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-19 16:14:21', 'login'),
+(1559, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-20 10:44:06', 'login'),
+(1560, NULL, 'Se ha actualizado todo lo asociado al centro 41000557', '12345678A', '2021-08-20 10:44:17', 'centro educativo'),
+(1561, NULL, 'Se ha actualizado todo lo asociado al centro 41000557', '12345678A', '2021-08-20 10:44:23', 'centro educativo'),
+(1562, NULL, 'Se ha actualizado alumno con DNI 11111111A', '12345678A', '2021-08-20 10:44:51', 'alumno'),
+(1563, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-20 10:49:47', 'login'),
+(1564, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-20 15:47:41', 'login'),
+(1565, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-20 15:55:29', 'login'),
+(1566, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-20 15:57:22', 'login'),
+(1567, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-20 15:57:47', 'login'),
+(1568, 'ERROR_DELETE_CENTRO', 'No se ha borrado el centro con codigo centro 41000557', '12345678A', '2021-08-20 16:10:21', 'centro educativo'),
+(1569, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-22 12:20:16', 'login'),
+(1570, 'ERROR_DELETE_USER', 'No se ha borrado el usuario con DNI 11111111T', '12345678A', '2021-08-22 12:44:07', 'user'),
+(1571, 'ERROR_INSERT_ENCUESTA', 'No se ha añadido la encuesta con título semana2', '12345678A', '2021-08-22 13:55:32', 'encuesta'),
+(1572, 'ERROR_INSERT_ENCUESTA', 'No se ha añadido la encuesta con título semana2', '12345678A', '2021-08-22 13:55:32', 'encuesta'),
+(1573, NULL, 'Se ha logado usuario ', '11111111P', '2021-08-22 14:53:32', 'login'),
+(1574, NULL, 'Se ha logado usuario ', '11111111T', '2021-08-22 15:32:01', 'login'),
+(1575, NULL, 'Se ha logado usuario ', '11111111A', '2021-08-22 15:51:31', 'login'),
+(1576, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-22 22:33:19', 'login'),
+(1577, NULL, 'Se ha actualizado alumno con DNI 11111111A', '12345678A', '2021-08-22 22:33:31', 'alumno'),
+(1578, NULL, 'Se ha actualizado empresa con CIF B41600560', '12345678A', '2021-08-22 22:33:53', 'empresa'),
+(1579, NULL, 'Se ha actualizado todo lo asociado al centro 41000557', '12345678A', '2021-08-22 23:20:15', 'centro educativo'),
+(1580, NULL, 'Se ha actualizado todo lo asociado al centro 41000557', '12345678A', '2021-08-22 23:21:26', 'centro educativo'),
+(1581, NULL, 'Se ha actualizado alumno con DNI 11111111A', '12345678A', '2021-08-22 23:25:50', 'alumno'),
+(1582, NULL, 'Se ha actualizado empresa con CIF B41600560', '12345678A', '2021-08-22 23:27:05', 'empresa'),
+(1583, NULL, 'Se ha actualizado la calificación al alumno con DNI 11111112A', '12345678A', '2021-08-22 23:30:08', 'calificacion'),
+(1584, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-23 08:00:48', 'login'),
+(1585, NULL, 'Se ha añadido FP ', '12345678A', '2021-08-23 08:01:31', 'FP'),
+(1586, NULL, 'Se ha actualizado el FP SAJDKjksdajkjkd', '12345678A', '2021-08-23 08:05:50', 'FP'),
+(1587, NULL, 'Se ha actualizado el FP SAJDKjksdajkjkd', '12345678A', '2021-08-23 08:05:54', 'FP'),
+(1588, NULL, 'Se ha actualizado el FP SAJDKjksdajkjkd del centro 41000557', '12345678A', '2021-08-23 08:08:22', 'FP'),
+(1589, NULL, 'Se ha actualizado el FP SAJDKjksdajkjkd del centro 41000557', '12345678A', '2021-08-23 08:08:29', 'FP'),
+(1590, NULL, 'Se ha actualizado el FP SAJDKjksdajkjkd del centro 41000557', '12345678A', '2021-08-23 08:09:58', 'FP'),
+(1591, NULL, 'Se ha borrado el FP 61', '12345678A', '2021-08-23 08:12:08', 'FP'),
+(1592, NULL, 'Se ha actualizado todo lo asociado al centro 41000557', '12345678A', '2021-08-23 08:12:39', 'centro educativo'),
+(1593, NULL, 'Se ha actualizado empresa con CIF B41600560', '12345678A', '2021-08-23 08:12:49', 'empresa'),
+(1594, NULL, 'Se ha añadido empresa con CIF J11111111 con relación al centro 41000557', '12345678A', '2021-08-23 08:15:00', 'empresa'),
+(1595, NULL, 'Se ha actualizado empresa con CIF J11111111', '12345678A', '2021-08-23 08:15:07', 'empresa'),
+(1596, NULL, 'Se ha eliminado todo lo asociado a la empresa ', '12345678A', '2021-08-23 08:15:18', 'empresa'),
+(1597, NULL, 'Se ha añadido empresa con CIF J11111111 con relación al centro 41000557', '12345678A', '2021-08-23 08:20:40', 'empresa'),
+(1598, NULL, 'Se ha actualizado empresa con CIF J11111111 con relación al centro Al-Ándalus', '12345678A', '2021-08-23 08:33:31', 'empresa'),
+(1599, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-23 08:33:39', 'login'),
+(1600, NULL, 'Se ha eliminado todo lo asociado a la empresa 84', '12345678A', '2021-08-23 08:34:45', 'empresa'),
+(1601, 'ERROR_UPDATE_MODULO', 'No se ha actualizado el modulo  Gestión financiera del FP 42', '12345678A', '2021-08-23 08:38:05', 'modulo'),
+(1602, 'ERROR_UPDATE_MODULO', 'No se ha actualizado el modulo  Gestión financiera del FP 42', '12345678A', '2021-08-23 08:38:45', 'modulo'),
+(1603, 'ERROR_UPDATE_MODULO', 'No se ha actualizado el modulo  Gestión financiera del FP 42', '12345678A', '2021-08-23 08:39:11', 'modulo'),
+(1604, 'ERROR_UPDATE_MODULO', 'No se ha actualizado el modulo  Gestión financiera del FP 42', '12345678A', '2021-08-23 08:40:39', 'modulo'),
+(1605, 'ERROR_UPDATE_MODULO', 'No se ha actualizado el modulo  Gestión financiera del FP 42', '12345678A', '2021-08-23 08:40:58', 'modulo'),
+(1606, 'ERROR_UPDATE_MODULO', 'No se ha actualizado el modulo  Gestión financiera del FP Administración y Finanzas', '12345678A', '2021-08-23 08:41:43', 'modulo'),
+(1607, 'ERROR_UPDATE_MODULO', 'No se ha actualizado el modulo  Gestión financiera del FP Administración y Finanzas', '12345678A', '2021-08-23 08:42:10', 'modulo'),
+(1608, 'ERROR_UPDATE_MODULO', 'No se ha actualizado el modulo  Gestión financiera del FP Administración y Finanzas', '12345678A', '2021-08-23 08:43:01', 'modulo'),
+(1609, 'ERROR_UPDATE_MODULO', 'No se ha actualizado el modulo  Gestión financiera del FP Administración y Finanzas', '12345678A', '2021-08-23 08:43:50', 'modulo'),
+(1610, NULL, 'Se ha actualizado el modulo Gestión financiera del FP Administración y Finanzas', '12345678A', '2021-08-23 08:44:13', 'modulo'),
+(1611, NULL, 'Se ha creado el modulo con nombre  prueba del FP Administración y Finanzas', '12345678A', '2021-08-23 08:46:33', 'modulo'),
+(1612, NULL, 'Se ha creado el modulo con nombre  prueba del FP Administración y Finanzas', '12345678A', '2021-08-23 08:46:33', 'modulo'),
+(1613, NULL, 'Se ha creado el modulo con nombre  prueba del FP Administración y Finanzas', '12345678A', '2021-08-23 08:46:42', 'modulo'),
+(1614, NULL, 'Se ha eliminado el módulo 29', '12345678A', '2021-08-23 08:46:48', 'modulo'),
+(1615, NULL, 'Se ha eliminado el módulo 30', '12345678A', '2021-08-23 08:46:50', 'modulo'),
+(1616, NULL, 'Se ha eliminado el módulo 28', '12345678A', '2021-08-23 08:46:52', 'modulo'),
+(1617, NULL, 'Se ha creado el modulo con nombre  prueba del FP Administración y Finanzas', '12345678A', '2021-08-23 08:46:57', 'modulo'),
+(1618, NULL, 'Se ha eliminado el módulo 31', '12345678A', '2021-08-23 08:47:00', 'modulo'),
+(1619, NULL, 'Se ha actualizado el resultado de aprendizaje Necesidades financieras y ayudas económicas', '12345678A', '2021-08-23 08:51:10', 'modulo'),
+(1620, NULL, 'Se ha actualizado el resultado de aprendizaje Selecciona inversiones del módulo Gestión financiera', '12345678A', '2021-08-23 08:52:47', 'modulo'),
+(1621, NULL, 'Se ha actualizado el resultado de aprendizaje Selecciona inversiones del módulo Gestión financiera', '12345678A', '2021-08-23 08:52:50', 'modulo'),
+(1622, NULL, 'Se ha actualizado el resultado de aprendizaje Necesidades financieras y ayudas económicas del módulo', '12345678A', '2021-08-23 08:54:50', 'modulo'),
+(1623, NULL, 'Se ha creado el resultado aprendizaje sas2w2 del módulo Gestión financiera', '12345678A', '2021-08-23 08:54:55', 'resultado aprendizaje'),
+(1624, NULL, 'Se ha actualizado el resultado de aprendizaje sas2w2 del módulo Gestión financiera', '12345678A', '2021-08-23 08:55:00', 'modulo'),
+(1625, NULL, 'Se ha eliminado el resultado aprendizaje 19', '12345678A', '2021-08-23 08:55:02', 'resultado aprendizaje'),
+(1626, NULL, 'Se ha actualizado usuario con DNI  11111111L', '12345678A', '2021-08-23 08:56:56', 'user'),
+(1627, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-23 10:20:05', 'login'),
+(1628, NULL, 'Se ha actualizado usuario con DNI  12345678A', '12345678A', '2021-08-23 10:20:17', 'user'),
+(1629, NULL, 'Se ha actualizado usuario con DNI  12345678A', '12345678A', '2021-08-23 10:20:17', 'user'),
+(1630, NULL, 'Se ha actualizado usuario con DNI  12345678A', '12345678A', '2021-08-23 10:20:20', 'user'),
+(1631, NULL, 'Se ha actualizado la encuesta  semana1 del módulo Gestión financiera', '12345678A', '2021-08-23 10:24:49', 'encuesta'),
+(1632, 'ERROR_INSERT_ENCUESTA', 'No se ha añadido la encuesta con título prrrr del módulo Gestión financiera', '12345678A', '2021-08-23 10:29:35', 'encuesta'),
+(1633, 'ERROR_INSERT_ENCUESTA', 'No se ha añadido la encuesta con título prrr del módulo Gestión financiera', '12345678A', '2021-08-23 10:30:42', 'encuesta'),
+(1634, 'ERROR_INSERT_ENCUESTA', 'No se ha añadido la encuesta con título prueba del módulo Gestión financiera', '12345678A', '2021-08-23 10:53:55', 'encuesta'),
+(1635, NULL, 'Se ha creado la encuesta con título prueba del módulo Gestión financiera', '12345678A', '2021-08-23 10:55:09', 'encuesta'),
+(1636, NULL, 'Se ha logado usuario ', '11111111T', '2021-08-23 11:00:20', 'login'),
+(1637, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-23 11:00:32', 'login'),
+(1638, NULL, 'Se ha logado usuario ', '11111111T', '2021-08-23 11:01:08', 'login'),
+(1639, NULL, 'Se ha creado la encuesta con título aswqeweqwqe del módulo Gestión financiera', '11111111T', '2021-08-23 11:01:15', 'encuesta'),
+(1640, NULL, 'Se ha actualizado la encuesta  aswqeweqwqe del módulo Gestión financiera', '11111111T', '2021-08-23 11:01:21', 'encuesta'),
+(1641, NULL, 'Se ha eliminado la encuesta  aswqeweqwqe del módulo Gestión financiera', '11111111T', '2021-08-23 11:06:30', 'encuesta'),
+(1642, NULL, 'Se ha creado la encuesta con título sadsdsad del módulo Gestión financiera', '11111111T', '2021-08-23 11:09:27', 'encuesta'),
+(1643, NULL, 'Se ha eliminado la encuesta  sadsdsad del módulo Gestión financiera', '11111111T', '2021-08-23 11:12:11', 'encuesta'),
+(1644, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-23 11:12:20', 'login'),
+(1645, NULL, 'Se ha actualizado la calificación al alumno con DNI 11111112A', '12345678A', '2021-08-23 11:15:16', 'calificacion'),
+(1646, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-23 11:15:38', 'login'),
+(1647, NULL, 'Se ha actualizado la calificación al alumno con DNI 11111112A', '12345678A', '2021-08-23 11:16:02', 'calificacion'),
+(1648, NULL, 'Se ha añadido calificación del alumno 11111111A', '12345678A', '2021-08-23 11:16:56', 'calificacion'),
+(1649, NULL, 'Se ha actualizado la calificación al alumno con DNI 11111111A', '12345678A', '2021-08-23 11:16:58', 'calificacion'),
+(1650, NULL, 'Se ha actualizado la calificación al alumno con DNI 11111111A', '12345678A', '2021-08-23 11:17:02', 'calificacion'),
+(1651, NULL, 'Se ha añadido calificación del alumno 11111112A', '12345678A', '2021-08-23 11:29:29', 'calificacion'),
+(1652, NULL, 'Se ha añadido calificación del alumno 11111112A', '12345678A', '2021-08-23 11:41:58', 'calificacion'),
+(1653, NULL, 'Se ha añadido calificación del alumno 11111111A', '12345678A', '2021-08-23 11:49:49', 'calificacion'),
+(1654, NULL, 'Se ha añadido calificación del alumno 11111112A', '12345678A', '2021-08-23 11:50:49', 'calificacion'),
+(1655, NULL, 'Se ha borrado calificacion del módulo 18', '12345678A', '2021-08-23 11:56:17', 'calificacion'),
+(1656, NULL, 'Se ha añadido calificación del alumno 11111112A', '12345678A', '2021-08-23 11:56:31', 'calificacion'),
+(1657, NULL, 'Se ha borrado calificacion del módulo 24', '12345678A', '2021-08-23 11:57:19', 'calificacion'),
+(1658, NULL, 'Se ha añadido calificación del alumno 11111112A', '12345678A', '2021-08-23 11:57:48', 'calificacion'),
+(1659, NULL, 'Se ha borrado calificacion del módulo 25', '12345678A', '2021-08-23 11:57:50', 'calificacion'),
+(1660, NULL, 'Se ha añadido calificación del alumno 11111112A', '12345678A', '2021-08-23 11:58:10', 'calificacion'),
+(1661, NULL, 'Se ha borrado calificacion del módulo 26', '12345678A', '2021-08-23 11:58:12', 'calificacion'),
+(1662, NULL, 'Se ha añadido calificación del alumno 11111112A', '12345678A', '2021-08-23 11:59:12', 'calificacion'),
+(1663, NULL, 'Se ha borrado calificacion del módulo Gestión financiera al alumno ', '12345678A', '2021-08-23 11:59:16', 'calificacion'),
+(1664, NULL, 'Se ha añadido calificación del alumno 11111112A', '12345678A', '2021-08-23 12:01:30', 'calificacion'),
+(1665, NULL, 'Se ha borrado calificacion del módulo Gestión financiera al alumno ', '12345678A', '2021-08-23 12:01:33', 'calificacion'),
+(1666, NULL, 'Se ha añadido calificación del alumno 11111112A', '12345678A', '2021-08-23 12:02:09', 'calificacion'),
+(1667, NULL, 'Se ha borrado calificacion del módulo Gestión financiera al alumno ', '12345678A', '2021-08-23 12:02:11', 'calificacion'),
+(1668, NULL, 'Se ha añadido calificación del alumno 11111112A', '12345678A', '2021-08-23 12:03:41', 'calificacion'),
+(1669, NULL, 'Se ha borrado calificacion del módulo Gestión financiera al alumno 11111112A', '12345678A', '2021-08-23 12:03:44', 'calificacion'),
+(1670, NULL, 'Se ha añadido FP ', '12345678A', '2021-08-23 12:24:29', 'FP'),
+(1671, NULL, 'Se ha añadido FP ', '12345678A', '2021-08-23 12:24:29', 'FP'),
+(1672, NULL, 'Se ha creado el modulo con nombre  213213213 del FP sdasadds', '12345678A', '2021-08-23 12:24:38', 'modulo'),
+(1673, NULL, 'Se ha creado el resultado aprendizaje 213213 del módulo 213213213', '12345678A', '2021-08-23 12:28:34', 'resultado aprendizaje'),
+(1674, NULL, 'Se ha borrado el FP 63', '12345678A', '2021-08-23 12:28:49', 'FP'),
+(1675, NULL, 'Se ha añadido empresa con CIF J11111111 con relación al centro Al-Ándalus', '12345678A', '2021-08-23 12:36:02', 'empresa'),
+(1676, NULL, 'Se ha añadido empresa con CIF J11111111 con relación al centro Al-Ándalus', '12345678A', '2021-08-23 12:36:34', 'empresa'),
+(1677, NULL, 'Se ha añadido empresa con CIF J11111111 con relación al centro Al-Ándalus', '12345678A', '2021-08-23 12:37:31', 'empresa'),
+(1678, 'ERROR_DELETE_EMPRESA', 'No se ha podido eliminar la empresa 86', '12345678A', '2021-08-23 12:37:36', 'empresa'),
+(1679, 'ERROR_DELETE_EMPRESA', 'No se ha podido eliminar la empresa 85', '12345678A', '2021-08-23 12:37:50', 'empresa'),
+(1680, NULL, 'Se ha eliminado todo lo asociado a la empresa 87', '12345678A', '2021-08-23 12:38:08', 'empresa'),
+(1681, 'ERROR_DELETE_EMPRESA', 'No se ha podido eliminar la empresa 86', '12345678A', '2021-08-23 12:39:05', 'empresa'),
+(1682, NULL, 'Se ha eliminado todo lo asociado a la empresa 85', '12345678A', '2021-08-23 12:53:50', 'empresa'),
+(1683, 'ERROR_DELETE_EMPRESA', 'No se ha podido eliminar la empresa 86', '12345678A', '2021-08-23 12:54:52', 'empresa'),
+(1684, NULL, 'Se ha eliminado todo lo asociado a la empresa ', '12345678A', '2021-08-23 12:57:52', 'empresa'),
+(1685, NULL, 'Se ha añadido empresa con CIF J11111111 con relación al centro Al-Ándalus', '12345678A', '2021-08-23 12:58:35', 'empresa'),
+(1686, 'ERROR_DELETE_EMPRESA', 'No se ha podido eliminar la empresa ', '12345678A', '2021-08-23 12:59:31', 'empresa'),
+(1687, 'ERROR_DELETE_FP', 'No se ha borrado el FP 62', '12345678A', '2021-08-23 13:03:05', 'FP'),
+(1688, NULL, 'Se ha borrado el FP 62', '12345678A', '2021-08-23 13:03:06', 'FP'),
+(1689, 'ERROR_DELETE_EMPRESA', 'No se ha podido eliminar la empresa ', '12345678A', '2021-08-23 13:05:35', 'empresa'),
+(1690, NULL, 'Se ha eliminado todo lo asociado a la empresa ', '12345678A', '2021-08-23 13:06:00', 'empresa'),
+(1691, NULL, 'Se ha añadido empresa con CIF J11111111 con relación al centro Al-Ándalus', '12345678A', '2021-08-23 13:09:58', 'empresa'),
+(1692, NULL, 'Se ha eliminado  la empresa 89', '12345678A', '2021-08-23 13:11:48', 'empresa'),
+(1693, NULL, 'Se ha añadido empresa con CIF J11111111 con relación al centro Al-Ándalus', '12345678A', '2021-08-23 13:14:49', 'empresa'),
+(1694, 'ERROR_DELETE_EMPRESA', 'No se ha podido eliminar la empresa ', '12345678A', '2021-08-23 13:15:52', 'empresa'),
+(1695, 'ERROR_DELETE_EMPRESA', 'No se ha podido eliminar la empresa ', '12345678A', '2021-08-23 13:19:00', 'empresa'),
+(1696, 'ERROR_DELETE_EMPRESA', 'No se ha podido eliminar la empresa ', '12345678A', '2021-08-23 14:07:27', 'empresa'),
+(1697, NULL, 'Se ha eliminado todo lo asociado a la empresa ', '12345678A', '2021-08-23 14:09:50', 'empresa'),
+(1698, NULL, 'Se ha añadido empresa con CIF J11111111 con relación al centro Al-Ándalus', '12345678A', '2021-08-23 14:10:35', 'empresa'),
+(1699, NULL, 'Se ha eliminado todo lo asociado a la empresa ', '12345678A', '2021-08-23 14:11:03', 'empresa'),
+(1700, NULL, 'Se ha añadido usuario con DNI 12345678C', '12345678A', '2021-08-23 14:33:48', 'user'),
+(1701, NULL, 'Se ha añadido usuario con DNI 12345678D', '12345678A', '2021-08-23 14:33:57', 'user'),
+(1702, NULL, 'Se ha añadido tutor empresa con DNI 12345678Z', '12345678A', '2021-08-23 14:34:14', 'tutor de empresa'),
+(1703, NULL, 'Se ha añadido profesor con DNI 12345678M', '12345678A', '2021-08-23 14:34:34', 'profesor'),
+(1704, NULL, 'Se ha añadido alumno con DNI 12345678N', '12345678A', '2021-08-23 14:34:45', 'alumno'),
+(1705, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-23 16:48:30', 'login'),
+(1706, NULL, 'Se ha actualizado todo lo asociado al centro 41000557', '12345678A', '2021-08-23 17:07:45', 'centro educativo'),
+(1707, NULL, 'Se ha actualizado el FP Administración y Finanzas del centro 41000557', '12345678A', '2021-08-23 17:10:53', 'FP'),
+(1708, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-24 11:17:51', 'login'),
+(1709, NULL, 'Se ha logado usuario ', '12345678A', '2021-08-24 11:18:05', 'login');
 
 -- --------------------------------------------------------
 
@@ -1050,7 +1275,8 @@ CREATE TABLE `profesor` (
 --
 
 INSERT INTO `profesor` (`dni`, `departamento`) VALUES
-('11111111P', 'Marketing');
+('11111111P', 'Ciencias'),
+('12345678M', 'admin2');
 
 -- --------------------------------------------------------
 
@@ -1070,7 +1296,9 @@ CREATE TABLE `profesor_modulo` (
 INSERT INTO `profesor_modulo` (`dni`, `codigoModulo`) VALUES
 ('11111111P', 24),
 ('11111111P', 25),
-('11111111P', 26);
+('11111111P', 26),
+('12345678M', 24),
+('12345678M', 25);
 
 -- --------------------------------------------------------
 
@@ -1162,8 +1390,10 @@ CREATE TABLE `tutor_empresa` (
 --
 
 INSERT INTO `tutor_empresa` (`dni`, `moduloEmpresa`, `idEmpresa`) VALUES
-('11111111T', '213321213', 74),
+('11111111T', 'mobile', 74),
+('12345678Z', '213213213', 74),
 ('33333333T', '12345678A', 74),
+('88777777P', '123213213', 74),
 ('88888884M', '123123213', 74);
 
 -- --------------------------------------------------------
@@ -1184,8 +1414,11 @@ CREATE TABLE `tutor_modulo` (
 INSERT INTO `tutor_modulo` (`dni`, `codigoModulo`) VALUES
 ('11111111T', 24),
 ('11111111T', 25),
+('12345678Z', 25),
 ('33333333T', 24),
 ('33333333T', 25),
+('88777777P', 24),
+('88777777P', 25),
 ('88888884M', 25);
 
 -- --------------------------------------------------------
@@ -1215,13 +1448,21 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`dni`, `nombre`, `apellidos`, `correo`, `movil`, `direccion`, `password`, `genero`, `cp`, `rol`, `fechaNacimiento`, `fpDual`, `codigoCentro`) VALUES
-('11111111A', 'Alumno', 'Alumno2', 'alumno1@hotmail.com', '622222222', 'Calle Asturias nº140', '$2a$12$p4CtP7BY5wAez65DYP7rx.Ax34ddqh6a65rzskW7kPDBviNNajvay', 'masculino', '41920', 5, '1998-02-11', 42, '41000557'),
-('11111111L', 'Admin', 'centro', 'admincentro@hotmail.es', '699011010', 'c/ Asturias', '$2a$12$yughG160rf.No46qW2qj1eLW5gCFyL.qWp7ZfC/7STBmxr.G1eLeq', 'masculino', '41920', 2, '1998-02-11', NULL, '41000557'),
-('11111111P', 'profesor', 'profesor', 'profesor@hotmail.com', '611111111', 'Calle Asturias nº140', '$2a$12$IM/X/NpWTjZA.7yZvXbDfu97JNgWOALWUMupkZ/c3vp41ZR2/QtTq', 'masculino', '41920', 4, '1998-02-11', 42, '41000557'),
-('11111111T', 'Pepe', 'pepe', 'pepe@hotmail.es', '677885544', 'sajjds', '$2a$12$hmvKIujy2OKMZIkuMvE6guwD0lMk8LJ4fm58OwNgqb9wZNDcGHdOK', 'masculino', '41920', 3, '1998-02-11', 42, '41000557'),
+('11111111A', 'Valentina', 'Alumno2', 'alumno1@hotmail.com', '622222222', 'Calle Asturias nº140', '$2a$12$x2LGUl9izi7PFruh8gv1VekBoT/sRTs7vQn0vbOuFfyJjF3lqMD12', 'femenino', '41920', 5, '1998-02-11', 42, '41000557'),
+('11111111L', 'Admin', 'centro', 'admincentro@hotmail.es', '699011010', 'c/ Asturias', '$2a$12$CLBvm37ZPtyK5wtvG1cz9e2kZxbfmVKXGUCrtNcX01y6TDwJNKPiq', 'masculino', '41920', 2, '1998-02-11', NULL, '41000557'),
+('11111111P', 'profesor', 'profesor', 'profesor@hotmail.com', '611111111', 'Calle Asturias nº140', '$2a$12$So5n.BPOBtUbHJycEvP7XOIqRNTEsajjJuHECGP1rBu8txLrG9H7K', 'masculino', '41920', 4, '1998-02-11', 42, '41000557'),
+('11111111T', 'Pepe', 'pepe', 'pepe@hotmail.es', '677885544', 'sajjds', '$2a$12$VB7AEp.6aqRvkM0xKk6w1OM0ZDWbli/QvkJbYqqYIDhKul6I6JRjG', 'masculino', '41920', 3, '1998-02-11', 42, '41000557'),
 ('11111112A', 'Paula', 'Garcia', 'paula@hotmail.es', '611777777', 'Espartinas', '$2a$12$jQapX0MaQourjupFDrv0hOjTDUfMRrNniUBCTEOAX5KWYPdNiVMOy', 'femenino', '41920', 5, '1998-02-11', 42, '41000557'),
-('12345678A', 'Cristian', 'García Espinos', 'cristiangarciaespino5@gmail.com', '650927664', 'Calle Asturias nº140', '$2a$12$fjr.9FpLzcqa56bsHp2ZTelqkRuHltWbgFm1xxmQwuFkRFpGVTHvC', 'masculino', '41920', 1, '1998-02-11', NULL, NULL),
+('12345677L', 'admin', 'admin', 'aksjkwq@hotmail.com', '677118811', 'kjwqk', '$2a$12$wllTKf9aPLcMhWks7cQAQ.oX1Csu6krMo7kqaedp4BlRo/bjGdDk.', 'masculino', '41920', 1, '1998-02-11', NULL, NULL),
+('12345678A', 'Cristian', 'García Espinos', 'cristiangarciaespino5@gmail.com', '650927664', 'Calle Asturias nº140', '$2a$12$oBAdbAmPdI9p2zUfW0M/5enqQjT7/9RF.xuf/37OIUAMLSOyjUC1q', 'masculino', '41920', 1, '1998-02-11', NULL, NULL),
+('12345678C', 'prueba', 'prueba', 'sadjj@hotmail.com', '611999911', 'c/Asturias', '$2a$12$7DpD9SAgnnuKRQ40.UMWWuCoSfGxgsCH4AkKdl9t7ISDrwBcvFKUW', 'masculino', '41920', 1, '1998-02-11', NULL, NULL),
+('12345678D', 'prueba', 'prueba', 'sadjj1@hotmail.com', '611999912', 'c/Asturias', '$2a$12$0VE/3Lp3sidh0sozGqcoyOybC.zeTfWZBvDw1ja5tdK1CR3tO.ABK', 'masculino', '41920', 2, '1998-02-11', NULL, '41000557'),
+('12345678M', 'prueba', 'prueba', 'sadjj114@hotmail.com', '611999914', 'c/Asturias', '$2a$12$8qLA4Zrv8t8RJ2RJqW3a5uD/vQmnre6tXCEwuUm/6nH/lA7EmM0LO', 'masculino', '41920', 4, '1998-02-11', 42, '41000557'),
+('12345678N', 'prueba', 'prueba', 'sadjj1145@hotmail.com', '611999915', 'c/Asturias', '$2a$12$0DQ6BOWt3DL.drg7XC66BOWwEHvT5pxG3gbx0gcBDccbqtVRA3UZu', 'masculino', '41920', 5, '1998-02-11', 42, '41000557'),
+('12345678Z', 'prueba', 'prueba', 'sadjj14@hotmail.com', '611999913', 'c/Asturias', '$2a$12$OUsg2f49AAiv9qhaz0J7ieDRtolHYNUva2VUmo8xvmPKMtbj1can6', 'masculino', '41920', 3, '1998-02-11', 42, '41000557'),
 ('33333333T', 'Darius', 'Noxus', 'crispillo@hotmail.es', '699889101', 'jwjwqej', '$2a$12$pbzduacY8uwwjTFj8TpdFe/b0B/xXQJfv0KYw0L8FUKFcJmU9kd3q', 'masculino', '41920', 3, '1998-02-11', 42, '41000557'),
+('88777777P', 'prueba', 'prueba', 'wqjwe1j@hotmail.es', '611774412', 'prueba', '$2a$12$bxflPzXG0E.FQhFj0SLvvOWB0k07BlvxKXFSkXJ6NZwEnV5BKCCXK', 'masculino', '41967', 3, '1998-02-11', 42, '41000557'),
+('88777777T', 'prueba', 'prueba', 'wqjwej@hotmail.es', '611774411', 'prueba', '$2a$12$gsV5gYCfa2wd5giB1l5rIeJDGLUce9xmTV0gZMbTYKr8Kit7Upvra', 'masculino', '41967', 1, '1998-02-11', NULL, NULL),
 ('88888884M', 'prueba', 'prueba', 'wqejwjqek@hotmail.es', '677110099', 'prueba', '$2a$12$nkqNknlNK8WoHaOUzDB5NOQng5uDJcDRl29X6RM3SKV/iazbMPUM2', 'masculino', '41920', 3, '1998-02-11', 42, '41000557');
 
 --
@@ -1282,7 +1523,7 @@ ALTER TABLE `encuesta`
   ADD PRIMARY KEY (`id`),
   ADD KEY `codigo_modulo` (`codigoModulo`),
   ADD KEY `dni_alumno` (`dniAlumno`),
-  ADD KEY `dni_tutor_empresa` (`dniTutorEmpresa`),
+  ADD KEY `dni_tutor_empresa` (`dniTutoroAdmin`),
   ADD KEY `resultado` (`resultado`);
 
 --
@@ -1385,31 +1626,31 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `calificacion`
 --
 ALTER TABLE `calificacion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT de la tabla `empresa`
 --
 ALTER TABLE `empresa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
 
 --
 -- AUTO_INCREMENT de la tabla `encuesta`
 --
 ALTER TABLE `encuesta`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT de la tabla `fp_duales`
 --
 ALTER TABLE `fp_duales`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT de la tabla `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1496;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1710;
 
 --
 -- AUTO_INCREMENT de la tabla `log_login`
@@ -1421,13 +1662,13 @@ ALTER TABLE `log_login`
 -- AUTO_INCREMENT de la tabla `modulo`
 --
 ALTER TABLE `modulo`
-  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT de la tabla `resultado_aprendizaje`
 --
 ALTER TABLE `resultado_aprendizaje`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `resultado_encuesta`
@@ -1484,8 +1725,8 @@ ALTER TABLE `empresa_fpdual`
 ALTER TABLE `encuesta`
   ADD CONSTRAINT `encuesta_ibfk_1` FOREIGN KEY (`codigoModulo`) REFERENCES `modulo` (`codigo`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `encuesta_ibfk_2` FOREIGN KEY (`dniAlumno`) REFERENCES `alumno` (`dni`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `encuesta_ibfk_3` FOREIGN KEY (`dniTutorEmpresa`) REFERENCES `tutor_empresa` (`dni`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `encuesta_ibfk_4` FOREIGN KEY (`resultado`) REFERENCES `resultado_encuesta` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `encuesta_ibfk_4` FOREIGN KEY (`resultado`) REFERENCES `resultado_encuesta` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `encuesta_ibfk_5` FOREIGN KEY (`dniTutoroAdmin`) REFERENCES `usuario` (`dni`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `fp_duales`

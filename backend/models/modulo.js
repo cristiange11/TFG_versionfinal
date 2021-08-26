@@ -48,9 +48,10 @@ module.exports = class Modulo {
         await connection.end();
         return rows;
     }
-    static async getModulosAlumUpdate(dni) {
+    static async getModulosAlumUpdate(dni, fpDual) {
         const connection = await promisePool.connection();
-        const [rows, fields] = await connection.query(`SELECT U.*, M.nombre as nombreModulo, M.codigo as codigoModulo, A.numeroExpediente, C.nota FROM alumno as A, usuario as U, modulo as M left join calificacion as C on C.codigoModulo = M.codigo AND C.dni = ${connection.escape(dni)} where U.rol=5 AND U.dni=${connection.escape(dni)} AND A.dni = U.dni AND C.nota is NULL or C.nota < 5`);
+        console.log(`SELECT U.*, M.nombre as nombreModulo, M.codigo as codigoModulo, A.numeroExpediente, C.nota FROM alumno as A, usuario as U, modulo as M left join calificacion as C on C.codigoModulo = M.codigo AND C.dni = ${connection.escape(dni)} where U.rol=5 AND U.dni=${connection.escape(dni)} AND M.fpDual =${connection.escape(fpDual)}  AND A.dni = U.dni AND M. AND C.nota is NULL or C.nota < 5`)
+        const [rows, fields] = await connection.query(`SELECT U.*, M.nombre as nombreModulo, M.codigo as codigoModulo, A.numeroExpediente, C.nota FROM alumno as A, usuario as U, modulo as M left join calificacion as C on C.codigoModulo = M.codigo AND C.dni = ${connection.escape(dni)} where U.rol=5 AND U.dni=${connection.escape(dni)} AND M.fpDual =${connection.escape(fpDual)}  AND A.dni = U.dni AND M. AND C.nota is NULL or C.nota < 5`);
         await connection.end();
         return rows;
     }

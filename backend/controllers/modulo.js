@@ -84,6 +84,7 @@ exports.getModulosAlum = async (req, res, next) => {
   }
 };
 exports.getModulosAlumUpdate = async (req, res, next) => {
+  console.log("ENTRO")
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
@@ -94,10 +95,11 @@ exports.getModulosAlumUpdate = async (req, res, next) => {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
       try {
-        const modulos = await Modulo.getModulosAlumUpdate(req.params.dni);
+        const modulos = await Modulo.getModulosAlumUpdate(req.params.dni, req.params.fpDual);
 
         res.status(200).json({ modulos: modulos });
       } catch (err) {
+        console.log(err)
         res.status(500).json({ error: err });
       }
     }

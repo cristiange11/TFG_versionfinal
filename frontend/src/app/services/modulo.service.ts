@@ -8,7 +8,7 @@ import { Modulo } from '../models/Modulo';
   providedIn: 'root'
 })
 export class ModuloService {
-  private url = "http://3.140.131.165:3000/modulo";
+  private url = "http://localhost:3000/modulo";
 
   constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { }
   getModulos(fpDual : number): Observable<JSON[] >{   
@@ -27,9 +27,10 @@ export class ModuloService {
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),} 
     return this.http.get<JSON[]>(`${this.url}/alumno/${dni}`,  httpOptions); 
   }
-  getModulosAlumUpdate(dni : string): Observable<JSON[] >{   
+  getModulosAlumUpdate(dni : string, fpDual): Observable<JSON[] >{   
+    
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),} 
-    return this.http.get<JSON[]>(`${this.url}/alumno/modulo/${dni}`,  httpOptions); 
+    return this.http.get<JSON[]>(`${this.url}/alumno/modulo/${dni}/${fpDual}` , httpOptions); 
   }
   addModulo(modulo : Modulo): Observable<JSON>{
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}

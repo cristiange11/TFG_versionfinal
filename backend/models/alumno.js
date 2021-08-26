@@ -28,7 +28,7 @@ module.exports = class Alumno extends User {
     }
     static async getCalificacionesAlumno(dni) {
         const connection = await promisePool.connection();
-        const [rows, fields] = await connection.query(`SELECT AM.dni, AM.codigoModulo, C.nota,M.nombre as nombreModulo FROM modulo as M, alumno_modulo as AM LEFT JOIN calificacion as C ON AM.codigoModulo = C.codigoModulo where M.codigo = AM.codigoModulo and AM.dni =${connection.escape(dni)}`);
+        const [rows, fields] = await connection.query(`SELECT AM.dni, AM.codigoModulo, C.nota,M.nombre as nombreModulo FROM modulo as M, alumno_modulo as AM LEFT JOIN calificacion as C ON AM.codigoModulo = C.codigoModulo AND C.dni=AM.dni where M.codigo = AM.codigoModulo AND  AM.dni =${connection.escape(dni)}`);
         connection.end();
         return rows;
     }

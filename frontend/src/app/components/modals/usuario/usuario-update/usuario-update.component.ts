@@ -175,7 +175,8 @@ export class UsuarioUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data.rol == "Alumno") {
-      this.moduloService.getModulosAlumUpdate(this.data.dni).pipe(first())
+      console.log(this.data)
+      this.moduloService.getModulosAlumUpdate(this.data.dni, this.data.fpId).pipe(first())
         .subscribe(
           data => {
             this.moduloList = new Map<number, string>();
