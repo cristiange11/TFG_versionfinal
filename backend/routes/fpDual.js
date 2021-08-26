@@ -106,8 +106,6 @@ router.put(
     }),
     body('plazasDisponibles').trim().not().isEmpty().withMessage("Plazas disponibles vacías")
       .custom(async (plazasDisponibles , {req}) => {
-        console.log("totalplazas => " + Number(req.body.totalPlazas))
-          console.log("Plazasdispnibles => " + plazasDisponibles)
         if (isNaN(plazasDisponibles))  {
           return Promise.reject('Error total Plazas');
         }
@@ -115,8 +113,6 @@ router.put(
           return Promise.reject('Mínimo 1 plaza');  
 
         }else if(plazasDisponibles > Number(req.body.totalPlazas)){ 
-          console.log( "Plazas disponibles => "+ Number(req.body.totalPlazas));
-          console.log("Total plazas => " + plazasDisponibles)
           
           return Promise.reject('Plazas disponibles < total plazas');  
         }
