@@ -56,9 +56,14 @@ router.post(
       .custom(async (fpDual) => {
         if(!isNaN(fpDual)){
        
-          const user = await Fpdual.getFp(fpDual);
-        if (user[0].length == 0) {
+          const fp = await Fpdual.getFp(fpDual);
+        if (fp[0].length == 0) {
           return Promise.reject('Error');
+        }else{
+          const plazas = await Fpdual.getPlazasDisponibles(fpDual);
+          if(Number(plazas[0].plazasDisponibles) <=0){
+            return Promise.reject('No hay cupo para este FP');
+          }
         }
         }else{
           return Promise.reject('Campo erróneo');
