@@ -26,14 +26,20 @@ module.exports = class FP_dual {
     }
     static async DeleteUsuariosByFP(fpDual, user) {
         const connection = await promisePool.connection().getConnection();       
-        
         try {
             await connection.beginTransaction();
-            let query = `DELETE FROM usuario WHERE fpDual =${connection.escape(fpDual)}`;
-            await connection.query(query)
+            
+            let query = `DELETE t2 FROM usuario t1 JOIN logs t2 ON t2.usuario = t1.dni WHERE t1.fpDual = ${connection.escape(fpDual)}`;
+            await connection.query(query);
+            await connection.query(`DELETE t2 FROM usuario t1 JOIN calificacion t2 ON t2.dni = t1.dni WHERE t1.fpDual = ${connection.escape(fpDual)}`);
+            await connection.query(`DELETE FROM usuario WHERE fpDual = ${connection.escape(fpDual)}`);
+   
             await connection.query(`DELETE FROM empresa_fpdual  WHERE idFp =${connection.escape(fpDual)}`);
+           
             await connection.query(`DELETE FROM modulo WHERE fpDual =  ${connection.escape(fpDual)}`);
+           
             await connection.query(`DELETE FROM fp_duales WHERE id = ${connection.escape(fpDual)}`);
+           
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha borrado el FP " ${connection.escape(fpDual)},'${user}',sysdate(), 'FP')`);
             await connection.commit();
         } catch (err) {

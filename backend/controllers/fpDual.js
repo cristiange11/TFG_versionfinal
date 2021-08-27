@@ -39,10 +39,11 @@ exports.DeleteUsuariosByFP = async (req, res, next) => {
 
       try {
         const user = jwt_decode(req.headers['authorization']).sub;
-        const fp = await Fpdual.DeleteUsuariosByFP(req.params.id, user).then(function (result) {
+       
+        await Fpdual.DeleteUsuariosByFP(req.params.id, user).then(function (result) {
           res.status(201).json({ message: "success" });
         }).catch(function (err) {
-          res.status(409).json({ "errors" : "no se ha podido borrar el usuario" });
+          res.status(409).json({ "errors" : "no se ha podido borrar el fpDual" });
         });
 
       } catch (err) {
