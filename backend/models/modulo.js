@@ -1,5 +1,5 @@
 const promisePool = require('../util/database');
-const FP = require ('./fpDual');
+const FP = require('./fpDual');
 module.exports = class Modulo {
     constructor(codigo, nombre, descripcion, curso) {
         this.codigo = codigo;
@@ -56,7 +56,7 @@ module.exports = class Modulo {
 
     static async deleteModulo(codigo, user) {
         const connection = await promisePool.connection().getConnection();
-        
+
         try {
             await connection.beginTransaction();
             let query = `DELETE FROM modulo WHERE codigo =  ${connection.escape(codigo)}`;
@@ -73,7 +73,7 @@ module.exports = class Modulo {
 
     }
     static async deleteAllByModulo(codigo, user) {
-        const connection = await promisePool.connection().getConnection();        
+        const connection = await promisePool.connection().getConnection();
         try {
             await connection.beginTransaction();
             let query = `DELETE FROM calificacion WHERE codigoModulo =  ${connection.escape(codigo)}`;

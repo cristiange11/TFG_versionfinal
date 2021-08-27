@@ -12,14 +12,10 @@ exports.getFpByCentro = async (req, res, next) => {
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
-
       const codigoCentro = req.params.codigoCentro;
-
       try {
         const fp = await Fpdual.getNombreFPByCentro(codigoCentro);
-
         res.status(200).json({ fps: fp });
-
       } catch (err) {
         res.status(500).json({ error: err });
       }
@@ -31,21 +27,17 @@ exports.DeleteUsuariosByFP = async (req, res, next) => {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else {
-
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
-
       try {
         const user = jwt_decode(req.headers['authorization']).sub;
-       
         await Fpdual.DeleteUsuariosByFP(req.params.id, user).then(function (result) {
           res.status(201).json({ message: "success" });
         }).catch(function (err) {
-          res.status(409).json({ "errors" : "no se ha podido borrar el fpDual" });
+          res.status(409).json({ "errors": "no se ha podido borrar el fpDual" });
         });
-
       } catch (err) {
         res.status(500).json({ error: err });
       }
@@ -62,9 +54,7 @@ exports.getFp = async (req, res, next) => {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
       try {
-
         const fps = await Fpdual.getFp(req.params.id);
-
         res.status(200).json({ fps: fps });
       } catch (err) {
         res.status(500).json({ error: err });
@@ -83,7 +73,6 @@ exports.getFps = async (req, res, next) => {
     } else {
       try {
         const fps = await Fpdual.getFps();
-
         res.status(200).json({ fps: fps });
       } catch (err) {
         res.status(500).json({ error: err });
@@ -102,7 +91,6 @@ exports.getFpsConPlazasDisponibles = async (req, res, next) => {
     } else {
       try {
         const fps = await Fpdual.getFpsConPlazasDisponibles(req.params.codigoCentro);
-
         res.status(200).json({ fps: fps });
       } catch (err) {
         res.status(500).json({ error: err });
@@ -121,12 +109,11 @@ exports.deleteFp = async (req, res, next) => {
     } else {
       try {
         const user = jwt_decode(req.headers['authorization']).sub;
-        const centro = await Fpdual.deleteFp(req.params.id, user).then(function (result) {
+        await Fpdual.deleteFp(req.params.id, user).then(function (result) {
           res.status(201).json({ message: "success" });
         }).catch(function (err) {
-          res.status(409).json({ "errors" : "no se ha podido borrar el usuario" });
+          res.status(409).json({ "errors": "no se ha podido borrar el usuario" });
         });
-
       } catch (err) {
         res.status(409).json({ error: err });
       }
@@ -162,17 +149,11 @@ exports.updateFp = async (req, res, next) => {
         try {
           const user = jwt_decode(req.headers['authorization']).sub;
           await Fpdual.updateFp(req.body, user).then(function (result) {
-
-
             res.status(201).json({ message: "sucess" });
           }).catch(function () {
             res.status(401).json({ "errors": "no se ha podido actualizar el FP" });
-
           });
-
-
         } catch (err) {
-
           res.status(500).json({ error: err });
         }
       }
@@ -185,16 +166,12 @@ exports.getFpsByAdminCentro = async (req, res, next) => {
   }
   else {
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
-
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
-
       try {
         const fp = await Fpdual.getFpsByAdminCentro(req.params.codigoCentro);
-
         res.status(200).json({ fps: fp });
-
       } catch (err) {
         res.status(500).json({ error: err });
       }
@@ -229,18 +206,12 @@ exports.createFp = async (req, res, next) => {
       else {
         try {
           const user = jwt_decode(req.headers['authorization']).sub;
-          const result = await Fpdual.createFp(req.body, user).then(function (result) {
-
-
+          await Fpdual.createFp(req.body, user).then(function (result) {
             res.status(201).json({ message: "success" });
           }).catch(function () {
             res.status(401).json({ message: "no se ha podido crear el centro:" + err });
-
           });
-
-
         } catch (err) {
-
           res.status(500).json({ error: err });
         }
       }

@@ -22,23 +22,23 @@ router.post(
     body('CP').trim().not().isEmpty().withMessage("CP vacío")
       .matches(/^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/).withMessage("Formato CP vacío"),
     body('codigoCentro').trim().not().isEmpty().withMessage("Código centro vacío")
-    .custom(async (codigoCentro) => {
-        
-      const user = await Centro.find(codigoCentro);
-      if (user[0].length > 0) {
-        return Promise.reject('Código Centro introducido ya existe');
-      }
-    
-  }),
+      .custom(async (codigoCentro) => {
+
+        const user = await Centro.find(codigoCentro);
+        if (user[0].length > 0) {
+          return Promise.reject('Código Centro introducido ya existe');
+        }
+
+      }),
     body('telefono').trim().not().isEmpty().withMessage("Teléfono vacío")
       .matches(/^(\+34|0034|34)?[ -]*(8|9)[ -]*([0-9][ -]*){8}$/).withMessage("Formato teléfono incorrecto")
-      .custom(async (telefono ) => {
-        
-          const user = await Centro.findTelefonoCreate(telefono);
-          if (user[0].length > 0) {
-            return Promise.reject('Teléfono introducido ya existe');
-          }
-        
+      .custom(async (telefono) => {
+
+        const user = await Centro.findTelefonoCreate(telefono);
+        if (user[0].length > 0) {
+          return Promise.reject('Teléfono introducido ya existe');
+        }
+
       }),
     body('correo')
       .isEmail().withMessage("Formato email incorrecto")
@@ -47,8 +47,8 @@ router.post(
         if (user[0].length > 0) {
           return Promise.reject('Correo ya existe');
         }
-      
-    })
+
+      })
       .normalizeEmail()
 
   ],
@@ -65,30 +65,30 @@ router.put(
       .matches(/^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/).withMessage("Formato CP vacío"),
     body('telefono').trim().not().isEmpty().withMessage("Teléfono vacío")
       .matches(/^(\+34|0034|34)?[ -]*(8|9)[ -]*([0-9][ -]*){8}$/).withMessage("Formato teléfono incorrecto")
-      .custom(async (telefono, {req}) => {
-          const user = await Centro.findTelefono(telefono, req.body.codigoCentro);
-          if (user[0].length > 0) {
-            return Promise.reject('Teléfono introducido ya existe');
-          }
-        
+      .custom(async (telefono, { req }) => {
+        const user = await Centro.findTelefono(telefono, req.body.codigoCentro);
+        if (user[0].length > 0) {
+          return Promise.reject('Teléfono introducido ya existe');
+        }
+
       }),
-      body('codigoCentro').trim().not().isEmpty().withMessage("Código centro vacío")
-    .custom(async (codigoCentro) => {
-        
-      const user = await Centro.find(codigoCentro);
-      if (user[0].length == 0) {
-        return Promise.reject('Código Centro no existe');
-      }
-    
-  }),
+    body('codigoCentro').trim().not().isEmpty().withMessage("Código centro vacío")
+      .custom(async (codigoCentro) => {
+
+        const user = await Centro.find(codigoCentro);
+        if (user[0].length == 0) {
+          return Promise.reject('Código Centro no existe');
+        }
+
+      }),
     body('correo')
       .isEmail().withMessage("Formato email incorrecto")
-      .custom(async (correo , {req}) => {
-          const user = await Centro.findCorreo(correo, req.body.codigoCentro);
-          if (user[0].length > 0) {
-            return Promise.reject('Correo ya existe');
-          }
-        
+      .custom(async (correo, { req }) => {
+        const user = await Centro.findCorreo(correo, req.body.codigoCentro);
+        if (user[0].length > 0) {
+          return Promise.reject('Correo ya existe');
+        }
+
       })
       .normalizeEmail()
 

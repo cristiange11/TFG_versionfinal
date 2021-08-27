@@ -208,11 +208,9 @@ exports.getUsuarios = async (req, res, next) => {
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
-
       try {
         const usuario = await User.getUsers();
         res.status(200).json({ "usuarios": usuario[0] });
-
       } catch (err) {
         res.status(500).json({ error: err });
       }
@@ -228,7 +226,6 @@ exports.updateUsuario = async (req, res, next) => {
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
-
       const errors = validationResult(req);
       const resu = errors.array();
       const resJSON = [{
@@ -249,17 +246,11 @@ exports.updateUsuario = async (req, res, next) => {
           const user = jwt_decode(req.headers['authorization']).sub;
           const hashedPassword = await bcrypt.hash(req.body.password, 12);
           await User.updateUser(req.body, hashedPassword, user).then(function (result) {
-
-
             res.status(201).json({ user: req.body });
           }).catch(function (err) {
             res.status(401).json({ errors: "No se ha podido actualizar el usuario" });
-
           });
-
-
-        } catch (err) {
-          
+        } catch (err) {          
           res.status(500).json({ error: err });
         }
       }
@@ -275,11 +266,9 @@ exports.getUsersByCentro = async (req, res, next) => {
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
-
       try {
         const usuario = await User.getUsersByCentro(req.params.codigoCentro);
         res.status(200).json({ "usuarios": usuario[0] });
-
       } catch (err) {
         res.status(500).json({ error: err });
       }
@@ -310,7 +299,6 @@ exports.RecoveryPassword = async (req, res, next) => {
       try {
         const correo = req.body.correo
         const token = jwt.sign({ sub: correo }, RSA_PRIVATE_KEY/*'proyecto final carrera'*/, { expiresIn: '24h' })
-
         //Creamos el objeto de transporte
         const transporter = nodemailer.createTransport({
           host: "smtp.gmail.com",
@@ -334,10 +322,8 @@ exports.RecoveryPassword = async (req, res, next) => {
           if (error) {
             res.status(400).json({ error: "Algo ha ido mal" });
           } else {
-
             res.status(200).json({ "message": "success" });
           }
-
         });
       } catch (err) {
         res.status(400).json({ error: "Algo ha ido mal" });
@@ -354,7 +340,6 @@ exports.updatePassword = async (req, res, next) => {
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
-
       const errors = validationResult(req);
       const resu = errors.array();
       const resJSON = [{
@@ -373,19 +358,13 @@ exports.updatePassword = async (req, res, next) => {
       else {
         try {
           const user = jwt_decode(req.headers['authorization']).sub;
-
           const hashedPassword = await bcrypt.hash(req.body.password, 12);
           await User.updatePassword(user, hashedPassword).then(function (result) {
-
             res.status(201).json({ "message": "success" });
           }).catch(function () {
             res.status(401).json({ errors: "No se ha podido actualizar el usuario" });
-
           });
-
-
         } catch (err) {
-
           res.status(500).json({ error: err });
         }
       }

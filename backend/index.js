@@ -14,10 +14,10 @@ const alumnoRoutes = require('./routes/alumno');
 const profesorRoutes = require('./routes/profesor');
 const resultadoAprendizajeRoutes = require('./routes/resultadoAprendizaje');
 const moduloRoutes = require('./routes/modulo');
-const encuestaRoutes= require('./routes/encuesta');
-const calificacionRoutes= require('./routes/calificacion');
-const logRoutes= require('./routes/logSesion');
-const resultadoRoutes= require('./routes/resultadoEncuesta');
+const encuestaRoutes = require('./routes/encuesta');
+const calificacionRoutes = require('./routes/calificacion');
+const logRoutes = require('./routes/logSesion');
+const resultadoRoutes = require('./routes/resultadoEncuesta');
 var https = require('https');
 app.use(cors());
 
@@ -36,9 +36,9 @@ app.use('/roles', rolesRoutes);
 
 app.use('/empresa', empresaRoutes);
 
-app.use('/tutor',tutorRoutes);
+app.use('/tutor', tutorRoutes);
 
-app.use('/alumno',alumnoRoutes);
+app.use('/alumno', alumnoRoutes);
 
 app.use("/profesor", profesorRoutes);
 
@@ -48,10 +48,10 @@ app.use("/modulo", moduloRoutes);
 
 app.use("/resultadoaprendizaje", resultadoAprendizajeRoutes);
 
-app.use("/encuesta" , encuestaRoutes);
+app.use("/encuesta", encuestaRoutes);
 
-app.use("/calificacion" , calificacionRoutes);
+app.use("/calificacion", calificacionRoutes);
 
-app.use("/resultado" , resultadoRoutes);
+app.use("/resultado", resultadoRoutes);
 
 app.listen(ports, () => console.log(`Listening on port ${ports}`));

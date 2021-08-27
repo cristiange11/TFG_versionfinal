@@ -8,22 +8,22 @@ module.exports = class Alumno extends User {
     }
     static async find(dni) {
         const connection = await promisePool.connection();
-        var sql    = `SELECT * FROM alumno where dni =  ${connection.escape(dni)}`;
+        var sql = `SELECT * FROM alumno where dni =  ${connection.escape(dni)}`;
         const res = await connection.query(sql);
-            connection.end();
-            return res;
+        connection.end();
+        return res;
     }
     static async findExpediente(numeroExpediente, dni) {
         const connection = await promisePool.connection();
-        const res= await connection.query(`SELECT * FROM alumno where numeroExpediente = ${connection.escape(numeroExpediente)} AND dni != ${connection.escape(dni)}`);
-            connection.end();
-            return res;
-        }
+        const res = await connection.query(`SELECT * FROM alumno where numeroExpediente = ${connection.escape(numeroExpediente)} AND dni != ${connection.escape(dni)}`);
+        connection.end();
+        return res;
+    }
 
     static async getAlumnos() {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT * FROM alumno `);
-            connection.end();
+        connection.end();
         return rows;
     }
     static async getCalificacionesAlumno(dni) {
@@ -52,7 +52,7 @@ module.exports = class Alumno extends User {
     }
 
     static async deleteAlumno(dni, user) {
-        const connection = await promisePool.connection().getConnection();       
+        const connection = await promisePool.connection().getConnection();
 
         try {
             await connection.beginTransaction();
@@ -63,7 +63,7 @@ module.exports = class Alumno extends User {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_ALUMNO',"No se ha borrado el alumno con DNI "${connection.escape(dni)},'${user}',sysdate(), 'alumno')`);
-            
+
             throw err;
         } finally {
             await connection.release();
@@ -71,7 +71,7 @@ module.exports = class Alumno extends User {
 
     }
     static async createAlumno(alumno, password, user) {
-        const connection = await promisePool.connection().getConnection();       
+        const connection = await promisePool.connection().getConnection();
 
         try {
             await connection.beginTransaction();
@@ -85,14 +85,14 @@ module.exports = class Alumno extends User {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_ALUMNO',"No se ha añadido el alumno con DNI " ${connection.escape(alumno.dni)},'${user}',sysdate(), 'alumno')`);
-            
+
             throw err;
         } finally {
             await connection.release();
         }
     }
     static async updateAlumno(alumno, password, user) {
-        const connection = await promisePool.connection().getConnection();       
+        const connection = await promisePool.connection().getConnection();
         try {
             await connection.beginTransaction();
             let query = `UPDATE usuario SET nombre=${connection.escape(alumno.nombre)},apellidos=${connection.escape(alumno.apellidos)},correo=${connection.escape(alumno.correo)}, movil=${connection.escape(alumno.movil)},direccion=${connection.escape(alumno.direccion)},password=${connection.escape(password)},genero=${connection.escape(alumno.genero)}, cp=${connection.escape(alumno.cp)},fechaNacimiento=STR_TO_DATE(${connection.escape(alumno.fechaNacimiento)},'%Y-%m-%d') WHERE dni=${connection.escape(alumno.dni)}`;
@@ -100,7 +100,7 @@ module.exports = class Alumno extends User {
             await connection.query(`UPDATE alumno SET numeroExpediente=${connection.escape(alumno.numeroExpediente)} WHERE dni = ${connection.escape(alumno.dni)}`);
             await connection.query(`DELETE  FROM alumno_modulo WHERE DNI = ${connection.escape(alumno.dni)}`);
             const alum = JSON.parse(JSON.stringify(alumno.modulo.modulo));
-            
+
             for (var i = 0; i < alum.length; i++) {
                 const moduloInser = alum[i];
                 await connection.query(`INSERT INTO alumno_modulo (codigoModulo, dni) SELECT modulo.codigo, alumno.dni FROM modulo, alumno WHERE modulo.codigo = ${connection.escape(moduloInser)} AND alumno.dni='${alumno.dni}'`);

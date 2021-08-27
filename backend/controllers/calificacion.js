@@ -4,19 +4,16 @@ const comprobarToken = require('../util/comprobarToken');
 const Calificacion = require('../models/calificion');
 
 exports.getCalificaciones = async (req, res, next) => {
-
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
     }
     else {
         var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
-
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
             try {
                 const calificaciones = await Calificacion.getCalificaciones(req.params.codigoModulo);
-
                 res.status(200).json({ calificaciones: calificaciones });
             } catch (err) {
                 res.status(500).json({ error: err });

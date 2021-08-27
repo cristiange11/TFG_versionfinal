@@ -7,15 +7,12 @@ exports.getResultados = async (req, res, next) => {
   }
   else {
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
-
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
       try {
         const resultados = await Resultados.getResultados();
-
         res.status(200).json({ resultados: resultados });
-
       } catch (err) {
         res.status(500).json({ error: err });
       }

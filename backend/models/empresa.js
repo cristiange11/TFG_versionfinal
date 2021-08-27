@@ -1,5 +1,5 @@
 const promisePool = require('../util/database');
-const Centro = require ('./centro');
+const Centro = require('./centro');
 module.exports = class Empresa {
     constructor(cifEmpresaEmpresa, direccion, nombre, tipo, correo, telefono, url) {
         this.cifEmpresaEmpresa = cifEmpresaEmpresa;
@@ -47,7 +47,7 @@ module.exports = class Empresa {
         await connection.end();
         return rows;
     }
-    
+
     static async getEmpresasByFp(fpDual) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT E.* FROM empresa E, fp_duales F, empresa_fpdual FE WHERE E.id = FE.idEmpresa AND FE.idFp = F.id AND F.id = ${connection.escape(fpDual)}`);
@@ -75,8 +75,8 @@ module.exports = class Empresa {
 
     }
     static async deleteTutorEmpresaByEmpresa(idEmpresa, user) {
-        const connection = await promisePool.connection().getConnection();     
-       
+        const connection = await promisePool.connection().getConnection();
+
         try {
             await connection.beginTransaction();
             let query = `DELETE t1 FROM usuario t1 INNER JOIN tutor_empresa t2 ON ( t1.dni = t2.dni) WHERE t2.idEmpresa = ${connection.escape(idEmpresa)}`;
@@ -95,9 +95,9 @@ module.exports = class Empresa {
 
     }
     static async createEmpresa(empresa, user) {
-        const connection = await promisePool.connection().getConnection();       
+        const connection = await promisePool.connection().getConnection();
         let centro = await Centro.getCentro(empresa.codigoCentro)
-       
+
         try {
             await connection.beginTransaction();
             let query = `INSERT INTO empresa(cifEmpresa, direccion, nombre, correo, telefono, url, codigoCentro) VALUES ( ${connection.escape(empresa.cifEmpresa)},${connection.escape(empresa.direccion)},${connection.escape(empresa.nombre)},${connection.escape(empresa.correo)},${connection.escape(empresa.telefono)},${connection.escape(empresa.url)}, ${connection.escape(empresa.codigoCentro)}) `;
@@ -120,9 +120,9 @@ module.exports = class Empresa {
 
     }
     static async updateEmpresa(empresa, user) {
-        const connection = await promisePool.connection().getConnection();    
+        const connection = await promisePool.connection().getConnection();
         let centroAndFp = await this.getFpAndCentroByEmpresa(empresa.id);
-        let centro = centroAndFp[0].nombreCentro        
+        let centro = centroAndFp[0].nombreCentro
         try {
             await connection.beginTransaction();
             let query = `UPDATE empresa SET direccion=${connection.escape(empresa.direccion)},nombre=${connection.escape(empresa.nombre)}, correo=${connection.escape(empresa.correo)},telefono=${connection.escape(empresa.telefono)},url=${connection.escape(empresa.url)} WHERE id = ${connection.escape(empresa.id)}`;

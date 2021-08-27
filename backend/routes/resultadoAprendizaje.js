@@ -13,14 +13,14 @@ router.delete('/:id', resultadoAprendizajeController.deleteResultadoAprendizaje)
 router.post(
   '/create',
   [
-    
+
     body('codigoModulo').trim().not().isEmpty().withMessage("Código Módulo vacío")
-    .custom(async (codigoModulo) => {
-      const user = await Modulo.find(codigoModulo);
-      if (user[0].length == 0) {
-        return Promise.reject('Módulo no existente');
-      }
-    }),
+      .custom(async (codigoModulo) => {
+        const user = await Modulo.find(codigoModulo);
+        if (user[0].length == 0) {
+          return Promise.reject('Módulo no existente');
+        }
+      }),
     body('titulo').trim().not().isEmpty().withMessage("Título vacío"),
     body('descripcion').trim().not().isEmpty().withMessage("Descripción vacía")
   ],
@@ -31,12 +31,12 @@ router.put(
   '/update',
   [
     body('codigoModulo').trim().not().isEmpty().withMessage("Código Módulo vacío")
-    .custom(async (codigoModulo) => {
-      const user = await Modulo.find(codigoModulo);
-      if (user[0].length == 0) {
-        return Promise.reject('Módulo no existente');
-      }
-    }),
+      .custom(async (codigoModulo) => {
+        const user = await Modulo.find(codigoModulo);
+        if (user[0].length == 0) {
+          return Promise.reject('Módulo no existente');
+        }
+      }),
     body('titulo').trim().not().isEmpty().withMessage("Título vacío"),
     body('descripcion').trim().not().isEmpty().withMessage("Descripción vacía")
   ],

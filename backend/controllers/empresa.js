@@ -76,11 +76,8 @@ exports.getEmpresasByFp = async (req, res, next) => {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
       try {
-
         const empresas = await Empresa.getEmpresasByFp(req.params.fpDual);
-
         res.status(200).json({ empresas: empresas });
-
       } catch (err) {
         res.status(500).json({ error: err });
       }
@@ -103,8 +100,6 @@ exports.deleteTutorEmpresaByEmpresa = async (req, res, next) => {
         }).catch(function (err) {
           res.status(409).json({ "errors": "no se ha podido borrar el usuario" });
         });
-
-
       } catch (err) {
         res.status(500).json({ error: err });
       }
@@ -121,16 +116,13 @@ exports.deleteEmpresa = async (req, res, next) => {
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
-
       try {
-
         const user = jwt_decode(req.headers['authorization']).sub;
         await Empresa.deleteEmpresa(req.params.id, user).then(function (result) {
           res.status(201).json({ message: "success" });
         }).catch(function (err) {
           res.status(409).json({ "errors": "no se ha podido borrar la empresa" });
         });
-
       } catch (err) {
         res.status(500).json({ error: err });
       }
@@ -164,21 +156,14 @@ exports.updateEmpresa = async (req, res, next) => {
         res.status(409).json({ "errors": resJSON });
       }
       else {
-
         try {
           const user = jwt_decode(req.headers['authorization']).sub;
           await Empresa.updateEmpresa(req.body, user).then(function (result) {
-
-
             res.status(201).json({ message: "success" });
           }).catch(function () {
-
             res.status(401).json({ "errors": "no se ha podido actualizar la empresa" });
           });
-
-
         } catch (err) {
-
           res.status(500).json({ error: err });
         }
       }
@@ -206,23 +191,17 @@ exports.createEmpresa = async (req, res, next) => {
           message: element.msg
         })
       });
-
       if (!errors.isEmpty()) {
         res.status(409).json({ "errors": resJSON });
       }
       else {
-
         try {
           const user = jwt_decode(req.headers['authorization']).sub;
           await Empresa.createEmpresa(req.body, user).then(function (result) {
-
-
             res.status(201).json({ message: "success" });
           }).catch(function (err) {
             res.status(401).json({ message: "no se ha podido crear la empresa:" });
           });
-
-
         } catch (err) {
           res.status(500).json({ error: err });
         }

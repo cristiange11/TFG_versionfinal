@@ -39,33 +39,33 @@ router.post(
       .matches(/^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/),
     body('apellidos').trim().not().isEmpty().withMessage("Apellidos vacío"),
     body('rol').trim().not().isEmpty().withMessage("Rol vacío")
-    .custom(async (rol) => {
-      if(!isNaN(rol)){
-        const user = await Rol.getRol(rol);
-      if (user[0].length == 0) {
-        return Promise.reject('Error');
-      }
-      }else{
-        return Promise.reject('Campo erróneo');
-      }
-      
-    }),
+      .custom(async (rol) => {
+        if (!isNaN(rol)) {
+          const user = await Rol.getRol(rol);
+          if (user[0].length == 0) {
+            return Promise.reject('Error');
+          }
+        } else {
+          return Promise.reject('Campo erróneo');
+        }
+
+      }),
     body('fechaNacimiento').trim().not().isEmpty().withMessage("Fecha de nacimiento vacía")
       .matches(/^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/).withMessage("Formato fecha incorrecto: yyyy-mm-dd"),
     body('fpDual').trim().not().isEmpty().withMessage("FP vacío")
       .custom(async (fpDual) => {
-        if(!isNaN(fpDual)){
-       
+        if (!isNaN(fpDual)) {
+
           const fp = await Fpdual.getFp(fpDual);
-        if (fp[0].length == 0) {
-          return Promise.reject('Error');
-        }else{
-          const plazas = await Fpdual.getPlazasDisponibles(fpDual);
-          if(Number(plazas[0].plazasDisponibles) <=0){
-            return Promise.reject('No hay cupo para este FP');
+          if (fp[0].length == 0) {
+            return Promise.reject('Error');
+          } else {
+            const plazas = await Fpdual.getPlazasDisponibles(fpDual);
+            if (Number(plazas[0].plazasDisponibles) <= 0) {
+              return Promise.reject('No hay cupo para este FP');
+            }
           }
-        }
-        }else{
+        } else {
           return Promise.reject('Campo erróneo');
         }
       }),
@@ -94,7 +94,7 @@ router.post(
       })
       .normalizeEmail(),
     body('numeroExpediente').trim().not().isEmpty().withMessage("Numero expediente vacío")
-      .custom(async (expediente , {req}) => {
+      .custom(async (expediente, { req }) => {
         const user = await Alumno.findExpediente(expediente, req.body.dni);
         if (user[0].length > 0) {
           return Promise.reject('Número de expediente ya existe');
@@ -118,7 +118,7 @@ router.put(
     body('cp').trim().not().isEmpty()
       .matches(/^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/),
     body('apellidos').trim().not().isEmpty().withMessage("Apellidos vacío"),
-    
+
     body('fechaNacimiento').trim().not().isEmpty().withMessage("Fecha de nacimiento vacía")
       .matches(/^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$/).withMessage("Formato fecha incorrecto: yyyy-mm-dd"),
     body('movil').trim().not().isEmpty().withMessage("Móvil vacío")
@@ -139,7 +139,7 @@ router.put(
       })
       .normalizeEmail(),
     body('numeroExpediente').trim().not().isEmpty().withMessage("Numero expediente vacío")
-      .custom(async (expediente, {req}) => {
+      .custom(async (expediente, { req }) => {
         const user = await Alumno.findExpediente(expediente, req.body.dni);
         if (user[0].length > 0) {
           return Promise.reject('Número de expediente ya existe');

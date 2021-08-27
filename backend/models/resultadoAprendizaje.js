@@ -56,7 +56,7 @@ module.exports = class ResultadoAprendizaje {
     static async updateResultadoAprendizaje(resultadoAprendizaje, user) {
         const connection = await promisePool.connection().getConnection();
         let modulo = await Modulo.getModulo(resultadoAprendizaje.codigoModulo)
-     
+
         try {
             await connection.beginTransaction();
             let query = `UPDATE resultado_aprendizaje SET codigoModulo=${connection.escape(resultadoAprendizaje.codigoModulo)}, titulo=${connection.escape(resultadoAprendizaje.titulo)},descripcion=${connection.escape(resultadoAprendizaje.descripcion)} WHERE id = ${connection.escape(resultadoAprendizaje.id)}`;

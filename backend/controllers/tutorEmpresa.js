@@ -31,7 +31,7 @@ exports.getTutorByModuloEncuesta = async (req, res, next) => {
     }
     else {
         var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
-        
+
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
@@ -52,7 +52,7 @@ exports.getTutor = async (req, res, next) => {
     }
     else {
         var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization']));
-        
+
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
@@ -73,7 +73,7 @@ exports.deleteTutor = async (req, res, next) => {
     }
     else {
         var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-        
+
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
@@ -82,9 +82,9 @@ exports.deleteTutor = async (req, res, next) => {
                 const user = jwt_decode(req.headers['authorization']).sub;
                 const tutor = await TutorEmpresa.deleteTutor(dni, user).then(function (result) {
                     res.status(201).json({ message: "success" });
-                  }).catch(function (err) {
-                    res.status(409).json({ "errors" : "no se ha podido borrar el usuario" });
-                  });
+                }).catch(function (err) {
+                    res.status(409).json({ "errors": "no se ha podido borrar el usuario" });
+                });
 
             } catch (err) {
                 res.status(500).json({ error: err });
@@ -99,7 +99,7 @@ exports.updateTutor = async (req, res, next) => {
     }
     else {
         var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-        
+
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
@@ -125,9 +125,9 @@ exports.updateTutor = async (req, res, next) => {
                 try {
                     const user = jwt_decode(req.headers['authorization']).sub;
                     const hashedPassword = await bcrypt.hash(req.body.password, 12);
-        
+
                     await TutorEmpresa.updateTutor(req.body, hashedPassword, user).then(function (result) {
-                        
+
 
                         res.status(201).json({ profesor: "sucess" });
                     }).catch(function (err) {
@@ -148,7 +148,7 @@ exports.createTutor = async (req, res, next) => {
     }
     else {
         var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-        
+
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
@@ -174,13 +174,13 @@ exports.createTutor = async (req, res, next) => {
                     const user = jwt_decode(req.headers['authorization']).sub;
 
                     const hashedPassword = await bcrypt.hash(req.body.password, 12);
-               
+
                     await TutorEmpresa.createTutor(req.body, hashedPassword, user).then(function (result) {
-                        
+
 
                         res.status(201).json({ message: "success" });
                     }).catch(function () {
-                        res.status(409).json({ "errors" : "no se ha podido crear el tutor" });
+                        res.status(409).json({ "errors": "no se ha podido crear el tutor" });
                     });
 
 

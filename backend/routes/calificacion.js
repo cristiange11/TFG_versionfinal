@@ -23,22 +23,22 @@ router.post(
       }),
     body('descripcion').trim().not().isEmpty().withMessage("Nombre vacío"),
     body('codigoModulo').trim().not().isEmpty().withMessage("Módulo vacío")
-    .custom(async (codigoModulo) => {
+      .custom(async (codigoModulo) => {
         const user = await Modulo.find(codigoModulo);
         if (user[0].length == 0) {
           return Promise.reject('Error en el módulo');
         }
       }),
-      body('nota').trim().not().isEmpty().withMessage("Nota vacía")
-    .custom(async (nota) => {    
-      if (isNaN(nota))  {
-        return Promise.reject('Tiene que ser numérico');
-      }
-      else if(nota<0 || nota>10){
-        return Promise.reject('La nota tiene que esta entre 0 y 10');
-      }
-    
-  }),
+    body('nota').trim().not().isEmpty().withMessage("Nota vacía")
+      .custom(async (nota) => {
+        if (isNaN(nota)) {
+          return Promise.reject('Tiene que ser numérico');
+        }
+        else if (nota < 0 || nota > 10) {
+          return Promise.reject('La nota tiene que esta entre 0 y 10');
+        }
+
+      }),
   ],
   calificacionController.createCalifcacion
 );
@@ -56,22 +56,22 @@ router.put(
       }),
     body('descripcion').trim().not().isEmpty().withMessage("Nombre vacío"),
     body('codigoModulo').trim().not().isEmpty().withMessage("Módulo vacío")
-    .custom(async (codigoModulo) => {
+      .custom(async (codigoModulo) => {
         const user = await Modulo.find(codigoModulo);
         if (user[0].length == 0) {
           return Promise.reject('Error en el módulo');
         }
       }),
-      body('nota').trim().not().isEmpty().withMessage("Nota vacía")
-    .custom(async (nota) => {    
-      if (isNaN(nota))  {
-        return Promise.reject('Tiene que ser numérico');
-      }
-      else if(nota<0 || nota>10){
-        return Promise.reject('La nota tiene que esta entre 0 y 10');
-      }
-    
-  }),
+    body('nota').trim().not().isEmpty().withMessage("Nota vacía")
+      .custom(async (nota) => {
+        if (isNaN(nota)) {
+          return Promise.reject('Tiene que ser numérico');
+        }
+        else if (nota < 0 || nota > 10) {
+          return Promise.reject('La nota tiene que esta entre 0 y 10');
+        }
+
+      }),
   ],
   calificacionController.updateCalificacion
 );

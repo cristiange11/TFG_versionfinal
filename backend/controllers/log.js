@@ -15,9 +15,7 @@ exports.getLogs = async (req, res, next) => {
 
       try {
         const log = await Log.getLogs();
-
         res.status(200).json({ logs: log });
-
       } catch (err) {
         res.status(500).json({ error: err });
       }

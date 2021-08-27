@@ -9,13 +9,11 @@ exports.getResultadoAprendizajes = async (req, res, next) => {
   }
   else {
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
-
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
       try {
         const resultadosAprendizaje = await ResultadoAprendizaje.getResultadoAprendizajes(req.params.codigoModulo);
-
         res.status(200).json({ resultadoAprendizaje: resultadosAprendizaje });
       } catch (err) {
         res.status(500).json({ error: err });
@@ -37,9 +35,8 @@ exports.deleteResultadoAprendizaje = async (req, res, next) => {
         await ResultadoAprendizaje.deleteResultadoAprendizaje(req.params.id, user).then(function (result) {
           res.status(201).json({ message: "success" });
         }).catch(function (err) {
-          res.status(409).json({ "errors" : "no se ha podido borrar el usuario" });
+          res.status(409).json({ "errors": "no se ha podido borrar el usuario" });
         });
-
       } catch (err) {
         res.status(409).json({ error: err });
       }
@@ -67,26 +64,18 @@ exports.updateResultadoAprendizaje = async (req, res, next) => {
           message: element.msg
         })
       });
-
       if (!errors.isEmpty()) {
         res.status(409).json({ "errors": resJSON });
       }
       else {
         try {
           const user = jwt_decode(req.headers['authorization']).sub;
-
           await ResultadoAprendizaje.updateResultadoAprendizaje(req.body, user).then(function (result) {
-
-
             res.status(201).json({ message: "sucess" });
           }).catch(function () {
             res.status(401).json({ "errors": "no se ha podido actualizar el módulo" });
-
           });
-
-
         } catch (err) {
-
           res.status(500).json({ error: err });
         }
       }
@@ -114,7 +103,6 @@ exports.createResultadoAprendizaje = async (req, res, next) => {
           message: element.msg
         })
       });
-
       if (!errors.isEmpty()) {
         res.status(409).json({ "errors": resJSON });
       }
@@ -122,17 +110,11 @@ exports.createResultadoAprendizaje = async (req, res, next) => {
         try {
           const user = jwt_decode(req.headers['authorization']).sub;
           await ResultadoAprendizaje.createResultadoAprendizaje(req.body, user).then(function (result) {
-
-
             res.status(201).json({ message: "success" });
           }).catch(function () {
             res.status(401).json({ message: "no se ha podido crear el centro:" + err });
-
           });
-
-
         } catch (err) {
-
           res.status(500).json({ error: err });
         }
       }

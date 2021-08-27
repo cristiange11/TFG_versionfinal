@@ -49,7 +49,7 @@ module.exports = class User {
         await connection.end();
         return res;
     }
-    
+
     static async findCorreo(correo, dni) {
         const connection = await promisePool.connection();
         const res = await connection.query(
@@ -86,7 +86,7 @@ module.exports = class User {
         try {
             await connection.beginTransaction();
             var sql = 'INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fechaNacimiento, fpDual, codigoCentro) VALUES (' + connection.escape(user.dni) + ',' + connection.escape(user.nombre) + ',' + connection.escape(user.apellidos) + ',' + connection.escape(user.correo) + ',' + connection.escape(user.movil) + ',' + connection.escape(user.direccion) + ',' + connection.escape(user.password) + ',' + connection.escape(user.genero) + ',' + connection.escape(user.cp) + ',' + connection.escape(user.rol) + ',STR_TO_DATE(' + connection.escape(user.fechaNacimiento) + ',"%Y-%m-%d"),' + connection.escape(user.fpDual) + ',' + connection.escape(codigoCentro) + ')';
-            
+
             let query = `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fechaNacimiento, fpDual, codigoCentro) VALUES ('${connection.escape(user.dni)}','${connection.escape(user.nombre)}','${connection.escape(user.apellidos)}','${connection.escape(user.correo)}','${connection.escape(user.movil)}','${connection.escape(user.direccion)}','${connection.escape(user.password)}','${connection.escape(user.genero)}',${connection.escape(user.cp)},'${connection.escape(user.rol)}',STR_TO_DATE('${connection.escape(user.fechaNacimiento)}','%Y-%m-%d'),${connection.escape(user.fp)},${codigoCentro})`;
             await connection.query(sql)
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha añadido usuario con DNI " ${connection.escape(user.dni)} ,'${userLogado}',sysdate(), 'user')`);
@@ -94,7 +94,7 @@ module.exports = class User {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_USER',"No se ha añadido el user con DNI " ${connection.escape(user.dni)},'${userLogado}',sysdate(), 'user')`);
-           
+
             throw err;
         } finally {
             await connection.release();
