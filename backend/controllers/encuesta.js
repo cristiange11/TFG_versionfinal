@@ -8,7 +8,7 @@ exports.getEncuestas = async (req, res, next) => {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else {
-    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'],   ));
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
@@ -26,7 +26,7 @@ exports.getEncuestasByTutor = async (req, res, next) => {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else {
-    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'],   ));
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {

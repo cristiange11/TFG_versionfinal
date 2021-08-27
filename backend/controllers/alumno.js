@@ -8,7 +8,7 @@ exports.getAlumnos = async (req, res, next) => {
         res.status(406).json({ "errors": "No aceptable" });
     }
     else {
-        var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
+        var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'],   ));
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
@@ -26,7 +26,7 @@ exports.getCalificacionesAlumno = async (req, res, next) => {
         res.status(406).json({ "errors": "No aceptable" });
     }
     else {
-        var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
+        var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'],   ));
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
@@ -98,7 +98,7 @@ exports.deleteAlumno = async (req, res, next) => {
         res.status(406).json({ "errors": "No aceptable" });
     }
     else {
-        var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
+        var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'],   ));
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
@@ -121,7 +121,7 @@ exports.updateAlumno = async (req, res, next) => {
         res.status(406).json({ "errors": "No aceptable" });
     }
     else {
-        var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
+        var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'],   ));
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {
@@ -150,10 +150,7 @@ exports.updateAlumno = async (req, res, next) => {
                         res.status(401).json({ errors: "No se ha podido actualizar el alumno" });
                     });
                 } catch (err) {
-                    if (!err.statusCode) {
-                        err.statusCode = 500;
-                    }
-                    next(err);
+                    res.status(500).json({ error: err });
                 }
             }
         }
@@ -164,7 +161,7 @@ exports.createAlumno = async (req, res, next) => {
         res.status(406).json({ "errors": "No aceptable" });
     }
     else {
-        var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
+        var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'],   ));
         if (expirado) {
             res.status(401).json({ "errors": "Sesión expirada" });
         } else {

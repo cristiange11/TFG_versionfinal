@@ -7,7 +7,7 @@ exports.getCentros = async (req, res, next) => {
   if (req.headers["content-type"] != "application/json" || req.headers["x-frame-options"] != "deny") {
     res.status(406).json({ errors: "No aceptable" });
   } else {
-    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers["authorization"] /* { header: true } */));
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers["authorization"]   ));
     if (expirado) {
       res.status(401).json({ errors: "Sesión expirada" });
     } else {
@@ -87,7 +87,7 @@ exports.deleteUserAndFPByCentro = async (req, res, next) => {
     req.headers["content-type"] != "application/json" || req.headers["x-frame-options"] != "deny") {
     res.status(406).json({ errors: "No aceptable" });
   } else {
-    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers["authorization"] /* { header: true } */));
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers["authorization"]   ));
     if (expirado) {
       res.status(401).json({ errors: "Sesión expirada" });
     } else {

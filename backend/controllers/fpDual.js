@@ -8,7 +8,7 @@ exports.getFpByCentro = async (req, res, next) => {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else {
-    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'],   ));
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
@@ -27,7 +27,7 @@ exports.DeleteUsuariosByFP = async (req, res, next) => {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else {
-    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'],   ));
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
@@ -49,7 +49,7 @@ exports.getFp = async (req, res, next) => {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else {
-    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'],   ));
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
@@ -67,7 +67,7 @@ exports.getFps = async (req, res, next) => {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else {
-    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'],   ));
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
@@ -85,7 +85,7 @@ exports.getFpsConPlazasDisponibles = async (req, res, next) => {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else {
-    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'], /* { header: true } */));
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'],   ));
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
