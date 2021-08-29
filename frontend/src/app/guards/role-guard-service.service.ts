@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot } from '@angular/router';
-import { AuthService } from './authorization.service';
+import { AuthorizationService } from './authorization.service';
 import { CookieService } from 'ngx-cookie-service';
 @Injectable()
 export class RoleGuardService implements CanActivate {
-  constructor(public auth: AuthService, public router: Router, private cookieService: CookieService) { }
+  constructor(public auth: AuthorizationService, public router: Router, private cookieService: CookieService) { }
   canActivate(route: ActivatedRouteSnapshot): boolean {
     const expectedRole = route.data.expectedRole;
     var user;
@@ -15,7 +15,7 @@ export class RoleGuardService implements CanActivate {
     if (this.auth.isAuthenticated() && expectedRole === undefined) {
       return true;
     }
-    if (!this.auth.isAuthenticated() || !expectedRole.includes(user)) {
+    else if (!this.auth.isAuthenticated() || !expectedRole.includes(user)) {
       this.router.navigate(['']);
       return false;
     }

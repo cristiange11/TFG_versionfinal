@@ -3,21 +3,18 @@
  
   <div class="row">
     <mat-form-field>
-      <input matInput type="text" formControlName="dni" placeholder="DNI" class="tamanio">
+      <input matInput type="text" formControlName="dni" placeholder="DNI" id="dni">
       <mat-error *ngIf="this.loginForm.get('dni').errors?.required">{{ getErrorMessage("dni") }}</mat-error>
       <mat-error *ngIf="this.loginForm.get('dni').errors?.pattern">{{ getErrorMessage("dni") }}</mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" class="tamanio"
-        placeholder="Contraseña">
-      <button class="fondo" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-        [attr.aria-pressed]="hide">
+      <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" id="password" placeholder="Contraseña">
+      <button class="fondo" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
         <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
       </button>
       <mat-error *ngIf=" this.loginForm.get('password').errors?.required">{{ getErrorMessage("password") }}</mat-error>
       <mat-error *ngIf=" this.loginForm.get('password').errors?.minlength">{{ getErrorMessage("password") }}</mat-error>
-
     </mat-form-field>
   </div>
   
