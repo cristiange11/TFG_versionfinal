@@ -39,7 +39,7 @@ describe('LoginComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should login admin', () => {
+  it('should login ', () => {
     let loginElement: DebugElement;
     let debugElement = fixture.debugElement;
     let authService = debugElement.injector.get(AuthService);
@@ -48,18 +48,24 @@ describe('LoginComponent', () => {
     let loginSpy = spyOn(authService, 'login').and.callThrough();
     loginElement = fixture.debugElement.query(By.css('form'));
     loginElement.triggerEventHandler('ngSubmit', null);
-    fixture.detectChanges();
-    expect(loginSpy).toHaveBeenCalledTimes(1);
-  });
-  it('Form should be invalid', async(() => {
-    component.loginForm.controls['dni'].setValue('234A');
-    component.loginForm.controls['password'].setValue('');
-    expect(component.loginForm.valid).toBeFalsy();
-  }));
+    const nextBtnElem = fixture.debugElement.query(By.css('.boton-envio'));
+    nextBtnElem.triggerEventHandler('ngSubmit', null);
 
-  it('Form should be valid', async(() => {
+    fixture.detectChanges();
+    expect(loginSpy).toHaveBeenCalled();
+  });
+  it('should login invalid', () => {
+    let loginElement: DebugElement;
+    let debugElement = fixture.debugElement;
+    let authService = debugElement.injector.get(AuthService);
     component.loginForm.controls['dni'].setValue('12345678A');
-    component.loginForm.controls['password'].setValue('Olacmtas12');
-    expect(component.loginForm.valid).toBeTruthy();
-  }));
+    component.loginForm.controls['password'].setValue('Olacmtas123456');
+    let loginSpy = spyOn(authService, 'login').and.callThrough();
+    loginElement = fixture.debugElement.query(By.css('form'));
+    loginElement.triggerEventHandler('ngSubmit', null);
+    const nextBtnElem = fixture.debugElement.query(By.css('.boton-envio'));
+    nextBtnElem.triggerEventHandler('ngSubmit', null);
+    fixture.detectChanges();
+    expect(loginSpy).toHaveBeenCalled();
+  });
 });

@@ -123,12 +123,12 @@ exports.login = async (req, res, next) => {
           const userJson = queryResult[0][0]
 
           let user = new User(userJson)
-          const isEqual = await bcrypt.compare(password, user.password);
-
+          const isEqual = await bcrypt.compare(password, user.password);         
           var equals = true;
-          if (!isEqual) {
+          if (isEqual == false) {
             equals = false;
             await Log.createLog(equals, dni);
+            
             res.status(401).json({ "errors": 'Credenciales incorrectas.' });
           }
           else {
