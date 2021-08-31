@@ -8,7 +8,7 @@ import { User } from "../models/User";
 })
 export class AuthService {
   private url = "http://3.140.131.165:3000/auth";
-
+  
   constructor(private cookieService: CookieService, private http: HttpClient ) { 
     
   }
@@ -34,9 +34,9 @@ export class AuthService {
     return this.http.post<JSON>(  `${this.url}/signup`, user , httpOptions);
     
   }
-  login( dni: Pick<User, "dni">, password: Pick<User, "password">): Observable<JSON> {
+  login( dni, password): Observable<JSON> {
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({  "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
-    return this.http.post<JSON>(`${this.url}/login`, { dni, password }, httpOptions);   
+    return this.http.post<JSON>(`${this.url}/login`, { dni, password }, /*httpOptions*/);   
   }
   updateUsuario(editForm , userJson): Observable<JSON>{
     
