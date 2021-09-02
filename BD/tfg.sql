@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-08-2021 a las 11:17:38
+-- Tiempo de generación: 11-08-2021 a las 22:59:52
 -- Versión del servidor: 10.4.17-MariaDB
 -- Versión de PHP: 8.0.1
 
@@ -1101,8 +1101,6 @@ INSERT INTO `logs` (`id`, `codigoError`, `mensaje`, `usuario`, `fechaHoraLog`, `
 
 -- --------------------------------------------------------
 
-
-
 --
 -- Estructura de tabla para la tabla `modulo`
 --
@@ -1510,8 +1508,6 @@ ALTER TABLE `fp_duales`
 ALTER TABLE `logs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1710;
 
-
-
 --
 -- AUTO_INCREMENT de la tabla `modulo`
 --
@@ -1593,8 +1589,6 @@ ALTER TABLE `fp_duales`
 --
 ALTER TABLE `logs`
   ADD CONSTRAINT `logs_ibfk_1` FOREIGN KEY (`usuario`) REFERENCES `usuario` (`dni`) ON UPDATE CASCADE;
-
-
 
 --
 -- Filtros para la tabla `modulo`
