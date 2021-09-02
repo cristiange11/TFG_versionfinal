@@ -1,4 +1,3 @@
-import { CookieService } from 'ngx-cookie-service';
 import { TestBed } from '@angular/core/testing';
 
 import { AuthService } from '../services/auth.service';
@@ -12,12 +11,12 @@ describe('AuthService', () => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(AuthService);
   });
-/*
+
   it('should perform a post to /auth with email and password', () => {
     const dni = 'dni';
     const password = 'password';
     const httpClientStub: jasmine.SpyObj<HttpClient> = jasmine.createSpyObj(
-      'http',
+      'http://3.140.131.165:3000/auth',
       ['post']
     );
     const authService = new AuthService(null,httpClientStub);
@@ -25,7 +24,7 @@ describe('AuthService', () => {
 
     authService.login(dni, password);
 
-    expect(httpClientStub.post).toHaveBeenCalledWith('/auth/login', { dni, password });
+    expect(httpClientStub.post).toHaveBeenCalledWith('http://3.140.131.165:3000/auth/login', { dni, password });
   });
-  */
+  
 });

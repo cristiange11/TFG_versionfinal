@@ -27,8 +27,10 @@ import { NavigationComponent } from 'src/app/components/navigation/navigation.co
 })
 export class UsuarioUpdateComponent implements OnInit {
   formInstance: FormGroup;
+  //Variables utilizadas para hacer que las contraseñas puedan ser visibles
   hide = true;
   hide2 = true;
+  //Variable que hace referencia al rol del usuario
   numero;
   user;
   modulo = new FormControl("", [Validators.required]);
@@ -47,7 +49,7 @@ export class UsuarioUpdateComponent implements OnInit {
   moduloUserList = new Map<number, string>();
   moduloList = new Map<number, string>();
   empresaList = new Map<string, string>();
-  constructor(public datepipe: DatePipe, private nagivationComponent: NavigationComponent, private moduloService: ModuloService, private fpdualesService: FpdualesService, private centroService: CentroService, private empresaService: EmpresaService, private tutorService: TutorEmpresaService, private alumnoService: AlumnoService, private profesorService: ProfesorService, private router: Router, private rolService: RolService, private cookieService: CookieService, public dialogRef: MatDialogRef<UsuarioUpdateComponent>,
+  constructor(public datepipe: DatePipe, private moduloService: ModuloService, private fpdualesService: FpdualesService, private tutorService: TutorEmpresaService, private alumnoService: AlumnoService, private profesorService: ProfesorService,  private cookieService: CookieService, public dialogRef: MatDialogRef<UsuarioUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: User, public authService: AuthService) {
     this.numero = data.rol;
     this.formInstance = new FormGroup({
@@ -67,20 +69,10 @@ export class UsuarioUpdateComponent implements OnInit {
       confirmPassword: this.confirmPasswordFormControl
     })
     this.rellenarFormulario(data);
-
     this.user = data;
-    if (!this.cookieService.get('user')) {
-      this.router.navigate(['home']);
-    }
-    else {
-      this.user = (JSON.parse(this.cookieService.get('user')));
-      if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2) {
-        this.dialogRef.close();
-        this.router.navigate(['home']);
-      }
-
-    }
+    this.user = (JSON.parse(this.cookieService.get('user')));
   }
+  //Método utilizado para rellenar los campos del formulario
   rellenarFormulario(data) {
     this.formInstance.setValue({
       dni: data.dni, nombre: data.nombre, apellidos: data.apellidos,
@@ -102,7 +94,7 @@ export class UsuarioUpdateComponent implements OnInit {
           error => {
             if (error.status == 401 && error.error.errors == "Sesión expirada") {
               AppComponent.myapp.openDialogSesion();
-            }else if (error.status == 500) {
+            } else if (error.status == 500) {
               const res = new Array();
               res.push("Error del servidor, vuelva a intentarlo más tarde.");
               AppComponent.myapp.openDialog(res);
@@ -135,7 +127,7 @@ export class UsuarioUpdateComponent implements OnInit {
               const res = new Array();
               res.push("Petición incorrecta.");
               AppComponent.myapp.openDialog(res);
-            }else if (error.status == 500) {
+            } else if (error.status == 500) {
               const res = new Array();
               res.push("Error del servidor, vuelva a intentarlo más tarde.");
               AppComponent.myapp.openDialog(res);
@@ -158,7 +150,7 @@ export class UsuarioUpdateComponent implements OnInit {
           error => {
             if (error.status == 401 && error.error.errors == "Sesión expirada") {
               AppComponent.myapp.openDialogSesion();
-            }else if (error.status == 500) {
+            } else if (error.status == 500) {
               const res = new Array();
               res.push("Error del servidor, vuelva a intentarlo más tarde.");
               AppComponent.myapp.openDialog(res);
@@ -172,10 +164,10 @@ export class UsuarioUpdateComponent implements OnInit {
     }
 
   }
-
+  //Método para cargar los módulos asociados al usuario y al FP
   ngOnInit(): void {
     if (this.data.rol == "Alumno") {
-     
+
       this.moduloService.getModulosAlumUpdate(this.data.dni, this.data.fpId).pipe(first())
         .subscribe(
           data => {
@@ -191,7 +183,7 @@ export class UsuarioUpdateComponent implements OnInit {
           error => {
             if (error.status == 401 && error.error.errors == "Sesión expirada") {
               AppComponent.myapp.openDialogSesion();
-            }else if (error.status == 500) {
+            } else if (error.status == 500) {
               const res = new Array();
               res.push("Error del servidor, vuelva a intentarlo más tarde.");
               AppComponent.myapp.openDialog(res);
@@ -210,17 +202,14 @@ export class UsuarioUpdateComponent implements OnInit {
             this.moduloList = new Map<number, string>();
             let modulos = data["modulos"]
             modulos.forEach(moduloInfo => {
-
               var modulo = moduloInfo
-
               this.moduloList.set(modulo.codigo, modulo.nombre);
             });
-
           },
           error => {
             if (error.status == 401 && error.error.errors == "Sesión expirada") {
               AppComponent.myapp.openDialogSesion();
-            }else if (error.status == 500) {
+            } else if (error.status == 500) {
               const res = new Array();
               res.push("Error del servidor, vuelva a intentarlo más tarde.");
               AppComponent.myapp.openDialog(res);
@@ -233,7 +222,7 @@ export class UsuarioUpdateComponent implements OnInit {
           });
     }
   }
-
+  //Método para comprobar que las contraseñas coinciden
   checkConfirmPassword(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null =>
     (control.value?.toString() === this.passwordValue.toString()
@@ -244,9 +233,8 @@ export class UsuarioUpdateComponent implements OnInit {
     return this.passwordFormControl.value;
   }
 
-
+  //Método para obtener los FP asociados al centro
   obtenerFP(centro): void {
-
     this.fpdualesService.getFPdual(centro).pipe(first())
       .subscribe(
         data => {
@@ -254,14 +242,13 @@ export class UsuarioUpdateComponent implements OnInit {
           let fps = data["fps"]
           fps.forEach(fpInfo => {
             var fp = fpInfo as Fpduales
-
             this.fpList.set(fp.id, fp.nombre)
           });
         },
         error => {
           if (error.status == 401 && error.error.errors == "Sesión expirada") {
             AppComponent.myapp.openDialogSesion();
-          }else if (error.status == 500) {
+          } else if (error.status == 500) {
             const res = new Array();
             res.push("Error del servidor, vuelva a intentarlo más tarde.");
             AppComponent.myapp.openDialog(res);
@@ -273,6 +260,7 @@ export class UsuarioUpdateComponent implements OnInit {
           }
         });
   }
+  //Método para actualziar al usuario
   save() {
     var userJson = {
       codigoCentro: this.formInstance.value.codigoCentro,
@@ -288,9 +276,7 @@ export class UsuarioUpdateComponent implements OnInit {
             window.location.reload();
           },
           error => {
-
             if (error.status == 409) {
-
               error.error.errors.forEach(errorInfo => {
                 const formControl = this.formInstance.get(errorInfo.param);
                 if (formControl) {
@@ -302,7 +288,7 @@ export class UsuarioUpdateComponent implements OnInit {
             }
             else if (error.status == 401 && error.error.errors == "Sesión expirada") {
               AppComponent.myapp.openDialogSesion();
-            }else if (error.status == 500) {
+            } else if (error.status == 500) {
               const res = new Array();
               res.push("Error del servidor, vuelva a intentarlo más tarde.");
               AppComponent.myapp.openDialog(res);
@@ -314,16 +300,13 @@ export class UsuarioUpdateComponent implements OnInit {
             }
           });
     }
-
     else if (this.numero == 'Alumno') {
-
       this.alumnoService.updateAlumno(this.formInstance.value, userJson, this.numeroExpediente.value, this.modulo.value).pipe(first())
         .subscribe(
           data => {
             window.location.reload();
           },
           error => {
-
             if (error.status == 409) {
               error.error.errors.forEach(errorInfo => {
                 const formControl = this.formInstance.get(errorInfo.param);
@@ -331,7 +314,6 @@ export class UsuarioUpdateComponent implements OnInit {
                   formControl.setErrors({
                     serverError: errorInfo.message
                   });
-
                 }
                 if (errorInfo.param == "numeroExpediente") {
                   this.numeroExpediente.setErrors({
@@ -342,12 +324,11 @@ export class UsuarioUpdateComponent implements OnInit {
                     serverError: errorInfo.message
                   });
                 }
-
               });
             }
             else if (error.status == 401 && error.error.errors == "Sesión expirada") {
               AppComponent.myapp.openDialogSesion();
-            }else if (error.status == 500) {
+            } else if (error.status == 500) {
               const res = new Array();
               res.push("Error del servidor, vuelva a intentarlo más tarde.");
               AppComponent.myapp.openDialog(res);
@@ -387,7 +368,7 @@ export class UsuarioUpdateComponent implements OnInit {
               });
             } else if (error.status == 401 && error.error.errors == "Sesión expirada") {
               AppComponent.myapp.openDialogSesion();
-            }else if (error.status == 500) {
+            } else if (error.status == 500) {
               const res = new Array();
               res.push("Error del servidor, vuelva a intentarlo más tarde.");
               AppComponent.myapp.openDialog(res);
@@ -417,7 +398,7 @@ export class UsuarioUpdateComponent implements OnInit {
               const res = new Array();
               res.push("Petición incorrecta.");
               AppComponent.myapp.openDialog(res);
-            }else if (error.status == 500) {
+            } else if (error.status == 500) {
               const res = new Array();
               res.push("Error del servidor, vuelva a intentarlo más tarde.");
               AppComponent.myapp.openDialog(res);

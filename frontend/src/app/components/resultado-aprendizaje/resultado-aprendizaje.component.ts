@@ -93,13 +93,13 @@ export class ResultadoAprendizajeComponent implements OnInit, OnDestroy, AfterVi
     this.dataSource.filter = filterValue;
   }
   add() {
-    const dialogRef = this.dialog.open(ResultadoAprendizajeCreateComponent, {
+    this.dialog.open(ResultadoAprendizajeCreateComponent, {
       width: '400px'
     });
   }
   edit(data: ResultadoAprendizaje) {
    
-    const dialogRef = this.dialog.open(ResultadoAprendizajeUpdateComponent, {
+    this.dialog.open(ResultadoAprendizajeUpdateComponent, {
       width: '400px',
       data: data
     });

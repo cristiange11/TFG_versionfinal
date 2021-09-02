@@ -28,6 +28,7 @@ export class ModuloCreateComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  //Método utilizado para añadir el módulo
   save() {
     this.moduloService.addModulo(this.formInstance.value).pipe(first())
       .subscribe(

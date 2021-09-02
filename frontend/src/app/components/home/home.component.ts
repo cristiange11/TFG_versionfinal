@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
     _config.showNavigationArrows = false;
     document.body.style.background = "white";
   }
+  //Método utilizado para obtenmer los elementos de la barra de navegación, comprobar si el usuario está logado, y si lo está, redirigirlo hacia la página correspondiente
   ngOnInit(): void {
     this.navigationComponent.obtenerItems();
     if (!this.cookieService.get('user')) {
@@ -29,9 +30,7 @@ export class HomeComponent implements OnInit {
     }
     else {
       var user = (JSON.parse(this.cookieService.get('user')));
-   
       if (Number(user.rol) == 1) {
-      
         this.router.navigate(['adminpage']);
       } else if (Number(user.rol) == 2) {
         this.router.navigate(['fpdual']);

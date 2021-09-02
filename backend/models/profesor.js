@@ -5,34 +5,35 @@ module.exports = class Profesor extends User {
         super(json);
         this.departamento = departamento;
     }
+    //Método utilizado para conocer si existe un profesor con ese DNI
     static async find(dni) {
         const connection = await promisePool.connection();
         const res = await connection.query(`SELECT * FROM profesor where dni = ${connection.escape(dni)}`);
         await connection.end();
         return res;
     }
+    //Método utilizado para obtener un listado de profesores
     static async getProfesores() {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT * FROM profesor `);
         await connection.end();
         return rows;
     }
+    //Método utilizaod para obtener toda la información de un profesor
     static async getProfesor(dni) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT U.*, P.departamento, M.nombre as nombreModulo, M.codigo as moduloCodigo FROM usuario U, profesor P, profesor_modulo PM, modulo M WHERE U.dni = P.dni AND P.dni=PM.dni AND M.codigo = PM.codigoModulo AND U.dni=${connection.escape(dni)}`);
         await connection.end();
         return rows;
     }
-
+    //Método utilizado para eliminar un profesor
     static async deleteProfesor(dni, user) {
         const connection = await promisePool.connection().getConnection();
-
         try {
             await connection.beginTransaction();
             let query = `DELETE FROM profesor WHERE dni = ${connection.escape(dni)} `;
             await connection.query(query)
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha borrado profesor con DNI " ${connection.escape(dni)} ,'${user}',sysdate(), 'profesor')`);
-
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
@@ -41,8 +42,8 @@ module.exports = class Profesor extends User {
         } finally {
             await connection.release();
         }
-
     }
+    //Método utilizado para crear un profesor
     static async createProfesor(profesor, password, user) {
         const connection = await promisePool.connection().getConnection();
         try {
@@ -51,15 +52,11 @@ module.exports = class Profesor extends User {
             await connection.query(query)
             await connection.query(`INSERT INTO profesor(dni, departamento) VALUES (${connection.escape(profesor.dni)},${connection.escape(profesor.departamento)})`);
             const profesores = JSON.parse(JSON.stringify(profesor.modulo.modulo));
-
             for (var i = 0; i < profesores.length; i++) {
-
                 const moduloInser = profesores[i];
-
                 await connection.query(`INSERT INTO profesor_modulo (codigoModulo, dni) SELECT modulo.codigo, profesor.dni FROM modulo, profesor WHERE modulo.codigo = ${connection.escape(moduloInser)} AND profesor.dni=${connection.escape(profesor.dni)}`);
             }
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha añadido profesor con DNI " ${connection.escape(profesor.dni)} ,'${user}',sysdate(), 'profesor')`);
-
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
@@ -69,6 +66,7 @@ module.exports = class Profesor extends User {
             await connection.release();
         }
     }
+    //Método utilizado para actualizar un profesor
     static async updateProfesor(profesor, password, user) {
         const connection = await promisePool.connection().getConnection();
         try {
@@ -78,11 +76,8 @@ module.exports = class Profesor extends User {
             await connection.query(`UPDATE profesor SET departamento=${connection.escape(profesor.departamento)} WHERE dni = ${connection.escape(profesor.dni)}`);
             await connection.query(`DELETE  FROM profesor_modulo WHERE DNI = ${connection.escape(profesor.dni)}`);
             const profesores = JSON.parse(JSON.stringify(profesor.modulo.modulo));
-
             for (var i = 0; i < profesores.length; i++) {
-
                 const moduloInser = profesores[i];
-
                 await connection.query(`INSERT INTO profesor_modulo (codigoModulo, dni) SELECT modulo.codigo, profesor.dni FROM modulo, profesor WHERE modulo.codigo = ${connection.escape(moduloInser)} AND profesor.dni=${connection.escape(profesor.dni)}`);
             }
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha actualizado profesor con DNI " ${connection.escape(profesor.dni)} ,'${user}',sysdate(), 'profesor')`);
@@ -94,6 +89,5 @@ module.exports = class Profesor extends User {
         } finally {
             await connection.release();
         }
-
     }
 };

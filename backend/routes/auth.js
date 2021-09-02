@@ -6,7 +6,7 @@ const router = express.Router();
 const User = require('../models/user');
 const Rol = require('../models/roles');
 const authController = require('../controllers/auth');
-
+//Definir rutas y comprobar que los campos son correctos
 router.post(
   '/signup',
   [

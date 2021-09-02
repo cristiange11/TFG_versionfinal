@@ -5,7 +5,7 @@ const router = express.Router();
 const Modulo = require('../models/modulo');
 const FP = require('../models/fpDual');
 const moduloController = require('../controllers/modulo');
-
+//Definir rutas y comprobar que los campos son correctos
 router.get('/:fpDual', moduloController.getModulos);
 
 router.get('/profesor/:dni', moduloController.getModulosProf);

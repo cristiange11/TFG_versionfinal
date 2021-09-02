@@ -8,26 +8,25 @@ module.exports = class Calificacion {
         this.descripcion = descripcion;
         this.codigoModulo = codigoModulo;
     }
-
+    //Método para obtener todas las calificaciones asociadas al módulo
     static async getCalificaciones(codigoModulo) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT C.*, U.nombre as nombreUsuario, U.apellidos as apellidoUsuario FROM calificacion as C, usuario as U where U.dni = C.dni and C.codigoModulo =  ${connection.escape(codigoModulo)}`);
         connection.end();
         return rows;
     }
+    //Método para obtener la calificación
     static async getCalificacion(id) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT * FROM calificacion where id =  ${connection.escape(id)}`);
         connection.end();
         return rows;
     }
-
+    //Método utilizado para eliminar la calificación
     static async deleteCalificacion(id, user) {
         const connection = await promisePool.connection().getConnection();
         let calificacion = await this.getCalificacion(id);
-
         let modulo = await Modulo.getModulo(calificacion[0].codigoModulo)
-
         try {
             await connection.beginTransaction();
             let query = `DELETE FROM calificacion WHERE id =  ${connection.escape(id)} `;
@@ -37,16 +36,14 @@ module.exports = class Calificacion {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_CALIFICACION',"No se ha borrado la calificación del módulo " ${connection.escape(modulo[0].nombre)} " al alumno " ${connection.escape(calificacion[0].dni)},'${user}',sysdate(), 'calificacion')`);
-
             throw err;
         } finally {
             await connection.release();
         }
-
     }
+    //Método utilizado para crear la calificación
     static async createCalificacion(calificacion, user) {
         const connection = await promisePool.connection().getConnection();
-
         try {
             await connection.beginTransaction();
             let query = `INSERT INTO calificacion(dni, nota, descripcion, codigoModulo ) VALUES (${connection.escape(calificacion.dni)},${connection.escape(calificacion.nota)},${connection.escape(calificacion.descripcion)},${connection.escape(calificacion.codigoModulo)})`;
@@ -56,12 +53,12 @@ module.exports = class Calificacion {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_CALIFICACION',"No se ha añadido la calificación del alumno "${connection.escape(calificacion.dni)},'${user}',sysdate(), 'calificacion')`);
-
             throw err;
         } finally {
             await connection.release();
         }
     }
+    //Método utilizado para actualizar la calificación
     static async updateCalificacion(calificacion, user) {
         const connection = await promisePool.connection().getConnection();
         try {

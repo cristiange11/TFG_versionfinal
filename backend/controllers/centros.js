@@ -2,7 +2,7 @@ const { validationResult } = require("express-validator");
 const jwt_decode = require("jwt-decode");
 const comprobarToken = require("../util/comprobarToken");
 const Centro = require("../models/centro");
-
+//Método utilizado para obtener un listado de centros
 exports.getCentros = async (req, res, next) => {
   if (req.headers["content-type"] != "application/json" || req.headers["x-frame-options"] != "deny") {
     res.status(406).json({ errors: "No aceptable" });
@@ -20,6 +20,7 @@ exports.getCentros = async (req, res, next) => {
     }
   }
 };
+//Método utilizado para eliminar un centro
 exports.deleteCentro = async (req, res, next) => {
   if (req.headers["content-type"] != "application/json" || req.headers["x-frame-options"] != "deny") {
     res.status(406).json({ errors: "No aceptable" });
@@ -41,6 +42,7 @@ exports.deleteCentro = async (req, res, next) => {
     }
   }
 };
+//Método utilizado para actualizar un centro
 exports.updateCentro = async (req, res, next) => {
   if (req.headers["content-type"] != "application/json" || req.headers["x-frame-options"] != "deny") {
     res.status(406).json({ errors: "No aceptable" });
@@ -82,6 +84,7 @@ exports.updateCentro = async (req, res, next) => {
     }
   }
 };
+//Método que sirve para eliminar todo lo asociaod al centro
 exports.deleteUserAndFPByCentro = async (req, res, next) => {
   if (
     req.headers["content-type"] != "application/json" || req.headers["x-frame-options"] != "deny") {
@@ -104,6 +107,7 @@ exports.deleteUserAndFPByCentro = async (req, res, next) => {
     }
   }
 };
+//Método utilizado para crear un centro
 exports.createCentro = async (req, res, next) => {
   if (req.headers["content-type"] != "application/json" || req.headers["x-frame-options"] != "deny") {
     res.status(406).json({ errors: "No aceptable" });

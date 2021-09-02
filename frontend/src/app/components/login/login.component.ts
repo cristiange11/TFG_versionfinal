@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
   constructor(private cookieService: CookieService, private authService: AuthService, private router: Router) {
     document.body.style.background = "linear-gradient(to right, #e66465, #9198e5)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
-
+  //Método utilizado para cargar el formulario y comprobar si el usuario ha iniciado sesión
   ngOnInit(): void {
     this.loginForm = this.createFormGroup();
     if (this.cookieService.get('user')) {
@@ -40,13 +40,10 @@ export class LoginComponent implements OnInit {
     const res = new FormGroup({
       dni: new FormControl("", [Validators.required, Validators.pattern(/^\d{8}[a-zA-Z]$/)]),
       password: new FormControl("", [Validators.required, Validators.minLength(6)])
-
-    },
-
-    );
+    });
     return res;
   }
-
+  //Método utilizado para el login del usuario
   login() {
     this.authService.login(this.loginForm.value.dni, this.loginForm.value.password).pipe(first())
       .subscribe(
@@ -57,15 +54,12 @@ export class LoginComponent implements OnInit {
           let token = result["token"]
           this.cookieService.set('token', token);
           //this.cookieService.set( 'rol', user.rol );
-          
           this.cookieService.set('user', JSON.stringify(user));
           var userCookie = (JSON.parse(this.cookieService.get('user')));
           this.cookieService.delete('correo');
-     
           if (Number(userCookie.rol) == 1) {
             this.router.navigate(['adminpage']);
           }
-
           else if (Number(userCookie.rol) == 2) {
             this.router.navigate(['fpdual']);
           }
@@ -82,7 +76,7 @@ export class LoginComponent implements OnInit {
             const res = new Array();
             res.push("Error del servidor, vuelva a intentarlo más tarde.");
             AppComponent.myapp.openDialog(res);
-          }else if (error.status == 409) {
+          } else if (error.status == 409) {
             const res = new Array();
             res.push(error.error.errors);
             AppComponent.myapp.openDialog(res);
@@ -94,6 +88,7 @@ export class LoginComponent implements OnInit {
           }
         });
   }
+  //Método utilizado para representar los errores que haya en los campos del formulario
   getErrorMessage(attribute: String) {
     if (attribute == "dni") {
       let dni = this.loginForm.get("dni")
@@ -108,6 +103,5 @@ export class LoginComponent implements OnInit {
           '';
     }
     return false;
-
   }
 }

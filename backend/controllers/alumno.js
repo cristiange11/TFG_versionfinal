@@ -3,6 +3,7 @@ const jwt_decode = require('jwt-decode');
 const comprobarToken = require('../util/comprobarToken');
 const Alumno = require('../models/alumno');
 const bcrypt = require('bcryptjs');
+//Método que sirve para obtener todos los alumnos
 exports.getAlumnos = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
@@ -21,6 +22,7 @@ exports.getAlumnos = async (req, res, next) => {
         }
     }
 };
+//Método utilizado para obtener las calificaciones de un alumno
 exports.getCalificacionesAlumno = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
@@ -39,6 +41,7 @@ exports.getCalificacionesAlumno = async (req, res, next) => {
         }
     }
 };
+//Método utilizado para obtener los alumnos de un módulo
 exports.getAlumnosByModulo = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
@@ -57,6 +60,7 @@ exports.getAlumnosByModulo = async (req, res, next) => {
         }
     }
 };
+//Método utilizado para obtener los alumnos de un módulo para añadirles encuestas
 exports.getAlumnosByModuloEncuesta = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
@@ -75,6 +79,7 @@ exports.getAlumnosByModuloEncuesta = async (req, res, next) => {
         }
     }
 };
+//Método utilizado para obtener un alumno
 exports.getAlumno = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
@@ -93,6 +98,7 @@ exports.getAlumno = async (req, res, next) => {
         }
     }
 };
+//Método utilizado para eliminar un alumno
 exports.deleteAlumno = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
@@ -116,6 +122,7 @@ exports.deleteAlumno = async (req, res, next) => {
         }
     }
 };
+//Método utilizado para actualizar un alumno
 exports.updateAlumno = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
@@ -156,6 +163,7 @@ exports.updateAlumno = async (req, res, next) => {
         }
     }
 };
+//Método utilizado para crear un alumno
 exports.createAlumno = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });

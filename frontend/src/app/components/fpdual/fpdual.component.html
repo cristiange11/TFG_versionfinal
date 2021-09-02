@@ -14,7 +14,6 @@
         <th mat-header-cell *matHeaderCellDef>
           <div style="display: flex; align-items: center;">
             <span mat-sort-header>{{myApp.getTitle(column)}}</span>
-
           </div>
         </th>
         <td mat-cell *matCellDef="let element">
@@ -40,17 +39,14 @@
       <ng-container [matColumnDef]="'modulos'">
         <th mat-header-cell *matHeaderCellDef> M&oacute;dulos </th>
         <td mat-cell *matCellDef="let element">
-
           <button mat-icon-button (click)="getModulos(element['id'])">
             <mat-icon mat-icon-button color='primary'>search</mat-icon>
           </button>
-
         </td>
       </ng-container>
       <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
       <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
     </table>
-
     <div class="viewMobile">
       <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 50]" showFirstLastButtons></mat-paginator>
     </div>

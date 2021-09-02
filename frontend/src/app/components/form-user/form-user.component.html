@@ -25,7 +25,6 @@
     <input matInput type="text" formControlName="direccion" placeholder="Direcci&oacute;n" required>
     <mat-error *ngIf="this.signupForm.get('direccion').errors?.required">{{ getErrorMessage("direccion") }}</mat-error>
     <mat-error *ngIf="this.signupForm.get('direccion').errors?.minlength">{{ getErrorMessage("direccion") }}</mat-error>
-
   </mat-form-field>
   <mat-form-field>
     <mat-label>CP</mat-label>
@@ -52,7 +51,6 @@
       getErrorMessage("correo") }}</mat-error>
     <mat-error *ngIf="this.signupForm.get('correo').errors?.serverError ">{{
       this.signupForm.get('correo').errors?.serverError }}</mat-error>
-
   </mat-form-field>
   <mat-form-field>
     <mat-label>Fecha de nacimiento</mat-label>
@@ -73,7 +71,6 @@
       [attr.aria-pressed]="hide">
       <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
     </button>
-
   </mat-form-field>
   <mat-form-field>
     <input matInput [type]="hide2 ? 'password' : 'text'" [formControl]="confirmPasswordFormControl" required
@@ -133,10 +130,7 @@
         {{ getErrorMessage("fpDual") }}</mat-error>
       <mat-error *ngIf="this.fpDual.errors?.serverError">{{ this.fpDual.errors?.serverError }}</mat-error>
     </ng-template>
-
   </mat-form-field>
-
-
   <mat-form-field *ngIf="this.numero==4; else anotherRol">
     <input matInput type="text" [formControl]="formGroupProfesor" placeholder="Departamento">
     <mat-error *ngIf="formGroupProfesor.errors?.required ">{{ getErrorMessage("formGroupProfesor") }}</mat-error>
@@ -144,7 +138,6 @@
     <mat-error *ngIf="this.formGroupProfesor.errors?.serverError">{{ this.formGroupProfesor.errors?.serverError }}
     </mat-error>
   </mat-form-field>
-
   <mat-form-field appearance="fill" *ngIf="this.numero==4; ">
     <mat-label>M&oacute;dulos</mat-label>
     <mat-select [formControl]="modulo" multiple>
@@ -152,16 +145,13 @@
     </mat-select>
     <mat-error *ngIf="modulo.errors?.required ">M&oacute;dulo requerido</mat-error>
     <mat-error *ngIf="this.modulo.errors?.serverError">M&oacute;dulo requerido</mat-error>
-
   </mat-form-field>
-
   <ng-template #anotherRol>
     <mat-form-field *ngIf="this.numero==5; else rolTutorEmpresa" required>
       <input matInput type="text" [formControl]="numeroExpediente" placeholder="Número de expediente">
       <mat-error *ngIf=" numeroExpediente.errors?.required">{{ getErrorMessage("numeroExpediente") }}</mat-error>
       <mat-error *ngIf=" numeroExpediente.errors?.minlength">{{ getErrorMessage("numeroExpediente") }}</mat-error>
       <mat-error *ngIf=" numeroExpediente.errors?.serverError">{{ numeroExpediente.errors?.serverError }}</mat-error>
-
     </mat-form-field>
   </ng-template>
   <ng-template #rolTutorEmpresa>
@@ -172,7 +162,6 @@
       </mat-select>
       <mat-error *ngIf="modulo.errors?.required ">M&oacute;dulo requerido</mat-error>
       <mat-error *ngIf="this.modulo.errors?.serverError">M&oacute;dulo requerido</mat-error>
-
     </mat-form-field>
     <mat-form-field [formGroup]="formGroupTutor" *ngIf="this.numero==3">
       <input matInput type="text" required formControlName="moduloEmpresa" placeholder="Modulo de la empresa">
@@ -182,7 +171,6 @@
         }}</mat-error>
       <mat-error *ngIf="this.formGroupTutor.get('moduloEmpresa').errors?.serverError">{{
         this.formGroupTutor.get('moduloEmpresa').errors?.serverError }}</mat-error>
-
     </mat-form-field>
     <mat-form-field [formGroup]="formGroupTutor" *ngIf="this.numero==3" appearance="fill">
       <mat-label>Empresas</mat-label>
@@ -218,6 +206,4 @@
   <div *ngIf="this.numero!=5 && this.numero!=4 && this.numero!=3 && this.numero!=2">
     <button class="boton-envio" type="submit" [disabled]="!signupForm.valid "> <span>Registrar Usuario</span></button>
   </div>
-
-
 </form>

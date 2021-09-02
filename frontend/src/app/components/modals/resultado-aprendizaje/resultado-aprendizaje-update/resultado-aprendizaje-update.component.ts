@@ -27,6 +27,7 @@ export class ResultadoAprendizajeUpdateComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  //Método utilizado para actualizar un resultado de aprendizaje
   save() {
     this.resultadoAprendizajeService.updateResultadoAprendizaje(this.formInstance.value).pipe(first())
       .subscribe(
@@ -38,7 +39,7 @@ export class ResultadoAprendizajeUpdateComponent implements OnInit {
           if (error.status == 401 && error.error.errors == "Sesión expirada") {
             this.dialogRef.close();
             AppComponent.myapp.openDialogSesion();
-          }else if (error.status == 500) {
+          } else if (error.status == 500) {
             const res = new Array();
             res.push("Error del servidor, vuelva a intentarlo más tarde.");
             AppComponent.myapp.openDialog(res);

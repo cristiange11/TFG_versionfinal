@@ -2,7 +2,7 @@ const { validationResult } = require('express-validator');
 const jwt_decode = require('jwt-decode');
 const comprobarToken = require('../util/comprobarToken');
 const Empresa = require('../models/empresa');
-
+//Método utilizado para obtener un listado de empresas
 exports.getEmpresas = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -13,17 +13,15 @@ exports.getEmpresas = async (req, res, next) => {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
       try {
-
         const empresas = await Empresa.getEmpresas();
-
         res.status(200).json({ empresas: empresas });
-
       } catch (err) {
         res.status(500).json({ error: err });
       }
     }
   }
 };
+//Método utilizado para obtener las empresas asociadas a un centro
 exports.getEmpresasByCentro = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -34,17 +32,15 @@ exports.getEmpresasByCentro = async (req, res, next) => {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
       try {
-
         const empresas = await Empresa.getEmpresasByCentro(req.params.codigoCentro);
-
         res.status(200).json({ empresas: empresas });
-
       } catch (err) {
         res.status(500).json({ error: err });
       }
     }
   }
 };
+//Método que sirve para obtener el FP y el centro con los que tiene relación la empresa
 exports.getFpAndCentroByEmpresa = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -55,17 +51,15 @@ exports.getFpAndCentroByEmpresa = async (req, res, next) => {
       res.status(401).json({ "errors": "Sesión expirada" });
     } else {
       try {
-
         const empresas = await Empresa.getFpAndCentroByEmpresa(req.params.idEmpresa);
-
         res.status(200).json({ empresas: empresas });
-
       } catch (err) {
         res.status(500).json({ error: err });
       }
     }
   }
 };
+//Método utilizado para obtener un listado de las emrpesas asociadas a un FP
 exports.getEmpresasByFp = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -84,6 +78,7 @@ exports.getEmpresasByFp = async (req, res, next) => {
     }
   }
 };
+//Método utilizado para eliminar todo lo asociado a la empresa
 exports.deleteTutorEmpresaByEmpresa = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -107,6 +102,7 @@ exports.deleteTutorEmpresaByEmpresa = async (req, res, next) => {
   }
 
 };
+//Método utilizado para eliminar la empresa
 exports.deleteEmpresa = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -128,8 +124,8 @@ exports.deleteEmpresa = async (req, res, next) => {
       }
     }
   }
-
 };
+//Método utilizado para actualizar la empresa
 exports.updateEmpresa = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -170,6 +166,7 @@ exports.updateEmpresa = async (req, res, next) => {
     }
   }
 };
+//Método utilizaod para crear una empresa
 exports.createEmpresa = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });

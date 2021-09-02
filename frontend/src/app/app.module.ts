@@ -93,11 +93,11 @@ import { RecoveryComponent } from './components/recovery/recovery.component';
 import { PasswordComponent } from './components/modals/password/password.component';
 import { ModuloDeleteConfirmationComponent } from './components/modals/modulo/modulo-delete-confirmation/modulo-delete-confirmation.component';
 import { SesionComponent } from './components/modals/sesion/sesion.component';
-import {AuthorizationService} from './guards/authorization.service';
+import { AuthorizationService } from './guards/authorization.service';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { RoleGuardService } from './guards/role-guard-service.service';
 
-@NgModule({ 
+@NgModule({
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -155,9 +155,9 @@ import { RoleGuardService } from './guards/role-guard-service.service';
     MatInputModule,
     MatSelectModule,
     MatTableFilterModule,
-    MatInputModule ,
-    MDBBootstrapModule.forRoot() ,
-    
+    MatInputModule,
+    MDBBootstrapModule.forRoot(),
+
   ],
   declarations: [
     AppComponent,
@@ -201,11 +201,11 @@ import { RoleGuardService } from './guards/role-guard-service.service';
     PasswordComponent,
     ModuloDeleteConfirmationComponent,
     SesionComponent
-    
+
   ],
-  exports: [MatDialogModule, MatFormFieldModule, MatTableFilterModule,MatSidenavModule, MatButtonModule, MatDividerModule, MatPaginatorModule, MatIconModule, MatInputModule,  MatListModule, MatMenuModule, ],
-  providers: [ConfirmationService, MessageService, CookieService, DatePipe,HomeComponent,AuthorizationService,RoleGuardService ,  NavigationComponent,  { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },JwtHelperService],
+  exports: [MatDialogModule, MatFormFieldModule, MatTableFilterModule, MatSidenavModule, MatButtonModule, MatDividerModule, MatPaginatorModule, MatIconModule, MatInputModule, MatListModule, MatMenuModule,],
+  providers: [ConfirmationService, MessageService, CookieService, DatePipe, HomeComponent, AuthorizationService, RoleGuardService, NavigationComponent, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS }, JwtHelperService],
   bootstrap: [AppComponent],
-  entryComponents: [ModalComponent, SesionComponent, ModuloDeleteConfirmationComponent, CalificacionUpdateComponent, CalificacionCreateComponent, UsuarioDeleteConfirmationComponent, EncuestaCreateComponent,EncuestaUpdateComponent, ResultadoAprendizajeCreateComponent, ResultadoAprendizajeUpdateComponent, ModuloCreateComponent, ModuloUpdateComponent, UsuarioUpdateComponent, FpdualDeleteConfirmationComponent, FpdualUpdateComponent, FpdualCreateComponent, EmpresaCreateComponent, EmpresaUpdateComponent, EmpresaDeleteConfirmationComponent,  DeleteComponent, CentroUpdateComponent, CentroDeleteConfirmationComponent, CentroCreateComponent]
+  entryComponents: [ModalComponent, SesionComponent, ModuloDeleteConfirmationComponent, CalificacionUpdateComponent, CalificacionCreateComponent, UsuarioDeleteConfirmationComponent, EncuestaCreateComponent, EncuestaUpdateComponent, ResultadoAprendizajeCreateComponent, ResultadoAprendizajeUpdateComponent, ModuloCreateComponent, ModuloUpdateComponent, UsuarioUpdateComponent, FpdualDeleteConfirmationComponent, FpdualUpdateComponent, FpdualCreateComponent, EmpresaCreateComponent, EmpresaUpdateComponent, EmpresaDeleteConfirmationComponent, DeleteComponent, CentroUpdateComponent, CentroDeleteConfirmationComponent, CentroCreateComponent]
 })
 export class AppModule { }

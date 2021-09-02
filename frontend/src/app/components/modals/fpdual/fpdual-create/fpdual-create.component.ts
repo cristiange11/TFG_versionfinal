@@ -55,9 +55,8 @@ export class FpdualCreateComponent implements OnInit {
     }
 
   }
-
+  //Método utilizado para obtener los centros
   ngOnInit(): void {
-
     this.centroService.getCentros().pipe(first())
       .subscribe(
         data => {
@@ -83,26 +82,24 @@ export class FpdualCreateComponent implements OnInit {
           }
         });
   }
+  //Método utilizado para comprobar que el número total de plazas sea mayor al número de plazas disponibles
   validateScore(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null =>
     (Number(control.value) <= Number(this.totalPlazasValue)
       ? null : { scoreError: true })
   }
-
   get totalPlazasValue() {
     return this.totalPlazasControl.value;
   }
+  //Método utilizado para añadir el FP dual
   save() {
-
     this.fpdualesService.addFp(this.formInstance.value).pipe(first())
       .subscribe(
         data => {
           window.location.reload();
         },
         error => {
-
           if (error.status == 409) {
-
             error.error.errors.forEach(errorInfo => {
               const formControl = this.formInstance.get(errorInfo.param);
               if (formControl) {

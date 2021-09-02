@@ -6,6 +6,7 @@ module.exports = class Alumno extends User {
         super(json);
         this.numeroExpediente = numeroExpediente;
     }
+    //Método utilizado para buscar un usuario
     static async find(dni) {
         const connection = await promisePool.connection();
         var sql = `SELECT * FROM alumno where dni =  ${connection.escape(dni)}`;
@@ -13,47 +14,51 @@ module.exports = class Alumno extends User {
         connection.end();
         return res;
     }
+    //Método utilizado para comprobar que el numero del expediente del alumno no está en uso
     static async findExpediente(numeroExpediente, dni) {
         const connection = await promisePool.connection();
         const res = await connection.query(`SELECT * FROM alumno where numeroExpediente = ${connection.escape(numeroExpediente)} AND dni != ${connection.escape(dni)}`);
         connection.end();
         return res;
     }
-
+    //Método utilizado para obtener un listado de los alumnos
     static async getAlumnos() {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT * FROM alumno `);
         connection.end();
         return rows;
     }
+    //Método utilizado para obtener las calificaciones de un alumno
     static async getCalificacionesAlumno(dni) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT AM.dni, AM.codigoModulo, C.nota,M.nombre as nombreModulo FROM modulo as M, alumno_modulo as AM LEFT JOIN calificacion as C ON AM.codigoModulo = C.codigoModulo AND C.dni=AM.dni where M.codigo = AM.codigoModulo AND  AM.dni =${connection.escape(dni)}`);
         connection.end();
         return rows;
     }
+    //Método utilizado para obtener los alumnos de un módulo
     static async getAlumnosByModulo(codigoModulo) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT AM.dni, AM.codigoModulo,M.nombre as nombreModulo, U.* FROM usuario as U,modulo as M, alumno_modulo as AM WHERE NOT EXISTS (SELECT * FROM calificacion as C where C.dni = U.dni AND C.codigoModulo=${connection.escape(codigoModulo)}) AND U.dni = AM.dni AND AM.codigoModulo = ${connection.escape(codigoModulo)} and M.codigo = AM.codigoModulo`);
         connection.end();
         return rows;
     }
+    //Método utilizado para obtener los alumnos de un módulo para añadirles encuestas
     static async getAlumnosByModuloEncuesta(codigoModulo) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT U.* FROM usuario as U, modulo as M, alumno_modulo as AM where U.rol=5 AND M.codigo = ${connection.escape(codigoModulo)} AND AM.dni = U.dni AND AM.codigoModulo = M.codigo `);
         connection.end();
         return rows;
     }
+    //Método para obtener un alumno
     static async getAlumno(dni) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT U.*, A.numeroExpediente, M.nombre as nombreModulo, M.codigo as moduloCodigo FROM usuario U, alumno A, alumno_modulo AM, modulo M WHERE U.dni = A.dni AND A.dni=AM.dni AND M.codigo = AM.codigoModulo AND U.dni=${connection.escape(dni)}`);
         connection.end();
         return rows;
     }
-
+    //Método para eliminar un alumno
     static async deleteAlumno(dni, user) {
         const connection = await promisePool.connection().getConnection();
-
         try {
             await connection.beginTransaction();
             let query = `DELETE FROM alumno WHERE dni = ${connection.escape(dni)} `;
@@ -63,16 +68,14 @@ module.exports = class Alumno extends User {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_ALUMNO',"No se ha borrado el alumno con DNI "${connection.escape(dni)},'${user}',sysdate(), 'alumno')`);
-
             throw err;
         } finally {
             await connection.release();
         }
-
     }
+    //Método para crear un alumno
     static async createAlumno(alumno, password, user) {
         const connection = await promisePool.connection().getConnection();
-
         try {
             await connection.beginTransaction();
             let query = `INSERT INTO usuario(dni, nombre, apellidos, correo, movil, direccion, password, genero, cp, rol, fechaNacimiento, fpDual, codigoCentro) VALUES (${connection.escape(alumno.dni)},${connection.escape(alumno.nombre)},${connection.escape(alumno.apellidos)},${connection.escape(alumno.correo)},${connection.escape(alumno.movil)},${connection.escape(alumno.direccion)},${connection.escape(password)},${connection.escape(alumno.genero)},${connection.escape(alumno.cp)},${connection.escape(alumno.rol)},STR_TO_DATE(${connection.escape(alumno.fechaNacimiento)},'%Y-%m-%d'),${connection.escape(alumno.fpDual)},${connection.escape(alumno.codigoCentro)})`
@@ -85,12 +88,12 @@ module.exports = class Alumno extends User {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_ALUMNO',"No se ha añadido el alumno con DNI " ${connection.escape(alumno.dni)},'${user}',sysdate(), 'alumno')`);
-
             throw err;
         } finally {
             await connection.release();
         }
     }
+    //Método para actualizar un alumno
     static async updateAlumno(alumno, password, user) {
         const connection = await promisePool.connection().getConnection();
         try {
@@ -115,5 +118,4 @@ module.exports = class Alumno extends User {
             await connection.release();
         }
     }
-
 };

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, Form, FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms";
+import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms";
 import { first } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { CentroService } from 'src/app/services/centro.service';
@@ -13,7 +13,7 @@ import { Fpduales } from 'src/app/models/Fpduales';
 import { Empresa } from 'src/app/models/Empresa';
 import { AppComponent } from '../../app.component';
 import { AppRoutingModule } from '../../app-routing.module';
-import { RouterModule, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { ModuloService } from 'src/app/services/modulo.service';
 import { NavigationComponent } from '../navigation/navigation.component';
@@ -24,8 +24,10 @@ import { NavigationComponent } from '../navigation/navigation.component';
 })
 export class FormUserComponent implements OnInit {
   signupForm: FormGroup;
+  //Variables definidas para hacer visibles las contraseñas
   hide = true;
   hide2 = true;
+  //Variable utilizada para obtener el rol del usuario
   numero = -1;
   userLogged = false;
   formGroupTutor;
@@ -42,60 +44,27 @@ export class FormUserComponent implements OnInit {
   rolesList = new Map<number, string>();
   fpList = new Map<number, string>();
   empresaList = new Map<number, string>();
-  constructor(private nagivationComponent: NavigationComponent, private moduloService: ModuloService, private cookieService: CookieService, private router: Router, private appRouting: AppRoutingModule, private authService: AuthService, private tutorService: TutorEmpresaService, private profesorService: ProfesorService, private alumnoService: AlumnoService, private empresaService: EmpresaService, private centroService: CentroService, private rolService: RolService, private fpdualesService: FpdualesService) {
+  constructor(private moduloService: ModuloService, private cookieService: CookieService,  private authService: AuthService, private tutorService: TutorEmpresaService, private profesorService: ProfesorService, private alumnoService: AlumnoService, private empresaService: EmpresaService, private centroService: CentroService, private rolService: RolService, private fpdualesService: FpdualesService) {
     document.body.style.background = "linear-gradient(to right, #1dcd9b, #00d4ff)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
-
+  //Método utilizado para obtener el usuario, los centros del sistema si el usuario es administrador de la aplicación, los roles con los que puede crear un usuario
   ngOnInit(): void {
-    
-      this.user = (JSON.parse(this.cookieService.get('user')));
-      
-
-      if (this.user.rol == 1) {
-        this.centroService.getCentros().pipe(first())
-          .subscribe(
-            data => {
-              this.centroList = new Map<string, string>();
-              let centros = data["centros"]
-
-              centros.forEach(centroInfo => {
-
-                this.centroList.set(centroInfo.codigoCentro, centroInfo.nombre)
-              });
-            },
-            error => {
-              if (error.status == 401 && error.error.errors == "Sesión expirada") {
-                AppComponent.myapp.openDialogSesion();
-              }
-              else if (error.status == 406) {
-                const res = new Array();
-                res.push("Petición incorrecta.");
-                AppComponent.myapp.openDialog(res);
-              }
-              else if (error.status == 500) {
-                const res = new Array();
-                res.push("Error del servidor, vuelva a intentarlo más tarde.");
-                AppComponent.myapp.openDialog(res);
-              }
-            });
-      }
-      this.rolService.getRoles().pipe(first())
+    this.user = (JSON.parse(this.cookieService.get('user')));
+    if (this.user.rol == 1) {
+      this.centroService.getCentros().pipe(first())
         .subscribe(
           data => {
-            this.rolesList = new Map<number, string>();
-            let rol = data["roles"]
-            rol.forEach(rolInfo => {
-              if (this.user.rol == 2 && rolInfo.id != 1 && rolInfo.id != 2) {
-                this.rolesList.set(rolInfo.id, rolInfo.nombreRol);
-              } else if (this.user.rol == 1) {
-                this.rolesList.set(rolInfo.id, rolInfo.nombreRol);
-              }
+            this.centroList = new Map<string, string>();
+            let centros = data["centros"]
+            centros.forEach(centroInfo => {
+              this.centroList.set(centroInfo.codigoCentro, centroInfo.nombre)
             });
           },
           error => {
             if (error.status == 401 && error.error.errors == "Sesión expirada") {
               AppComponent.myapp.openDialogSesion();
-            } else if (error.status == 406) {
+            }
+            else if (error.status == 406) {
               const res = new Array();
               res.push("Petición incorrecta.");
               AppComponent.myapp.openDialog(res);
@@ -106,7 +75,35 @@ export class FormUserComponent implements OnInit {
               AppComponent.myapp.openDialog(res);
             }
           });
-    
+    }
+    this.rolService.getRoles().pipe(first())
+      .subscribe(
+        data => {
+          this.rolesList = new Map<number, string>();
+          let rol = data["roles"]
+          rol.forEach(rolInfo => {
+            if (this.user.rol == 2 && rolInfo.id != 1 && rolInfo.id != 2) {
+              this.rolesList.set(rolInfo.id, rolInfo.nombreRol);
+            } else if (this.user.rol == 1) {
+              this.rolesList.set(rolInfo.id, rolInfo.nombreRol);
+            }
+          });
+        },
+        error => {
+          if (error.status == 401 && error.error.errors == "Sesión expirada") {
+            AppComponent.myapp.openDialogSesion();
+          } else if (error.status == 406) {
+            const res = new Array();
+            res.push("Petición incorrecta.");
+            AppComponent.myapp.openDialog(res);
+          }
+          else if (error.status == 500) {
+            const res = new Array();
+            res.push("Error del servidor, vuelva a intentarlo más tarde.");
+            AppComponent.myapp.openDialog(res);
+          }
+        });
+
     this.signupForm = this.createFormGroup();
   }
 
@@ -126,16 +123,15 @@ export class FormUserComponent implements OnInit {
       password: this.passwordFormControl,
       confirmPassword: this.confirmPasswordFormControl
     })
-   
-      if (this.user.rol == 2) {
-        this.codigoCentro.setValue(this.user.codigoCentro);
-        this.obtenerFP(this.user.codigoCentro);
-      }
-    
+
+    if (this.user.rol == 2) {
+      this.codigoCentro.setValue(this.user.codigoCentro);
+      this.obtenerFP(this.user.codigoCentro);
+    }
     return res;
   }
 
-
+  //Método utilizado para comprobar que los contraseñas sean iguales
   checkConfirmPassword(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null =>
     (control.value?.toString() === this.passwordValue.toString()
@@ -145,7 +141,7 @@ export class FormUserComponent implements OnInit {
   get passwordValue() {
     return this.passwordFormControl.value;
   }
-
+  //Método utilizado para obtener el rol marcado y definir nuevos validators
   obtenerRol(rol): number {
     this.numero = rol;
     if (rol == 5) {
@@ -155,7 +151,6 @@ export class FormUserComponent implements OnInit {
       this.formGroupProfesor = new FormControl("", [Validators.required, Validators.minLength(6)]);
       this.modulo = new FormControl("", [Validators.required]);
     } else if (rol == 3) {
-
       this.modulo = new FormControl("", [Validators.required]);
       this.formGroupTutor = new FormGroup({ moduloEmpresa: new FormControl("", [Validators.required, Validators.minLength(6)]), idEmpresa: new FormControl("", [Validators.required]) })
       this.empresaService.getEmpresasByFp(this.user.fpDual).pipe(first())
@@ -169,7 +164,6 @@ export class FormUserComponent implements OnInit {
             });
           },
           error => {
-
             if (error.status == 401 && error.error.errors == "Sesión expirada") {
               AppComponent.myapp.openDialogSesion();
             } else if (error.status == 406) {
@@ -183,12 +177,10 @@ export class FormUserComponent implements OnInit {
               AppComponent.myapp.openDialog(res);
             }
           });
-
-
-
     }
     return this.numero;
   }
+  //Método utilizado para obtener los módulos y las empresas asociadas al FP dual marcado
   obtenerModuloAndEmpresa(fp): void {
     this.empresaService.getEmpresasByFp(fp).pipe(first())
       .subscribe(
@@ -250,8 +242,8 @@ export class FormUserComponent implements OnInit {
           }
         });
   }
+  //Método utilizado para obtener los FP duales asociados a un centro
   obtenerFP(centro): void {
-
     if (this.numero != 5) {
       this.fpdualesService.getFPdual(centro).pipe(first())
         .subscribe(
@@ -264,7 +256,6 @@ export class FormUserComponent implements OnInit {
               this.fpList.set(fp.id, fp.nombre)
             });
           },
-
           error => {
             if (error.status == 401 && error.error.errors == "Sesión expirada") {
               AppComponent.myapp.openDialogSesion();
@@ -281,6 +272,7 @@ export class FormUserComponent implements OnInit {
             }
           });
     } else {
+      //método utilizado para obtener los FP duales asociados a un centro que tengan como mínimo 1 plaza disponible
       this.fpdualesService.getFPdualByAlumno(centro).pipe(first())
         .subscribe(
           data => {
@@ -288,7 +280,6 @@ export class FormUserComponent implements OnInit {
             let fps = data["fps"]
             fps.forEach(fpInfo => {
               var fp = fpInfo as Fpduales
-
               this.fpList.set(fp.id, fp.nombre)
             });
           },
@@ -306,17 +297,15 @@ export class FormUserComponent implements OnInit {
               AppComponent.myapp.openDialog(res);
             }
           });
-
     }
   }
+  //Método para registrar un usuario
   signup(): void {
     var userJson = {
       codigoCentro: this.codigoCentro.value,
       fpDual: this.fpDual.value,
     };
-
     if (this.numero == 1 || this.numero == 2) {
-
       this.authService.signup(this.signupForm.value, userJson).pipe(first())
         .subscribe(
           data => {
@@ -356,13 +345,10 @@ export class FormUserComponent implements OnInit {
             }
           });
     }
-
     else if (this.numero == 5) {
-
       this.alumnoService.createAlumno(this.signupForm.value, userJson, this.numeroExpediente.value).pipe(first())
         .subscribe(
           data => {
-
             var arrayRes = new Array();
             arrayRes.push("Usuario registrado correctamente");
             AppComponent.myapp.openDialog(arrayRes);
@@ -528,6 +514,7 @@ export class FormUserComponent implements OnInit {
     }
 
   }
+  //Método utilizado para representar los errores que pueda haber en el formulario
   getErrorMessage(attribute: String) {
 
     if (attribute == "dni") {

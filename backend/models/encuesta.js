@@ -10,33 +10,36 @@ module.exports = class ResultadoAprendizaje {
         this.dniAlumno = dniAlumno;
         this.dniTutorEmpresa = dniTutorEmpresa;
     }
-
+    //Método para obtener todas las encuestas de un módulo
     static async getEncuestas(codigoModulo) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT encuesta.*, A.nombre as nombreAlumno, A.apellidos as apellidoAlumno, T.nombre as nombreTutor, T.apellidos as apellidoTutor, R.resultado as resultado FROM encuesta left JOIN usuario as A on encuesta.dniAlumno= A.dni left JOIN usuario as T on encuesta.dniTutoroAdmin = T.dni left join resultado_encuesta as R on (R.id = encuesta.resultado ) where encuesta.codigoModulo= ${connection.escape(codigoModulo)}`);
         await connection.end();
         return rows;
     }
+    //Método para obtener las encuestas asociadas a un tutor
     static async getEncuestaByTutor(dni, codigoModulo) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT encuesta.*, A.nombre as nombreAlumno, A.apellidos as apellidoAlumno, T.nombre as nombreTutor, T.apellidos as apellidoTutor, R.resultado as resultado FROM encuesta left JOIN usuario as A on encuesta.dniAlumno= A.dni left JOIN usuario as T on encuesta.dniTutoroAdmin = T.dni left join resultado_encuesta as R on (R.id = encuesta.resultado ) where encuesta.dniTutoroAdmin= ${connection.escape(dni)} and encuesta.codigoModulo= ${connection.escape(codigoModulo)}`);
         await connection.end();
         return rows;
     }
+    //Método para obtener una encuesta
     static async getEncuesta(id) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT observaciones FROM encuesta where id =${connection.escape(id)}`);
         await connection.end();
         return rows;
     }
+    //Método para obtener toda la información acerca de una encuesta
     static async getAllByEncuesta(id) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT * FROM encuesta where id =${connection.escape(id)}`);
         await connection.end();
         return rows;
     }
+    //Método utilizado para borrar una encuesta
     static async deleteEncuesta(id, user) {
-
         const connection = await promisePool.connection().getConnection();
         let encuesta = await this.getAllByEncuesta(id);
         let modulo = await Modulo.getModulo(encuesta[0].codigoModulo)
@@ -49,13 +52,12 @@ module.exports = class ResultadoAprendizaje {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_ENCUESTA',"No se ha podido eliminar la encuesta " ${connection.escape(encuesta[0].titulo)} " del módulo " ${connection.escape(modulo[0].nombre)} ,'${user}',sysdate(), 'encuesta')`);
-
             throw err;
         } finally {
             await connection.release();
         }
-
     }
+    //Método utilizado para crear una encuesta
     static async createEncuesta(encuesta, user) {
         let observaciones = encuesta.observaciones == null ? null : `${encuesta.observaciones}`;
         let modulo = await Modulo.getModulo(encuesta.codigoModulo)
@@ -69,13 +71,12 @@ module.exports = class ResultadoAprendizaje {
         } catch (err) {
             await connection.query("ROLLBACK");
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_INSERT_ENCUESTA',"No se ha añadido la encuesta con título " ${connection.escape(encuesta.titulo)} " del módulo " ${connection.escape(modulo[0].nombre)},'${user}',sysdate(), 'encuesta')`);
-
             throw err;
         } finally {
             await connection.release();
         }
-
     }
+    //Método utilizado para actualizar una encuesta
     static async updateEncuesta(encuesta, user) {
         let observaciones = encuesta.observaciones == null ? null : `${encuesta.observaciones}`;
         let modulo = await Modulo.getModulo(encuesta.codigoModulo)
@@ -93,6 +94,5 @@ module.exports = class ResultadoAprendizaje {
         } finally {
             await connection.release();
         }
-
     }
 };

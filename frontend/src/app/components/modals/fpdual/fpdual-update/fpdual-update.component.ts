@@ -39,30 +39,18 @@ export class FpdualUpdateComponent implements OnInit {
       id: new FormControl("", []),
       nombreCentro: new FormControl("", [])
     })
-
     this.formInstance.setValue(data);
-    if (!this.cookieService.get('user')) {
-      this.router.navigate(['home']);
-    }
-    else {
-      this.user = (JSON.parse(this.cookieService.get('user')));
-      if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2) {
-        this.dialogRef.close();
-        this.router.navigate(['home']);
-      }
-
-    }
+    this.user = (JSON.parse(this.cookieService.get('user')));
+      
   }
-
+  //Método utilizado para cargar los centros
   ngOnInit(): void {
-
     this.centroService.getCentros().pipe(first())
       .subscribe(
         data => {
           this.centroList = new Map<string, string>();
           let centros = data["centros"]
           centros.forEach(centroInfo => {
-
             this.centroList.set(centroInfo.codigoCentro, centroInfo.nombre)
           });
         },
@@ -81,7 +69,7 @@ export class FpdualUpdateComponent implements OnInit {
         });
   }
 
-
+  //Método utilizaod para comprobar que las palzas totales sea mayor que las plazas disponibles
   validateScore(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null =>
     (Number(control.value) <= Number(this.totalPlazasValue)
@@ -91,8 +79,8 @@ export class FpdualUpdateComponent implements OnInit {
   get totalPlazasValue() {
     return this.totalPlazasControl.value;
   }
+  //Método utilizado para actualizar el FP dual
   save() {
-
     this.fpdualesService.updateFp(this.formInstance.value).pipe(first())
       .subscribe(
         data => {

@@ -2,7 +2,7 @@ const { validationResult } = require('express-validator');
 const jwt_decode = require('jwt-decode');
 const comprobarToken = require('../util/comprobarToken');
 const Fpdual = require('../models/fpDual');
-
+//Método utilizado para obtener un listado de los FP asociados a un centro
 exports.getFpByCentro = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -22,6 +22,7 @@ exports.getFpByCentro = async (req, res, next) => {
     }
   }
 };
+//Método para eliminar todo lo asociado a un FP
 exports.DeleteUsuariosByFP = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -44,6 +45,7 @@ exports.DeleteUsuariosByFP = async (req, res, next) => {
     }
   }
 };
+//Método utilizado para obtener un FP
 exports.getFp = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -62,6 +64,7 @@ exports.getFp = async (req, res, next) => {
     }
   }
 };
+//Método utilizado para obtener un listado de todos los FPs
 exports.getFps = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -80,6 +83,7 @@ exports.getFps = async (req, res, next) => {
     }
   }
 };
+//Método utilizado para conocer los FP duales que tengan como mínimo 1 plaza disponible
 exports.getFpsConPlazasDisponibles = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -98,6 +102,7 @@ exports.getFpsConPlazasDisponibles = async (req, res, next) => {
     }
   }
 };
+//Método utilizado para eliminar un FP
 exports.deleteFp = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -120,6 +125,7 @@ exports.deleteFp = async (req, res, next) => {
     }
   }
 };
+//Método utilziado para actualizar un FP
 exports.updateFp = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -160,6 +166,7 @@ exports.updateFp = async (req, res, next) => {
     }
   }
 };
+//Método utilizado para obtener los FPs de un centro
 exports.getFpsByAdminCentro = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -178,6 +185,7 @@ exports.getFpsByAdminCentro = async (req, res, next) => {
     }
   }
 };
+//Método utilizado para crear un FP
 exports.createFp = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });

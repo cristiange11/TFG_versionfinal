@@ -9,20 +9,17 @@ const jwt_decode = require('jwt-decode');
 const comprobarToken = require('../util/comprobarToken');
 const nodemailer = require('nodemailer');
 const RSA_PRIVATE_KEY = fs.readFileSync(__dirname + '/OPENSSL/private.pem');
+//Método para crear un usuario
 exports.signup = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else {
     var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'],   ));
-
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     }
-
-
     else {
-
       const errors = validationResult(req);
       const resu = errors.array();
       const resJSON = [{
@@ -40,7 +37,6 @@ exports.signup = async (req, res, next) => {
         res.status(409).json({ "errors": resJSON });
       }
       else {
-
         const dni = req.body.dni;
         const nombre = req.body.nombre;
         const apellidos = req.body.apellidos;
@@ -54,11 +50,8 @@ exports.signup = async (req, res, next) => {
         const fechaNacimiento = req.body.fechaNacimiento;
         const codigoCentro = req.body.codigoCentro;
         const fpDual = req.body.fpDual;
-
         try {
-
           const hashedPassword = await bcrypt.hash(password, 12);
-
           const us = {
             dni: dni,
             nombre: nombre,
@@ -74,17 +67,12 @@ exports.signup = async (req, res, next) => {
             fpDual: fpDual,
             codigoCentro: codigoCentro
           };
-
           const user = jwt_decode(req.headers['authorization']).sub;
           await User.save(us, user).then(function (result) {
-
-
             res.status(201).json({ message: "success" });
           }).catch(function (err) {
             res.status(409).json({ "errors": "no se ha podido crear el usuario" });
           });
-
-
         } catch (err) {
           res.status(500).json({ error: err });
         }
@@ -92,7 +80,7 @@ exports.signup = async (req, res, next) => {
     }
   }
 };
-
+//Método utilizado para el login
 exports.login = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -127,15 +115,12 @@ exports.login = async (req, res, next) => {
           var equals = true;
           if (isEqual == false) {
             equals = false;
-            await Log.createLog(equals, dni);
-            
+            await Log.createLog(equals, dni);  
             res.status(401).json({ "errors": 'Credenciales incorrectas.' });
           }
           else {
-          
             await Log.createLog(equals, dni);
             const jwtBearerToken = jwt.sign({ sub: user.dni }, RSA_PRIVATE_KEY/*'proyecto final carrera'*/, { expiresIn: '24h' });
-
             const resJSON = { "result": { "user": userJson, "token": jwtBearerToken } }
             res.status(200).json(resJSON);
           }
@@ -144,11 +129,11 @@ exports.login = async (req, res, next) => {
         }
       } catch (err) {
         res.status(500).json({ error: err });
-
       }
     }
   }
 };
+//Método utilizado para eliminar un usuario
 exports.deleteUser = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -166,14 +151,13 @@ exports.deleteUser = async (req, res, next) => {
         }).catch(function (err) {
           res.status(409).json({ "errors": "no se ha podido borrar el usuario" });
         });
-
-
       } catch (err) {
         res.status(500).json({ error: err });
       }
     }
   }
 };
+//Método utilizado para eliminar todo lo asociado a un usuario
 exports.deleteLogsByUser = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -185,7 +169,6 @@ exports.deleteLogsByUser = async (req, res, next) => {
     } else {
       try {
         const user = jwt_decode(req.headers['authorization']).sub;
-
         await User.deleteLogsByUser(req.params.dni, user).then(function (result) {
           res.status(201).json({ message: "success" });
         }).catch(function (err) {
@@ -199,6 +182,7 @@ exports.deleteLogsByUser = async (req, res, next) => {
     }
   }
 };
+//Método utilizado para obtener todos los usuarios
 exports.getUsuarios = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -217,6 +201,7 @@ exports.getUsuarios = async (req, res, next) => {
     }
   }
 };
+//Método utilizado para actualizar un usuario
 exports.updateUsuario = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -257,6 +242,7 @@ exports.updateUsuario = async (req, res, next) => {
     }
   }
 };
+//Método utilizado para obtener un listado de los usuarios asociados a un centro
 exports.getUsersByCentro = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -275,6 +261,7 @@ exports.getUsersByCentro = async (req, res, next) => {
     }
   }
 };
+//Método utilizado para enviar el correo del cambio de contraseña
 exports.RecoveryPassword = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -331,6 +318,7 @@ exports.RecoveryPassword = async (req, res, next) => {
     }
   }
 };
+//Método utilizado para cambiar la contraseña del usuario
 exports.updatePassword = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });

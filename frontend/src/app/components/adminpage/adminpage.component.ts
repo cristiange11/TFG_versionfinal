@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -43,16 +43,17 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getAll();
 
   }
-
+  //método para cargar la barra de navegación y los filtros
   ngOnInit(): void {
     this.nagivationComponent.obtenerItems();
-    
+
     this.dataSource.filterPredicate = function (data, filter: string): boolean {
 
       return data.nombre.toLowerCase().includes(filter) || data.provincia.toLowerCase().includes(filter) || data.direccion.toLowerCase().includes(filter) || data.telefono.toLowerCase().includes(filter) || data.correo.toLowerCase().includes(filter) || data.CP.toLowerCase().includes(filter);
     };
 
   }
+  //Método para obtener todos los centros
   getAll() {
     this.serviceSubscribe = this.centroService.getCentros().pipe(first())
       .subscribe(
@@ -60,9 +61,7 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
           let centros = data["centros"]
           centros.forEach(centroInfo => {
             this.centroList.push(centroInfo)
-
           });
-
           this.dataSource.data = this.centroList
         },
         error => {
@@ -74,30 +73,30 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
             const res = new Array();
             res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
-          }else if (error.status == 500) {
+          } else if (error.status == 500) {
             const res = new Array();
             res.push("Error del servidor, vuelva a intentarlo más tarde.");
             AppComponent.myapp.openDialog(res);
           }
-
-
         });
   }
+  //Método para navegar a la página fpDual y obtener los FP duales asociados al centro
   getFps(codigoCentro) {
     sessionStorage.setItem('codigoCentro', codigoCentro);
     this.router.navigate(['fpdual']);
   }
+  //Método para realizar el filtro
   public doFilter = (value: { target: HTMLInputElement }) => {
     const filterValue = value.target.value.trim().toLocaleLowerCase();
     this.dataSource.filter = filterValue;
-
   }
-
+  //Método para añadir un centro
   add() {
     this.dialog.open(CentroCreateComponent, {
       width: '400px'
     });
   }
+  //Método para editar un centro
   edit(data: Centro) {
 
     this.dialog.open(CentroUpdateComponent, {
@@ -106,7 +105,7 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
   }
-
+  //Método para eliminar un centro
   delete(codigoCentro: any) {
     const dialogRef = this.dialog.open(DeleteComponent);
 
@@ -162,7 +161,7 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
                             res.push("No se ha podido borrar.");
                             AppComponent.myapp.openDialog(res);
                           }
-                          
+
                         }
                       )
                   }
@@ -174,10 +173,8 @@ export class AdminpageComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
   ngAfterViewInit(): void {
-
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-
   }
   ngOnDestroy(): void {
     if (this.cookieService.get('user')) {

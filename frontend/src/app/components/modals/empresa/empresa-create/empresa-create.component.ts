@@ -1,11 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { first } from 'rxjs/operators';
 import { AppComponent } from 'src/app/app.component';
-import { NavigationComponent } from 'src/app/components/navigation/navigation.component';
 import { Empresa } from 'src/app/models/Empresa';
 import { Fpduales } from 'src/app/models/Fpduales';
 import { CentroService } from 'src/app/services/centro.service';
@@ -23,7 +21,7 @@ export class EmpresaCreateComponent implements OnInit {
   codigoCentro = new FormControl("", [Validators.required]);
   centroList = new Map<string, string>();
   dineroBeca = new FormControl("", [Validators.required, Validators.min(1)]);
-  constructor(private centroService: CentroService, private router: Router, private cookieService: CookieService, public dialogRef: MatDialogRef<EmpresaCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: Empresa, private nagivationComponent: NavigationComponent, public empresaService: EmpresaService, private fpdualesService: FpdualesService) {
+  constructor(private centroService: CentroService, private cookieService: CookieService, public dialogRef: MatDialogRef<EmpresaCreateComponent>, @Inject(MAT_DIALOG_DATA) public data: Empresa, public empresaService: EmpresaService, private fpdualesService: FpdualesService) {
 
     this.formInstance = new FormGroup({
       cifEmpresa: new FormControl("", [Validators.required, Validators.pattern(/^[a-zA-Z]{1}\d{7}[a-zA-Z0-9]{1}$/)]),
@@ -37,19 +35,11 @@ export class EmpresaCreateComponent implements OnInit {
       fpDual: new FormControl("", [Validators.required]),
       codigoCentro : this.codigoCentro
     })
-    if (!this.cookieService.get('user')) {
-      this.router.navigate(['home']);
-    }
-    else {
+   
       this.user = (JSON.parse(this.cookieService.get('user')));
-      if (Number(this.user.rol) != 1 && Number(this.user.rol) != 2) {
-        this.dialogRef.close();
-        this.router.navigate(['home']);
-      }
-
-    }
+      
   }
-
+  //Método para obtener los FP asociados a un centro
   obtenerFP(centro): void {   
       this.fpdualesService.getFPdual(centro).pipe(first())
         .subscribe(
@@ -77,7 +67,7 @@ export class EmpresaCreateComponent implements OnInit {
             }
           });   
   }
-
+  //Método para cargar los FP duales asociados al usuario
   ngOnInit(): void {
     if (this.user.rol == 2) {
       this.fpdualesService.getFPsByCentro(this.user.codigoCentro).pipe(first())
@@ -87,11 +77,9 @@ export class EmpresaCreateComponent implements OnInit {
             let fps = data["fps"]
             fps.forEach(fpInfo => {
               var fp = fpInfo as Fpduales
-
               this.fpList.set(fp.id, fp.nombre)
             });
           },
-
           error => {
             if (error.status == 401 && error.error.errors == "Sesión expirada") {
               this.dialogRef.close();
@@ -134,9 +122,9 @@ export class EmpresaCreateComponent implements OnInit {
               AppComponent.myapp.openDialog(res);
             }
           });
-      
     }
   }
+  //Método para guardar la empresa
   save() {
     this.empresaService.addEmpresa(this.formInstance.value, this.dineroBeca.value).pipe(first())
       .subscribe(

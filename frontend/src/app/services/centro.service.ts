@@ -1,9 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Router } from "@angular/router";
-
-import { Observable, BehaviorSubject } from "rxjs";
-import { first, catchError, tap, map } from "rxjs/operators";
+import { Observable } from "rxjs";
 import { CookieService } from 'ngx-cookie-service';
 
 import { Centro } from "../models/Centro";
@@ -13,31 +10,33 @@ import { Centro } from "../models/Centro";
   providedIn: 'root'
 })
 export class CentroService {
-  private url = "http://3.140.131.165:3000/centro";
-  
-  constructor(private http: HttpClient,  private router: Router, private cookieService: CookieService ) { 
-  }
-  getCentros(): Observable<Centro[] >{  
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json" , "X-Frame-Options" : "deny"}),}
+  private url = "http://localhost:3000/centro";
 
-    return this.http.get<Centro[]>(this.url, httpOptions); 
+  constructor(private http: HttpClient, private cookieService: CookieService) {
   }
-  addCentro(centro : Centro): Observable<JSON>{
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
-
-    return this.http.post<JSON>(`${this.url}/create`, centro , httpOptions);
+  //Método que llama al back-end para obtener los centros
+  getCentros(): Observable<Centro[]> {
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization": this.cookieService.get('token'), "Content-Type": "application/json", "X-Frame-Options": "deny" }), }
+    return this.http.get<Centro[]>(this.url, httpOptions);
   }
-  deleteCentro(codigoCentro : string): Observable<JSON>{
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
-    return this.http.delete<JSON>(`${this.url}/${codigoCentro}`,  httpOptions);
+  //Método que llama al back-end para crear un centro
+  addCentro(centro: Centro): Observable<JSON> {
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization": this.cookieService.get('token'), "Content-Type": "application/json", "X-Frame-Options": "deny" }), }
+    return this.http.post<JSON>(`${this.url}/create`, centro, httpOptions);
   }
-  updateCentro(centro : Centro): Observable<JSON>{
-    var httpOptions: { headers: HttpHeaders } = {headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
+  //Método que llama al back-end para borrar un centro
+  deleteCentro(codigoCentro: string): Observable<JSON> {
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization": this.cookieService.get('token'), "Content-Type": "application/json", "X-Frame-Options": "deny" }), }
+    return this.http.delete<JSON>(`${this.url}/${codigoCentro}`, httpOptions);
+  }
+  //Método que llama al back-end para actualizar un centro
+  updateCentro(centro: Centro): Observable<JSON> {
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization": this.cookieService.get('token'), "Content-Type": "application/json", "X-Frame-Options": "deny" }), }
     return this.http.put<JSON>(`${this.url}/update`, centro, httpOptions);
   }
-  deleteUserAndFPByCentro(codigoCentro : string): Observable<JSON>{
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
-
-    return this.http.delete<JSON>(`${this.url}/delete/${codigoCentro}`,  httpOptions);
+  //Método que llama al back-end para eliminar todo lo asociado a un centro
+  deleteUserAndFPByCentro(codigoCentro: string): Observable<JSON> {
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization": this.cookieService.get('token'), "Content-Type": "application/json", "X-Frame-Options": "deny" }), }
+    return this.http.delete<JSON>(`${this.url}/delete/${codigoCentro}`, httpOptions);
   }
 }

@@ -6,7 +6,7 @@ const Fpdual = require('../models/fpDual');
 const Centro = require('../models/centro');
 const Rol = require('../models/roles');
 const profesorController = require('../controllers/profesor');
-
+//Definir rutas y comprobar que los campos son correctos
 router.get('/', profesorController.getProfesores);
 
 router.get('/:dni', profesorController.getProfesor);

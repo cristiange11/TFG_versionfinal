@@ -2,7 +2,7 @@ const { validationResult } = require('express-validator');
 const jwt_decode = require('jwt-decode');
 const comprobarToken = require('../util/comprobarToken');
 const ResultadoAprendizaje = require('../models/resultadoAprendizaje');
-
+//Método utilizado para obtener un listado de resultados de aprendizaje
 exports.getResultadoAprendizajes = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -21,6 +21,7 @@ exports.getResultadoAprendizajes = async (req, res, next) => {
     }
   }
 };
+//Método utilizado para eliminar un resultado de aprendizaje
 exports.deleteResultadoAprendizaje = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -43,6 +44,7 @@ exports.deleteResultadoAprendizaje = async (req, res, next) => {
     }
   }
 };
+//Método utilizado para actualizar el resultado de aprendizaje
 exports.updateResultadoAprendizaje = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -82,6 +84,7 @@ exports.updateResultadoAprendizaje = async (req, res, next) => {
     }
   }
 }
+//Método utilizado para crear un resultado de aprendizaje
 exports.createResultadoAprendizaje = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });

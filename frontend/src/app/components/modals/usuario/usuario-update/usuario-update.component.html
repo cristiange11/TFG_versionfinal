@@ -6,9 +6,8 @@
             <input matInput type="text" formControlName="nombre" required>
             <mat-error *ngIf="this.formInstance.get('nombre').errors?.required">Nombre requerido</mat-error>
             <mat-error *ngIf="this.formInstance.get('nombre').errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
-            <mat-error *ngIf="this.formInstance.get('nombre').errors?.serverError">{{
-                this.formInstance.get('nombre').errors?.serverError }}</mat-error>
-
+            <mat-error *ngIf="this.formInstance.get('nombre').errors?.serverError">
+                {{this.formInstance.get('nombre').errors?.serverError }}</mat-error>
         </mat-form-field>
         <mat-form-field class="fullWidth" appearance="outline">
             <mat-label>Apellidos</mat-label>
@@ -16,9 +15,8 @@
             <mat-error *ngIf="this.formInstance.get('apellidos').errors?.required">Apellidos requeridos</mat-error>
             <mat-error *ngIf="this.formInstance.get('apellidos').errors?.minlength">Cadena m&iacute;nima de 4
             </mat-error>
-            <mat-error *ngIf="this.formInstance.get('apellidos').errors?.serverError">{{
-                this.formInstance.get('apellidos').errors?.serverError }}</mat-error>
-
+            <mat-error *ngIf="this.formInstance.get('apellidos').errors?.serverError">
+                {{this.formInstance.get('apellidos').errors?.serverError }}</mat-error>
         </mat-form-field>
         <mat-form-field class="fullWidth" appearance="outline">
             <mat-label>Direcci&oacute;n</mat-label>
@@ -27,18 +25,16 @@
             </mat-error>
             <mat-error *ngIf="this.formInstance.get('direccion').errors?.minlength">Cadena m&iacute;nima de 4
             </mat-error>
-            <mat-error *ngIf="this.formInstance.get('direccion').errors?.serverError">{{
-                this.formInstance.get('direccion').errors?.serverError }}</mat-error>
-
+            <mat-error *ngIf="this.formInstance.get('direccion').errors?.serverError">
+                {{this.formInstance.get('direccion').errors?.serverError }}</mat-error>
         </mat-form-field>
         <mat-form-field class="fullWidth" appearance="outline">
             <mat-label>CP</mat-label>
             <input matInput type="text" formControlName="cp" required>
             <mat-error *ngIf="this.formInstance.get('cp').errors?.required">CP requerido</mat-error>
             <mat-error *ngIf="this.formInstance.get('cp').errors?.pattern">Formato CP incorrecto</mat-error>
-            <mat-error *ngIf="this.formInstance.get('cp').errors?.serverError">{{
-                this.formInstance.get('cp').errors?.serverError }}</mat-error>
-
+            <mat-error *ngIf="this.formInstance.get('cp').errors?.serverError">
+                {{this.formInstance.get('cp').errors?.serverError }}</mat-error>
         </mat-form-field>
         <mat-form-field class="fullWidth" appearance="outline">
             <mat-label>M&oacute;vil</mat-label>
@@ -46,8 +42,8 @@
             <mat-error *ngIf="this.formInstance.get('movil').errors?.required">M&oacute;vil requerido</mat-error>
             <mat-error *ngIf="this.formInstance.get('movil').dirty && this.formInstance.get('movil').errors?.pattern">
                 Formato m&oacute;vil incorrecto</mat-error>
-            <mat-error *ngIf="this.formInstance.get('movil').errors?.serverError">{{
-                this.formInstance.get('movil').errors?.serverError }}</mat-error>
+            <mat-error *ngIf="this.formInstance.get('movil').errors?.serverError">
+                {{this.formInstance.get('movil').errors?.serverError }}</mat-error>
         </mat-form-field>
         <mat-form-field class="fullWidth" appearance="outline">
             <mat-label>Correo</mat-label>
@@ -55,18 +51,16 @@
             <mat-error *ngIf=" this.formInstance.get('correo').errors?.required">Correo requerido</mat-error>
             <mat-error *ngIf="this.formInstance.get('correo').dirty && this.formInstance.get('correo').errors?.email">
                 Formato correo incorrecto</mat-error>
-            <mat-error *ngIf="this.formInstance.get('correo').errors?.serverError ">{{
-                this.formInstance.get('correo').errors?.serverError }}</mat-error>
-
+            <mat-error *ngIf="this.formInstance.get('correo').errors?.serverError ">
+                {{this.formInstance.get('correo').errors?.serverError }}</mat-error>
         </mat-form-field>
         <mat-form-field class="fullWidth" appearance="outline">
             <mat-label>Fecha de nacimiento</mat-label>
             <input matInput type="date" formControlName="fechaNacimiento" placeholder="Fecha de nacimiento (dd/mm/yyyy)"
                 required>
             <mat-error *ngIf="this.formInstance.get('fechaNacimiento').errors?.required">Fecha requerida</mat-error>
-            <mat-error *ngIf="this.formInstance.get('fechaNacimiento').errors?.serverError">{{
-                this.formInstance.get('fechaNacimiento').errors?.serverError }}</mat-error>
-
+            <mat-error *ngIf="this.formInstance.get('fechaNacimiento').errors?.serverError">
+                {{this.formInstance.get('fechaNacimiento').errors?.serverError }}</mat-error>
         </mat-form-field>
         <mat-form-field>
             <mat-label>Contrase&ntilde;a</mat-label>
@@ -74,14 +68,12 @@
                 (change)="this.confirmPasswordFormControl.setValue('')">
             <mat-error *ngIf=" passwordFormControl.errors?.required">Contrase&ntilde;a</mat-error>
             <mat-error *ngIf=" passwordFormControl.errors?.pattern">Formato contrase&ntilde;a incorrecto</mat-error>
-            <mat-error *ngIf="this.formInstance.get('password').errors?.serverError">{{
-                this.formInstance.get('password').errors?.serverError }}</mat-error>
-
+            <mat-error *ngIf="this.formInstance.get('password').errors?.serverError">
+                {{this.formInstance.get('password').errors?.serverError }}</mat-error>
             <button class="fondo" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
                 [attr.aria-pressed]="hide">
                 <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
-
         </mat-form-field>
         <mat-form-field>
             <mat-label>Repita contrase&ntilde;a</mat-label>
@@ -93,9 +85,6 @@
                 <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
         </mat-form-field>
-
-
-
         <mat-form-field appearance="fill">
             <mat-label>G&eacute;nero</mat-label>
             <mat-select matNativeControl required formControlName="genero">
@@ -105,38 +94,13 @@
             <mat-error *ngIf="this.formInstance.get('genero').errors?.required">G&eacute;nero requerido</mat-error>
             <mat-error *ngIf="this.formInstance.get('genero').errors?.serverError">{{
                 this.formInstance.get('genero').errors?.serverError }}</mat-error>
-
         </mat-form-field>
-        <!--
-        <mat-form-field *ngIf="this.numero!=1" appearance="fill">
-            <mat-label>Centro educativo</mat-label>
-            <mat-select matNativeControl required [formControl]="codigoCentro"
-                (selectionChange)="obtenerFP($event.value)">
-                <mat-option *ngFor="let centro of centroList | keyvalue" [value]="centro.key">{{ centro.value }}
-                </mat-option>
-            </mat-select>
-            <mat-error *ngIf="this.codigoCentro.errors?.required">Centro educativo requerido</mat-error>
-            <mat-error *ngIf="this.codigoCentro.errors?.serverError">{{ this.codigoCentro.errors?.serverError }}</mat-error>
-
-        </mat-form-field>
-        <mat-form-field *ngIf="this.numero!=1 && this.numero!=2" appearance="fill">
-            <mat-label>FP</mat-label>
-            <mat-select matNativeControl required [formControl]="fpDual" (selectionChange)="obtenerModulo($event.value)">
-                <mat-option *ngFor="let fp of fpList | keyvalue" [value]="fp.key">{{ fp.value }}</mat-option>
-            </mat-select>
-            <mat-error *ngIf="this.fpDual.errors?.required">Fp dual requerido</mat-error>
-            <mat-error *ngIf="this.fpDual.errors?.serverError">{{ this.formInstance.get('fpDual').errors?.serverError }}</mat-error>
-
-        </mat-form-field>
-    -->
         <mat-form-field *ngIf="this.numero=='Profesor'; else anotherRol" required>
-
             <input matInput type="text" [formControl]="formGroupProfesor" placeholder="Departamento">
             <mat-error *ngIf="formGroupProfesor.errors?.required ">Departamento requerido</mat-error>
             <mat-error *ngIf="formGroupProfesor.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
             <mat-error *ngIf="this.formGroupProfesor.errors?.serverError">{{ this.formGroupProfesor.errors?.serverError
                 }}</mat-error>
-
         </mat-form-field>
         <mat-form-field appearance="fill" *ngIf="this.numero=='Profesor'; ">
             <mat-label>M&oacute;dulos</mat-label>
@@ -146,7 +110,6 @@
             </mat-select>
             <mat-error *ngIf="modulo.errors?.required ">M&oacute;dulo requerido</mat-error>
             <mat-error *ngIf="this.modulo.errors?.serverError">M&oacute;dulo requerido</mat-error>
-
         </mat-form-field>
         <ng-template #anotherRol>
             <mat-form-field *ngIf="this.numero=='Alumno'; else rolTutorEmpresa" required>
@@ -154,7 +117,6 @@
                 <mat-error *ngIf=" numeroExpediente.errors?.required">N&uacute;,ero de expediente requerido</mat-error>
                 <mat-error *ngIf=" numeroExpediente.errors?.minlength">Cadena m&iacute;nima de 4</mat-error>
                 <mat-error *ngIf=" numeroExpediente.errors?.serverError">{{ numeroExpediente.errors?.serverError }}
-
                 </mat-error>
             </mat-form-field>
             <mat-form-field appearance="fill" *ngIf="this.numero=='Alumno' ">
@@ -165,7 +127,6 @@
                 </mat-select>
                 <mat-error *ngIf="modulo.errors?.required ">M&oacute;dulo requerido</mat-error>
                 <mat-error *ngIf="this.modulo.errors?.serverError">M&oacute;dulo requerido</mat-error>
-
             </mat-form-field>
         </ng-template>
         <ng-template #rolTutorEmpresa>
@@ -178,10 +139,7 @@
                 </mat-error>
                 <mat-error *ngIf="formGroupTutor.errors?.serverError">{{
                     this.formGroupTutor.get('moduloEmpresa').errors?.serverError }}</mat-error>
-
             </mat-form-field>
-
-
             <mat-form-field appearance="fill" *ngIf="this.numero=='Tutor_empresa'; ">
                 <mat-label>M&oacute;dulos</mat-label>
                 <mat-select [formControl]="modulo" multiple>
@@ -190,7 +148,6 @@
                 </mat-select>
                 <mat-error *ngIf="modulo.errors?.required ">M&oacute;dulo requerido</mat-error>
                 <mat-error *ngIf="this.modulo.errors?.serverError">M&oacute;dulo requerido</mat-error>
-
             </mat-form-field>
         </ng-template>
     </form>

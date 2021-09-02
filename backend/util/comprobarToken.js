@@ -1,4 +1,4 @@
-
+//Método que sirve para comprobar que la sesión no ha caducado
 exports.compruebaToken = function (token) {
     var expirado = false;
     var jwtDecoded = token;

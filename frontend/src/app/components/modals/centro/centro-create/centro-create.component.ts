@@ -24,23 +24,18 @@ export class CentroCreateComponent implements OnInit {
       correo: new FormControl("", [Validators.required, Validators.email]),
       codigoCentro: new FormControl("", [Validators.required, Validators.minLength(4)]),
     })
-
   }
-
-
   ngOnInit(): void {
   }
+  //Método utilizado para añadir un centro
   save() {
-
     this.centroService.addCentro(this.formInstance.value).pipe(first())
       .subscribe(
         data => {
           window.location.reload();
         },
         error => {
-
           if (error.status == 409) {
-
             error.error.errors.forEach(errorInfo => {
               const formControl = this.formInstance.get(errorInfo.param);
               if (formControl) {
@@ -49,7 +44,7 @@ export class CentroCreateComponent implements OnInit {
                 });
               }
             });
-          }else if (error.status == 500) {
+          } else if (error.status == 500) {
             const res = new Array();
             res.push("Error del servidor, vuelva a intentarlo más tarde.");
             AppComponent.myapp.openDialog(res);
@@ -60,7 +55,7 @@ export class CentroCreateComponent implements OnInit {
           }
           else if (error.status == 406) {
             const res = new Array();
-            res.push("Cabecera incorrecta.");
+            res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
           }
           else if (error.status == 401) {
@@ -70,7 +65,6 @@ export class CentroCreateComponent implements OnInit {
             this.dialogRef.close();
           }
         });
-
     //this.dialogRef.close();
   }
 }

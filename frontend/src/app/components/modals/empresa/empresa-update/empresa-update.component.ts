@@ -30,23 +30,21 @@ export class EmpresaUpdateComponent implements OnInit {
       id: new FormControl("", []),
     });
     var beca;
-   
-    if(data.becas == "0"){
+
+    if (data.becas == "0") {
       beca = "no";
-    }else{
-      beca="si";
+    } else {
+      beca = "si";
     }
-    
-    this.formInstance.setValue({cifEmpresa : data.cifEmpresa, nombre : data.nombre, direccion : data.direccion, telefono: data.telefono, correo: data.correo, url:data.url, plazas:data.plazas,becas:beca,dineroBeca:data.dineroBeca,id:data.id });
-   
+
+    this.formInstance.setValue({ cifEmpresa: data.cifEmpresa, nombre: data.nombre, direccion: data.direccion, telefono: data.telefono, correo: data.correo, url: data.url, plazas: data.plazas, becas: beca, dineroBeca: data.dineroBeca, id: data.id });
     if (this.formInstance.value.becas != "0") {
       this.dineroBeca.setValue(sessionStorage.getItem('dineroBeca'));
     }
   }
-
-
   ngOnInit(): void {
   }
+  //Método para actualizar la empresa
   edit() {
     this.empresaService.updateEmpresa(this.formInstance.value, this.dineroBeca.value).pipe(first())
       .subscribe(
@@ -68,7 +66,7 @@ export class EmpresaUpdateComponent implements OnInit {
           } else if (error.status == 401 && error.error.errors == "Sesión expirada") {
             this.dialogRef.close();
             AppComponent.myapp.openDialogSesion();
-          }else if (error.status == 500) {
+          } else if (error.status == 500) {
             const res = new Array();
             res.push("Error del servidor, vuelva a intentarlo más tarde.");
             AppComponent.myapp.openDialog(res);

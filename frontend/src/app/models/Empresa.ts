@@ -8,6 +8,6 @@ export class Empresa {
     url: string;
     dineroBeca: string;
     plazas: string;
-    id:number;
+    id: number;
     becas;
 }

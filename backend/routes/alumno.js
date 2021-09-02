@@ -8,7 +8,7 @@ const User = require('../models/user');
 const Centro = require('../models/centro');
 const Rol = require('../models/roles');
 const alumnoController = require('../controllers/alumno');
-
+//Definir rutas y comprobar que los campos son correctos
 router.get('/', alumnoController.getAlumnos);
 
 router.get('/modulo/:codigoModulo', alumnoController.getAlumnosByModulo);

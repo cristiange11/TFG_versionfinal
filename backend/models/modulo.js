@@ -7,13 +7,14 @@ module.exports = class Modulo {
         this.descripcion = descripcion;
         this.curso = curso;
     }
+    //Método para buscar un módulo
     static async find(codigo) {
         const connection = await promisePool.connection();
-        const [rows, fields] = await connection.query(
-            `SELECT * FROM modulo where codigo = ${connection.escape(codigo)}`);
+        const [rows, fields] = await connection.query(`SELECT * FROM modulo where codigo = ${connection.escape(codigo)}`);
         await connection.end();
         return rows;
     }
+    //Método utilizado para obtener un listado de módulos asociados a un FP dual
     static async getModulos(fpDual) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(
@@ -21,42 +22,45 @@ module.exports = class Modulo {
         await connection.end();
         return rows;
     }
+    //Método utilizado para obtener toda la información de un módulo
     static async getModulo(codigoModulo) {
         const connection = await promisePool.connection();
-        const [rows, fields] = await connection.query(
-            `SELECT * FROM modulo where codigo = ${connection.escape(codigoModulo)}`);
+        const [rows, fields] = await connection.query(`SELECT * FROM modulo where codigo = ${connection.escape(codigoModulo)}`);
         await connection.end();
         return rows;
     }
+    //Método para obtener los módulos del profesor
     static async getModulosProf(dni) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT M.* FROM modulo M, profesor_modulo PM, profesor P WHERE P.dni = PM.dni AND PM.codigoModulo = M.codigo AND P.dni = ${connection.escape(dni)}`);
         await connection.end();
         return rows;
     }
+    //Método utilizado para obtener los módulos del tutor
     static async getModulosTut(dni) {
         const connection = await promisePool.connection();
-        const [rows, fields] = await connection.query(
-            `SELECT M.* FROM modulo M, tutor_modulo TM, tutor_empresa T WHERE T.dni = TM.dni AND TM.codigoModulo = M.codigo AND T.dni = ${connection.escape(dni)}`);
+        const [rows, fields] = await connection.query(`SELECT M.* FROM modulo M, tutor_modulo TM, tutor_empresa T WHERE T.dni = TM.dni AND TM.codigoModulo = M.codigo AND T.dni = ${connection.escape(dni)}`);
         await connection.end();
         return rows;
     }
+    //Método utilizado para obtener los módulos del alumno
     static async getModulosAlum(dni) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT M.* FROM modulo as M, alumno_modulo as AM, alumno as A WHERE A.dni = AM.dni AND AM.codigoModulo = M.codigo AND A.dni = ${connection.escape(dni)}`);
         await connection.end();
         return rows;
     }
+    //Método utilizado para obtener un lsitado de los módulos que el alumno aún no ha aprobado
     static async getModulosAlumUpdate(dni, fpDual) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT U.*, M.nombre as nombreModulo, M.codigo as codigoModulo, A.numeroExpediente, C.nota FROM alumno as A, usuario as U, modulo as M left join calificacion as C on C.codigoModulo = M.codigo AND C.dni = ${connection.escape(dni)} where U.rol=5 AND U.dni=${connection.escape(dni)} AND M.fpDual =${connection.escape(fpDual)}  AND A.dni = U.dni  AND C.nota is NULL or C.nota < 5`);
         await connection.end();
         return rows;
     }
-
+    //Método para eliminar un módulo
     static async deleteModulo(codigo, user) {
         const connection = await promisePool.connection().getConnection();
-
+        console.log(`DELETE FROM modulo WHERE codigo =  ${connection.escape(codigo)}`)
         try {
             await connection.beginTransaction();
             let query = `DELETE FROM modulo WHERE codigo =  ${connection.escape(codigo)}`;
@@ -72,6 +76,7 @@ module.exports = class Modulo {
         }
 
     }
+    //Método para eliminar todo lo asociado a un módulo
     static async deleteAllByModulo(codigo, user) {
         const connection = await promisePool.connection().getConnection();
         try {
@@ -90,8 +95,8 @@ module.exports = class Modulo {
         } finally {
             await connection.release();
         }
-
     }
+    //Método utilizado para crear un módulo
     static async createModulo(modulo, user) {
         const connection = await promisePool.connection().getConnection();
         const fp = await FP.getFp(modulo.fpDual);
@@ -108,8 +113,8 @@ module.exports = class Modulo {
         } finally {
             await connection.release();
         }
-
     }
+    //Método utilizado para actualizar un módulo
     static async updateModulo(modulo, user) {
         const connection = await promisePool.connection().getConnection();
         const fp = await FP.getFp(modulo.fpDual);
@@ -126,6 +131,5 @@ module.exports = class Modulo {
         } finally {
             await connection.release();
         }
-
     }
 };

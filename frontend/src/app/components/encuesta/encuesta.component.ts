@@ -3,13 +3,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { AppComponent } from 'src/app/app.component';
 import { Encuesta } from 'src/app/models/Encuesta';
-import { Fpduales } from 'src/app/models/Fpduales';
 import { EncuestaService } from 'src/app/services/encuesta.service';
 import { DeleteComponent } from '../modals/delete/delete.component';
 import { EncuestaCreateComponent } from '../modals/encuesta/encuesta-create/encuesta-create.component';
@@ -36,48 +34,41 @@ export class EncuestaComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public dataSource: MatTableDataSource<Encuesta>;
   private serviceSubscribe: Subscription;
-  constructor(private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private encuestaService: EncuestaService, public dialog: MatDialog) {
+  constructor( private nagivationComponent: NavigationComponent, private cookieService: CookieService, private encuestaService: EncuestaService, public dialog: MatDialog) {
     this.dataSource = new MatTableDataSource<Encuesta>();
     document.body.style.background = "linear-gradient(to right, #3ab4a2, #1d69fd)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
   }
-
+  //Método utilizado para cargar los elementos de la barra de navegación, el usuario que ha iniciado sesión comprobando que columnas va a mostrar en la tabla y los filtros
   ngOnInit(): void {
     this.nagivationComponent.obtenerItems();
-
-    
-      this.user = (JSON.parse(this.cookieService.get('user')));
-     
-      if (Number(this.user.rol) == 3) {
-        this.columnsToDisplay = [...this.displayedColumns, 'actions'];
+    this.user = (JSON.parse(this.cookieService.get('user')));
+    if (Number(this.user.rol) == 3) {
+      this.columnsToDisplay = [...this.displayedColumns, 'actions'];
+    }
+    else {
+      if (Number(this.user.rol) == 4) {
+        this.columnsToDisplay = [...this.displayedColumns, 'observaciones'];
+      } else if (Number(this.user.rol) == 1 || Number(this.user.rol) == 2) {
+        this.columnsToDisplay = [...this.displayedColumns, 'actions', 'observaciones'];
       }
-
-      else {
-        if (Number(this.user.rol) == 4) {
-          this.columnsToDisplay = [...this.displayedColumns, 'observaciones'];
-        } else if (Number(this.user.rol) == 1 || Number(this.user.rol) == 2) {
-          this.columnsToDisplay = [...this.displayedColumns, 'actions', 'observaciones'];
-        }
-      }
-      this.dataSource.filterPredicate = function (data, filter: string): boolean {
-
-        return data.titulo.toLowerCase().includes(filter) || data.descripcion.toLowerCase().includes(filter) || data.resultado.toString().includes(filter) || data.nombreApellidoAlumno.toLowerCase().includes(filter) || data.nombreApellidoTutor.toLowerCase().includes(filter);
-      };
-      this.getAll();
-    
+    }
+    this.dataSource.filterPredicate = function (data, filter: string): boolean {
+      return data.titulo.toLowerCase().includes(filter) || data.descripcion.toLowerCase().includes(filter) || data.resultado.toString().includes(filter) || data.nombreApellidoAlumno.toLowerCase().includes(filter) || data.nombreApellidoTutor.toLowerCase().includes(filter);
+    };
+    this.getAll();
   }
+  //Método utilizado para cargar las encuestas asociadas al usuario que ha iniciado sesión
   getAll() {
     if (Number(this.user.rol) != 3) {
       this.serviceSubscribe = this.encuestaService.getEncuestas(Number(sessionStorage.getItem('codigoModulo'))).pipe(first())
         .subscribe(
           data => {
             let encuestas = data["encuestas"];
-
             encuestas.forEach(encuestaInfo => {
               var encuesta = this.transformJSON(encuestaInfo);
               this.encuestaList.push(encuesta);
             });
-
             this.dataSource.data = this.encuestaList;
           },
           error => {
@@ -100,14 +91,10 @@ export class EncuestaComponent implements OnInit, OnDestroy, AfterViewInit {
         .subscribe(
           data => {
             let encuestas = data["encuestas"];
-
-
             encuestas.forEach(encuestaInfo => {
-        
               var encuesta = this.transformJSON(encuestaInfo);
               this.encuestaList.push(encuesta);
             });
-
             this.dataSource.data = this.encuestaList;
           },
           error => {
@@ -139,27 +126,27 @@ export class EncuestaComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     return encuesta;
   }
+  //Método utilizado para realizar el filtro
   public doFilter = (value: { target: HTMLInputElement }) => {
     const filterValue = value.target.value.trim().toLocaleLowerCase();
     this.dataSource.filter = filterValue;
   }
+  //Método utilizado para añadir la encuesta
   add() {
     this.dialog.open(EncuestaCreateComponent, {
       width: '400px'
     });
   }
-  edit(data: Fpduales) {
-
+  //Método utilizado para editar una encuesta
+  edit(data: Encuesta) {
     this.dialog.open(EncuestaUpdateComponent, {
       width: '400px',
       data: data
     });
-
   }
-
+  //Método utilizado para eliminar una encuesta
   delete(id: any) {
     const dialogRef = this.dialog.open(DeleteComponent);
-
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.encuestaService.deleteEncuesta(id).pipe(first())
@@ -196,15 +183,12 @@ export class EncuestaComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
   ngAfterViewInit(): void {
-
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-
   }
   ngOnDestroy(): void {
     if (this.cookieService.get('user')) {
       this.serviceSubscribe.unsubscribe();
-
     }
   }
 

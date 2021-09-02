@@ -5,7 +5,7 @@ const router = express.Router();
 const ResultadoAprendizaje = require('../models/resultadoAprendizaje');
 const Modulo = require('../models/modulo');
 const resultadoAprendizajeController = require('../controllers/resultadoAprendizaje');
-
+//Definir rutas y comprobar que los campos son correctos
 router.get('/:codigoModulo', resultadoAprendizajeController.getResultadoAprendizajes);
 
 router.delete('/:id', resultadoAprendizajeController.deleteResultadoAprendizaje);

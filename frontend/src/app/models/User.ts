@@ -14,20 +14,20 @@ export class User {
     fpDual: any;
     fpId: any;
     codigoCentro: string;
-    constructor(form){
-        this.dni= form.dni;
+    constructor(form) {
+        this.dni = form.dni;
         this.nombre = form.nombre;
-        this.apellidos= form.apellidos;
+        this.apellidos = form.apellidos;
         this.correo = form.correo;
         this.movil = form.movil;
         this.direccion = form.direccion;
         this.password = form.password;
         this.genero = form.genero;
-        this.cp= form.cp;
+        this.cp = form.cp;
         this.rol = form.rol;
         this.fechaNacimiento = form.fechaNacimiento;
         this.fpDual = form.fpDual;
         this.codigoCentro = form.codigoCentro;
     }
-    
+
 }

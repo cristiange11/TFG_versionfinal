@@ -25,6 +25,7 @@ export class ResultadoAprendizajeCreateComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  //Método utilziado para crear un resultado de aprendizaje
   save() {
     this.resultadoAprendizajeService.addResultadoAprendizaje(this.formInstance.value).pipe(first())
       .subscribe(

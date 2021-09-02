@@ -13,13 +13,11 @@
   <mat-form-field>
     <input matInput type="text" formControlName="direccion" placeholder="Direcci&oacute;n" required>
     <mat-error *ngIf="this.editForm.get('direccion').errors?.required">{{ getErrorMessage("direccion") }}</mat-error>
-
   </mat-form-field>
   <mat-form-field>
     <input matInput type="text" formControlName="cp" placeholder="CP" required>
     <mat-error *ngIf="this.editForm.get('cp').errors?.required">{{ getErrorMessage("cp") }}</mat-error>
     <mat-error *ngIf="this.editForm.get('cp').errors?.pattern">{{ getErrorMessage("cp") }}</mat-error>
-
   </mat-form-field>
   <mat-form-field>
     <input matInput type="text" formControlName="movil" placeholder="M&oacute;vil" required>
@@ -36,14 +34,12 @@
       getErrorMessage("correo") }}</mat-error>
     <mat-error *ngIf="this.editForm.get('correo').errors?.serverError ">{{
       this.editForm.get('correo').errors?.serverError }}</mat-error>
-
   </mat-form-field>
   <mat-form-field>
     <input matInput type="date" formControlName="fechaNacimiento" placeholder="Fecha de nacimiento (dd/mm/yyyy)"
       required>
     <mat-error *ngIf="this.editForm.get('fechaNacimiento').errors?.required">{{ getErrorMessage("fechaNacimiento") }}
     </mat-error>
-
   </mat-form-field>
   <mat-form-field>
     <input matInput [type]="hide ? 'password' : 'text'" [formControl]="passwordActualFormControl"
@@ -76,8 +72,6 @@
       <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
     </button>
   </mat-form-field>
-
-
   <mat-form-field appearance="fill">
     <mat-label>G&eacute;nero</mat-label>
     <mat-select matNativeControl required formControlName="genero">
@@ -86,8 +80,6 @@
     </mat-select>
     <mat-error *ngIf="this.editForm.get('genero').errors?.required">{{ getErrorMessage("genero") }}</mat-error>
   </mat-form-field>
-
-
   <button class="boton-envio" (click)="editProfile()" [disabled]="!editForm.valid">
     <span>Editar Perfil</span>
   </button>

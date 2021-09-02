@@ -35,7 +35,7 @@ export class EncuestaCreateComponent implements OnInit {
     this.formInstance.setValue({ titulo: "", descripcion: "", codigoModulo: Number(sessionStorage.getItem('codigoModulo')), resultado: "", dniAlumno: "", dniTutorEmpresa: this.user.dni , observaciones:"" })
   }
 
-
+  //Método para cargar lkos resultados de encuestas y los alumnos asociados a un módulo
   ngOnInit(): void {
     this.resultadoService.getResultados().pipe(first())
       .subscribe(
@@ -69,12 +69,9 @@ export class EncuestaCreateComponent implements OnInit {
             var nombreApellidos = alumnoInfo.nombre + " " + alumnoInfo.apellidos;
             this.alumnoList.set(alumnoInfo.dni, nombreApellidos);
           })
-
         },
         error => {
-
           if (error.status == 409) {
-
             error.error.errors.forEach(errorInfo => {
               const formControl = this.formInstance.get(errorInfo.param);
               if (formControl) {
@@ -94,7 +91,7 @@ export class EncuestaCreateComponent implements OnInit {
           }
           else if (error.status == 406) {
             const res = new Array();
-            res.push("Cabecera incorrecta.");
+            res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
           }
           else if (error.status == 401) {
@@ -104,8 +101,8 @@ export class EncuestaCreateComponent implements OnInit {
             this.dialogRef.close();
           }
         });
-   
   }
+  //Método utilizado para añadir la encuesta
   save() {
     this.encuestaService.addEncuesta(this.formInstance.value).pipe(first())
       .subscribe(

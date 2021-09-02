@@ -3,6 +3,7 @@ const jwt_decode = require('jwt-decode');
 const comprobarToken = require('../util/comprobarToken');
 const Profesor = require('../models/profesor');
 const bcrypt = require('bcryptjs');
+//Método utilizado para obtener los profesores
 exports.getProfesores = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
@@ -21,6 +22,7 @@ exports.getProfesores = async (req, res, next) => {
         }
     }
 };
+//Método utilizado para obtener un profesor
 exports.getProfesor = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
@@ -39,6 +41,7 @@ exports.getProfesor = async (req, res, next) => {
         }
     }
 };
+//Método utilizado para eliminar un profesor
 exports.deleteProfesor = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
@@ -62,6 +65,7 @@ exports.deleteProfesor = async (req, res, next) => {
         }
     }
 };
+//Método utilizado para actualizar un profesor
 exports.updateProfesor = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
@@ -104,6 +108,7 @@ exports.updateProfesor = async (req, res, next) => {
         }
     }
 };
+//Método utilizado para crear un profesor
 exports.createProfesor = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });

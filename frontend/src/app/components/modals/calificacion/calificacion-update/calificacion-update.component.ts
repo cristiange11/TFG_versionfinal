@@ -4,10 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { first } from 'rxjs/operators';
 import { AppComponent } from 'src/app/app.component';
 import { Calificacion } from 'src/app/models/Calificacion';
-import { AlumnoService } from 'src/app/services/alumno.service';
 import { CalificacionService } from 'src/app/services/calificacion.service';
-import { CalificacionCreateComponent } from '../calificacion-create/calificacion-create.component';
-
 @Component({
   selector: 'app-calificacion-update',
   templateUrl: './calificacion-update.component.html',
@@ -15,10 +12,10 @@ import { CalificacionCreateComponent } from '../calificacion-create/calificacion
 })
 export class CalificacionUpdateComponent implements OnInit {
 
-  alumnoList = [];
+
   formInstance: FormGroup;
-  constructor(public dialogRef: MatDialogRef<CalificacionCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Calificacion, public calificacionService: CalificacionService, public alumnoService: AlumnoService) {
+  constructor(public dialogRef: MatDialogRef<CalificacionUpdateComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: Calificacion, public calificacionService: CalificacionService) {
     this.formInstance = new FormGroup({
       dni: new FormControl("", []),
       nota: new FormControl("", [Validators.required, Validators.min(0), Validators.max(10)]),
@@ -34,6 +31,7 @@ export class CalificacionUpdateComponent implements OnInit {
   ngOnInit(): void {
 
   }
+  //Método para actualizar la calificación
   save() {
     this.calificacionService.updateCalificacion(this.formInstance.value).pipe(first())
       .subscribe(

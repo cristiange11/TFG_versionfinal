@@ -2,7 +2,7 @@ const { validationResult } = require('express-validator');
 const jwt_decode = require('jwt-decode');
 const comprobarToken = require('../util/comprobarToken');
 const Encuesta = require('../models/encuesta');
-
+//Método utilizado para obtener un listado de las encuestas
 exports.getEncuestas = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -21,6 +21,7 @@ exports.getEncuestas = async (req, res, next) => {
     }
   }
 };
+//Método para obtener un listado de las encuestas creadas por un tutor
 exports.getEncuestasByTutor = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -39,6 +40,7 @@ exports.getEncuestasByTutor = async (req, res, next) => {
     }
   }
 };
+//Método utilizado para obtener una encuesta
 exports.getEncuesta = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -57,6 +59,7 @@ exports.getEncuesta = async (req, res, next) => {
     }
   }
 };
+//Método utilizado para eliminar una encuesta
 exports.deleteEncuesta = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -80,6 +83,7 @@ exports.deleteEncuesta = async (req, res, next) => {
     }
   }
 };
+//Método utilizado para actualizar una encuesta
 exports.updateEncuesta = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
@@ -120,6 +124,7 @@ exports.updateEncuesta = async (req, res, next) => {
     }
   }
 }
+//Método utilizado para crear una encuesta
 exports.createEncuesta = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });

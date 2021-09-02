@@ -10,45 +10,54 @@ import { Fpduales } from '../models/Fpduales';
   providedIn: 'root'
 })
 export class FpdualesService {
-  private url = "http://3.140.131.165:3000/fpduales";
- 
-  constructor(private cookieService: CookieService, private http: HttpClient, private router: Router ) { 
+  private url = "http://localhost:3000/fpduales";
+
+  constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) {
   }
-  getFPdual(id: number): Observable<Fpduales [] >{     
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json","X-Frame-Options" : "deny"}),}
-    return this.http.get<Fpduales []>(`${this.url}/${id}`, httpOptions); 
+  //Método que llama al back-end para obtener un FP dual
+  getFPdual(id: number): Observable<Fpduales[]> {
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization": this.cookieService.get('token'), "Content-Type": "application/json", "X-Frame-Options": "deny" }), }
+    return this.http.get<Fpduales[]>(`${this.url}/${id}`, httpOptions);
   }
-  getFPsByCentro(codigoCentro: number): Observable<Fpduales [] >{     
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json","X-Frame-Options" : "deny"}),}
-    return this.http.get<Fpduales []>(`${this.url}/adminCentro/${codigoCentro}`, httpOptions); 
+  //Método que llama al back-end para obtener los FPs asociados a un centro
+  getFPsByCentro(codigoCentro: number): Observable<Fpduales[]> {
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization": this.cookieService.get('token'), "Content-Type": "application/json", "X-Frame-Options": "deny" }), }
+    return this.http.get<Fpduales[]>(`${this.url}/adminCentro/${codigoCentro}`, httpOptions);
   }
-  getFPdualByAlumno(codigoCentro: number): Observable<Fpduales [] >{     
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
-    return this.http.get<Fpduales []>(`${this.url}/alumno/${codigoCentro}`, httpOptions); 
+  //Método que llama al back-end para obtener los FP duales que tengan como mínimo 1 plaza disponible
+  getFPdualByAlumno(codigoCentro: number): Observable<Fpduales[]> {
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization": this.cookieService.get('token'), "Content-Type": "application/json", "X-Frame-Options": "deny" }), }
+    return this.http.get<Fpduales[]>(`${this.url}/alumno/${codigoCentro}`, httpOptions);
   }
-  deleteUsuariosByFP(id): Observable<JSON>{
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
-    return this.http.delete<JSON>(`${this.url}/delete/${id}`,  httpOptions);
+  //Método que llama al back-end para eliminar todo lo asociado al FP
+  deleteUsuariosByFP(id): Observable<JSON> {
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization": this.cookieService.get('token'), "Content-Type": "application/json", "X-Frame-Options": "deny" }), }
+    return this.http.delete<JSON>(`${this.url}/delete/${id}`, httpOptions);
   }
-  getFps(): Observable<Fpduales[] >{  
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}  
-    return this.http.get<Fpduales[]>(this.url, httpOptions); 
+  //Método que llama al back-end para obtener los FP duales
+  getFps(): Observable<Fpduales[]> {
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization": this.cookieService.get('token'), "Content-Type": "application/json", "X-Frame-Options": "deny" }), }
+    return this.http.get<Fpduales[]>(this.url, httpOptions);
   }
-  getFp(id): Observable<Fpduales>{  
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}  
-    return this.http.get<Fpduales>(`${this.url}/${id}`, httpOptions); 
+  //Método que llama al back-end para obtener un FP
+  getFp(id): Observable<Fpduales> {
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization": this.cookieService.get('token'), "Content-Type": "application/json", "X-Frame-Options": "deny" }), }
+    return this.http.get<Fpduales>(`${this.url}/${id}`, httpOptions);
   }
-  addFp(fpDual : Fpduales): Observable<JSON>{
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
-    return this.http.post<JSON>(`${this.url}/create`, fpDual , httpOptions);
+  //Método que llama al back-end para crear un FP
+  addFp(fpDual: Fpduales): Observable<JSON> {
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization": this.cookieService.get('token'), "Content-Type": "application/json", "X-Frame-Options": "deny" }), }
+    return this.http.post<JSON>(`${this.url}/create`, fpDual, httpOptions);
   }
-  deleteFp(id): Observable<JSON>{
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
-    return this.http.delete<JSON>(`${this.url}/${id}`,  httpOptions);
+  //Método que llama al back-end para eliminar un FP
+  deleteFp(id): Observable<JSON> {
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization": this.cookieService.get('token'), "Content-Type": "application/json", "X-Frame-Options": "deny" }), }
+    return this.http.delete<JSON>(`${this.url}/${id}`, httpOptions);
   }
-  updateFp(fpDual : Fpduales): Observable<JSON>{
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
+  //Método que llama al back-end para actualizar un FP
+  updateFp(fpDual: Fpduales): Observable<JSON> {
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization": this.cookieService.get('token'), "Content-Type": "application/json", "X-Frame-Options": "deny" }), }
     return this.http.put<JSON>(`${this.url}/update`, fpDual, httpOptions);
   }
-  
+
 }

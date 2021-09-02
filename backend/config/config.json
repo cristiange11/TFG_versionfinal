@@ -1,7 +1,7 @@
 {
-    "host": "tfg.cnefrs0yfom1.us-east-2.rds.amazonaws.com",
+    "host": "localhost",
     "user": "root",
     "database": "tfg",
-    "password": "rootroot",
+    "password": "",
     "port": "3306"
 }

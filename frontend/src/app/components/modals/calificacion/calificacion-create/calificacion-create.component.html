@@ -9,7 +9,6 @@
       <mat-error *ngIf="formInstance.controls['dni']?.errors?.required">Alumno requerido</mat-error>
       <mat-error *ngIf="formInstance.controls['dni']?.errors?.serverError">{{
         formInstance.controls['alumnos']?.errors?.serverError }}</mat-error>
-
     </mat-form-field>
     <mat-form-field class="fullWidth" appearance="outline">
       <mat-label>Nota</mat-label>
@@ -19,9 +18,7 @@
         entre 0 y 10</mat-error>
       <mat-error *ngIf="formInstance.controls['nota']?.errors?.serverError">{{
         formInstance.controls['nota']?.errors?.serverError }}</mat-error>
-
     </mat-form-field>
-
     <mat-form-field class="fullWidth" appearance="outline">
       <mat-label>Descripci&oacute;n</mat-label>
       <input matInput type="text" name="descripcion" formControlName="descripcion" placeholder="descripcion" required />
@@ -30,7 +27,6 @@
       <mat-error *ngIf="formInstance.controls['descripcion']?.errors?.serverError">{{
         formInstance.controls['descripcion']?.errors?.serverError }}</mat-error>
     </mat-form-field>
-
   </form>
 </div>
 <div class="mt-5" mat-dialog-actions>

@@ -5,7 +5,7 @@ const router = express.Router();
 const Centro = require('../models/centro');
 
 const centroController = require('../controllers/centros');
-
+//Definir rutas y comprobar que los campos son correctos
 router.get('/', centroController.getCentros);
 
 router.delete('/:codigoCentro', centroController.deleteCentro);

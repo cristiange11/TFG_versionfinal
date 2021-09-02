@@ -29,6 +29,7 @@ export class ModuloUpdateComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  //Método utilizado para editar el módulo
   edit() {
     this.moduloService.updateModulo(this.formInstance.value).pipe(first())
       .subscribe(

@@ -22,12 +22,10 @@ export class CalificacionCreateComponent implements OnInit {
       nota: new FormControl("", [Validators.required, Validators.min(0), Validators.max(10)]),
       descripcion: new FormControl("", [Validators.required, Validators.minLength(4)]),
       codigoModulo: new FormControl(sessionStorage.getItem('codigoModulo'), [Validators.required]),
-
     })
-
   }
 
-
+  //Método para cargar los alumnos que aún no tengan calificación en el módulo
   ngOnInit(): void {
     this.alumnoService.getAlumnoByModuloWithoutMark(this.formInstance.value.codigoModulo).pipe(first())
       .subscribe(
@@ -37,12 +35,9 @@ export class CalificacionCreateComponent implements OnInit {
             var nombreApellidos = alumnoInfo.nombre + " " + alumnoInfo.apellidos;
             this.alumnoList.set(alumnoInfo.dni, nombreApellidos);
           })
-
         },
         error => {
-
           if (error.status == 409) {
-
             error.error.errors.forEach(errorInfo => {
               const formControl = this.formInstance.get(errorInfo.param);
               if (formControl) {
@@ -73,17 +68,15 @@ export class CalificacionCreateComponent implements OnInit {
           }
         });
   }
+  //Método para añadir la calificación
   save() {
-
     this.calificacionService.addCalificacion(this.formInstance.value).pipe(first())
       .subscribe(
         data => {
           window.location.reload();
         },
         error => {
-
           if (error.status == 409) {
-
             error.error.errors.forEach(errorInfo => {
               const formControl = this.formInstance.get(errorInfo.param);
               if (formControl) {

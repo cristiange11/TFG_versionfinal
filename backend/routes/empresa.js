@@ -5,7 +5,7 @@ const router = express.Router();
 const Empresa = require('../models/empresa');
 
 const empresaController = require('../controllers/empresa');
-
+//Definir rutas y comprobar que los campos son correctos
 router.get('/', empresaController.getEmpresas);
 
 router.get('/:codigoCentro', empresaController.getEmpresasByCentro);

@@ -23,20 +23,16 @@ export class LogComponent implements OnInit, OnDestroy, AfterViewInit {
   logList: Array<Log> = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-
   public displayedColumns: string[] = ['usuario', 'fechaHoraLog', 'mensaje', 'codigoError', 'tipo'];
   public columnsToDisplay: string[] = [...this.displayedColumns];
-
   public columnsFilters = {};
-
   public dataSource: MatTableDataSource<Log>;
   private serviceSubscribe: Subscription;
-  constructor(private datepipe: DatePipe, private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private logService: LogService, public dialog: MatDialog) {
+  constructor(private datepipe: DatePipe,  private nagivationComponent: NavigationComponent, private cookieService: CookieService, private logService: LogService, public dialog: MatDialog) {
     this.dataSource = new MatTableDataSource<Log>();
     document.body.style.background = "linear-gradient(to right, #d2eeae, #b170ad)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
   }
-
+  //Método utilizado para cargar los elementos de la barra de navegación, el usuario que ha iniciado sesión, los logs y los filtros
   ngOnInit(): void {
     this.nagivationComponent.obtenerItems();
     this.getAll();
@@ -48,17 +44,8 @@ export class LogComponent implements OnInit, OnDestroy, AfterViewInit {
         return data.usuario.toLowerCase().includes(filter) || data.fechaHoraLog.toLowerCase().includes(filter) || data.mensaje.toLowerCase().includes(filter) || data.tipo.toLowerCase().includes(filter);
       }
     };
-    if (!this.cookieService.get('user')) {
-      this.router.navigate(['home']);
-    }
-    else {
-      var user = (JSON.parse(this.cookieService.get('user')));
-      if (Number(user.rol) != 1) {
-        this.router.navigate(['home']);
-      }
-
-    }
   }
+  //Método utilizado para cargar todos los logs
   getAll() {
     this.serviceSubscribe = this.logService.getLogs().pipe(first())
       .subscribe(
@@ -73,11 +60,8 @@ export class LogComponent implements OnInit, OnDestroy, AfterViewInit {
               fechaHoraLog: this.datepipe.transform(logInfo.fechaHoraLog, "dd/MM/YYYY hh:mm:ss"),
               tipo: logInfo.tipo,
             }
-
             this.logList.push(log);
-
           });
-
           this.dataSource.data = this.logList;
         },
         error => {
@@ -88,24 +72,24 @@ export class LogComponent implements OnInit, OnDestroy, AfterViewInit {
             const res = new Array();
             res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
-          }else if (error.status == 500) {
+          } else if (error.status == 500) {
             const res = new Array();
             res.push("Error del servidor, vuelva a intentarlo más tarde.");
             AppComponent.myapp.openDialog(res);
           }
         });
   }
+  //Método utilizado para realizar los filtros
   public doFilter = (value: { target: HTMLInputElement }) => {
     const filterValue = value.target.value.trim().toLocaleLowerCase();
     this.dataSource.filter = filterValue;
   }
-
+  //Método utilizado para cargar la paginación y la ordenación de los logs tras cargar la página
   ngAfterViewInit(): void {
-
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-
   }
+  //Método utilizado para eliminar el ejecución
   ngOnDestroy(): void {
     this.serviceSubscribe.unsubscribe();
   }

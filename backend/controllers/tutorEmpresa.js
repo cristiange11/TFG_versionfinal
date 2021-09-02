@@ -3,6 +3,7 @@ const jwt_decode = require('jwt-decode');
 const comprobarToken = require('../util/comprobarToken');
 const TutorEmpresa = require('../models/tutorEmpresa');
 const bcrypt = require('bcryptjs');
+//Método para obtener todos los tutores
 exports.getTutores = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
@@ -21,6 +22,7 @@ exports.getTutores = async (req, res, next) => {
         }
     }
 };
+//Método para obtener los tutores asociados a un módulo
 exports.getTutorByModuloEncuesta = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
@@ -39,6 +41,7 @@ exports.getTutorByModuloEncuesta = async (req, res, next) => {
         }
     }
 };
+//Método para obtener un tutor
 exports.getTutor = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
@@ -57,6 +60,7 @@ exports.getTutor = async (req, res, next) => {
         }
     }
 };
+//Método para eliminar un tutor
 exports.deleteTutor = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
@@ -80,6 +84,7 @@ exports.deleteTutor = async (req, res, next) => {
         }
     }
 };
+//Método para actualizar un tutor
 exports.updateTutor = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
@@ -120,6 +125,7 @@ exports.updateTutor = async (req, res, next) => {
         }
     }
 };
+//Método para crear un tutor
 exports.createTutor = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });

@@ -10,18 +10,21 @@ module.exports = class Empresa {
         this.telefono = telefono;
         this.url = url;
     }
+    //Método utilizado para comprobar que el teléfono introducido no pertenece a ninguna empresa ya creada
     static async findTelefono(telefono, cifEmpresa) {
         const connection = await promisePool.connection();
         const res = await connection.query(`SELECT * FROM empresa where telefono = ${connection.escape(telefono)} AND cifEmpresa != ${connection.escape(cifEmpresa)}`);
         await connection.end();
         return res;
     }
+    //Método utilizado para comprobar que el correo introducido no pertenece a ninguna empresa ya creada
     static async findCorreo(correo, cifEmpresa) {
         const connection = await promisePool.connection();
         const res = await connection.query(`SELECT * FROM empresa where correo = ${connection.escape(correo)} AND cifEmpresa != ${connection.escape(cifEmpresa)}`);
         await connection.end();
         return res;
     }
+    //Método utilizado para obtener la empresa
     static async find(idEmpresa) {
         const connection = await promisePool.connection();
         const res = await connection.query(
@@ -29,37 +32,40 @@ module.exports = class Empresa {
         await connection.end();
         return res;
     }
+    //Método utilizado para obtener un listado de las empresas
     static async getEmpresas() {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT E.*, EF.dineroBeca AS dineroBeca,EF.becas as beca, EF.plazas AS plazas, F.nombre as nombreFp, F.id as idFp FROM empresa E, empresa_fpdual EF, fp_duales F where E.id = EF.idEmpresa and EF.idFp=F.id `);
         await connection.end();
         return rows;
     }
+    //Método para obtener un listado de las empresas asociadas a un centro
     static async getEmpresasByCentro(codigoCentro) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT E.*, EF.dineroBeca AS dineroBeca,EF.becas as beca, EF.plazas AS plazas, F.nombre as nombreFp, F.id as idFp FROM empresa E, empresa_fpdual EF, fp_duales F where E.id = EF.idEmpresa and EF.idFp=F.id AND F.codigoCentro = ${connection.escape(codigoCentro)}`);
         await connection.end();
         return rows;
     }
+    //Método para conocer a qué FP y centro está asociada la empresa
     static async getFpAndCentroByEmpresa(idEmpresa) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT FP.nombre AS nombreFP, C.nombre as nombreCentro FROM fp_duales as FP, empresa as E, empresa_fpdual as EP, centro_educativo as C where E.id = EP.idEmpresa AND EP.idFp = FP.id AND E.id = ${connection.escape(idEmpresa)} and C.codigoCentro = E.codigoCentro`);
         await connection.end();
         return rows;
     }
-
+    //Método para obtener las empresas asociados a un FP dual
     static async getEmpresasByFp(fpDual) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT E.* FROM empresa E, fp_duales F, empresa_fpdual FE WHERE E.id = FE.idEmpresa AND FE.idFp = F.id AND F.id = ${connection.escape(fpDual)}`);
         await connection.end();
         return rows;
     }
+    //Método para eliminar una empresa
     static async deleteEmpresa(id, user) {
         const connection = await promisePool.connection().getConnection();
         try {
             await connection.beginTransaction();
             await connection.query(`DELETE FROM empresa_fpdual where idEmpresa = ${connection.escape(idEmpresa)}`);
-
             let query = `DELETE FROM empresa WHERE id  =  ${connection.escape(id)}`;
             await connection.query(query);
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha eliminado  la empresa " ${connection.escape(id)} ,'${user}',sysdate(), 'empresa')`);
@@ -67,16 +73,14 @@ module.exports = class Empresa {
         } catch (err) {
             await connection.query("ROLLBACK" + err);
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_EMPRESA',"No se ha podido eliminar la empresa " ${connection.escape(id)} ,'${user}',sysdate(), 'empresa')`);
-
             throw err;
         } finally {
             await connection.release();
         }
-
     }
+    //Método para borrar todo lo asociado a la empresa
     static async deleteTutorEmpresaByEmpresa(idEmpresa, user) {
         const connection = await promisePool.connection().getConnection();
-
         try {
             await connection.beginTransaction();
             let query = `DELETE t1 FROM usuario t1 INNER JOIN tutor_empresa t2 ON ( t1.dni = t2.dni) WHERE t2.idEmpresa = ${connection.escape(idEmpresa)}`;
@@ -92,12 +96,11 @@ module.exports = class Empresa {
         } finally {
             await connection.release();
         }
-
     }
+    //Método para crear una empresa
     static async createEmpresa(empresa, user) {
         const connection = await promisePool.connection().getConnection();
         let centro = await Centro.getCentro(empresa.codigoCentro)
-
         try {
             await connection.beginTransaction();
             let query = `INSERT INTO empresa(cifEmpresa, direccion, nombre, correo, telefono, url, codigoCentro) VALUES ( ${connection.escape(empresa.cifEmpresa)},${connection.escape(empresa.direccion)},${connection.escape(empresa.nombre)},${connection.escape(empresa.correo)},${connection.escape(empresa.telefono)},${connection.escape(empresa.url)}, ${connection.escape(empresa.codigoCentro)}) `;
@@ -117,8 +120,8 @@ module.exports = class Empresa {
         } finally {
             await connection.release();
         }
-
     }
+    //Método para actualizar una empresa
     static async updateEmpresa(empresa, user) {
         const connection = await promisePool.connection().getConnection();
         let centroAndFp = await this.getFpAndCentroByEmpresa(empresa.id);
@@ -137,6 +140,5 @@ module.exports = class Empresa {
         } finally {
             await connection.release();
         }
-
     }
 };

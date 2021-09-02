@@ -27,19 +27,20 @@ export class RecoveryComponent implements OnInit {
   } ngOnInit(): void {
     if (this.cookieService.get('user')) {
       this.user = (JSON.parse(this.cookieService.get('user')));
-      if (Number(this.user.rol) == 1 ) {
+      if (Number(this.user.rol) == 1) {
         this.router.navigate(['adminpage']);
-      }else if (Number(this.user.rol) == 2) {
+      } else if (Number(this.user.rol) == 2) {
         this.router.navigate(['fpdual']);
       }
       else if (Number(this.user.rol) == 4 || Number(this.user.rol) == 3 || Number(this.user.rol) == 5) {
         this.router.navigate(['modulo']);
       }
     }
-    
-      
-      
+
+
+
   }
+  //Método utilizado para enviar el correo al usuario
   recoveryPassword() {
     this.authService.recoveryPassword(this.formInstance.value).pipe(first())
       .subscribe(
@@ -55,7 +56,7 @@ export class RecoveryComponent implements OnInit {
             const res = new Array();
             res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
-          }else if (error.status == 500) {
+          } else if (error.status == 500) {
             const res = new Array();
             res.push("Error del servidor, vuelva a intentarlo más tarde.");
             AppComponent.myapp.openDialog(res);

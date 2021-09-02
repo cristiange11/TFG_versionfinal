@@ -6,5 +6,5 @@ export class Centro {
     nombre: string;
     CP: string;
     direccion: string;
- 
+
 }

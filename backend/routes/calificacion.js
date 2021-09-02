@@ -5,7 +5,7 @@ const router = express.Router();
 const Modulo = require('../models/modulo');
 const User = require('../models/user');
 const calificacionController = require('../controllers/calificacion');
-
+//Definir rutas y comprobar que los campos son correctos
 router.get('/:codigoModulo', calificacionController.getCalificaciones);
 
 router.delete('/:id', calificacionController.deleteCalificacion);

@@ -5,9 +5,7 @@ import { first } from 'rxjs/operators';
 import { Centro } from 'src/app/models/Centro';
 import { CentroService } from '../../../../services/centro.service';
 import { AppComponent } from '../../../../app.component';
-import { NavigationComponent } from 'src/app/components/navigation/navigation.component';
-import { CookieService } from 'ngx-cookie-service';
-import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-centro-update',
@@ -16,7 +14,7 @@ import { Router } from '@angular/router';
 })
 export class CentroUpdateComponent implements OnInit {
   formInstance: FormGroup;
-  constructor(private router: Router, private cookieService: CookieService, public dialogRef: MatDialogRef<CentroUpdateComponent>,
+  constructor( public dialogRef: MatDialogRef<CentroUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Centro, public centroService: CentroService) {
     this.formInstance = new FormGroup({
       nombre: new FormControl("", [Validators.required, Validators.minLength(4)]),
@@ -30,32 +28,16 @@ export class CentroUpdateComponent implements OnInit {
     this.formInstance.setValue(data);
   }
 
-  ngOnInit(): void {
-
-    if (!this.cookieService.get('user')) {
-      this.router.navigate(['home']);
-    }
-    else {
-      var user = (JSON.parse(this.cookieService.get('user')));
-      if (Number(user.rol) != 1 && Number(user.rol) != 2) {
-        this.router.navigate(['home']);
-      }
-
-    }
-
-  }
+  ngOnInit(): void {}
+  //Método utilizado para actualizar un centro
   save() {
-
     this.centroService.updateCentro(this.formInstance.value).pipe(first())
       .subscribe(
         data => {
           window.location.reload();
         },
         error => {
-
-
           if (error.status == 409) {
-
             error.error.errors.forEach(errorInfo => {
               const formControl = this.formInstance.get(errorInfo.param);
               if (formControl) {
@@ -71,12 +53,12 @@ export class CentroUpdateComponent implements OnInit {
           }
           else if (error.status == 406) {
             const res = new Array();
-            res.push("Cabecera incorrecta.");
+            res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
           }
           else if (error.status == 401) {
             const res = new Array();
-            res.push("No se ha podido crear.");
+            res.push("No se ha podido actualizar.");
             AppComponent.myapp.openDialog(res);
             this.dialogRef.close();
           }else if (error.status == 500) {

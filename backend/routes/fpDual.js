@@ -5,7 +5,7 @@ const router = express.Router();
 const Fp = require('../models/fpDual');
 const Centro = require('../models/centro');
 const fpController = require('../controllers/fpDual');
-
+//Definir rutas y comprobar que los campos son correctos
 router.get('/:codigoCentro', fpController.getFpByCentro);
 
 router.delete('/delete/:id', fpController.DeleteUsuariosByFP);

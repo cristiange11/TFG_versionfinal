@@ -2,7 +2,7 @@ const { validationResult } = require('express-validator');
 const jwt_decode = require('jwt-decode');
 const comprobarToken = require('../util/comprobarToken');
 const Calificacion = require('../models/calificion');
-
+//Método utilizado para obtener las calificaciones
 exports.getCalificaciones = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
@@ -20,8 +20,8 @@ exports.getCalificaciones = async (req, res, next) => {
             }
         }
     }
-
 };
+//Método utilizado para eliminar la calificación
 exports.deleteCalificacion = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
@@ -45,6 +45,7 @@ exports.deleteCalificacion = async (req, res, next) => {
         }
     }
 };
+//Método utilizado para actualizar la calificación
 exports.updateCalificacion = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });
@@ -86,6 +87,7 @@ exports.updateCalificacion = async (req, res, next) => {
         }
     }
 }
+//Método utilizado para crear la calificación
 exports.createCalifcacion = async (req, res, next) => {
     if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
         res.status(406).json({ "errors": "No aceptable" });

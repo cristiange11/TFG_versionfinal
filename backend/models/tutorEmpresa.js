@@ -6,30 +6,35 @@ module.exports = class TutorEmpresa {
         this.moduloEmpresa = moduloEmpresa;
         this.cifEmpresa = cifEmpresa;
     }
+    //Método utilizado para comprobar si ya hay un tutor con ese DNI
     static async find(dni) {
         const connection = await promisePool.connection();
         const res = await connection.query(`SELECT * FROM tutor_empresa where dni = ${connection.escape(dni)}`);
         await connection.end();
         return res;
     }
+    //Método utilizado para obtener un listado de tutores
     static async getTutores() {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT * FROM tutor_empresa `);
         await connection.end();
         return rows;
     }
+    //Método utilizado para obtener un tutor
     static async getTutor(dni) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT U.*, T.idEmpresa AS idEmpresa, T.moduloEmpresa, M.nombre as nombreModulo, M.codigo as moduloCodigo FROM usuario as U, tutor_empresa as T, tutor_modulo as TM, modulo as M WHERE U.dni = T.dni AND T.dni=TM.dni AND M.codigo = TM.codigoModulo AND U.dni=${connection.escape(dni)}`);
         await connection.end();
         return rows;
     }
+    //Método utilizado para obtener los tutores que enseñan en un módulo
     static async getTutorByModuloEncuesta(codigoModulo) {
         const connection = await promisePool.connection();
         const [rows, fields] = await connection.query(`SELECT U.* FROM usuario as U, modulo as M where U.rol=3 AND M.codigo = ${connection.escape(codigoModulo)}`);
         await connection.end();
         return rows;
     }
+    //Método utilizado para eliminar un tutor
     static async deleteTutor(dni, user) {
         const connection = await promisePool.connection().getConnection();
         try {
@@ -37,7 +42,6 @@ module.exports = class TutorEmpresa {
             let query = `DELETE FROM tutor_empresa WHERE dni = ${connection.escape(dni)} `;
             await connection.query(query);
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha borrado tutor empresa con DNI " ${connection.escape(dni)},'${user}',sysdate(), 'tutor de empresa')`);
-
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
@@ -46,8 +50,8 @@ module.exports = class TutorEmpresa {
         } finally {
             await connection.release();
         }
-
     }
+    //Método utilizado para crear un tutor
     static async createTutor(tutorEmpresa, password, user) {
         const connection = await promisePool.connection().getConnection();
         try {
@@ -70,6 +74,7 @@ module.exports = class TutorEmpresa {
             await connection.release();
         }
     }
+    //Método utilizado para actualizar un tutor
     static async updateTutor(tutor, password, user) {
         const connection = await promisePool.connection().getConnection();
         try {
@@ -92,7 +97,5 @@ module.exports = class TutorEmpresa {
         } finally {
             await connection.release();
         }
-
     }
-
 };

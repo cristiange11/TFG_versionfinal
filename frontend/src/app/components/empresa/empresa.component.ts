@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -28,25 +27,21 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   public displayedColumns: string[] = ['cifEmpresa', 'nombre', 'direccion', 'telefono', 'correo', 'url', 'dineroBeca', 'plazas'];
   public columnsToDisplay: string[] = [...this.displayedColumns, 'actions', 'FP'];
-
   public columnsFilters = {};
-
   public dataSource: MatTableDataSource<Empresa>;
   private serviceSubscribe: Subscription;
-  constructor(private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private empresaService: EmpresaService, public dialog: MatDialog) {
+  constructor( private nagivationComponent: NavigationComponent, private cookieService: CookieService, private empresaService: EmpresaService, public dialog: MatDialog) {
     this.dataSource = new MatTableDataSource<Empresa>();
     document.body.style.background = "linear-gradient(to right,#c8aeee, #94e9ad)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
-
+  //Método utilizado para cargar los elementos de la barra de navegación, el usuario que ha iniciaod sesión, las empresas asociadas al usuario y los filtros
   ngOnInit(): void {
     this.nagivationComponent.obtenerItems();
     this.user = (JSON.parse(this.cookieService.get('user')));
-      this.getAll();
-      this.dataSource.filterPredicate = function (data, filter: string): boolean {
-
-        return data.cifEmpresa.toLowerCase().includes(filter) || data.nombre.toLowerCase().includes(filter) || data.direccion.toLowerCase().includes(filter) || data.telefono.toLowerCase().includes(filter) || data.correo.toLowerCase().includes(filter) || data.url.toLowerCase().includes(filter) || data.plazas.toString().includes(filter) || data.dineroBeca.toLowerCase().includes(filter);
-      };
-    
+    this.getAll();
+    this.dataSource.filterPredicate = function (data, filter: string): boolean {
+      return data.cifEmpresa.toLowerCase().includes(filter) || data.nombre.toLowerCase().includes(filter) || data.direccion.toLowerCase().includes(filter) || data.telefono.toLowerCase().includes(filter) || data.correo.toLowerCase().includes(filter) || data.url.toLowerCase().includes(filter) || data.plazas.toString().includes(filter) || data.dineroBeca.toLowerCase().includes(filter);
+    };
   }
   getFps(empresaInfo) {
     var empresa = {
@@ -65,6 +60,7 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     return empresa;
   }
+  //Método para obtener todas las empresas, si el usuario es administrador de la aplicación obtendrá todas y si es administrador del centro obtendrá solo las relacionadas con su centro
   getAll() {
     if (Number(this.user.rol) == 1) {
       this.serviceSubscribe = this.empresaService.getEmpresas().pipe(first())
@@ -128,16 +124,19 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
           });
     }
   }
+  //Método para realizar los filtros
   public doFilter = (value: { target: HTMLInputElement }) => {
     const filterValue = value.target.value.trim().toLocaleLowerCase();
 
     this.dataSource.filter = filterValue;
   }
+  //Método para añadir una nueva empresa
   add() {
     this.dialog.open(EmpresaCreateComponent, {
       width: '400px'
     });
   }
+  //Método para conocer el FP y el centro asociados a la empresa
   getEmpresaAndCentro(idEmpresa) {
     this.serviceSubscribe = this.empresaService.getFPandCentroByEmpresa(idEmpresa).pipe(first())
       .subscribe(
@@ -171,7 +170,7 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
         });
   }
 
-
+  //Método para editar las empresas
   edit(data) {
     sessionStorage.setItem("dineroBeca", data.dineroBeca);
     this.dialog.open(EmpresaUpdateComponent, {
@@ -180,11 +179,9 @@ export class EmpresaComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
   }
-
+  //Método para eliminar la empresa
   delete(id) {
-
     const dialogRef = this.dialog.open(DeleteComponent);
-
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.empresaService.deleteEmpresa(id).pipe(first())

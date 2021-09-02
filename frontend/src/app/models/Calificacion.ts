@@ -4,6 +4,6 @@ export class Calificacion {
     nota: number;
     codigoModulo: number;
     id: number;
-    nombreUsuario:string;
+    nombreUsuario: string;
     apellidoUsuario: string;
 }

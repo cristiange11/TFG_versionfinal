@@ -8,7 +8,6 @@
       <mat-error *ngIf="formInstance.controls['titulo']?.errors?.minlength">T&iacute;tulo</mat-error>
       <mat-error *ngIf="this.formInstance.get('titulo').errors?.serverError">{{
         this.formInstance.get('titulo').errors?.serverError }}</mat-error>
-
     </mat-form-field>
     <mat-form-field class="fullWidth" appearance="outline">
       <mat-label>Descripci&oacute;n</mat-label>
@@ -18,7 +17,6 @@
       </mat-error>
       <mat-error *ngIf="this.formInstance.get('descripcion').errors?.serverError">{{
         this.formInstance.get('descripcion').errors?.serverError }}</mat-error>
-
     </mat-form-field>
   </form>
 </div>

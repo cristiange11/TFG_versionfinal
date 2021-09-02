@@ -7,7 +7,7 @@ const User = require('../models/user');
 const Modulo = require('../models/modulo');
 const Resultado = require('../models/resultadoEncuesta');
 const encuestaController = require('../controllers/encuesta');
-
+//Definir rutas y comprobar que los campos son correctos
 router.get('/:codigoModulo', encuestaController.getEncuestas);
 
 router.get('/encuesta/:id', encuestaController.getEncuesta);

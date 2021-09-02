@@ -6,5 +6,5 @@ export class Fpduales {
     codigoCentro: string;
     plazasDisponibles: number;
     id: number;
-    nombreCentro : string;
+    nombreCentro: string;
 }

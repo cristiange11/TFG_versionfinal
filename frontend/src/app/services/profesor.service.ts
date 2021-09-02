@@ -1,9 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Router } from "@angular/router";
-
 import { Observable } from "rxjs";
-
 import { CookieService } from 'ngx-cookie-service';
 
 
@@ -11,12 +8,12 @@ import { CookieService } from 'ngx-cookie-service';
   providedIn: 'root'
 })
 export class ProfesorService {
-  private url = "http://3.140.131.165:3000/profesor";
+  private url = "http://localhost:3000/profesor";
 
-  constructor(private cookieService: CookieService, private http: HttpClient, private router: Router) { }
-  formarProfesor(sigunForm , userJson, formulario2, modulo){
+  constructor(private cookieService: CookieService, private http: HttpClient) { }
+  formarProfesor(sigunForm, userJson, formulario2, modulo) {
     var profesor = {
-      dni : sigunForm.dni,
+      dni: sigunForm.dni,
       nombre: sigunForm.nombre,
       apellidos: sigunForm.apellidos,
       correo: sigunForm.correo,
@@ -28,28 +25,28 @@ export class ProfesorService {
       rol: sigunForm.rol,
       fechaNacimiento: sigunForm.fechaNacimiento,
       fpDual: userJson.fpDual,
-      codigoCentro: userJson.codigoCentro, 
+      codigoCentro: userJson.codigoCentro,
       departamento: formulario2,
-      modulo : {modulo : modulo}
-    };  
+      modulo: { modulo: modulo }
+    };
     return profesor;
   }
+  //Método que llama al back-end para crear un profesor
+  createProfesor(sigunForm, userJson, formulario2, modulo): Observable<JSON> {
+    var profesor = this.formarProfesor(sigunForm, userJson, formulario2, modulo);
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization": this.cookieService.get('token'), "Content-Type": "application/json", "X-Frame-Options": "deny" }), }
+    return this.http.post<JSON>(`${this.url}/create`, profesor, httpOptions);
+  }
+  //Método que llama al back-end para actualizar un profesor
+  updateProfesor(sigunForm, userJson, formulario2, modulo): Observable<JSON> {
+    var profesor = this.formarProfesor(sigunForm, userJson, formulario2, modulo);
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization": this.cookieService.get('token'), "Content-Type": "application/json", "X-Frame-Options": "deny" }), }
+    return this.http.put<JSON>(`${this.url}/update`, profesor, httpOptions);
+  }
+  //Método que llama al back-end para obtener un profesor
+  getProfesor(dni): Observable<JSON> {
+    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization": this.cookieService.get('token'), "Content-Type": "application/json", "X-Frame-Options": "deny" }), }
+    return this.http.get<JSON>(`${this.url}/${dni}`, httpOptions);
+  }
 
-  createProfesor(sigunForm , userJson, formulario2, modulo): Observable<JSON>{  
-    var profesor = this.formarProfesor(sigunForm , userJson, formulario2, modulo);
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
-    return this.http.post<JSON>(`${this.url}/create`,profesor , httpOptions);   
-  }
-    updateProfesor(sigunForm , userJson, formulario2, modulo): Observable<JSON>{  
-    var profesor = this.formarProfesor(sigunForm , userJson, formulario2, modulo);
-   
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
-    return this.http.put<JSON>(`${this.url}/update`,profesor , httpOptions);   
-  }
-  getProfesor(dni): Observable<JSON>{    
-    
-    var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization":this.cookieService.get('token'), "Content-Type" : "application/json", "X-Frame-Options" : "deny"}),}
-    return this.http.get<JSON>(`${this.url}/${dni}`,  httpOptions); 
-  }
-  
 }

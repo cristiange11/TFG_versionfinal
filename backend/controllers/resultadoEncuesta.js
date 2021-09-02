@@ -1,6 +1,7 @@
 const Resultados = require('../models/resultadoEncuesta');
 const jwt_decode = require('jwt-decode');
 const comprobarToken = require('../util/comprobarToken');
+//Método para obtener un listado de los resultados de encuestas
 exports.getResultados = async (req, res, next) => {
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });

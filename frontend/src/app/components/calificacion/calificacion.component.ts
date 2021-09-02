@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -14,8 +13,6 @@ import { CalificacionCreateComponent } from '../modals/calificacion/calificacion
 import { CalificacionUpdateComponent } from '../modals/calificacion/calificacion-update/calificacion-update.component';
 import { DeleteComponent } from '../modals/delete/delete.component';
 import { NavigationComponent } from '../navigation/navigation.component';
-import {jsPDF} from 'jspdf';
-import html2canvas from 'html2canvas';
 import 'jspdf-autotable';
 @Component({
   selector: 'app-calificacion',
@@ -25,6 +22,7 @@ import 'jspdf-autotable';
 export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
   myApp = AppComponent.myapp;
   calificacionList = [];
+  //Atributo que hace referencia al usuario que ha iniciado sesión
   user;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -35,38 +33,30 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public dataSource: MatTableDataSource<Calificacion>;
   private serviceSubscribe: Subscription;
-  constructor(private router: Router, private nagivationComponent: NavigationComponent, private cookieService: CookieService, private calificacionService: CalificacionService, public dialog: MatDialog) {
+  constructor( private nagivationComponent: NavigationComponent, private cookieService: CookieService, private calificacionService: CalificacionService, public dialog: MatDialog) {
     this.dataSource = new MatTableDataSource<Calificacion>();
     document.body.style.background = "linear-gradient(to right,#c8aeee, #94e9ad)"; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
-
+  //Método utilizado para cargar los elementos de la barra de navegación, el usuario que ha iniciado sesión, las calificaciones y los filtros de las calificaciones
   ngOnInit(): void {
     this.nagivationComponent.obtenerItems();
     this.user = (JSON.parse(this.cookieService.get('user')));
-    
     this.getAll();
-    
     this.dataSource.filterPredicate = function (data, filter: string): boolean {
-
       return data.nombreUsuario.toLowerCase().includes(filter) || data.descripcion.toLowerCase().includes(filter) || data.apellidoUsuario.toLowerCase().includes(filter) || data.nota.toString().includes(filter);
     };
-  
   }
+  //Método utilizado para cargar todas las calificaciones a través de la subscripción
   getAll() {
-   
     if (Number(this.user.rol != 5)) {
       this.serviceSubscribe = this.calificacionService.getCalificaciones(Number(sessionStorage.getItem('codigoModulo'))).pipe(first())
         .subscribe(
           data => {
             let calificaciones = data["calificaciones"];
-
             calificaciones.forEach(calificacionesInfo => {
               this.calificacionList.push(calificacionesInfo);
-
             });
             this.dataSource.data = this.calificacionList
-            
-            
           },
           error => {
             if (error.status == 401 && error.error.errors == "Sesión expirada") {
@@ -85,21 +75,21 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
             }
           });
     }
-    
+
   }
+  //Método utilizado para realizar el filtro
   public doFilter = (value: { target: HTMLInputElement }) => {
     const filterValue = value.target.value.trim().toLocaleLowerCase();
     this.dataSource.filter = filterValue;
   }
+  //Método utilizado para añadir una calificación
   add() {
-
     this.dialog.open(CalificacionCreateComponent, {
       width: '400px'
     });
-
   }
+  //Método utilizado para editar una calificación
   edit(data) {
-
     this.dialog.open(CalificacionUpdateComponent, {
       width: '400px',
       data: {
@@ -111,13 +101,9 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
         codigoModulo: sessionStorage.getItem('codigoModulo')
       }
     });
-
   }
-
   delete(id: number) {
-
     const dialogRef = this.dialog.open(DeleteComponent);
-
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.calificacionService.deleteCalificacion(id).pipe(first())
@@ -128,22 +114,20 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
             error => {
               if (error.status == 401 && error.error.errors == "Sesión expirada") {
                 AppComponent.myapp.openDialogSesion();
-
               }
               else if (error.status == 406) {
                 const res = new Array();
                 res.push("Petición incorrecta.");
                 AppComponent.myapp.openDialog(res);
-              }else if (error.status == 500) {
+              } else if (error.status == 500) {
                 const res = new Array();
                 res.push("Error del servidor, vuelva a intentarlo más tarde.");
                 AppComponent.myapp.openDialog(res);
-              }else{
+              } else {
                 const res = new Array();
                 res.push("No se ha podido eliminar.");
                 AppComponent.myapp.openDialog(res);
               }
-
             }
           );
       }
@@ -151,10 +135,8 @@ export class CalificacionComponent implements OnInit, OnDestroy, AfterViewInit {
 
   }
   ngAfterViewInit(): void {
-
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-
   }
   ngOnDestroy(): void {
     if (this.cookieService.get('user')) {
