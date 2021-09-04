@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class LogService {
-  private url = "http://localhost:3000/log";
+  private url = "http://3.140.131.165:3000/log";
 
   constructor(private cookieService: CookieService, private http: HttpClient) { }
   //Método que llama al back-end para obtener los logs

@@ -6,7 +6,7 @@ import { Observable } from "rxjs";
   providedIn: 'root'
 })
 export class AuthService {
-  private url = "http://localhost:3000/auth";
+  private url = "http://3.140.131.165:3000/auth";
 
   constructor(private cookieService: CookieService, private http: HttpClient) {
 

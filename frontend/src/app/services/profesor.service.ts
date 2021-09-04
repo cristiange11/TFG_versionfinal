@@ -8,7 +8,7 @@ import { CookieService } from 'ngx-cookie-service';
   providedIn: 'root'
 })
 export class ProfesorService {
-  private url = "http://localhost:3000/profesor";
+  private url = "http://3.140.131.165:3000/profesor";
 
   constructor(private cookieService: CookieService, private http: HttpClient) { }
   formarProfesor(sigunForm, userJson, formulario2, modulo) {

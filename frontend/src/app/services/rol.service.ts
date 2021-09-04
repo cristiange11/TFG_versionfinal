@@ -9,7 +9,7 @@ import { Rol } from '../models/Rol';
   providedIn: 'root'
 })
 export class RolService {
-  private url = "http://localhost:3000/roles";
+  private url = "http://3.140.131.165:3000/roles";
 
   constructor(private cookieService: CookieService, private http: HttpClient) { }
   //Método que llama al back-end para obtener los roles

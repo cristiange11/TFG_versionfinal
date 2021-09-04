@@ -8,7 +8,7 @@ import { Encuesta } from '../models/Encuesta';
   providedIn: 'root'
 })
 export class EncuestaService {
-  private url = "http://localhost:3000/encuesta";
+  private url = "http://3.140.131.165:3000/encuesta";
 
   constructor(private cookieService: CookieService, private http: HttpClient) { }
   //Método que llama al back-end para obtener las encuestas
