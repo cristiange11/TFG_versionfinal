@@ -47,7 +47,7 @@ export class EmpresaService {
     return res;
   }
   //Método que llama al back-end para crear una empresa
-  addEmpresa(empresa, dineroBeca): Observable<JSON> {
+  addEmpresa(empresa,  dineroBeca): Observable<JSON> {
     var res = this.formarEmpresa(empresa, dineroBeca);
     var httpOptions: { headers: HttpHeaders } = { headers: new HttpHeaders({ "Authorization": this.cookieService.get('token'), "Content-Type": "application/json", "X-Frame-Options": "deny" }), }
     return this.http.post<JSON>(`${this.url}/create`, res, httpOptions);

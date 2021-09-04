@@ -30,7 +30,7 @@ export class EmpresaUpdateComponent implements OnInit {
       id: new FormControl("", []),
     });
     var beca;
-
+   
     if (data.becas == "0") {
       beca = "no";
     } else {
@@ -46,6 +46,7 @@ export class EmpresaUpdateComponent implements OnInit {
   }
   //Método para actualizar la empresa
   edit() {
+    
     this.empresaService.updateEmpresa(this.formInstance.value, this.dineroBeca.value).pipe(first())
       .subscribe(
         data => {

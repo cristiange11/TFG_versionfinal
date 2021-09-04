@@ -125,11 +125,11 @@ module.exports = class Centro {
             await connection.query(`DELETE FROM empresa where codigoCentro=  ${connection.escape(codigoCentro)}`);
             await connection.query(`DELETE FROM fp_duales WHERE codigoCentro =  ${connection.escape(codigoCentro)}`);
             await connection.query(`DELETE FROM centro_educativo WHERE codigoCentro =   ${connection.escape(codigoCentro)}`);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},'Se ha eliminado todo lo asociado al centro ' ,'${user}',sysdate(), 'centro educativo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha eliminado todo lo asociado al centro " ${connection.escape(codigoCentro)} ,'${user}',sysdate(), 'centro educativo')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_CENTRO','No se ha podido eliminar el centro ' ,'${user}',sysdate(), 'centro educativo')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES ('ERROR_DELETE_CENTRO',"No se ha podido eliminar el centro "${connection.escape(codigoCentro)} ,'${user}',sysdate(), 'centro educativo')`);
             throw err;
         } finally {
             await connection.release();

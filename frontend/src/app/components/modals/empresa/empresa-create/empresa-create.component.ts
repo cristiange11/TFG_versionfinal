@@ -33,7 +33,7 @@ export class EmpresaCreateComponent implements OnInit {
       plazas: new FormControl("", [Validators.required, Validators.min(1)]),
       becas: new FormControl("", [Validators.required]),
       fpDual: new FormControl("", [Validators.required]),
-      codigoCentro : this.codigoCentro
+      
     })
    
       this.user = (JSON.parse(this.cookieService.get('user')));
@@ -126,7 +126,19 @@ export class EmpresaCreateComponent implements OnInit {
   }
   //Método para guardar la empresa
   save() {
-    this.empresaService.addEmpresa(this.formInstance.value, this.dineroBeca.value).pipe(first())
+    var formInstanceJSON= {
+      cifEmpresa: this.formInstance.value.cifEmpresa,
+      nombre: this.formInstance.value.nombre,
+      direccion:this.formInstance.value.direccion,
+      telefono: this.formInstance.value.telefono,
+      correo: this.formInstance.value.correo,
+      url: this.formInstance.value.url,
+      plazas: this.formInstance.value.plazas,
+      becas:this.formInstance.value.becas,
+      fpDual: this.formInstance.value.fpDual,
+      codigoCentro: this.codigoCentro.value == '' ? this.user.codigoCentro : this.codigoCentro.value
+    }
+    this.empresaService.addEmpresa(formInstanceJSON, this.dineroBeca.value).pipe(first())
       .subscribe(
         data => {
           window.location.reload();

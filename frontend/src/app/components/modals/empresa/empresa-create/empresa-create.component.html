@@ -105,7 +105,7 @@
 <div class="mt-5" mat-dialog-actions>
   <div *ngIf="formInstance.controls['becas'].value == 'si'; else no">
     <button mat-raised-button color="primary" (click)="save()"
-      [disabled]="!formInstance.valid || !dineroBeca.valid">Yes</button>
+      [disabled]="!formInstance.valid || !dineroBeca.valid ">Yes</button>
     <button mat-raised-button mat-dialog-close>No</button>
   </div>
   <ng-template #no>

@@ -1,7 +1,7 @@
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
-const Log = require ('../models/log');
+const Log = require('../models/log');
 const promisePool = require('../util/database');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
@@ -15,7 +15,7 @@ exports.signup = async (req, res, next) => {
     res.status(406).json({ "errors": "No aceptable" });
   }
   else {
-    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'],   ));
+    var expirado = comprobarToken.compruebaToken(jwt_decode(req.headers['authorization'],));
     if (expirado) {
       res.status(401).json({ "errors": "Sesión expirada" });
     }
@@ -111,11 +111,11 @@ exports.login = async (req, res, next) => {
           const userJson = queryResult[0][0]
 
           let user = new User(userJson)
-          const isEqual = await bcrypt.compare(password, user.password);         
+          const isEqual = await bcrypt.compare(password, user.password);
           var equals = true;
           if (isEqual == false) {
             equals = false;
-            await Log.createLog(equals, dni);  
+            await Log.createLog(equals, dni);
             res.status(401).json({ "errors": 'Credenciales incorrectas.' });
           }
           else {
@@ -172,7 +172,7 @@ exports.deleteLogsByUser = async (req, res, next) => {
         await User.deleteLogsByUser(req.params.dni, user).then(function (result) {
           res.status(201).json({ message: "success" });
         }).catch(function (err) {
-          
+
           res.status(409).json({ "errors": "no se ha podido borrar el usuario" });
         });
 
@@ -235,7 +235,7 @@ exports.updateUsuario = async (req, res, next) => {
           }).catch(function (err) {
             res.status(401).json({ errors: "No se ha podido actualizar el usuario" });
           });
-        } catch (err) {          
+        } catch (err) {
           res.status(500).json({ error: err });
         }
       }

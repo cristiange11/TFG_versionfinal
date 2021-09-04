@@ -27,8 +27,7 @@ module.exports = class Empresa {
     //Método utilizado para obtener la empresa
     static async find(idEmpresa) {
         const connection = await promisePool.connection();
-        const res = await connection.query(
-            `SELECT * FROM empresa where id =${connection.escape(idEmpresa)}`);
+        const res = await connection.query(`SELECT * FROM empresa where id =${connection.escape(idEmpresa)}`);
         await connection.end();
         return res;
     }
@@ -42,7 +41,7 @@ module.exports = class Empresa {
     //Método para obtener un listado de las empresas asociadas a un centro
     static async getEmpresasByCentro(codigoCentro) {
         const connection = await promisePool.connection();
-        const [rows, fields] = await connection.query(`SELECT E.*, EF.dineroBeca AS dineroBeca,EF.becas as beca, EF.plazas AS plazas, F.nombre as nombreFp, F.id as idFp FROM empresa E, empresa_fpdual EF, fp_duales F where E.id = EF.idEmpresa and EF.idFp=F.id AND F.codigoCentro = ${connection.escape(codigoCentro)}`);
+        const [rows, fields] = await connection.query(`SELECT E.*, EF.dineroBeca AS dineroBeca,EF.becas as becas, EF.plazas AS plazas, F.nombre as nombreFp, F.id as idFp FROM empresa E, empresa_fpdual EF, fp_duales F where E.id = EF.idEmpresa and EF.idFp=F.id AND F.codigoCentro = ${connection.escape(codigoCentro)}`);
         await connection.end();
         return rows;
     }
@@ -63,12 +62,13 @@ module.exports = class Empresa {
     //Método para eliminar una empresa
     static async deleteEmpresa(id, user) {
         const connection = await promisePool.connection().getConnection();
+        const empresa = await this.find(idEmpresa);
         try {
             await connection.beginTransaction();
             await connection.query(`DELETE FROM empresa_fpdual where idEmpresa = ${connection.escape(idEmpresa)}`);
             let query = `DELETE FROM empresa WHERE id  =  ${connection.escape(id)}`;
             await connection.query(query);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha eliminado  la empresa " ${connection.escape(id)} ,'${user}',sysdate(), 'empresa')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha eliminado  la empresa " ${connection.escape(empresa[0][0].nombre)} ,'${user}',sysdate(), 'empresa')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK" + err);
@@ -81,13 +81,16 @@ module.exports = class Empresa {
     //Método para borrar todo lo asociado a la empresa
     static async deleteTutorEmpresaByEmpresa(idEmpresa, user) {
         const connection = await promisePool.connection().getConnection();
+        const empresa = await this.find(idEmpresa);
         try {
             await connection.beginTransaction();
+            await connection.query(`DELETE t1 FROM encuesta t1 INNER JOIN tutor_empresa t2 ON ( t1.dniTutoroAdmin = t2.dni) WHERE t2.idEmpresa = ${connection.escape(idEmpresa)}`);
+            await connection.query(`DELETE t2 FROM tutor_empresa t1 JOIN logs t2 ON t2.usuario = t1.dni WHERE t1.idEmpresa = ${connection.escape(idEmpresa)}`);
             let query = `DELETE t1 FROM usuario t1 INNER JOIN tutor_empresa t2 ON ( t1.dni = t2.dni) WHERE t2.idEmpresa = ${connection.escape(idEmpresa)}`;
             await connection.query(query);
             await connection.query(`DELETE FROM empresa_fpdual where idEmpresa = ${connection.escape(idEmpresa)}`);
             await connection.query(`DELETE FROM empresa WHERE id =  ${connection.escape(idEmpresa)}`);
-            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha eliminado todo lo asociado a la empresa "  ,'${user}',sysdate(), 'empresa')`);
+            await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha eliminado todo lo asociado a la empresa "  ${connection.escape(empresa[0][0].nombre)}  ,'${user}',sysdate(), 'empresa')`);
             await connection.commit();
         } catch (err) {
             await connection.query("ROLLBACK");

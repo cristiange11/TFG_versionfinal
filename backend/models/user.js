@@ -103,6 +103,7 @@ module.exports = class User {
             await connection.beginTransaction();
             let query = `DELETE FROM logs WHERE usuario = ${connection.escape(dni)}`;
             await connection.query(query);
+            await connection.query(`DELETE FROM encuesta WHERE dniTutoroAdmin = ${connection.escape(dni)}`);
             await connection.query(`DELETE FROM calificacion WHERE dni = ${connection.escape(dni)}`);
             await connection.query(`DELETE FROM usuario WHERE dni = ${connection.escape(dni)}`);
             await connection.query(`INSERT INTO logs(codigoError ,mensaje, usuario, fechaHoraLog, tipo) VALUES (${null},"Se ha borrado usuario con DNI " ${connection.escape(dni)} ,'${userLogado}',sysdate(), 'user')`);

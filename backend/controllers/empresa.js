@@ -127,6 +127,7 @@ exports.deleteEmpresa = async (req, res, next) => {
 };
 //Método utilizado para actualizar la empresa
 exports.updateEmpresa = async (req, res, next) => {
+  
   if (req.headers['content-type'] != "application/json" || req.headers['x-frame-options'] != "deny") {
     res.status(406).json({ "errors": "No aceptable" });
   }
@@ -149,6 +150,7 @@ exports.updateEmpresa = async (req, res, next) => {
       });
 
       if (!errors.isEmpty()) {
+        console.log("ola entro aki")
         res.status(409).json({ "errors": resJSON });
       }
       else {
@@ -160,6 +162,7 @@ exports.updateEmpresa = async (req, res, next) => {
             res.status(401).json({ "errors": "no se ha podido actualizar la empresa" });
           });
         } catch (err) {
+          console.log(err)
           res.status(500).json({ error: err });
         }
       }

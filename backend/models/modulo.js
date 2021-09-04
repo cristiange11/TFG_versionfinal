@@ -60,7 +60,6 @@ module.exports = class Modulo {
     //Método para eliminar un módulo
     static async deleteModulo(codigo, user) {
         const connection = await promisePool.connection().getConnection();
-        console.log(`DELETE FROM modulo WHERE codigo =  ${connection.escape(codigo)}`)
         try {
             await connection.beginTransaction();
             let query = `DELETE FROM modulo WHERE codigo =  ${connection.escape(codigo)}`;

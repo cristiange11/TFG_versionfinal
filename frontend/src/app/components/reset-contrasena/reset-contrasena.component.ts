@@ -33,6 +33,9 @@ export class ResetContrasenaComponent implements OnInit {
         this.cookieService.set('correo', params['user']);
       }
       );
+    if (this.cookieService.get('correo') == 'undefined') {
+      this.router.navigate(['']);
+    }
   }
 
   checkConfirmPassword(): ValidatorFn {
@@ -59,7 +62,7 @@ export class ResetContrasenaComponent implements OnInit {
             const res = new Array();
             res.push("Petición incorrecta.");
             AppComponent.myapp.openDialog(res);
-          }else if (error.status == 500) {
+          } else if (error.status == 500) {
             const res = new Array();
             res.push("Error del servidor, vuelva a intentarlo más tarde.");
             AppComponent.myapp.openDialog(res);
@@ -74,7 +77,7 @@ export class ResetContrasenaComponent implements OnInit {
 
               }
             });
-          }else{
+          } else {
             const res = new Array();
             res.push("No se ha podido cambiar la contraseña.");
             AppComponent.myapp.openDialog(res);

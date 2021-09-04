@@ -62,7 +62,7 @@ router.post(
     body('dineroBeca').trim().not().isEmpty().withMessage("Dinero de beca vacío")
       .custom(async (dineroBeca, { req }) => {
 
-        if (isNaN(dineroBeca) || req.body.becas == 1 && dineroBeca <= 100) {
+        if (isNaN(dineroBeca) || req.body.becas == 1 && dineroBeca < 100) {
           return Promise.reject('La beca mínima tiene que ser 100 euros');
         }
 
@@ -116,7 +116,7 @@ router.put(
     body('dineroBeca').trim().not().isEmpty().withMessage("Dinero de beca vacío")
       .custom(async (dineroBeca, { req }) => {
 
-        if (isNaN(dineroBeca) || req.body.becas == 1 && dineroBeca <= 100) {
+        if (isNaN(dineroBeca) || req.body.becas == 1 && dineroBeca < 100) {
           return Promise.reject('La beca mínima tiene que ser 100 euros');
         }
 

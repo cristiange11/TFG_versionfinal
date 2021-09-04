@@ -46,8 +46,15 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
     else {
       var user = JSON.parse(this.cookieService.get('user'));
       if (Number(user.rol) == 1 || Number(user.rol) == 2) {
-        this.items = [
-
+        this.items = [];
+        if (Number(user.rol) == 1){
+          this.items.push({
+            label: 'Centros',
+            routerLink: '/adminpage',
+            icon: "fas fa-school"
+          })
+        }
+        this.items.push(
           {
             label: 'FP duales',
             routerLink: '/fpdual',
@@ -73,7 +80,7 @@ export class NavigationComponent implements OnInit, AfterViewChecked {
             icon: "fas fa-user-plus"
           },
 
-        ]
+        );
         if (Number(user.rol) == 1) {
           this.items.push({
             label: 'Logs',

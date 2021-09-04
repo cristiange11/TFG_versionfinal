@@ -263,7 +263,6 @@ export class ModuloComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   //Método utilizado para eliminar el módulo
   delete(id: any) {
-    console.log(id)
     const dialogRef = this.dialog.open(DeleteComponent);
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
