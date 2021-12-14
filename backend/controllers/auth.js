@@ -293,7 +293,7 @@ exports.RecoveryPassword = async (req, res, next) => {
           secure: true,
           auth: {
             user: "appdualtfg@gmail.com",
-            pass: "M8f*Zb&AT7!z"
+            pass: ""
           }
         });
         var mailOptions = {
